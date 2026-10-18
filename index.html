@@ -293,6 +293,17 @@
         Bootloaders). Dasselbe Image läuft darum mit beiden SoftDevice-Versionen: ein P1-Image, nur mit den Headern von
         S140 6.1.1 gebaut, ist byte-gleich zu dem, das auf dem P1 mit S140 7.3.0 läuft <span class="m meas">gemessen</span>.
         Repeater-Images laufen nur an ihrer Link-Adresse, darum ist Slot B Zwischenlager und kein zweites Startziel.</p>
+      <p><b>Ein Image für mehrere Boards.</b> Ein Repeater-Image für FakeTec, SenseCAP P1 und RAK4631 (alle nRF52840 mit
+        SX1262) wählt das Board beim Start: Pins von Funkchip, SPI, I2C, GPS, LEDs, Taste und Batteriemessung, TCXO,
+        RF-Schalter, DC/DC und 32-kHz-Takt stehen in einer Tabelle im Image. Welches Board es ist, sagt ein Deskriptor von
+        32 Byte am Ende der Stage-0-Seite (Magie, Version, Board-ID, Adresse der Seite, CRC-32). Stage-0 wird je Board
+        einmal per Kabel installiert, FUOTA schreibt diese Seite nie. Die App liest den Deskriptor an der Adresse, die das
+        SoftDevice als Sprungziel des Bootloaders nennt, und vergleicht mit der Board-ID im Bootloader; nennt der ein anderes
+        bekanntes Board, gilt das als Widerspruch. Ohne Deskriptor reicht die Board-ID nur, wenn der Bootloader zu genau
+        einem Board gehört (P1). Unbekannt oder widersprüchlich: kein Pin wird angefasst, kein Funk, nur ein USB-Notbetrieb;
+        ein neues Image wird so nie bestätigt und Stage-0 tauscht nach drei Fehlstarts zurück. Bestätigt wird außerdem nur,
+        wenn der Funkchip geantwortet hat. Damit trägt eine signierte Kampagne (eine Ziel-ID, ein Patch) das Update auf alle
+        drei Boards <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>What lives where in flash</h2>
@@ -304,6 +315,17 @@
         with the S140 6.1.1 headers is byte-identical to the one running on the P1 with S140 7.3.0
         <span class="m meas">measured</span>. Repeater images run only at their link address, so slot B is a staging
         area and never a second boot target.</p>
+      <p><b>One image for several boards.</b> One repeater image for FakeTec, SenseCAP P1 and RAK4631 (all nRF52840 with
+        SX1262) picks the board at start: the pins of radio, SPI, I2C, GPS, LEDs, button and battery measurement, TCXO, RF
+        switch, DC/DC and the 32 kHz clock are in a table inside the image. Which board it is comes from a 32-byte
+        descriptor at the end of the Stage-0 page (magic, version, board id, address of the page, CRC-32). Stage-0 is
+        installed once per board by cable; FUOTA never writes that page. The app reads the descriptor at the address the
+        SoftDevice names as the jump target of the bootloader and compares it with the board id in the bootloader; if that
+        names another known board, it is a contradiction. Without a descriptor the bootloader id is enough only if the
+        bootloader belongs to exactly one board (P1). Unknown or contradictory: no pin is touched, no radio, only a USB
+        fallback mode; a new image is then never confirmed and Stage-0 reverts after three failed boots. Confirmation
+        also requires that the radio chip answered. One signed campaign (one target id, one patch) thus carries the
+        update to all three boards <span class="m meas">measured</span>.</p>
     </div>
     <div class="panel scroll" lang="de">
       <figure>
@@ -991,6 +1013,7 @@
         <tr><td>Verlorene Anfrage</td><td>absichtlich verworfen: neue Anfrage nach 17,9 s (vorher 108 s), sonst keine zusätzlichen Anfragen, 0 Duplikate</td></tr>
         <tr><td>Rückfall und gescheitertes Image</td><td>drei Fehlstarts, Rückfall; danach wird das gescheiterte Update dauerhaft abgelehnt und nie angeboten, v1 nach v3 klappt</td></tr>
         <tr><td>Ein Layout für S140 6.1.1 und 7.3.0</td><td>FakeTec (6.1.1) und P1 (7.3.0) laufen im selben Layout, App ab 0x29000; das P1-Image, nur mit den 6.1.1-Headern gebaut, ist byte-gleich zum laufenden</td></tr>
+        <tr><td>Ein Image für FakeTec, P1, RAK4631</td><td>Dasselbe Image (374.412 B ohne Testfüllung, 92 von 96 Seiten, mit GPS) auf zwei FakeTecs und einem P1, Board über den Deskriptor erkannt; eine Kampagne v1→v2 (43 Fragmente) holen FakeTec und P1 in 270 s und 289 s, beide bestätigen, gleiche Slot-Hashes; überlappend v2→v4 auf beiden; Rückfall auf dem P1; FakeTec ohne Deskriptor: kein Funk, Rückfall nach drei Fehlstarts. RAK4631 nur gebaut</td></tr>
         <tr><td>Überlappend anwenden, Fenster</td><td>Patch 4 Seiten passt nicht hinter ein 94-Seiten-Image: der Knoten gibt ihn im Fenster weiter (ein zweiter Knoten holt ihn dort komplett, 0 Duplikate), wendet 180 s nach der letzten Lieferung überlappend an (Lese-Abstand 8.192 B, 12,8 s), bestätigt und bietet danach nichts mehr an; passt der Patch dahinter, wendet er sofort an und bietet weiter an</td></tr>
         <tr><td>P1 über Funk</td><td>holt 72 Fragmente von einem FakeTec (der die P1-Kampagne nur weitergibt), wendet überlappend an, Lese-Abstand 8.139 B wie auf dem Rechner berechnet, bestätigt; Rückfall nach drei Fehlstarts auch auf dem P1</td></tr>
         <tr><td>Größenwächter</td><td>Image über 96 Seiten: der Build bricht ab (FakeTec und P1)</td></tr>
@@ -1011,6 +1034,7 @@
         <tr><td>Lost request</td><td>dropped on purpose: new request after 17.9 s (before: 108 s), no other extra requests, 0 duplicates</td></tr>
         <tr><td>Revert and failed image</td><td>three failed boots, revert; afterwards the failed update is rejected for good and never offered, v1 to v3 works</td></tr>
         <tr><td>One layout for S140 6.1.1 and 7.3.0</td><td>FakeTec (6.1.1) and P1 (7.3.0) run in the same layout, app from 0x29000; the P1 image built only with the 6.1.1 headers is byte-identical to the running one</td></tr>
+        <tr><td>One image for FakeTec, P1, RAK4631</td><td>The same image (374,412 B without test filler, 92 of 96 pages, with GPS) on two FakeTecs and one P1, board identified by the descriptor; one campaign v1→v2 (43 fragments) is pulled by FakeTec and P1 in 270 s and 289 s, both confirm, same slot hashes; overlapping v2→v4 on both; revert on the P1; FakeTec without descriptor: no radio, revert after three failed boots. RAK4631 built only</td></tr>
         <tr><td>Overlapping apply, window</td><td>A 4-page patch does not fit behind a 94-page image: the node passes it on during the window (a second node pulls all of it there, 0 duplicates), applies overlapping 180 s after its last delivery (read margin 8,192 B, 12.8 s), confirms and offers nothing afterwards; if the patch fits behind, it applies at once and keeps offering</td></tr>
         <tr><td>P1 over the air</td><td>pulls 72 fragments from a FakeTec (which only passes the P1 campaign on), applies overlapping, read margin 8,139 B as calculated on the computer, confirms; revert after three failed boots on the P1 as well</td></tr>
         <tr><td>Size guard</td><td>Image above 96 pages: the build stops (FakeTec and P1)</td></tr>
@@ -1024,6 +1048,14 @@
     <div lang="de" class="prose">
       <h2>Lücken und offene Fragen</h2>
       <ul>
+        <li><b>Ein Image für mehrere Boards hat Grenzen.</b> RAK4631 ist nur gebaut, nicht auf Hardware getestet. Sein
+          WisBlock-GPS (I2C-Modul, Versorgung über IO-Pins) und die BSEC-Auswertung des BME680 fehlen im gemeinsamen Image:
+          BSEC passt nicht in 96 Seiten <span class="m meas">gemessen</span>. Neue Boards brauchen einen Tabelleneintrag
+          und eine Board-ID. <span class="m open">offen</span></li>
+        <li><b>Ein Knoten hält eine Kampagne.</b> Ein Knoten, der per USB eine Kampagne anbietet, die er selbst nicht
+          anwenden kann, verliert sie, sobald er eine für ihn passende von Nachbarn holt
+          <span class="m meas">gemessen</span>. Ob ein Anbieter seine Kampagne behalten soll, ist offen.
+          <span class="m open">offen</span></li>
         <li><b>Ein Schlüssel für alles.</b> Kein Schlüsselwechsel, keine Mehrfach-Signatur. Ein gestohlener Schlüssel
           erlaubt jeden Build, auch einen, der FUOTA entfernt. <span class="m open">offen</span></li>
         <li><b>Stage-0 prüft keine Signatur.</b> Sie vertraut dem Auftrag der App. Wer schon Code auf dem Gerät
@@ -1083,6 +1115,13 @@
     <div lang="en" class="prose">
       <h2>Gaps and open questions</h2>
       <ul>
+        <li><b>One image for several boards has limits.</b> RAK4631 is built only, not tested on hardware. Its WisBlock
+          GPS (I2C module, power through IO pins) and the BSEC evaluation of the BME680 are not in the shared image: BSEC
+          does not fit into 96 pages <span class="m meas">measured</span>. New boards need a table entry and a board id.
+          <span class="m open">open</span></li>
+        <li><b>A node holds one campaign.</b> A node that offers a campaign loaded over USB which it cannot apply itself
+          loses it as soon as it pulls one that fits it from neighbours <span class="m meas">measured</span>. Whether an
+          offering node should keep its campaign is open. <span class="m open">open</span></li>
         <li><b>One key for everything.</b> No key rotation, no multi-signature. A stolen key
           allows any build, including one that removes FUOTA. <span class="m open">open</span></li>
         <li><b>Stage-0 checks no signature.</b> It trusts the job from the app. Anyone who already executes code on the device
