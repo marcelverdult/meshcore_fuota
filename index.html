@@ -286,15 +286,24 @@
     <p class="num">// 3</p>
     <div lang="de" class="prose">
       <h2>Wo was im Flash liegt</h2>
-      <p>Beispiel FakeTec (nRF52840, SoftDevice S140 v6, App-Bereich ab 0x26000). Der Adafruit-Bootloader springt nach
-        0x26000; dort sitzt Stage-0, die App ist für 0x2B000 gelinkt. Repeater-Images laufen nur an ihrer
-        Link-Adresse, darum ist Slot B Zwischenlager und kein zweites Startziel.</p>
+      <p>nRF52840 mit Adafruit-Bootloader. Der Bootloader springt an das Ende des SoftDevice: bei S140 6.1.1 (FakeTec,
+        RAK4631) nach 0x26000, bei S140 7.3.0 (SenseCAP P1, T1000-E) nach 0x27000. Dort sitzt Stage-0 (eine Seite). Ab
+        0x28000 ist alles für beide gleich: Status-Seite, Slot A ab 0x29000, Slot B ab 0x8B000, je 98 Seiten. Die App ist
+        für 0x29000 gelinkt und nutzt das SoftDevice nicht (für ein Update per Telefon startet sie neu in den BLE-DFU des
+        Bootloaders). Dasselbe Image läuft darum mit beiden SoftDevice-Versionen: ein P1-Image, nur mit den Headern von
+        S140 6.1.1 gebaut, ist byte-gleich zu dem, das auf dem P1 mit S140 7.3.0 läuft <span class="m meas">gemessen</span>.
+        Repeater-Images laufen nur an ihrer Link-Adresse, darum ist Slot B Zwischenlager und kein zweites Startziel.</p>
     </div>
     <div lang="en" class="prose">
       <h2>What lives where in flash</h2>
-      <p>Example FakeTec (nRF52840, SoftDevice S140 v6, app area from 0x26000). The Adafruit bootloader jumps to
-        0x26000; Stage-0 sits there, and the app is linked for 0x2B000. Repeater images run only at their
-        link address, so slot B is a staging area and never a second boot target.</p>
+      <p>nRF52840 with the Adafruit bootloader. The bootloader jumps to the end of the SoftDevice: with S140 6.1.1
+        (FakeTec, RAK4631) to 0x26000, with S140 7.3.0 (SenseCAP P1, T1000-E) to 0x27000. Stage-0 (one page) sits there.
+        From 0x28000 on everything is the same for both: status page, slot A from 0x29000, slot B from 0x8B000, 98 pages
+        each. The app is linked for 0x29000 and does not use the SoftDevice (for an update by phone it reboots into the
+        BLE DFU of the bootloader). The same image therefore runs with both SoftDevice versions: a P1 image built only
+        with the S140 6.1.1 headers is byte-identical to the one running on the P1 with S140 7.3.0
+        <span class="m meas">measured</span>. Repeater images run only at their link address, so slot B is a staging
+        area and never a second boot target.</p>
     </div>
     <div class="panel scroll" lang="de">
       <figure>
@@ -307,26 +316,26 @@
             <rect x="112" y="20" width="14" height="44" rx="3" fill="var(--warn)"/>
             <rect x="130" y="20" width="270" height="44" rx="5" fill="var(--slota)" opacity=".2" stroke="var(--slota)"/>
             <text x="140" y="40" fill="var(--fg)" font-weight="600">Slot A: läuft</text>
-            <text x="140" y="56" fill="var(--muted)">97 Seiten à 4 KB, ab 0x2B000</text>
+            <text x="140" y="56" fill="var(--muted)">98 Seiten à 4 KB, ab 0x29000</text>
             <rect x="404" y="20" width="270" height="44" rx="5" fill="var(--slotb)" opacity=".2" stroke="var(--slotb)"/>
             <text x="414" y="40" fill="var(--fg)" font-weight="600">Slot B: Zwischenlager</text>
-            <text x="414" y="56" fill="var(--muted)">97 Seiten, ab 0x8C000</text>
+            <text x="414" y="56" fill="var(--muted)">98 Seiten, ab 0x8B000</text>
             <rect x="678" y="20" width="34" height="44" rx="5" fill="var(--panel)" stroke="var(--line)"/>
             <text x="695" y="46" text-anchor="middle" fill="var(--fg)">FS</text>
             <rect x="716" y="20" width="36" height="44" rx="5" fill="var(--sys)" opacity=".25" stroke="var(--sys)"/>
             <text x="734" y="46" text-anchor="middle" fill="var(--fg)">BL</text>
-            <text x="10" y="86" fill="var(--muted)">SD SoftDevice · S0 Stage-0 (2,7 von 16 KB) · orange Status-Seite · FS InternalFS · BL Bootloader</text>
+            <text x="10" y="86" fill="var(--muted)">SD SoftDevice · S0 Stage-0 (2,7 von 4 KB) · orange Status-Seite · FS InternalFS · BL Bootloader</text>
             <path d="M404 98 L404 118 M674 98 L674 118" stroke="var(--line)"/>
             <path d="M404 108 L130 150 M674 108 L752 150" stroke="var(--line)" fill="none"/>
             <rect x="130" y="150" width="560" height="40" rx="4" fill="var(--slotb)" opacity=".14" stroke="var(--slotb)"/>
             <rect x="690" y="150" width="62" height="40" rx="4" fill="none" stroke="var(--slotb)"/>
-            <text x="140" y="175" fill="var(--fg)">neues Image, beim Anwenden hier gebaut (bis 91 Seiten)</text>
+            <text x="140" y="175" fill="var(--fg)">neues Image, beim Anwenden hier gebaut (bis 96 Seiten)</text>
             <rect x="606" y="150" width="52" height="40" fill="var(--slotb)" opacity=".45"/>
             <text x="632" y="175" text-anchor="middle" fill="var(--fg)">Patch</text>
             <rect x="660" y="150" width="30" height="40" fill="var(--accent)" opacity=".5"/>
             <text x="675" y="175" text-anchor="middle" fill="var(--fg)">M</text>
             <text x="130" y="212" fill="var(--muted)">Patch seitenbündig vor der letzten Seite, Manifest (M) in der letzten Seite von Slot B.</text>
-            <text x="130" y="230" fill="var(--muted)">Regel: max(alt, neu) + Patch + 1 ≤ 97 Seiten; heute 91 + 5 + 1: Patch bis 20 KB.</text>
+            <text x="130" y="230" fill="var(--muted)">Passt max(alt, neu) + Patch + 1 ≤ 98: dahinter. Sonst überlappend: neu + 1 + 1 ≤ 98.</text>
           </g>
         </svg>
         <figcaption>Status-Seite: Tausch-Auftrag (Größen und SHA-256 beider Images) plus ein Journal, in das Stage-0 jeden
@@ -345,26 +354,26 @@
             <rect x="112" y="20" width="14" height="44" rx="3" fill="var(--warn)"/>
             <rect x="130" y="20" width="270" height="44" rx="5" fill="var(--slota)" opacity=".2" stroke="var(--slota)"/>
             <text x="140" y="40" fill="var(--fg)" font-weight="600">Slot A: running</text>
-            <text x="140" y="56" fill="var(--muted)">97 pages of 4 KB, from 0x2B000</text>
+            <text x="140" y="56" fill="var(--muted)">98 pages of 4 KB, from 0x29000</text>
             <rect x="404" y="20" width="270" height="44" rx="5" fill="var(--slotb)" opacity=".2" stroke="var(--slotb)"/>
             <text x="414" y="40" fill="var(--fg)" font-weight="600">Slot B: staging area</text>
-            <text x="414" y="56" fill="var(--muted)">97 pages, from 0x8C000</text>
+            <text x="414" y="56" fill="var(--muted)">98 pages, from 0x8B000</text>
             <rect x="678" y="20" width="34" height="44" rx="5" fill="var(--panel)" stroke="var(--line)"/>
             <text x="695" y="46" text-anchor="middle" fill="var(--fg)">FS</text>
             <rect x="716" y="20" width="36" height="44" rx="5" fill="var(--sys)" opacity=".25" stroke="var(--sys)"/>
             <text x="734" y="46" text-anchor="middle" fill="var(--fg)">BL</text>
-            <text x="10" y="86" fill="var(--muted)">SD SoftDevice · S0 Stage-0 (2.7/16 KB used) · orange 4 KB status page · FS InternalFS · BL bootloader</text>
+            <text x="10" y="86" fill="var(--muted)">SD SoftDevice · S0 Stage-0 (2.7/4 KB used) · orange 4 KB status page · FS InternalFS · BL bootloader</text>
             <path d="M404 98 L404 118 M674 98 L674 118" stroke="var(--line)"/>
             <path d="M404 108 L130 150 M674 108 L752 150" stroke="var(--line)" fill="none"/>
             <rect x="130" y="150" width="560" height="40" rx="4" fill="var(--slotb)" opacity=".14" stroke="var(--slotb)"/>
             <rect x="690" y="150" width="62" height="40" rx="4" fill="none" stroke="var(--slotb)"/>
-            <text x="140" y="175" fill="var(--fg)">new image, built here on apply (up to 91 pages)</text>
+            <text x="140" y="175" fill="var(--fg)">new image, built here on apply (up to 96 pages)</text>
             <rect x="606" y="150" width="52" height="40" fill="var(--slotb)" opacity=".45"/>
             <text x="632" y="175" text-anchor="middle" fill="var(--fg)">Patch</text>
             <rect x="660" y="150" width="30" height="40" fill="var(--accent)" opacity=".5"/>
             <text x="675" y="175" text-anchor="middle" fill="var(--fg)">M</text>
             <text x="130" y="212" fill="var(--muted)">Patch page-aligned before the last page, manifest (M) in the last page of slot B.</text>
-            <text x="130" y="230" fill="var(--muted)">Rule: max(old, new) + patch + 1 ≤ 97 pages. Today: 91 + 5 + 1, so patch up to 20 KB.</text>
+            <text x="130" y="230" fill="var(--muted)">Fits max(old, new) + patch + 1 ≤ 98: behind. Else overlapping: new + 1 + 1 ≤ 98.</text>
           </g>
         </svg>
         <figcaption>Status page: swap job (sizes and SHA-256 of both images) plus a journal in which Stage-0 writes every
@@ -373,14 +382,28 @@
       </figure>
     </div>
     <div lang="de" class="prose">
-      <p>Warum der Patch hinter dem Image liegt: Das neue Image wird ab dem Anfang von Slot B geschrieben, während der
-        Patch noch gelesen wird. Der Tausch bewegt nur so viele Seiten, wie das größere Image hat. Der Patch übersteht
-        also den eigenen Tausch, und der Knoten kann danach weiter anbieten <span class="m meas">gemessen</span>.</p>
+      <p>Wo der Patch liegt und wann angewendet wird: Der Patch liegt seitenbündig am Ende von Slot B, das neue Image
+        wird ab dem Anfang von Slot B geschrieben, während der Patch noch gelesen wird. Passt der Patch hinter das größere
+        der beiden Images, übersteht er den eigenen Tausch (der bewegt nur so viele Seiten, wie das größere Image hat): der
+        Knoten wendet sofort an und bietet danach weiter an <span class="m meas">gemessen</span>. Passt er nicht, wendet
+        der Knoten überlappend an: Der Patch wird in Stücken zu 512 Byte ins RAM kopiert, und das neue Image überschreibt
+        nur Patch-Seiten, die schon ganz gelesen sind. Das Release-Werkzeug spielt genau diesen Code vorher auf dem Rechner
+        durch und setzt im signierten Manifest ein Flag, nur wenn es sicher ist; das Gerät hält sich beim Anwenden
+        trotzdem selbst an die Regel und bricht sonst ab. Weil der Patch danach weg ist, gibt der Knoten ihn vorher ein
+        Fenster lang weiter (siehe Ablauf) <span class="m meas">gemessen</span>. Kein Image darf größer als 96 Seiten
+        sein, der Build bricht sonst ab.</p>
     </div>
     <div lang="en" class="prose">
-      <p>Why the patch sits behind the image: the new image is written from the start of slot B while the
-        patch is still being read. The swap moves only as many pages as the larger image has. The patch
-        therefore survives its own swap, and the node can keep offering afterwards <span class="m meas">measured</span>.</p>
+      <p>Where the patch sits and when it is applied: the patch sits page-aligned at the end of slot B, and the new
+        image is written from the start of slot B while the patch is still being read. If the patch fits behind the
+        larger of the two images, it survives its own swap (which moves only as many pages as the larger image has): the
+        node applies at once and keeps offering afterwards <span class="m meas">measured</span>. If it does not fit,
+        the node applies overlapping: the patch is copied to RAM in chunks of 512 bytes, and the new image overwrites
+        only patch pages that have been read completely. The release tool runs exactly this code on a computer
+        beforehand and sets a flag in the signed manifest only if it is safe; the device still keeps to the rule itself
+        while applying and stops otherwise. Because the patch is gone afterwards, the node passes it on for a window
+        first (see how an update runs) <span class="m meas">measured</span>. No image may be larger than 96 pages, the
+        build stops otherwise.</p>
     </div>
   </section>
 
@@ -397,7 +420,7 @@
         budget (default) and SF8, times on the bench assume 10 % and SF7.</p>
     </div>
     <div class="steps" lang="de">
-      <div class="step"><div><span class="who">Release-CI, offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (184 B + 8 B je 4-KB-Seite): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, dazu je Seite die ersten 8 Byte ihres SHA-256. Signiert mit dem Release-Schlüssel.</span></div></div>
+      <div class="step"><div><span class="who">Release-CI, offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (188 B + 8 B je 4-KB-Seite): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, ein Flag „überlappend anwenden ist sicher“ (vorher mit dem Apply-Code des Geräts geprüft), dazu je Seite die ersten 8 Byte ihres SHA-256. Signiert mit dem Release-Schlüssel.</span></div></div>
       <div class="step"><div><span class="who">Seed, USB</span><b>Einspeisen</b><span>Manifest und Patch per USB; der Knoten prüft Signatur und Patch-Hash und bietet an. Mehrere Seeds derselben Kampagne schaden nicht, die Kampagne zählt über ihre ID (erste 4 Byte von SHA-256 des Manifests).</span></div></div>
       <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit ID, Größen, Ziel, Build, Quell-Präfix und Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 2 Tage, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle), aber nur in Intervallen unter 1 h. Danach bietet jeder einmal je Intervall an, damit auch ein Nachbar, der die anderen nicht hört, ein Angebot bekommt.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Sonst bleibt der Knoten still. Während eines Probestarts zieht er nicht.</span></div></div>
@@ -405,14 +428,14 @@
       <div class="step"><div><span class="who">Nachbar</span><b>Patch holen</b><span>Anfrage für den niedrigsten Block mit Lücken (16 Fragmente, Bitmap der fehlenden) an genau einen Nachbarn: den zuletzt gehörten, dessen Angebot den Block abdeckt. Nur er antwortet. Kommt nichts, nennt die nächste Anfrage einen anderen Anbieter; kennt der Knoten keinen weiteren, fragt er alle (Kennung 0xFF). Fragmente landen direkt im Flash.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Jede Seite sofort prüfen</b><span>Ist eine 4-KB-Seite vollständig, wird sie gegen ihren Hash aus dem Manifest geprüft. Falsch: Seite löschen, neu holen. Richtig: ab sofort darf er sie weitergeben.</span></div></div>
       <div class="step"><div><span class="who">derselbe Knoten</span><b>Weitergeben, während er noch holt</b><span>Er bietet an, sobald sein Manifest geprüft ist, mit der Zahl geprüfter Seiten. Fragt ein Nachbar nach etwas, das er noch nicht hat, merkt er sich das und bietet sofort an, wenn die Seite fertig ist.</span></div></div>
-      <div class="step"><div><span class="who">derselbe Knoten</span><b>Vollständig: anwenden</b><span>SHA-256 über den ganzen Patch, neues Image in Slot B bauen (12 s <span class="m meas">gemessen</span>), SHA-256 des Ergebnisses gegen das Manifest, Tausch-Auftrag in die Status-Seite, Neustart. Im Feld nach Regel des Betreibers, im Test sofort.</span></div></div>
+      <div class="step"><div><span class="who">derselbe Knoten</span><b>Vollständig: anwenden</b><span>Passt der Patch hinter das neue Image: sofort. Sonst erst nach einem Fenster, in dem er weitergibt: frühestens nach einer Mindestzeit und erst, wenn eine Weile niemand mehr danach gefragt hat und nichts mehr auszuliefern ist (Werte für das Feld: Vorschlag, offen; im Testaufbau 120 s und 180 s). Dann: SHA-256 über den ganzen Patch, neues Image in Slot B bauen (12 s <span class="m meas">gemessen</span>), SHA-256 des Ergebnisses gegen das Manifest, Tausch-Auftrag in die Status-Seite, Neustart.</span></div></div>
       <div class="step"><div><span class="who">Stage-0</span><b>Prüfen, tauschen, Probestart</b><span>Vor dem Tausch: Vektortabelle und SHA-256 von Slot B (neu) und Slot A (alt) gegen den Auftrag. Dann seitenweise tauschen, jeder Schritt im Journal (30 bis 39 s <span class="m meas">gemessen</span>), danach Slot A erneut gegen den Soll-Hash. Probestart mit Watchdog (30 s).</span></div></div>
       <div class="step"><div><span class="who">neue Firmware</span><b>Bestätigen oder zurück</b><span>60 s gesunde Hauptschleife bestätigt. Drei Fehlstarts: Stage-0 tauscht zurück. Der Knoten bleibt nicht alt: jedes spätere Release mit einem Patch von seinem Stand installiert er normal. Gesperrt ist nur dieses eine Image, er installiert es nie wieder und bietet es nicht an.</span></div></div>
-      <div class="step"><div><span class="who">derselbe Knoten</span><b>Weiter anbieten</b><span>Manifest und Patch liegen nach dem Tausch noch hinter dem neuen Image. Der Knoten prüft sie beim Boot erneut und bietet weiter an.</span></div></div>
+      <div class="step"><div><span class="who">derselbe Knoten</span><b>Weiter anbieten</b><span>Lag der Patch hinter dem neuen Image, liegt er nach dem Tausch noch da: Der Knoten prüft ihn beim Boot erneut und bietet weiter an. Nach einem überlappenden Anwenden ist er weg, der Knoten bietet ihn nicht mehr an.</span></div></div>
       <div class="step"><div><span class="who">Release-Schlüssel, jederzeit</span><b>Zurückziehen</b><span>Ein signierter Retract (80 B) für Ziel und Build. Jeder Knoten, der ihn prüft, stoppt Holen und Anbieten, speichert ihn, sendet ihn dreimal und antwortet auf jedes Angebot dieses Builds mit dem Retract.</span></div></div>
     </div>
     <div class="steps" lang="en">
-      <div class="step"><div><span class="who">Release CI, offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (184 B + 8 B per 4 KB page): target device, build number, sizes, SHA-256 of source image, new image and patch, plus the first 8 bytes of the SHA-256 of each page. Signed with the release key.</span></div></div>
+      <div class="step"><div><span class="who">Release CI, offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (188 B + 8 B per 4 KB page): target device, build number, sizes, SHA-256 of source image, new image and patch, a flag “safe to apply overlapping” (checked beforehand with the device’s apply code), plus the first 8 bytes of the SHA-256 of each page. Signed with the release key.</span></div></div>
       <div class="step"><div><span class="who">Seed, USB</span><b>Feed in</b><span>Manifest and patch over USB; the node checks signature and patch hash and offers them. Several seeds for the same campaign do no harm: the campaign counts by its ID (first 4 bytes of the SHA-256 of the manifest).</span></div></div>
       <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with ID, sizes, target, build, source prefix and number of checked pages. Interval 10 s, doubling up to 2 days, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle), but only in intervals below 1 h. After that every node offers once per interval, so that a neighbour that cannot hear the others still gets an offer.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Otherwise the node stays silent. During a test boot it does not pull.</span></div></div>
@@ -420,10 +443,10 @@
       <div class="step"><div><span class="who">Neighbour</span><b>Pull the patch</b><span>Request for the lowest block with missing fragments (16 fragments, bitmap of the missing ones) to exactly one neighbour: the most recent one whose offer covers the block. Only that one answers. If nothing comes, the next request names another provider; if the node knows no other one, it asks everybody (ID 0xFF). Fragments go straight to flash.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Check every page at once</b><span>When a 4 KB page is complete, the node checks it against its hash from the manifest. Wrong: erase the page, pull it again. Right: the node may pass it on from now on.</span></div></div>
       <div class="step"><div><span class="who">same node</span><b>Pass on while still pulling</b><span>It offers as soon as its manifest is checked, with the number of checked pages. If a neighbour asks for something it does not have yet, it remembers that and offers at once when the page is complete.</span></div></div>
-      <div class="step"><div><span class="who">same node</span><b>Complete: apply</b><span>SHA-256 over the whole patch, build the new image in slot B (12 s <span class="m meas">measured</span>), SHA-256 of the result against the manifest, swap job into the status page, reboot. In the field by the operator's rule, in tests at once.</span></div></div>
+      <div class="step"><div><span class="who">same node</span><b>Complete: apply</b><span>If the patch fits behind the new image: at once. Otherwise only after a window in which the node passes it on: not before a minimum time, and only once nobody has asked for it for a while and nothing is left to deliver (values for the field: proposal, open; on the bench 120 s and 180 s). Then: SHA-256 over the whole patch, build the new image in slot B (12 s <span class="m meas">measured</span>), SHA-256 of the result against the manifest, swap job into the status page, reboot.</span></div></div>
       <div class="step"><div><span class="who">Stage-0</span><b>Check, swap, test boot</b><span>Before the swap: vector table and SHA-256 of slot B (new) and slot A (old) against the job. Then swap page by page, every step in the journal (30 to 39 s <span class="m meas">measured</span>), then slot A again against the target hash. Test boot with watchdog (30 s).</span></div></div>
       <div class="step"><div><span class="who">new firmware</span><b>Confirm or revert</b><span>60 s of a healthy main loop confirm. Three failed boots: Stage-0 reverts the swap. The node does not stay old: it installs any later release that has a patch from its current version as usual. Only this one image is blocked: the node never installs it again and does not offer it.</span></div></div>
-      <div class="step"><div><span class="who">same node</span><b>Keep offering</b><span>After the swap, manifest and patch still sit behind the new image. The node checks them again at boot and keeps offering.</span></div></div>
+      <div class="step"><div><span class="who">same node</span><b>Keep offering</b><span>If the patch sat behind the new image, it is still there after the swap: the node checks it again at boot and keeps offering. After an overlapping apply it is gone, and the node no longer offers it.</span></div></div>
       <div class="step"><div><span class="who">Release key, any time</span><b>Retract</b><span>A signed retract (80 B) for target and build. Every node that verifies it stops pulling and offering, stores it, sends it three times and answers every offer of this build with the retract.</span></div></div>
     </div>
   </section>
@@ -723,7 +746,7 @@
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
       <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 0,3 % bis rund 1,8 % Update-Verkehr im dichtesten Zehntel (bei 1 % rund 6 %) <span class="m calc">berechnet</span>. Eine Anfrage nennt einen Anbieter: auch wenn mehrere es haben, sendet für einen Fragenden immer nur einer.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.800 bis 2.400 Datenpakete im ganzen Gebiet, Compilerwechsel 27.400 bis 36.100 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 274.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Repeater-Image +24,4 KB (345.424 B Stock, 369.800 B mit FUOTA, Test-Build), Stage-0 2,7 KB in 16 KB Reserve, RAM +2,6 KB <span class="m meas">gemessen</span>. Der Patch muss hinter das neue Image passen: FakeTec bis 5 Seiten, P1 heute 0 (siehe Lücken).</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Repeater-Image mit FUOTA, Test-Build: FakeTec 336.504 B (83 Seiten), P1 356.348 B (87 Seiten); Stock mit BLE-OTA zum Vergleich: FakeTec 345.424 B. Die App enthält kein BLE mehr, das spart 29,5 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite, RAM 35,3 KB belegt (FakeTec) <span class="m meas">gemessen</span>. Patches bis 64 Seiten; passt einer nicht hinter das neue Image, wird überlappend angewendet.</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Zuhören</h3><p>Während eine Kampagne läuft, hört ein Knoten oft ein Angebot (jeder eigene Fortschritt setzt das Intervall auf 10 s). Wer später dazukommt, wartet höchstens das längste Trickle-Intervall: 2 Tage. Im Testaufbau lagen im Leerlauf 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>. Gewollt für Updates, die ohnehin Tage dauern dürfen: dafür bleibt der Kanal nach einem Update fast ruhig.</p></div>
     </div>
@@ -731,7 +754,7 @@
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
       <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 0.3 % up to about 1.8 % update traffic in the densest tenth (about 6 % at 1 %) <span class="m calc">calculated</span>. A request names one provider: even when several have it, only one sends for a given puller.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,800 to 2,400 data packets in the whole area, compiler change 27,400 to 36,100 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 274,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Repeater image +24.4 KB (345,424 B stock, 369,800 B with FUOTA, test build), Stage-0 2.7 KB in 16 KB reserve, RAM +2.6 KB <span class="m meas">measured</span>. The patch must fit behind the new image: FakeTec up to 5 pages, P1 today 0 (see gaps).</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Repeater image with FUOTA, test build: FakeTec 336,504 B (83 pages), P1 356,348 B (87 pages); stock with BLE OTA for comparison: FakeTec 345,424 B. The app no longer contains BLE, which saves 29.5 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page, RAM 35.3 KB used (FakeTec) <span class="m meas">measured</span>. Patches up to 64 pages; if one does not fit behind the new image, it is applied overlapping.</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Listening</h3><p>While a campaign runs, a node hears offers often (every own progress sets the interval back to 10 s). A node that joins later waits at most the longest Trickle interval: 2 days. On the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. Intended for updates that may take days anyway: in return the channel stays almost quiet after an update.</p></div>
     </div>
@@ -944,13 +967,15 @@
     <p class="num">// 12</p>
     <div lang="de" class="prose">
       <h2>Im Testaufbau gemessen</h2>
-      <p>FakeTecs im Abstand von rund 50 cm, SF7, 1 dBm, 10 % Budget (dort zulässig und um zehnmal schneller als im
-        Mesh), Belege je Test: laufendes Image und SHA-256 beider Slots gegen die gebauten Dateien.</p>
+      <p>Bis zu drei FakeTecs und ein SenseCAP P1 im Abstand von rund 50 cm, SF7, 1 dBm, 10 % Budget (dort zulässig und
+        um zehnmal schneller als im Mesh), Belege je Test: laufendes Image und SHA-256 beider Slots gegen die gebauten
+        Dateien.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Measured on the bench</h2>
-      <p>FakeTecs about 50 cm apart, SF7, 1 dBm, 10 % budget (permitted there and ten times faster than in the
-        mesh). Evidence for each test: running image and SHA-256 of both slots against the built files.</p>
+      <p>Up to three FakeTecs and one SenseCAP P1 about 50 cm apart, SF7, 1 dBm, 10 % budget (permitted there and ten
+        times faster than in the mesh). Evidence for each test: running image and SHA-256 of both slots against the
+        built files.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
@@ -965,6 +990,10 @@
         <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt</td></tr>
         <tr><td>Verlorene Anfrage</td><td>absichtlich verworfen: neue Anfrage nach 17,9 s (vorher 108 s), sonst keine zusätzlichen Anfragen, 0 Duplikate</td></tr>
         <tr><td>Rückfall und gescheitertes Image</td><td>drei Fehlstarts, Rückfall; danach wird das gescheiterte Update dauerhaft abgelehnt und nie angeboten, v1 nach v3 klappt</td></tr>
+        <tr><td>Ein Layout für S140 6.1.1 und 7.3.0</td><td>FakeTec (6.1.1) und P1 (7.3.0) laufen im selben Layout, App ab 0x29000; das P1-Image, nur mit den 6.1.1-Headern gebaut, ist byte-gleich zum laufenden</td></tr>
+        <tr><td>Überlappend anwenden, Fenster</td><td>Patch 4 Seiten passt nicht hinter ein 94-Seiten-Image: der Knoten gibt ihn im Fenster weiter (ein zweiter Knoten holt ihn dort komplett, 0 Duplikate), wendet 180 s nach der letzten Lieferung überlappend an (Lese-Abstand 8.192 B, 12,8 s), bestätigt und bietet danach nichts mehr an; passt der Patch dahinter, wendet er sofort an und bietet weiter an</td></tr>
+        <tr><td>P1 über Funk</td><td>holt 72 Fragmente von einem FakeTec (der die P1-Kampagne nur weitergibt), wendet überlappend an, Lese-Abstand 8.139 B wie auf dem Rechner berechnet, bestätigt; Rückfall nach drei Fehlstarts auch auf dem P1</td></tr>
+        <tr><td>Größenwächter</td><td>Image über 96 Seiten: der Build bricht ab (FakeTec und P1)</td></tr>
         <tr><td>Kette A-B-C bei 1 %</td><td>Hop 1 nach 4.664 s (gerechnet 4.694 s, das Zehnfache von 10 %); Budget über eine Stunde 1,02 %, dazu die normalen Adverts des Repeaters; Hop 2 nach 7.053 s statt 6.192 s, weil eine verlorene Anfrage 15 min kostete (siehe Lücken)</td></tr>
       </table>
     </div>
@@ -981,6 +1010,10 @@
         <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned</td></tr>
         <tr><td>Lost request</td><td>dropped on purpose: new request after 17.9 s (before: 108 s), no other extra requests, 0 duplicates</td></tr>
         <tr><td>Revert and failed image</td><td>three failed boots, revert; afterwards the failed update is rejected for good and never offered, v1 to v3 works</td></tr>
+        <tr><td>One layout for S140 6.1.1 and 7.3.0</td><td>FakeTec (6.1.1) and P1 (7.3.0) run in the same layout, app from 0x29000; the P1 image built only with the 6.1.1 headers is byte-identical to the running one</td></tr>
+        <tr><td>Overlapping apply, window</td><td>A 4-page patch does not fit behind a 94-page image: the node passes it on during the window (a second node pulls all of it there, 0 duplicates), applies overlapping 180 s after its last delivery (read margin 8,192 B, 12.8 s), confirms and offers nothing afterwards; if the patch fits behind, it applies at once and keeps offering</td></tr>
+        <tr><td>P1 over the air</td><td>pulls 72 fragments from a FakeTec (which only passes the P1 campaign on), applies overlapping, read margin 8,139 B as calculated on the computer, confirms; revert after three failed boots on the P1 as well</td></tr>
+        <tr><td>Size guard</td><td>Image above 96 pages: the build stops (FakeTec and P1)</td></tr>
         <tr><td>Chain A-B-C at 1 %</td><td>Hop 1 after 4,664 s (calculated 4,694 s, ten times the 10 % run); budget over one hour 1.02 %, plus the repeater's regular adverts; hop 2 after 7,053 s instead of 6,192 s because one lost request cost 15 min (see gaps)</td></tr>
       </table>
     </div>
@@ -995,20 +1028,19 @@
           erlaubt jeden Build, auch einen, der FUOTA entfernt. <span class="m open">offen</span></li>
         <li><b>Stage-0 prüft keine Signatur.</b> Sie vertraut dem Auftrag der App. Wer schon Code auf dem Gerät
           ausführt, kann darüber dauerhaft ein eigenes Image installieren. Ed25519 in Stage-0 sprengt mit den bisherigen
-          Bibliotheken die 16 KB <span class="m meas">gemessen</span>. <span class="m open">offen</span></li>
+          Bibliotheken schon 16 KB <span class="m meas">gemessen</span>; Stage-0 hat eine Seite (4 KB). <span class="m open">offen</span></li>
         <li><b>„Gesund“ ist schwach.</b> Bestätigt wird nach 60 s laufender Hauptschleife. Eine Firmware, die läuft, aber
           nicht mehr funkt, bleibt drauf; der Knoten ist dann nur noch per Kabel zu retten. <span class="m open">offen</span></li>
         <li><b>Gefälschte Angebote</b> können einen Knoten seinen bedienten Patch verwerfen lassen (siehe oben). Abhilfe:
           das Neue erst prüfen, dann das Alte löschen. <span class="m open">offen</span></li>
-        <li><b>Patch muss hinter das Image passen.</b> FakeTec heute bis 5 Seiten (20 KB): von fünf gemessenen
-          Release-Schritten passt einer. Der P1 (SenseCAP Solar) hat mit FUOTA-Code 95 von 96 Seiten belegt, also
-          keinen Platz <span class="m meas">gebaut, nicht geflasht</span>. Vorschlag, noch nicht gebaut: den Patch
-          ganz in Slot B speichern, ein Fenster lang weitergeben und erst dann anwenden; das neue Image überschreibt
-          dabei nur Patch-Seiten, die schon gelesen sind. Mit echten Release-Patches auf dem Rechner nachgespielt geht
-          das für jede Patch-Größe, solange das neue Image plus eine Seite in den Slot passt (11, 54 und 57 Seiten
-          getestet) <span class="m meas">gemessen</span>. Dazu die Stage-0-Reserve von 16 auf 4 KB verkleinern
-          (Slot 98 statt 97 bzw. 96 Seiten), damit auch der P1 passt. Ein ganzes Image (seitenweise komprimiert, 1.841
-          statt 1.251 Fragmente beim Compilerwechsel) bleibt Rückfall für Nachzügler. <span class="m open">offen</span></li>
+        <li><b>Große Updates.</b> Gebaut und im Testaufbau gemessen: Patch ganz in Slot B, Fenster, überlappend anwenden,
+          auf FakeTec und P1 <span class="m meas">gemessen</span>. Offen sind die Werte für das Fenster im Feld (im Code
+          heute 24 h nach Vollständigkeit und 6 h nach der letzten Anfrage, Vorschlag; nach Betriebszeit, ein Neustart
+          beginnt das Fenster neu) und ein ganzes Image (seitenweise komprimiert, 1.841 statt 1.251 Fragmente beim
+          Compilerwechsel) als Rückfall für Nachzügler, die das Fenster verpasst haben. <span class="m open">offen</span></li>
+        <li><b>Update per Telefon.</b> Die App enthält kein BLE; <code>start ota</code> startet neu in den BLE-DFU des
+          Bootloaders. Dort wartet der Knoten ohne Zeitlimit, bis ein Update fertig ist oder der Strom weg ist, und ein so
+          eingespieltes Image ersetzt auch Stage-0. Auf Hardware noch nicht getestet. <span class="m open">offen</span></li>
         <li><b>Nachbarn, die sich nicht hören.</b> Hört ein Knoten viele Anbieter, die sich gegenseitig nicht hören,
           greift die Unterdrückung gleicher Angebote kaum, und früher antworteten alle auf jede Anfrage. Darum heute: eine
           Anfrage nennt einen Anbieter, Angebote werden bis alle 2 Tage selten und ab 1 h nicht mehr unterdrückt, ein
@@ -1054,21 +1086,20 @@
         <li><b>One key for everything.</b> No key rotation, no multi-signature. A stolen key
           allows any build, including one that removes FUOTA. <span class="m open">open</span></li>
         <li><b>Stage-0 checks no signature.</b> It trusts the job from the app. Anyone who already executes code on the device
-          can use that to install an own image permanently. Ed25519 in Stage-0 exceeds the 16 KB with the libraries used
-          so far <span class="m meas">measured</span>. <span class="m open">open</span></li>
+          can use that to install an own image permanently. Ed25519 in Stage-0 exceeds even 16 KB with the libraries used
+          so far <span class="m meas">measured</span>; Stage-0 has one page (4 KB). <span class="m open">open</span></li>
         <li><b>“Healthy” is weak.</b> Confirmation comes after 60 s of a running main loop. Firmware that runs but
           no longer transmits stays on; the node can then only be rescued by cable. <span class="m open">open</span></li>
         <li><b>Forged offers</b> can make a node discard the patch it serves (see above). Remedy:
           check the new one first, then delete the old one. <span class="m open">open</span></li>
-        <li><b>The patch must fit behind the image.</b> FakeTec today up to 5 pages (20 KB): of five measured
-          release steps, one fits. The P1 (SenseCAP Solar) has 95 of 96 pages used with the FUOTA code, so it has
-          no room <span class="m meas">built, not flashed</span>. Proposal, not built yet: store the whole patch in
-          slot B, pass it on for a window and only then apply it; the new image then overwrites only patch pages that
-          have already been read. Replayed on a computer with real release patches, this works for any patch size as
-          long as the new image plus one page fits the slot (11, 54 and 57 pages tested)
-          <span class="m meas">measured</span>. In addition, shrink the Stage-0 reserve from 16 to 4 KB (slot of 98
-          instead of 97 or 96 pages), so the P1 fits too. A full image (compressed page by page, 1,841 instead of
-          1,251 fragments for the compiler change) stays as a fallback for stragglers. <span class="m open">open</span></li>
+        <li><b>Large updates.</b> Built and measured on the bench: whole patch in slot B, window, overlapping apply, on
+          FakeTec and P1 <span class="m meas">measured</span>. Open are the window values for the field (in the code
+          today 24 h after completion and 6 h after the last request, proposal; by uptime, a reboot starts the window
+          again) and a full image (compressed page by page, 1,841 instead of 1,251 fragments for the compiler change) as
+          a fallback for stragglers that missed the window. <span class="m open">open</span></li>
+        <li><b>Update by phone.</b> The app contains no BLE; <code>start ota</code> reboots into the BLE DFU of the
+          bootloader. There the node waits without a time limit until an update is complete or power is cut, and an image
+          installed that way also replaces Stage-0. Not tested on hardware yet. <span class="m open">open</span></li>
         <li><b>Neighbours that cannot hear each other.</b> If a node hears many providers that cannot hear each other,
           suppressing equal offers hardly works there, and earlier every provider answered every request. Hence today: a
           request names one provider, offers become rare down to once every 2 days and are no longer suppressed from 1 h
