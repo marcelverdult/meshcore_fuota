@@ -717,7 +717,7 @@
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
       <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 1 % bis rund 6 % Update-Verkehr im dichtesten Zehntel <span class="m calc">berechnet</span>. Mehrere Anbieter wechseln sich ab: der Empfänger ist schneller fertig, die Last addiert sich.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.800 bis 2.400 Datenpakete im ganzen Gebiet, Compilerwechsel 27.400 bis 36.100 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 274.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Repeater-Image +23,6 KB (345.424 B Stock, 369.000 B mit FUOTA, Test-Build), Stage-0 2,7 KB in 16 KB Reserve, RAM +2,6 KB <span class="m meas">gemessen</span>. Der Patch muss hinter das neue Image passen: FakeTec bis 5 Seiten, P1 heute 0 (siehe Lücken).</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Repeater-Image +23,9 KB (345.424 B Stock, 369.368 B mit FUOTA, Test-Build), Stage-0 2,7 KB in 16 KB Reserve, RAM +2,6 KB <span class="m meas">gemessen</span>. Der Patch muss hinter das neue Image passen: FakeTec bis 5 Seiten, P1 heute 0 (siehe Lücken).</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Zuhören</h3><p>Ein neuer Knoten hört das nächste Angebot spätestens nach dem längsten Trickle-Intervall: bis 300 s <span class="m meas">gemessen</span>. Gegenüber Stunden für die Daten vernachlässigbar.</p></div>
     </div>
@@ -725,7 +725,7 @@
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
       <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 1 % up to about 6 % update traffic in the densest tenth <span class="m calc">calculated</span>. Several providers take turns: the receiver finishes sooner, the load adds up.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,800 to 2,400 data packets in the whole area, compiler change 27,400 to 36,100 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 274,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Repeater image +23.6 KB (345,424 B stock, 369,000 B with FUOTA, test build), Stage-0 2.7 KB in 16 KB reserve, RAM +2.6 KB <span class="m meas">measured</span>. The patch must fit behind the new image: FakeTec up to 5 pages, P1 today 0 (see gaps).</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Repeater image +23.9 KB (345,424 B stock, 369,368 B with FUOTA, test build), Stage-0 2.7 KB in 16 KB reserve, RAM +2.6 KB <span class="m meas">measured</span>. The patch must fit behind the new image: FakeTec up to 5 pages, P1 today 0 (see gaps).</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Listening</h3><p>A new node hears the next offer after the longest Trickle interval at the latest: up to 300 s <span class="m meas">measured</span>. Negligible compared with hours for the data.</p></div>
     </div>
@@ -815,7 +815,7 @@
         <tr><td>Manifest mit eigenem Schlüssel anbieten</td><td>Opfer holt 2 bis 4 Fragmente, Signatur falsch, ID gesperrt (auch nach Neustart) <span class="m meas">gemessen</span></td><td>einige Anfragen Airtime je neuer ID; Sperrliste hat 8 Plätze, ältere rutschen raus</td></tr>
         <tr><td>Echte Fragmente verfälschen</td><td>Seiten-Hash schlägt an, Seite wird neu geholt <span class="m meas">gemessen</span></td><td>Verzögerung; wer schneller fälscht als echte Quellen senden, kann einen Knoten aufhalten (DoS)</td></tr>
         <tr><td>Altes echtes Manifest wiederholen</td><td>Build nicht höher als der laufende: abgelehnt <span class="m meas">gemessen</span></td><td>keiner</td></tr>
-        <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>abgelehnt, solange es das zuletzt gescheiterte war <span class="m meas">gemessen</span>; Korrektur mit dauerhafter Liste gebaut, ungeprüft</td><td>älteres gescheitertes Update würde erneut probiert (Lücke)</td></tr>
+        <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>abgelehnt, bevor ein Fragment angefragt wird, auch wenn danach ein anderes Update kam: dauerhafte Liste der letzten 4 gescheiterten Images <span class="m meas">gemessen</span></td><td>erst ab dem 5. gescheiterten Image fällt das älteste heraus</td></tr>
         <tr><td>Gefälschter Retract</td><td>Signatur falsch, verworfen <span class="m meas">gemessen</span></td><td>keiner</td></tr>
         <tr><td>Echter Retract wiederholt</td><td>gleiche Wirkung wie beim ersten Mal</td><td>keiner (er ist ohnehin endgültig)</td></tr>
         <tr><td>Billige Anfragen senden</td><td>Anbieter senden bis 16 Datenpakete je Anfrage (Faktor ~88 in Airtime)</td><td>Anbieter schöpfen ihr Budget aus, mehr nicht; echte Zieher bekommen dieselben Pakete</td></tr>
@@ -831,7 +831,7 @@
         <tr><td>Offer a manifest signed with an own key</td><td>Victim pulls 2 to 4 fragments, signature wrong, ID banned (also after reboot) <span class="m meas">measured</span></td><td>a few requests of airtime per new ID; the ban list has 8 slots, older entries drop out</td></tr>
         <tr><td>Corrupt genuine fragments</td><td>Page hash fails, page is pulled again <span class="m meas">measured</span></td><td>Delay; whoever forges faster than genuine sources send can stall a node (DoS)</td></tr>
         <tr><td>Replay an old genuine manifest</td><td>Build not higher than the running one: rejected <span class="m meas">measured</span></td><td>none</td></tr>
-        <tr><td>Replay a genuine update that has already failed here</td><td>rejected as long as it was the last one that failed <span class="m meas">measured</span>; fix with a persistent list built, not yet tested</td><td>an older failed update would be tried again (gap)</td></tr>
+        <tr><td>Replay a genuine update that has already failed here</td><td>rejected before a fragment is requested, also after another update came in between: persistent list of the last 4 failed images <span class="m meas">measured</span></td><td>only from the 5th failed image on the oldest one drops out</td></tr>
         <tr><td>Forged retract</td><td>Signature wrong, dropped <span class="m meas">measured</span></td><td>none</td></tr>
         <tr><td>Replay a genuine retract</td><td>same effect as the first time</td><td>none (it is final anyway)</td></tr>
         <tr><td>Send cheap requests</td><td>Providers send up to 16 data packets per request (factor ~88 in airtime)</td><td>Providers exhaust their budget at worst; genuine pullers get the same packets</td></tr>
@@ -954,6 +954,8 @@
         <tr><td>Zwei Anbieter</td><td>erst Gleichschritt (41 Duplikate auf 73), seit „nicht senden, solange ein Nachbar sendet“ 0 Duplikate und doppelt so schnell</td></tr>
         <tr><td>Retract</td><td>Fälschung verworfen; echter stoppt Pull und Angebot, erreicht Nachbarn in Sekunden, auch als Antwort auf ein Angebot; übersteht Neustart</td></tr>
         <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt</td></tr>
+        <tr><td>Verlorene Anfrage</td><td>absichtlich verworfen: neue Anfrage nach 17,9 s (vorher 108 s), sonst keine zusätzlichen Anfragen, 0 Duplikate</td></tr>
+        <tr><td>Rückfall und gescheitertes Image</td><td>drei Fehlstarts, Rückfall; danach wird das gescheiterte Update dauerhaft abgelehnt und nie angeboten, v1 nach v3 klappt</td></tr>
         <tr><td>Kette A-B-C bei 1 %</td><td>Hop 1 nach 4.664 s (gerechnet 4.694 s, das Zehnfache von 10 %); Budget über eine Stunde 1,02 %, dazu die normalen Adverts des Repeaters; Hop 2 nach 7.053 s statt 6.192 s, weil eine verlorene Anfrage 15 min kostete (siehe Lücken)</td></tr>
       </table>
     </div>
@@ -967,6 +969,8 @@
         <tr><td>Two providers</td><td>first in lockstep (41 duplicates out of 73), since “do not send while a neighbour is sending” 0 duplicates and twice as fast</td></tr>
         <tr><td>Retract</td><td>Forgery dropped; a genuine one stops pull and offer, reaches neighbours within seconds, also as a reply to an offer; survives reboot</td></tr>
         <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned</td></tr>
+        <tr><td>Lost request</td><td>dropped on purpose: new request after 17.9 s (before: 108 s), no other extra requests, 0 duplicates</td></tr>
+        <tr><td>Revert and failed image</td><td>three failed boots, revert; afterwards the failed update is rejected for good and never offered, v1 to v3 works</td></tr>
         <tr><td>Chain A-B-C at 1 %</td><td>Hop 1 after 4,664 s (calculated 4,694 s, ten times the 10 % run); budget over one hour 1.02 %, plus the repeater's regular adverts; hop 2 after 7,053 s instead of 6,192 s because one lost request cost 15 min (see gaps)</td></tr>
       </table>
     </div>
@@ -1004,10 +1008,13 @@
           dort jeder jeden hört. <span class="m open">offen</span></li>
         <li><b>Sofort anwenden</b> verteilt einen schlechten (aber signierten) Build schnell. Staffelung, Canary und
           Laufzeit der Kampagne sind nicht gebaut. <span class="m open">offen</span></li>
-        <li><b>Nach einem Rückfall</b> merkte sich der Knoten nur das zuletzt gescheiterte Update, und eine Zwischenversion
-          des Proof of Concept bot den gescheiterten Build sogar seinen Nachbarn an (Patch und Manifest liegen nach dem Rücktausch noch im
-          Flash). Korrektur: dauerhafte Liste gescheiterter Images, die weder installiert noch angeboten werden; gebaut,
-          am Gerät noch nicht geprüft. <span class="m open">offen</span></li>
+        <li><b>Nach einem Rückfall (behoben).</b> Der Knoten merkte sich nur das zuletzt gescheiterte Update, und
+          Zwischenversionen des Proof of Concept boten den gescheiterten Build sogar ihren Nachbarn an: Patch und
+          Manifest liegen nach dem Rücktausch noch im Flash, und beim nächsten Angebot setzte der Knoten die Kampagne
+          von dort fort, ohne die volle Manifestprüfung. Jetzt: dauerhafte Liste der letzten 4 gescheiterten Images,
+          und Fortsetzen prüft das Manifest genauso wie frisches Holen. Im Testaufbau nach erzwungenem Rückfall:
+          gescheitertes Update per Funk abgelehnt und nicht angeboten, auch nach Löschen der Status-Seite und Neustart;
+          das nächste Update (v1 nach v3) angenommen <span class="m meas">gemessen</span>.</li>
         <li><b>Kein Rückkanal.</b> Niemand erfährt, dass Knoten ein Update zurückgerollt haben. Der Release-Schlüssel
           sieht einen kaputten Build nur über Betreiber, die es melden. <span class="m open">offen</span></li>
         <li><b>Nachzügler.</b> Ein Patch passt nur zu genau einem Quell-Image. Ein Knoten, der auf v1 geblieben ist
@@ -1024,10 +1031,11 @@
           ungeprüft.</li>
         <li><b>Protokollversion</b> fehlt in den Nachrichten; für upstream nötig.</li>
         <li><b>Mehr als drei Knoten</b> und echte Distanzen sind noch nicht gemessen.</li>
-        <li><b>Eine verlorene Anfrage kostete zu viel Zeit.</b> Im Lauf mit 1 % Budget ging eine einzelne Anfrage
-          verloren; der Knoten wartete laut Regel „fehlende Fragmente × Abstand“, hier 15 min, bevor er neu fragte
-          <span class="m meas">gemessen</span>. Korrektur: kommt binnen zwei Abständen kein Fragment, sofort neu fragen;
-          gebaut, am Gerät noch nicht geprüft. <span class="m open">offen</span></li>
+        <li><b>Eine verlorene Anfrage kostete zu viel Zeit (behoben).</b> Im Lauf mit 1 % Budget ging eine einzelne
+          Anfrage verloren; der Knoten wartete laut Regel „fehlende Fragmente × Abstand“, hier 15 min, bevor er neu
+          fragte. Jetzt fragt er nach zwei Abständen plus 5 s neu, jedes ankommende Fragment verlängert auf den Rest des
+          Blocks. Im Testaufbau mit absichtlich verlorener Anfrage: neue Anfrage nach 17,9 s statt 108 s, keine
+          zusätzlichen Anfragen, 0 Duplikate <span class="m meas">gemessen</span>.</li>
       </ul>
     </div>
     <div lang="en" class="prose">
@@ -1060,10 +1068,13 @@
           because everybody hears everybody there. <span class="m open">open</span></li>
         <li><b>Apply at once</b> distributes a bad (but signed) build quickly. Staggered rollout, canary and
           campaign lifetime are not built. <span class="m open">open</span></li>
-        <li><b>After a revert</b> the node remembered only the most recently failed update, and an intermediate version
-          of the proof of concept even offered the failed build to its neighbours (patch and manifest are still in flash after the revert). Fix:
-          a persistent list of failed images that are neither installed nor offered; built, not yet tested on the
-          device. <span class="m open">open</span></li>
+        <li><b>After a revert (fixed).</b> The node remembered only the most recently failed update, and intermediate
+          versions of the proof of concept even offered the failed build to their neighbours: patch and manifest are
+          still in flash after the revert, and on the next offer the node resumed the campaign from there without the
+          full manifest check. Now: a persistent list of the last 4 failed images, and resuming checks the manifest
+          exactly like a fresh pull. On the bench after a forced revert: the failed update was rejected over the radio
+          and not offered, also after clearing the status page and a reboot; the next update (v1 to v3) was accepted
+          <span class="m meas">measured</span>.</li>
         <li><b>No feedback channel.</b> Nobody learns that nodes reverted an update. The holder of the release key only
           learns about a broken build from operators who report it. <span class="m open">open</span></li>
         <li><b>Stragglers.</b> A patch fits exactly one source image. A node that stayed on v1 (for example after a
@@ -1080,10 +1091,11 @@
           is unchecked.</li>
         <li><b>Protocol version</b> is missing in the messages; needed for upstream.</li>
         <li><b>More than three nodes</b> and real distances have not been measured yet.</li>
-        <li><b>A lost request cost too much time.</b> In the run with a 1 % budget a single request was lost; by
-          the rule "missing fragments × gap" the node waited 15 min before asking again
-          <span class="m meas">measured</span>. Fix: if no fragment arrives within two gaps, ask again at once;
-          built, not yet tested on the device. <span class="m open">open</span></li>
+        <li><b>A lost request cost too much time (fixed).</b> In the run with a 1 % budget a single request was
+          lost; by the rule "missing fragments × gap" the node waited 15 min before asking again. Now it asks again
+          after two gaps plus 5 s, and every fragment that arrives extends the wait to the rest of the block. On the
+          bench with a request dropped on purpose: new request after 17.9 s instead of 108 s, no extra requests,
+          0 duplicates <span class="m meas">measured</span>.</li>
       </ul>
     </div>
   </section>
