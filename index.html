@@ -1050,7 +1050,8 @@
       <ul>
         <li><b>Ein Image für mehrere Boards hat Grenzen.</b> RAK4631 ist nur gebaut, nicht auf Hardware getestet. Sein
           WisBlock-GPS (I2C-Modul, Versorgung über IO-Pins) und die BSEC-Auswertung des BME680 fehlen im gemeinsamen Image:
-          BSEC passt nicht in 96 Seiten <span class="m meas">gemessen</span>. Neue Boards brauchen einen Tabelleneintrag
+          beide passen nicht in 96 Seiten (WisBlock-GPS 30.244 B mehr, BSEC 9.920 B über der Grenze)
+          <span class="m meas">gemessen</span>. Neue Boards brauchen einen Tabelleneintrag
           und eine Board-ID. <span class="m open">offen</span></li>
         <li><b>Ein Knoten hält eine Kampagne.</b> Ein Knoten, der per USB eine Kampagne anbietet, die er selbst nicht
           anwenden kann, verliert sie, sobald er eine für ihn passende von Nachbarn holt
@@ -1116,8 +1117,9 @@
       <h2>Gaps and open questions</h2>
       <ul>
         <li><b>One image for several boards has limits.</b> RAK4631 is built only, not tested on hardware. Its WisBlock
-          GPS (I2C module, power through IO pins) and the BSEC evaluation of the BME680 are not in the shared image: BSEC
-          does not fit into 96 pages <span class="m meas">measured</span>. New boards need a table entry and a board id.
+          GPS (I2C module, power through IO pins) and the BSEC evaluation of the BME680 are not in the shared image: neither
+          fits into 96 pages (WisBlock GPS adds 30,244 B, BSEC ends 9,920 B over the limit)
+          <span class="m meas">measured</span>. New boards need a table entry and a board id.
           <span class="m open">open</span></li>
         <li><b>A node holds one campaign.</b> A node that offers a campaign loaded over USB which it cannot apply itself
           loses it as soon as it pulls one that fits it from neighbours <span class="m meas">measured</span>. This stays
