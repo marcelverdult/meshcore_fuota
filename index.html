@@ -215,12 +215,13 @@
           <b>Release-Schlüssel</b> (Ed25519). Ohne gültige Signatur passiert nichts.</li>
         <li>Pakete gehen nur an <b>direkte Nachbarn</b> (eigener Pakettyp 0x0E, Zero-Hop). Kein Knoten leitet ein
           FUOTA-Paket weiter, auch kein Stock-Repeater: unbekannte Typen verwirft MeshCore.</li>
-        <li>Wer ein Update braucht, <b>holt es sich</b> (Pull): er fragt fehlende Blöcke bei Nachbarn an, die es angeboten
-          haben. Wer es hat, bietet es selten an (Trickle) und schweigt, wenn ein Nachbar dasselbe schon angeboten hat.</li>
+        <li>Wer ein Update braucht, <b>holt es sich</b> (Pull): er fragt fehlende Blöcke bei einem Nachbarn an, der es
+          angeboten hat, und nur dieser antwortet. Wer es hat, bietet es selten an (Trickle, bis alle 2 Tage) und schweigt
+          in kurzen Intervallen, wenn ein Nachbar dasselbe schon angeboten hat.</li>
         <li>Jede 4-KB-Seite wird beim Empfänger sofort gegen ihren Hash aus dem Manifest <b>geprüft</b> und erst danach
           weitergegeben, auch während der Knoten den Rest noch holt (<b>Pipelining</b>). Falsche Daten kommen nie
           weiter als einen Hop.</li>
-        <li>Jeder Knoten sendet Update-Pakete nur innerhalb eines <b>harten Airtime-Budgets</b> (im Mesh vorgesehen: 1 %).
+        <li>Jeder Knoten sendet Update-Pakete nur innerhalb eines <b>harten Airtime-Budgets</b> (Standard: 0,3 %).
           Ein Update darf darum Tage dauern, der normale Verkehr merkt davon wenig.</li>
         <li>Installiert wird im <b>A/B-Verfahren</b>: neues Image in Slot B bauen und prüfen, ein winziger Loader
           (Stage-0) tauscht beim Boot seitenweise mit Journal, der neue Stand muss sich bestätigen, sonst tauscht
@@ -234,12 +235,13 @@
           <b>release key</b> (Ed25519). Without a valid signature nothing happens.</li>
         <li>Packets go to <b>direct neighbours</b> only (own packet type 0x0E, zero hop). No node forwards a
           FUOTA packet, not even a stock repeater: MeshCore drops unknown types.</li>
-        <li>A node that needs an update <b>pulls it</b>: it requests missing blocks from neighbours that have offered
-          it. A node that has the update offers it rarely (Trickle) and stays silent when a neighbour has already offered the same.</li>
+        <li>A node that needs an update <b>pulls it</b>: it requests missing blocks from one neighbour that has offered
+          it, and only that neighbour answers. A node that has the update offers it rarely (Trickle, down to once every 2
+          days) and, in short intervals, stays silent when a neighbour has already offered the same.</li>
         <li>The receiver <b>checks</b> each 4 KB page at once against its hash from the manifest and passes it on only
           afterwards, even while the node is still pulling the rest (<b>pipelining</b>). Wrong data never travels
           further than one hop.</li>
-        <li>Every node sends update packets only within a <b>hard airtime budget</b> (intended for the mesh: 1 %).
+        <li>Every node sends update packets only within a <b>hard airtime budget</b> (default: 0.3 %).
           An update may therefore take days, and normal traffic notices little of it.</li>
         <li>Installation uses the <b>A/B method</b>: build the new image in slot B and check it. A tiny loader
           (Stage-0) swaps page by page at boot, with a journal. The new build must confirm itself, otherwise
@@ -386,21 +388,21 @@
     <p class="num">// 4</p>
     <div lang="de" class="prose">
       <h2>Ablauf eines Updates</h2>
-      <p>Die Schritte in der Reihenfolge, in der sie für einen Knoten passieren. Zeiten für das Mesh gelten bei 1 %
-        Budget und SF8, im Testaufbau bei 10 % und SF7.</p>
+      <p>Die Schritte in der Reihenfolge, in der sie für einen Knoten passieren. Zeiten für das Mesh gelten bei 0,3 %
+        Budget (Standard) und SF8, im Testaufbau bei 10 % und SF7.</p>
     </div>
     <div lang="en" class="prose">
       <h2>How an update runs</h2>
-      <p>The steps in the order in which they happen for one node. Times for the mesh assume a 1 %
-        budget and SF8, times on the bench assume 10 % and SF7.</p>
+      <p>The steps in the order in which they happen for one node. Times for the mesh assume a 0.3 %
+        budget (default) and SF8, times on the bench assume 10 % and SF7.</p>
     </div>
     <div class="steps" lang="de">
       <div class="step"><div><span class="who">Release-CI, offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (184 B + 8 B je 4-KB-Seite): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, dazu je Seite die ersten 8 Byte ihres SHA-256. Signiert mit dem Release-Schlüssel.</span></div></div>
       <div class="step"><div><span class="who">Seed, USB</span><b>Einspeisen</b><span>Manifest und Patch per USB; der Knoten prüft Signatur und Patch-Hash und bietet an. Mehrere Seeds derselben Kampagne schaden nicht, die Kampagne zählt über ihre ID (erste 4 Byte von SHA-256 des Manifests).</span></div></div>
-      <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit ID, Größen, Ziel, Build, Quell-Präfix und Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 300 s, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle).</span></div></div>
+      <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit ID, Größen, Ziel, Build, Quell-Präfix und Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 2 Tage, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle), aber nur in Intervallen unter 1 h. Danach bietet jeder einmal je Intervall an, damit auch ein Nachbar, der die anderen nicht hört, ein Angebot bekommt.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Sonst bleibt der Knoten still. Während eines Probestarts zieht er nicht.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Erst nur das Manifest</b><span>2 bis 4 Fragmente. Prüft Signatur (Ed25519 über die CryptoCell), Ziel, Quelle, Build, Platz und ob dieses Update hier schon gescheitert ist. Fällt eine Prüfung durch: Kampagne gesperrt (übersteht Neustart), kein einziges Patch-Fragment.</span></div></div>
-      <div class="step"><div><span class="who">Nachbar</span><b>Patch holen</b><span>Anfrage für den niedrigsten Block mit Lücken (16 Fragmente, Bitmap der fehlenden). Jeder Nachbar, der diese Fragmente geprüft hat, antwortet; mehrere wechseln sich ab. Fragmente landen direkt im Flash.</span></div></div>
+      <div class="step"><div><span class="who">Nachbar</span><b>Patch holen</b><span>Anfrage für den niedrigsten Block mit Lücken (16 Fragmente, Bitmap der fehlenden) an genau einen Nachbarn: den zuletzt gehörten, dessen Angebot den Block abdeckt. Nur er antwortet. Kommt nichts, nennt die nächste Anfrage einen anderen Anbieter; kennt der Knoten keinen weiteren, fragt er alle (Kennung 0xFF). Fragmente landen direkt im Flash.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Jede Seite sofort prüfen</b><span>Ist eine 4-KB-Seite vollständig, wird sie gegen ihren Hash aus dem Manifest geprüft. Falsch: Seite löschen, neu holen. Richtig: ab sofort darf er sie weitergeben.</span></div></div>
       <div class="step"><div><span class="who">derselbe Knoten</span><b>Weitergeben, während er noch holt</b><span>Er bietet an, sobald sein Manifest geprüft ist, mit der Zahl geprüfter Seiten. Fragt ein Nachbar nach etwas, das er noch nicht hat, merkt er sich das und bietet sofort an, wenn die Seite fertig ist.</span></div></div>
       <div class="step"><div><span class="who">derselbe Knoten</span><b>Vollständig: anwenden</b><span>SHA-256 über den ganzen Patch, neues Image in Slot B bauen (12 s <span class="m meas">gemessen</span>), SHA-256 des Ergebnisses gegen das Manifest, Tausch-Auftrag in die Status-Seite, Neustart. Im Feld nach Regel des Betreibers, im Test sofort.</span></div></div>
@@ -412,10 +414,10 @@
     <div class="steps" lang="en">
       <div class="step"><div><span class="who">Release CI, offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (184 B + 8 B per 4 KB page): target device, build number, sizes, SHA-256 of source image, new image and patch, plus the first 8 bytes of the SHA-256 of each page. Signed with the release key.</span></div></div>
       <div class="step"><div><span class="who">Seed, USB</span><b>Feed in</b><span>Manifest and patch over USB; the node checks signature and patch hash and offers them. Several seeds for the same campaign do no harm: the campaign counts by its ID (first 4 bytes of the SHA-256 of the manifest).</span></div></div>
-      <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with ID, sizes, target, build, source prefix and number of checked pages. Interval 10 s, doubling up to 300 s, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle).</span></div></div>
+      <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with ID, sizes, target, build, source prefix and number of checked pages. Interval 10 s, doubling up to 2 days, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle), but only in intervals below 1 h. After that every node offers once per interval, so that a neighbour that cannot hear the others still gets an offer.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Otherwise the node stays silent. During a test boot it does not pull.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Manifest first</b><span>2 to 4 fragments. Checks signature (Ed25519 via the CryptoCell), target, source, build, space and whether this update has already failed here. If a check fails: campaign banned (survives reboot), no patch fragment at all.</span></div></div>
-      <div class="step"><div><span class="who">Neighbour</span><b>Pull the patch</b><span>Request for the lowest block with missing fragments (16 fragments, bitmap of the missing ones). Every neighbour that has checked these fragments answers; several take turns. Fragments go straight to flash.</span></div></div>
+      <div class="step"><div><span class="who">Neighbour</span><b>Pull the patch</b><span>Request for the lowest block with missing fragments (16 fragments, bitmap of the missing ones) to exactly one neighbour: the most recent one whose offer covers the block. Only that one answers. If nothing comes, the next request names another provider; if the node knows no other one, it asks everybody (ID 0xFF). Fragments go straight to flash.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Check every page at once</b><span>When a 4 KB page is complete, the node checks it against its hash from the manifest. Wrong: erase the page, pull it again. Right: the node may pass it on from now on.</span></div></div>
       <div class="step"><div><span class="who">same node</span><b>Pass on while still pulling</b><span>It offers as soon as its manifest is checked, with the number of checked pages. If a neighbour asks for something it does not have yet, it remembers that and offers at once when the page is complete.</span></div></div>
       <div class="step"><div><span class="who">same node</span><b>Complete: apply</b><span>SHA-256 over the whole patch, build the new image in slot B (12 s <span class="m meas">measured</span>), SHA-256 of the result against the manifest, swap job into the status page, reboot. In the field by the operator's rule, in tests at once.</span></div></div>
@@ -446,7 +448,7 @@
       <table>
         <tr><th>Nachricht</th><th>Aufbau</th><th>Bytes</th><th>Airtime Mesh</th><th>Testaufbau</th><th>wer sendet</th><th>wer reagiert</th></tr>
         <tr><td><b>Angebot</b></td><td class="fmt">[1][snd][id 4][Manifest-Länge 2][Patch-Größe 4][Ziel 4][Build 4][Quelle 8][Seiten][nonce]</td><td class="n">30</td><td class="n">476 ms</td><td class="n">193 ms</td><td>jeder Knoten mit geprüftem Manifest, nach Trickle</td><td>Nachbarn, für die es passt; Nachbarn mit derselben Kampagne zählen es als Bestätigung</td></tr>
-        <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd][id 4][Block 2][Maske 2][nonce]</td><td class="n">11</td><td class="n">312 ms</td><td class="n">142 ms</td><td>wer zieht</td><td>jeder Nachbar mit den geprüften Fragmenten</td></tr>
+        <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd][id 4][Block 2][Maske 2][Ziel][nonce]</td><td class="n">12</td><td class="n">312 ms</td><td class="n">142 ms</td><td>wer zieht</td><td>nur der genannte Anbieter (Ziel = seine Kennung); bei 0xFF jeder mit den geprüften Fragmenten</td></tr>
         <tr><td><b>Daten</b></td><td class="fmt">[3][snd][id 4][Fragment 2][bis 176 B]</td><td class="n">184</td><td class="n">1.721 ms</td><td class="n">643 ms</td><td>wer die Seite geprüft hat und angefragt wurde</td><td>alle Nachbarn, die dieselbe Kampagne ziehen (ein Paket bedient alle)</td></tr>
         <tr><td><b>Retract</b></td><td class="fmt">[4][snd][signierter Retract 80 B]</td><td class="n">82</td><td class="n">902 ms</td><td class="n">347 ms</td><td>wer ihn geprüft hat: dreimal, und als Antwort auf ein Angebot des Builds</td><td>alle teilnehmenden Nachbarn</td></tr>
       </table>
@@ -455,7 +457,7 @@
       <table>
         <tr><th>Message</th><th>Layout</th><th>Bytes</th><th>Airtime mesh</th><th>Bench</th><th>Sender</th><th>Reacts</th></tr>
         <tr><td><b>Offer</b></td><td class="fmt">[1][snd][id 4][manifest length 2][patch size 4][target 4][build 4][source 8][pages][nonce]</td><td class="n">30</td><td class="n">476 ms</td><td class="n">193 ms</td><td>every node with a checked manifest, per Trickle</td><td>neighbours it fits; neighbours with the same campaign count it as a confirmation</td></tr>
-        <tr><td><b>Request</b></td><td class="fmt">[2][snd][id 4][block 2][mask 2][nonce]</td><td class="n">11</td><td class="n">312 ms</td><td class="n">142 ms</td><td>the puller</td><td>every neighbour holding the checked fragments</td></tr>
+        <tr><td><b>Request</b></td><td class="fmt">[2][snd][id 4][block 2][mask 2][target][nonce]</td><td class="n">12</td><td class="n">312 ms</td><td class="n">142 ms</td><td>the puller</td><td>only the named provider (target = its ID); with 0xFF everyone holding the checked fragments</td></tr>
         <tr><td><b>Data</b></td><td class="fmt">[3][snd][id 4][fragment 2][up to 176 B]</td><td class="n">184</td><td class="n">1,721 ms</td><td class="n">643 ms</td><td>whoever has checked the page and was asked</td><td>all neighbours pulling the same campaign (one packet serves all)</td></tr>
         <tr><td><b>Retract</b></td><td class="fmt">[4][snd][signed retract 80 B]</td><td class="n">82</td><td class="n">902 ms</td><td class="n">347 ms</td><td>whoever has verified it: three times, and as a reply to an offer of that build</td><td>all participating neighbours</td></tr>
       </table>
@@ -473,18 +475,18 @@
             <path d="M100 34 V630 M300 34 V630 M500 34 V630 M690 34 V630" stroke="var(--line)" stroke-dasharray="3 4"/>
             <path d="M100 60 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="54" fill="var(--fg)">Angebot X, 4 Seiten</text>
             <path d="M100 66 H684" stroke="var(--muted)" stroke-dasharray="2 4"/><text x="600" y="82" fill="var(--muted)">verwirft (Typ 0x0E)</text>
-            <path d="M300 104 H104" stroke="var(--accent)" marker-end="url(#ah)"/><text x="122" y="98" fill="var(--fg)">Anfrage: Manifest</text>
+            <path d="M300 104 H104" stroke="var(--accent)" marker-end="url(#ah)"/><text x="122" y="98" fill="var(--fg)">Anfrage an A: Manifest</text>
             <path d="M100 136 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="130" fill="var(--fg)">Daten: Manifest 1/2, 2/2</text>
             <rect x="306" y="146" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="162" fill="var(--fg)">Signatur, Ziel, Quelle,</text><text x="314" y="176" fill="var(--fg)">Build geprüft</text>
             <path d="M300 204 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="198" fill="var(--fg)">Angebot X, 0 Seiten</text>
-            <path d="M500 238 H304" stroke="var(--accent)" marker-end="url(#ah)"/><text x="330" y="232" fill="var(--fg)">Anfrage: Manifest</text>
+            <path d="M500 238 H304" stroke="var(--accent)" marker-end="url(#ah)"/><text x="330" y="232" fill="var(--fg)">Anfrage an B: Manifest</text>
             <path d="M300 266 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="260" fill="var(--fg)">Daten: Manifest</text>
-            <path d="M300 300 H104" stroke="var(--accent)" marker-end="url(#ah)"/><text x="122" y="294" fill="var(--fg)">Anfrage: Block 0</text>
+            <path d="M300 300 H104" stroke="var(--accent)" marker-end="url(#ah)"/><text x="122" y="294" fill="var(--fg)">Anfrage an A: Block 0</text>
             <path d="M100 330 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="324" fill="var(--fg)">Daten × 16 (einzeln, im Budget)</text>
             <path d="M500 352 H304" stroke="var(--muted)" marker-end="url(#ahm)"/><text x="330" y="346" fill="var(--muted)">Anfrage Block 0: B hat sie</text><text x="330" y="370" fill="var(--muted)">noch nicht, merkt sich die Nachfrage</text>
             <rect x="306" y="380" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="396" fill="var(--fg)">Seite 0 voll:</text><text x="314" y="410" fill="var(--fg)">Block-Hash stimmt</text>
             <path d="M300 438 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="432" fill="var(--fg)">Angebot X, 1 Seite</text>
-            <path d="M500 468 H304" stroke="var(--accent)" marker-end="url(#ah)"/><text x="330" y="462" fill="var(--fg)">Anfrage: Block 0</text>
+            <path d="M500 468 H304" stroke="var(--accent)" marker-end="url(#ah)"/><text x="330" y="462" fill="var(--fg)">Anfrage an B: Block 0</text>
             <path d="M300 498 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="492" fill="var(--fg)">Daten Seite 0</text>
             <path d="M100 506 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="522" fill="var(--fg)">gleichzeitig: Seite 1 an B</text>
             <rect x="306" y="540" width="190" height="50" rx="6" fill="var(--accent-soft)"/><text x="314" y="556" fill="var(--fg)">alle Seiten + SHA-256:</text><text x="314" y="570" fill="var(--fg)">anwenden, tauschen,</text><text x="314" y="584" fill="var(--fg)">dann weiter anbieten</text>
@@ -508,18 +510,18 @@
             <path d="M100 34 V630 M300 34 V630 M500 34 V630 M690 34 V630" stroke="var(--line)" stroke-dasharray="3 4"/>
             <path d="M100 60 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="54" fill="var(--fg)">Offer X, 4 pages</text>
             <path d="M100 66 H684" stroke="var(--muted)" stroke-dasharray="2 4"/><text x="600" y="82" fill="var(--muted)">drops (type 0x0E)</text>
-            <path d="M300 104 H104" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="122" y="98" fill="var(--fg)">Request: manifest</text>
+            <path d="M300 104 H104" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="122" y="98" fill="var(--fg)">Request to A: manifest</text>
             <path d="M100 136 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="130" fill="var(--fg)">Data: manifest 1/2, 2/2</text>
             <rect x="306" y="146" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="162" fill="var(--fg)">Signature, target,</text><text x="314" y="176" fill="var(--fg)">source, build checked</text>
             <path d="M300 204 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="198" fill="var(--fg)">Offer X, 0 pages</text>
-            <path d="M500 238 H304" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="330" y="232" fill="var(--fg)">Request: manifest</text>
+            <path d="M500 238 H304" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="330" y="232" fill="var(--fg)">Request to B: manifest</text>
             <path d="M300 266 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="260" fill="var(--fg)">Data: manifest</text>
-            <path d="M300 300 H104" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="122" y="294" fill="var(--fg)">Request: block 0</text>
+            <path d="M300 300 H104" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="122" y="294" fill="var(--fg)">Request to A: block 0</text>
             <path d="M100 330 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="324" fill="var(--fg)">Data × 16 (paced by budget)</text>
             <path d="M500 352 H304" stroke="var(--muted)" marker-end="url(#ahm-en)"/><text x="330" y="346" fill="var(--muted)">Request block 0: B does not</text><text x="330" y="370" fill="var(--muted)">have it yet, notes the request</text>
             <rect x="306" y="380" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="396" fill="var(--fg)">Page 0 full:</text><text x="314" y="410" fill="var(--fg)">block hash matches</text>
             <path d="M300 438 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="432" fill="var(--fg)">Offer X, 1 page</text>
-            <path d="M500 468 H304" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="330" y="462" fill="var(--fg)">Request: block 0</text>
+            <path d="M500 468 H304" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="330" y="462" fill="var(--fg)">Request to B: block 0</text>
             <path d="M300 498 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="492" fill="var(--fg)">Data page 0</text>
             <path d="M100 506 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="522" fill="var(--fg)">in parallel: page 1 to B</text>
             <rect x="306" y="540" width="190" height="50" rx="6" fill="var(--accent-soft)"/><text x="314" y="556" fill="var(--fg)">all pages + SHA-256:</text><text x="314" y="570" fill="var(--fg)">apply, swap,</text><text x="314" y="584" fill="var(--fg)">then keep offering</text>
@@ -535,15 +537,17 @@
       <p>Die Logs aller drei Knoten aus dem Kettentest, Paket für Paket wiedergegeben. Jede Farbe ist ein
         Nachrichtentyp. Unter jedem Knoten stehen das Manifest (2 Fragmente) und die vier Patch-Seiten: sie füllen sich
         beim Empfang und bekommen einen Haken, sobald ihr Hash stimmt. Testaufbau mit 10 % Budget und SF7; im Mesh
-        (1 %, SF8) dauert jeder Schritt rund 27-mal so lange. Im echten Netz hört C den Seed A nicht, im Testaufbau
-        sorgt ein Filter dafür.</p>
+        (0,3 %, SF8) dauert jeder Schritt rund 89-mal so lange. Im echten Netz hört C den Seed A nicht, im Testaufbau
+        sorgt ein Filter dafür. Aufgezeichnet, bevor eine Anfrage genau einen Anbieter nennt; in dieser Kette hat jeder
+        ohnehin nur einen.</p>
     </div>
     <div lang="en" class="prose">
       <h3>A measured run to replay</h3>
       <p>The logs of all three nodes from the chain test, replayed packet by packet. Each colour is a message type.
         Below each node are the manifest (2 fragments) and the four patch pages: they fill as fragments arrive and get
-        a tick once their hash checks out. Bench setup with a 10 % budget and SF7; in the mesh (1 %, SF8) every step
-        takes about 27 times as long. In a real network C cannot hear the seed A; on the bench a filter enforces that.</p>
+        a tick once their hash checks out. Bench setup with a 10 % budget and SF7; in the mesh (0.3 %, SF8) every step
+        takes about 89 times as long. In a real network C cannot hear the seed A; on the bench a filter enforces that.
+        Recorded before a request names exactly one provider; in this chain every node has only one anyway.</p>
     </div>
     <div class="chain" id="chainBox" tabindex="0" aria-label="Wiedergabe: Pfeiltasten springen ein Ereignis / replay: arrow keys step one event">
       <div class="canvas-wide"><canvas id="chainCv" aria-label="Replay of the measured chain run"></canvas></div>
@@ -585,7 +589,7 @@
       <table>
         <tr><th>Was kommt an</th><th>Teilnehmer, gleiches Modell</th><th>Teilnehmer, anderes Modell</th><th>Repeater ohne FUOTA, Companion</th></tr>
         <tr><td>Angebot</td><td>prüft, ob es passt; zieht oder zählt es als Bestätigung</td><td>ignoriert (Vorschlag: hält ein Fenster, siehe unten)</td><td>verwirft</td></tr>
-        <tr><td>Anfrage</td><td>bedient aus eigenen geprüften Seiten</td><td>ignoriert</td><td>verwirft</td></tr>
+        <tr><td>Anfrage</td><td>bedient aus eigenen geprüften Seiten, wenn sie ihn nennt (oder 0xFF)</td><td>ignoriert</td><td>verwirft</td></tr>
         <tr><td>Daten</td><td>speichert, was fehlt (nur nach geprüftem Manifest); streicht aus der eigenen Sendeliste, was ein anderer gerade gesendet hat</td><td>ignoriert</td><td>verwirft</td></tr>
         <tr><td>Retract, gültig</td><td>stoppt, speichert, sendet ihn dreimal und als Antwort</td><td>verwirft (andere Ziel-ID)</td><td>verwirft</td></tr>
         <tr><td>Manifest mit falscher Signatur</td><td>holt nur dessen 2 bis 4 Fragmente, sperrt die ID, gibt nichts davon weiter</td><td>zieht gar nicht</td><td>verwirft</td></tr>
@@ -598,7 +602,7 @@
       <table>
         <tr><th>What arrives</th><th>Participant, same model</th><th>Participant, other model</th><th>Repeater without FUOTA, companion</th></tr>
         <tr><td>Offer</td><td>checks whether it fits; pulls or counts it as a confirmation</td><td>ignores (proposal: holds a window, see below)</td><td>drops</td></tr>
-        <tr><td>Request</td><td>serves from its own checked pages</td><td>ignores</td><td>drops</td></tr>
+        <tr><td>Request</td><td>serves from its own checked pages if it names this node (or 0xFF)</td><td>ignores</td><td>drops</td></tr>
         <tr><td>Data</td><td>stores what is missing (only after a checked manifest); strikes from its own send list what another node has just sent</td><td>ignores</td><td>drops</td></tr>
         <tr><td>Retract, valid</td><td>stops, stores, sends it three times and as a reply</td><td>drops (other target ID)</td><td>drops</td></tr>
         <tr><td>Manifest with wrong signature</td><td>pulls only its 2 to 4 fragments, bans the ID, passes nothing of it on</td><td>does not pull at all</td><td>drops</td></tr>
@@ -632,27 +636,28 @@
     <div lang="de" class="prose">
       <h2>Zeiten und Zeitgeber</h2>
       <p>„Abstand“ ist die Pause, die das Budget nach jeder eigenen Sendung erzwingt: Airtime × 1000 / Budget-Promille.
-        Bei 1 % und SF8 folgt ein Datenpaket alle 172 s, im Testaufbau (10 %, SF7) alle 6,43 s.</p>
+        Bei 0,3 % (Standard) und SF8 folgt ein Datenpaket alle 574 s, bei 1 % alle 172 s, im Testaufbau (10 %, SF7) alle 6,43 s.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Times and timers</h2>
       <p>“Gap” is the pause the budget enforces after each own transmission: airtime × 1000 / budget in permille.
-        At 1 % and SF8 one data packet follows every 172 s, on the bench (10 %, SF7) every 6.43 s.</p>
+        At 0.3 % (default) and SF8 one data packet follows every 574 s, at 1 % every 172 s, on the bench (10 %, SF7) every 6.43 s.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Wann</th><th>Wert</th><th>Wozu</th></tr>
-        <tr><td>Angebot</td><td class="n">10 s, verdoppelt bis 300 s</td><td>selten ansagen; zufällig in der zweiten Hälfte, erst zuhören</td></tr>
-        <tr><td>Angebot unterdrücken</td><td class="n">1 gleiches gehört</td><td>Last je Nachbarschaft statt je Knoten (Trickle, RFC 6206)</td></tr>
-        <tr><td>Intervall zurück auf 10 s</td><td>Nachbar bietet mit weniger Seiten an</td><td>er soll schnell erfahren, dass es mehr gibt</td></tr>
+        <tr><td>Angebot</td><td class="n">10 s, verdoppelt bis 2 Tage</td><td>selten ansagen; zufällig in der zweiten Hälfte, erst zuhören</td></tr>
+        <tr><td>Angebot unterdrücken</td><td class="n">1 gleiches gehört, nur bei Intervall unter 1 h</td><td>Last je Nachbarschaft statt je Knoten (Trickle, RFC 6206); in langen Intervallen bietet jeder an, damit niemand ohne Angebot bleibt</td></tr>
+        <tr><td>Intervall zurück auf 10 s</td><td>eigenes Manifest geprüft, eigener Patch vollständig</td><td>Nachbarn erfahren eigenen Fortschritt sofort; ein Angebot eines Nachbarn mit weniger Seiten setzt nicht mehr zurück, er zieht bereits</td></tr>
         <tr><td>Sofort-Angebot</td><td class="n">0,2 bis 1 s</td><td>neue Seite geprüft und jemand wartete darauf (Pipelining)</td></tr>
-        <tr><td>Erste Anfrage, nächster Block</td><td class="n">0,5 bis 2 s, 0,3 bis 1 s</td><td>zufällig, damit nicht alle zugleich fragen</td></tr>
-        <tr><td>Warten auf einen Block</td><td class="n">Lücken × Abstand + 5 s</td><td>dann erneut; nach 12 Anfragen ohne Daten Pause</td></tr>
+        <tr><td>Erste Anfrage, nächster Block</td><td class="n">0,5 s bis 1 Abstand (höchstens 30 s)</td><td>zufällig, damit Nachbarn, die sich nicht hören, nicht im Gleichschritt fragen</td></tr>
+        <tr><td>Warten auf das erste Fragment</td><td class="n">2 Abstände + 5 s, dazu bis 1 Abstand Zufall</td><td>jedes Fragment verlängert auf den Rest des Blocks; ohne Antwort der nächste Anbieter oder 0xFF; nach 12 Anfragen ohne Daten Pause</td></tr>
+        <tr><td>Genannter Anbieter sendet Daten an andere</td><td class="n">Wartezeit verlängert</td><td>er ist beschäftigt, nicht verloren: kein Fehlversuch</td></tr>
         <tr><td>Nachbar fragt denselben Block</td><td class="n">3 s still</td><td>seine Antwort kommt hier auch an</td></tr>
         <tr><td>Abfrage hinter dem Angebot</td><td class="n">max(30 s, 4 Abstände)</td><td>Nachfrage melden, wenn noch niemand mehr hat</td></tr>
-        <tr><td>Bedienen starten</td><td class="n">50 bis 1000 ms</td><td>mehrere Anbieter: einer beginnt zuerst</td></tr>
+        <tr><td>Bedienen starten</td><td class="n">50 bis 1000 ms</td><td>bei Anfrage an alle (0xFF): einer beginnt zuerst</td></tr>
         <tr><td>Kanal belegt</td><td class="n">20 ms, dann erneut</td><td>erst hören, was der Nachbar sendet, dann eigenes Fragment wählen</td></tr>
-        <tr><td>Pull pausiert</td><td class="n">≥ 20 min ohne Angebot oder Daten</td><td>niemand hat es mehr; geht beim nächsten Angebot weiter</td></tr>
+        <tr><td>Pull pausiert</td><td class="n">100 Abstände ohne Angebot oder Daten, mindestens 20 min (bei 0,3 %: 16 h)</td><td>niemand hat es mehr; geht beim nächsten Angebot weiter</td></tr>
         <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>keine Dauersperre wegen schlechter Verbindung</td></tr>
         <tr><td>Retract</td><td class="n">3× nach 10, 20, 40 s; Antwort ≤ 1 je 30 s</td><td>verbreiten, ohne zu fluten</td></tr>
         <tr><td>Anwenden</td><td class="n">~12 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>; Knoten ist dabei rund 1 min offline</td></tr>
@@ -662,17 +667,18 @@
     <div lang="en" class="tscroll">
       <table>
         <tr><th>When</th><th>Value</th><th>Purpose</th></tr>
-        <tr><td>Offer</td><td class="n">10 s, doubling up to 300 s</td><td>announce rarely; random in the second half, listen first</td></tr>
-        <tr><td>Suppress offer</td><td class="n">1 equal one heard</td><td>load per neighbourhood instead of per node (Trickle, RFC 6206)</td></tr>
-        <tr><td>Interval back to 10 s</td><td>neighbour offers with fewer pages</td><td>it should learn quickly that there is more</td></tr>
+        <tr><td>Offer</td><td class="n">10 s, doubling up to 2 days</td><td>announce rarely; random in the second half, listen first</td></tr>
+        <tr><td>Suppress offer</td><td class="n">1 equal one heard, only at intervals below 1 h</td><td>load per neighbourhood instead of per node (Trickle, RFC 6206); in long intervals every node offers, so nobody is left without an offer</td></tr>
+        <tr><td>Interval back to 10 s</td><td>own manifest checked, own patch complete</td><td>neighbours learn about own progress at once; an offer from a neighbour with fewer pages no longer resets, it is pulling already</td></tr>
         <tr><td>Immediate offer</td><td class="n">0.2 to 1 s</td><td>new page checked and someone was waiting for it (pipelining)</td></tr>
-        <tr><td>First request, next block</td><td class="n">0.5 to 2 s, 0.3 to 1 s</td><td>random, so that not everyone asks at once</td></tr>
-        <tr><td>Waiting for a block</td><td class="n">missing fragments × gap + 5 s</td><td>then ask again; pause after 12 requests without data</td></tr>
+        <tr><td>First request, next block</td><td class="n">0.5 s to 1 gap (at most 30 s)</td><td>random, so that neighbours that cannot hear each other do not ask in step</td></tr>
+        <tr><td>Waiting for the first fragment</td><td class="n">2 gaps + 5 s, plus up to 1 gap at random</td><td>every fragment extends the wait to the rest of the block; without an answer the next provider or 0xFF; pause after 12 requests without data</td></tr>
+        <tr><td>Named provider sends data to others</td><td class="n">wait extended</td><td>it is busy, not lost: no failed attempt</td></tr>
         <tr><td>Neighbour requests the same block</td><td class="n">3 s silent</td><td>its answer arrives here as well</td></tr>
         <tr><td>Query after the offer</td><td class="n">max(30 s, 4 gaps)</td><td>report demand while nobody has more yet</td></tr>
-        <tr><td>Start serving</td><td class="n">50 to 1000 ms</td><td>several providers: one starts first</td></tr>
+        <tr><td>Start serving</td><td class="n">50 to 1000 ms</td><td>for a request to everybody (0xFF): one starts first</td></tr>
         <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>first hear what the neighbour sends, then pick an own fragment</td></tr>
-        <tr><td>Pull paused</td><td class="n">≥ 20 min without offer or data</td><td>nobody has it any more; resumes at the next offer</td></tr>
+        <tr><td>Pull paused</td><td class="n">100 gaps without offer or data, at least 20 min (at 0.3 %: 16 h)</td><td>nobody has it any more; resumes at the next offer</td></tr>
         <tr><td>Manifest damaged 3×</td><td class="n">skip for 10 min</td><td>no permanent ban because of a poor link</td></tr>
         <tr><td>Retract</td><td class="n">3× after 10, 20, 40 s; reply ≤ 1 per 30 s</td><td>spread it without flooding</td></tr>
         <tr><td>Apply</td><td class="n">~12 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>; the node is offline for about 1 min meanwhile</td></tr>
@@ -687,47 +693,47 @@
       <h2>Was es kostet</h2>
       <h3>Dauer je Hop im Mesh <span class="m calc">berechnet</span></h3>
       <p>SF8, 1.721 ms je Datenpaket, 4-KB-Seiten. Hop 1 braucht alle Fragmente, jeder weitere Hop nur eine Seite mehr
-        (23,3 Fragmente, bei 1 % rund 1,1 h), weil geprüfte Seiten sofort weitergehen. Im Testaufbau trifft diese Rechnung: Hop 1 in 464 s
+        (23,3 Fragmente, bei 0,3 % rund 3,7 h, bei 1 % rund 1,1 h), weil geprüfte Seiten sofort weitergehen. Im Testaufbau trifft diese Rechnung: Hop 1 in 464 s
         gegen 469 s gerechnet, Hop 2 eine Seite dahinter <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>What it costs</h2>
       <h3>Duration per hop in the mesh <span class="m calc">calculated</span></h3>
       <p>SF8, 1,721 ms per data packet, 4 KB pages. Hop 1 needs all fragments, each further hop adds only one page
-        (23.3 fragments, about 1.1 h at 1 %), because checked pages move on at once. On the bench this calculation holds: hop 1 took 464 s
+        (23.3 fragments, about 3.7 h at 0.3 %, 1.1 h at 1 %), because checked pages move on at once. On the bench this calculation holds: hop 1 took 464 s
         against 469 s calculated, hop 2 one page behind <span class="m meas">measured</span>.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
-        <tr><th>Update (gemessener Patch, FakeTec)</th><th>Seiten</th><th>Fragmente</th><th>Hop 1 bei 1 %</th><th>5 Hops bei 0,5 / 1 / 2 %</th><th>passt heute in Slot B</th></tr>
-        <tr><td>kleines Release (1.17.0 nach 1.17.1), 14,3 KB</td><td class="n">4</td><td class="n">83</td><td class="n">4,0 h</td><td class="n">16,8 / 8,4 / 4,2 h</td><td>ja</td></tr>
-        <tr><td>mittleres Release (1.16.0 nach 1.17.0), 41,8 KB</td><td class="n">11</td><td class="n">240</td><td class="n">11,5 h</td><td class="n">31,8 / 15,9 / 8,0 h</td><td>nein (max. 5 Seiten)</td></tr>
-        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0), 219 KB</td><td class="n">54</td><td class="n">1.251</td><td class="n">2,5 Tage</td><td class="n">5,4 / 2,7 / 1,3 Tage</td><td>nein</td></tr>
+        <tr><th>Update (gemessener Patch, FakeTec)</th><th>Seiten</th><th>Fragmente</th><th>Hop 1 bei 0,3 / 1 %</th><th>5 Hops bei 0,3 / 1 / 2 %</th><th>passt heute in Slot B</th></tr>
+        <tr><td>kleines Release (1.17.0 nach 1.17.1), 14,3 KB</td><td class="n">4</td><td class="n">83</td><td class="n">13,2 / 4,0 h</td><td class="n">28,1 / 8,4 / 4,2 h</td><td>ja</td></tr>
+        <tr><td>mittleres Release (1.16.0 nach 1.17.0), 41,8 KB</td><td class="n">11</td><td class="n">240</td><td class="n">38,3 / 11,5 h</td><td class="n">53,1 / 15,9 / 8,0 h</td><td>nein (max. 5 Seiten)</td></tr>
+        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0), 219 KB</td><td class="n">54</td><td class="n">1.251</td><td class="n">8,3 / 2,5 Tage</td><td class="n">8,9 / 2,7 / 1,3 Tage</td><td>nein</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
-        <tr><th>Update (measured patch, FakeTec)</th><th>Pages</th><th>Fragments</th><th>Hop 1 at 1 %</th><th>5 hops at 0.5 / 1 / 2 %</th><th>fits in slot B today</th></tr>
-        <tr><td>small release (1.17.0 to 1.17.1), 14.3 KB</td><td class="n">4</td><td class="n">83</td><td class="n">4.0 h</td><td class="n">16.8 / 8.4 / 4.2 h</td><td>yes</td></tr>
-        <tr><td>medium release (1.16.0 to 1.17.0), 41.8 KB</td><td class="n">11</td><td class="n">240</td><td class="n">11.5 h</td><td class="n">31.8 / 15.9 / 8.0 h</td><td>no (max. 5 pages)</td></tr>
-        <tr><td>compiler change (1.17.1 to 1.18.0), 219 KB</td><td class="n">54</td><td class="n">1,251</td><td class="n">2.5 days</td><td class="n">5.4 / 2.7 / 1.3 days</td><td>no</td></tr>
+        <tr><th>Update (measured patch, FakeTec)</th><th>Pages</th><th>Fragments</th><th>Hop 1 at 0.3 / 1 %</th><th>5 hops at 0.3 / 1 / 2 %</th><th>fits in slot B today</th></tr>
+        <tr><td>small release (1.17.0 to 1.17.1), 14.3 KB</td><td class="n">4</td><td class="n">83</td><td class="n">13.2 / 4.0 h</td><td class="n">28.1 / 8.4 / 4.2 h</td><td>yes</td></tr>
+        <tr><td>medium release (1.16.0 to 1.17.0), 41.8 KB</td><td class="n">11</td><td class="n">240</td><td class="n">38.3 / 11.5 h</td><td class="n">53.1 / 15.9 / 8.0 h</td><td>no (max. 5 pages)</td></tr>
+        <tr><td>compiler change (1.17.1 to 1.18.0), 219 KB</td><td class="n">54</td><td class="n">1,251</td><td class="n">8.3 / 2.5 days</td><td class="n">8.9 / 2.7 / 1.3 days</td><td>no</td></tr>
       </table>
     </div>
     <div class="grid2" lang="de">
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
-      <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 1 % bis rund 6 % Update-Verkehr im dichtesten Zehntel <span class="m calc">berechnet</span>. Mehrere Anbieter wechseln sich ab: der Empfänger ist schneller fertig, die Last addiert sich.</p></div>
+      <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 0,3 % bis rund 1,8 % Update-Verkehr im dichtesten Zehntel (bei 1 % rund 6 %) <span class="m calc">berechnet</span>. Eine Anfrage nennt einen Anbieter: auch wenn mehrere es haben, sendet für einen Fragenden immer nur einer.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.800 bis 2.400 Datenpakete im ganzen Gebiet, Compilerwechsel 27.400 bis 36.100 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 274.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Repeater-Image +23,9 KB (345.424 B Stock, 369.368 B mit FUOTA, Test-Build), Stage-0 2,7 KB in 16 KB Reserve, RAM +2,6 KB <span class="m meas">gemessen</span>. Der Patch muss hinter das neue Image passen: FakeTec bis 5 Seiten, P1 heute 0 (siehe Lücken).</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Repeater-Image +24,4 KB (345.424 B Stock, 369.800 B mit FUOTA, Test-Build), Stage-0 2,7 KB in 16 KB Reserve, RAM +2,6 KB <span class="m meas">gemessen</span>. Der Patch muss hinter das neue Image passen: FakeTec bis 5 Seiten, P1 heute 0 (siehe Lücken).</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
-      <div class="kv"><h3>Zuhören</h3><p>Ein neuer Knoten hört das nächste Angebot spätestens nach dem längsten Trickle-Intervall: bis 300 s <span class="m meas">gemessen</span>. Gegenüber Stunden für die Daten vernachlässigbar.</p></div>
+      <div class="kv"><h3>Zuhören</h3><p>Während eine Kampagne läuft, hört ein Knoten oft ein Angebot (jeder eigene Fortschritt setzt das Intervall auf 10 s). Wer später dazukommt, wartet höchstens das längste Trickle-Intervall: 2 Tage. Im Testaufbau lagen im Leerlauf 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>. Gewollt für Updates, die ohnehin Tage dauern dürfen: dafür bleibt der Kanal nach einem Update fast ruhig.</p></div>
     </div>
     <div class="grid2" lang="en">
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
-      <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 1 % up to about 6 % update traffic in the densest tenth <span class="m calc">calculated</span>. Several providers take turns: the receiver finishes sooner, the load adds up.</p></div>
+      <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 0.3 % up to about 1.8 % update traffic in the densest tenth (about 6 % at 1 %) <span class="m calc">calculated</span>. A request names one provider: even when several have it, only one sends for a given puller.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,800 to 2,400 data packets in the whole area, compiler change 27,400 to 36,100 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 274,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Repeater image +23.9 KB (345,424 B stock, 369,368 B with FUOTA, test build), Stage-0 2.7 KB in 16 KB reserve, RAM +2.6 KB <span class="m meas">measured</span>. The patch must fit behind the new image: FakeTec up to 5 pages, P1 today 0 (see gaps).</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Repeater image +24.4 KB (345,424 B stock, 369,800 B with FUOTA, test build), Stage-0 2.7 KB in 16 KB reserve, RAM +2.6 KB <span class="m meas">measured</span>. The patch must fit behind the new image: FakeTec up to 5 pages, P1 today 0 (see gaps).</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
-      <div class="kv"><h3>Listening</h3><p>A new node hears the next offer after the longest Trickle interval at the latest: up to 300 s <span class="m meas">measured</span>. Negligible compared with hours for the data.</p></div>
+      <div class="kv"><h3>Listening</h3><p>While a campaign runs, a node hears offers often (every own progress sets the interval back to 10 s). A node that joins later waits at most the longest Trickle interval: 2 days. On the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. Intended for updates that may take days anyway: in return the channel stays almost quiet after an update.</p></div>
     </div>
   </section>
 
@@ -747,7 +753,8 @@
         steht dort schon ein anderer Wert, wird die ungeprüfte Seite gelöscht, eine geprüfte schützt sich selbst.</p>
       <h3>Das Update kommt überall an, wo Teilnehmer verbunden sind</h3>
       <p>Jeder Knoten fragt so lange nach dem niedrigsten fehlenden Block, wie ein Nachbar anbietet. Trickle sorgt dafür,
-        dass jede Nachbarschaft spätestens alle 300 s ein Angebot hört. Ein Hop braucht nur einen einzigen Nachbarn mit
+        dass jeder Knoten ein Angebot hört: spätestens alle 2 Tage, und ab 1 h Intervall bietet jeder Anbieter an, auch
+        wenn er ein gleiches gehört hat. Ein Hop braucht nur einen einzigen Nachbarn mit
         der Seite. Ist die Menge der Teilnehmer vom Seed aus zusammenhängend, erreicht das Update jeden von ihnen. Ein
         unterbrochener Pull behält seine geprüften Seiten <span class="m meas">gemessen</span>.</p>
       <h3>Es kann nicht fluten</h3>
@@ -777,7 +784,8 @@
         if a different value is already there, the unchecked page is erased, and a checked page protects itself.</p>
       <h3>The update arrives wherever participants are connected</h3>
       <p>Each node keeps asking for the lowest missing block as long as a neighbour offers. Trickle makes sure
-        that every neighbourhood hears an offer at least every 300 s. One hop needs only a single neighbour with
+        that every node hears an offer: at least every 2 days, and from a 1 h interval on every provider offers even if
+        it heard an equal offer. One hop needs only a single neighbour with
         the page. If the set of participants is connected from the seed, the update reaches every one of them. An
         interrupted pull keeps its checked pages <span class="m meas">measured</span>.</p>
       <h3>It cannot flood</h3>
@@ -818,7 +826,7 @@
         <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>abgelehnt, bevor ein Fragment angefragt wird, auch wenn danach ein anderes Update kam: dauerhafte Liste der letzten 4 gescheiterten Images <span class="m meas">gemessen</span></td><td>erst ab dem 5. gescheiterten Image fällt das älteste heraus</td></tr>
         <tr><td>Gefälschter Retract</td><td>Signatur falsch, verworfen <span class="m meas">gemessen</span></td><td>keiner</td></tr>
         <tr><td>Echter Retract wiederholt</td><td>gleiche Wirkung wie beim ersten Mal</td><td>keiner (er ist ohnehin endgültig)</td></tr>
-        <tr><td>Billige Anfragen senden</td><td>Anbieter senden bis 16 Datenpakete je Anfrage (Faktor ~88 in Airtime)</td><td>Anbieter schöpfen ihr Budget aus, mehr nicht; echte Zieher bekommen dieselben Pakete</td></tr>
+        <tr><td>Billige Anfragen senden</td><td>der genannte Anbieter sendet bis 16 Datenpakete je Anfrage (Faktor ~88 in Airtime); mit Ziel 0xFF jeder Anbieter in Reichweite</td><td>Anbieter schöpfen ihr Budget aus, mehr nicht; echte Zieher bekommen dieselben Pakete</td></tr>
         <tr><td>Gefälschtes Angebot mit passendem Quell-Präfix und höherem Build</td><td>Knoten verwirft seinen bedienten Patch und beginnt einen Pull, der nie kommt (Code gelesen, nicht am Gerät gezeigt)</td><td>Knoten fällt als Quelle aus; Verteilung langsamer (Lücke)</td></tr>
         <tr><td>Absender-Kennung fälschen</td><td>betrifft nur Logs und den Testfilter</td><td>keiner im Feld</td></tr>
         <tr><td>Eigener Knoten ohne Budget</td><td>sendet so viel er will, wie jeder Störsender</td><td>Kanal; installieren kann er bei anderen nichts</td></tr>
@@ -834,7 +842,7 @@
         <tr><td>Replay a genuine update that has already failed here</td><td>rejected before a fragment is requested, also after another update came in between: persistent list of the last 4 failed images <span class="m meas">measured</span></td><td>only from the 5th failed image on the oldest one drops out</td></tr>
         <tr><td>Forged retract</td><td>Signature wrong, dropped <span class="m meas">measured</span></td><td>none</td></tr>
         <tr><td>Replay a genuine retract</td><td>same effect as the first time</td><td>none (it is final anyway)</td></tr>
-        <tr><td>Send cheap requests</td><td>Providers send up to 16 data packets per request (factor ~88 in airtime)</td><td>Providers exhaust their budget at worst; genuine pullers get the same packets</td></tr>
+        <tr><td>Send cheap requests</td><td>the named provider sends up to 16 data packets per request (factor ~88 in airtime); with target 0xFF every provider in range</td><td>Providers exhaust their budget at worst; genuine pullers get the same packets</td></tr>
         <tr><td>Forged offer with matching source prefix and higher build</td><td>Node discards the patch it serves and starts a pull that never arrives (code read, not shown on the device)</td><td>Node drops out as a source; distribution slower (gap)</td></tr>
         <tr><td>Fake the sender ID</td><td>affects only logs and the test filter</td><td>none in the field</td></tr>
         <tr><td>Own node without budget</td><td>sends as much as it wants, like any jammer</td><td>the channel; it cannot install anything on other nodes</td></tr>
@@ -883,7 +891,7 @@
             <option value="219439" data-de="Compilerwechsel, 219 KB" data-en="compiler change, 219 KB">Compilerwechsel, 219 KB</option>
           </select></div>
         <div class="ctl"><label for="bud">Budget</label>
-          <select id="bud"><option value="0.005" data-de="0,5 %" data-en="0.5 %">0,5 %</option><option value="0.01" selected>1 %</option><option value="0.02">2 %</option></select></div>
+          <select id="bud"><option value="0.003" data-de="0,3 % (Standard)" data-en="0.3 % (default)" selected>0,3 % (Standard)</option><option value="0.005" data-de="0,5 %" data-en="0.5 %">0,5 %</option><option value="0.01">1 %</option><option value="0.02">2 %</option></select></div>
         <div class="ctl"><label for="share"><span lang="de">Anteil Repeater mit FUOTA</span><span lang="en">share of repeaters running FUOTA</span></label>
           <select id="share"><option value="1" selected>100 %</option><option value="0.75">75 %</option><option value="0.5">50 %</option><option value="0.25">25 %</option></select></div>
         <div class="ctl"><label for="seed">Seed</label>
@@ -951,7 +959,8 @@
         <tr><td>Delta auf dem Gerät</td><td>Patches 6 bis 22 KB in rund 12 s zum neuen Image, Hash exakt</td></tr>
         <tr><td>Signatur und Manifest</td><td>fremder Schlüssel, falsches Gerät, falsche Quelle, Downgrade, schon gescheitertes Update: abgelehnt, bevor ein Patch-Fragment kommt; verfälschtes Fragment kostet eine Seite</td></tr>
         <tr><td>Kette A-B-C</td><td>Hop 1 nach 464 s (gerechnet 469 s), Hop 2 eine Seite dahinter, alles nur über B, 0 Duplikate</td></tr>
-        <tr><td>Zwei Anbieter</td><td>erst Gleichschritt (41 Duplikate auf 73), seit „nicht senden, solange ein Nachbar sendet“ 0 Duplikate und doppelt so schnell</td></tr>
+        <tr><td>Zwei Anbieter</td><td>erst Gleichschritt (41 Duplikate auf 73), mit „nicht senden, solange ein Nachbar sendet“ 0 Duplikate und doppelt so schnell; heute nennt jede Anfrage einen Anbieter, es sendet nur einer</td></tr>
+        <tr><td>Anfrage an einen Anbieter</td><td>Kette nach 484 / 696 s, 0 Duplikate; schweigt der einzige bekannte Anbieter, fragt der Knoten nach 23,5 s alle (0xFF) und ein anderer liefert; nach Neustart ebenso; im Leerlauf 877 s zwischen zwei Angeboten</td></tr>
         <tr><td>Retract</td><td>Fälschung verworfen; echter stoppt Pull und Angebot, erreicht Nachbarn in Sekunden, auch als Antwort auf ein Angebot; übersteht Neustart</td></tr>
         <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt</td></tr>
         <tr><td>Verlorene Anfrage</td><td>absichtlich verworfen: neue Anfrage nach 17,9 s (vorher 108 s), sonst keine zusätzlichen Anfragen, 0 Duplikate</td></tr>
@@ -966,7 +975,8 @@
         <tr><td>Delta on the device</td><td>Patches of 6 to 22 KB become the new image in about 12 s, hash exact</td></tr>
         <tr><td>Signature and manifest</td><td>foreign key, wrong device, wrong source, downgrade, update that has already failed: rejected before a patch fragment arrives; a corrupted fragment costs one page</td></tr>
         <tr><td>Chain A-B-C</td><td>Hop 1 after 464 s (calculated 469 s), hop 2 one page behind, everything only via B, 0 duplicates</td></tr>
-        <tr><td>Two providers</td><td>first in lockstep (41 duplicates out of 73), since “do not send while a neighbour is sending” 0 duplicates and twice as fast</td></tr>
+        <tr><td>Two providers</td><td>first in lockstep (41 duplicates out of 73), with “do not send while a neighbour is sending” 0 duplicates and twice as fast; today every request names one provider, only one sends</td></tr>
+        <tr><td>Request to one provider</td><td>chain done after 484 / 696 s, 0 duplicates; if the only known provider stays silent, the node asks everybody (0xFF) after 23.5 s and another one delivers; after a reboot likewise; 877 s between two offers when idle</td></tr>
         <tr><td>Retract</td><td>Forgery dropped; a genuine one stops pull and offer, reaches neighbours within seconds, also as a reply to an offer; survives reboot</td></tr>
         <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned</td></tr>
         <tr><td>Lost request</td><td>dropped on purpose: new request after 17.9 s (before: 108 s), no other extra requests, 0 duplicates</td></tr>
@@ -999,13 +1009,13 @@
           getestet) <span class="m meas">gemessen</span>. Dazu die Stage-0-Reserve von 16 auf 4 KB verkleinern
           (Slot 98 statt 97 bzw. 96 Seiten), damit auch der P1 passt. Ein ganzes Image (seitenweise komprimiert, 1.841
           statt 1.251 Fragmente beim Compilerwechsel) bleibt Rückfall für Nachzügler. <span class="m open">offen</span></li>
-        <li><b>Nachbarn, die sich nicht hören.</b> Ein Anbieter schweigt, wenn er im selben Intervall ein gleiches
-          Angebot gehört hat. Hat er einen Nachbarn, der den anderen Anbieter nicht hört, erfährt dieser in manchen
-          Intervallen nichts. Weil jeder Anbieter zu einem zufälligen Zeitpunkt in der zweiten Intervallhälfte sendet,
-          spricht er bei zwei Anbietern etwa jedes zweite Intervall <span class="m calc">berechnet</span>: das kostet
-          Minuten, blockiert aber nicht (wie bei Trickle, RFC 6206). Hören sich zwei Anbieter nicht, senden beide; ihre
-          Daten können beim gemeinsamen Nachbarn kollidieren, der dann neu anfragt. Im Testaufbau nicht messbar, weil
-          dort jeder jeden hört. <span class="m open">offen</span></li>
+        <li><b>Nachbarn, die sich nicht hören.</b> Hört ein Knoten viele Anbieter, die sich gegenseitig nicht hören,
+          greift die Unterdrückung gleicher Angebote kaum, und früher antworteten alle auf jede Anfrage. Darum heute: eine
+          Anfrage nennt einen Anbieter, Angebote werden bis alle 2 Tage selten und ab 1 h nicht mehr unterdrückt, ein
+          zurückliegender Nachbar setzt die Intervalle der anderen nicht zurück, und Anfragen kommen zu zufälligen
+          Zeitpunkten, damit Nachbarn, die sich nicht hören, nicht im Gleichschritt fragen. Im Testaufbau gemessen, soweit
+          dort möglich <span class="m meas">gemessen</span>; wie es sich in einem dichten Gebiet verhält, ist im Testaufbau
+          nicht messbar, weil dort jeder jeden hört. <span class="m open">offen</span></li>
         <li><b>Sofort anwenden</b> verteilt einen schlechten (aber signierten) Build schnell. Staffelung, Canary und
           Laufzeit der Kampagne sind nicht gebaut. <span class="m open">offen</span></li>
         <li><b>Nach einem Rückfall (behoben).</b> Der Knoten merkte sich nur das zuletzt gescheiterte Update, und
@@ -1059,13 +1069,13 @@
           <span class="m meas">measured</span>. In addition, shrink the Stage-0 reserve from 16 to 4 KB (slot of 98
           instead of 97 or 96 pages), so the P1 fits too. A full image (compressed page by page, 1,841 instead of
           1,251 fragments for the compiler change) stays as a fallback for stragglers. <span class="m open">open</span></li>
-        <li><b>Neighbours that cannot hear each other.</b> A provider stays silent when it has heard an identical offer
-          in the same interval. If one of its neighbours cannot hear the other provider, that neighbour learns nothing
-          in some intervals. Because every provider sends at a random moment in the second half of its interval, with
-          two providers it speaks in about every second interval <span class="m calc">calculated</span>: this costs
-          minutes but does not block (as with Trickle, RFC 6206). If two providers cannot hear each other, both send;
-          their data may collide at a shared neighbour, which then requests again. Not measurable on the bench,
-          because everybody hears everybody there. <span class="m open">open</span></li>
+        <li><b>Neighbours that cannot hear each other.</b> If a node hears many providers that cannot hear each other,
+          suppressing equal offers hardly works there, and earlier every provider answered every request. Hence today: a
+          request names one provider, offers become rare down to once every 2 days and are no longer suppressed from 1 h
+          on, a neighbour that is behind does not reset the intervals of the others, and requests come at random times so
+          that neighbours that cannot hear each other do not ask in step. Measured on the bench as far as possible there
+          <span class="m meas">measured</span>; how it behaves in a dense area cannot be measured on the bench, because
+          everybody hears everybody there. <span class="m open">open</span></li>
         <li><b>Apply at once</b> distributes a bad (but signed) build quickly. Staggered rollout, canary and
           campaign lifetime are not built. <span class="m open">open</span></li>
         <li><b>After a revert (fixed).</b> The node remembered only the most recently failed update, and intermediate
@@ -1108,7 +1118,7 @@
       <ol>
         <li>Gibt es Topologien oder Zustände, in denen ein Update dauerhaft hängen bleibt, obwohl Teilnehmer verbunden sind?</li>
         <li>Kann ein Angreifer ohne Release-Schlüssel mehr als verlangsamen? Wo sind wir zu optimistisch?</li>
-        <li>Ist 1 % Budget im Mesh vertretbar, oder stört schon das den normalen Verkehr spürbar?</li>
+        <li>Ist 0,3 % als Standard-Budget richtig gewählt, oder sollte ein Update schneller oder noch schonender laufen?</li>
         <li>Reicht „Hauptschleife läuft 60 s“ als Gesundheitsprüfung, oder was sollte eine neue Firmware vor der
           Bestätigung beweisen (zum Beispiel einen Nachbarn hören)?</li>
         <li>Wie sollte der Release-Schlüssel verwaltet und wechselbar werden?</li>
@@ -1128,7 +1138,7 @@
       <ol>
         <li>Are there topologies or states in which an update gets stuck for good although participants are connected?</li>
         <li>Can an attacker without the release key do more than slow things down? Where are we too optimistic?</li>
-        <li>Is a 1 % budget acceptable in the mesh, or does even that disturb normal traffic noticeably?</li>
+        <li>Is 0.3 % the right default budget, or should an update run faster or even more gently?</li>
         <li>Is “main loop runs for 60 s” enough as a health check, or what should a new firmware prove before
           confirming (for example hearing a neighbour)?</li>
         <li>How should the release key be managed and made replaceable?</li>
