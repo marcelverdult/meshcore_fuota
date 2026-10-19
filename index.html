@@ -806,12 +806,13 @@
       <p>Der Adafruit-Core übersetzt nRF52-Firmware mit <code>-Ofast</code>, also auf Tempo. FUOTA-Builds übersetzen mit
         <code>-Os</code> (auf Größe), schalten die ungenutzten USB-Klassen ab (Massenspeicher, HID, MIDI, Vendor, Video;
         die serielle Schnittstelle bleibt, das UF2-Laufwerk gehört dem Bootloader), lassen den Treiber des
-        Laser-Abstandssensors VL53L0X weg und rechnen beim Uhrenchip RX8130CE ohne die Zeitzonen-Funktionen der
-        C-Bibliothek. Das Einheits-Image hat außerdem keinen Display-Treiber mehr (die Taste bleibt). Es schrumpft so von
-        375.040 auf 260.976 B (92 auf 64 Seiten, RAM 37,5 auf 32,7 KB).
+        Laser-Abstandssensors VL53L0X, des Infrarot-Thermometers MLX90614, des alten Drucksensors BMP085 und des
+        Bodenfeuchtesensors RAK12035 weg, ebenso die Tonausgabe der Funkbibliothek, und rechnen beim Uhrenchip RX8130CE ohne
+        die Zeitzonen-Funktionen der C-Bibliothek. Das Einheits-Image hat außerdem keinen Display-Treiber mehr (die Taste
+        bleibt). Es schrumpft so von 375.040 auf 257.768 B (92 auf 63 Seiten, RAM 37,5 auf 32,5 KB).
         Weil weniger eingebetteter Code mitwandert, werden auch die Patches zwischen zwei Releases 18 bis 39 % kleiner:
         gemessen am Stock-FakeTec aus den Release-Tags, je mit <code>-Ofast</code> und mit <code>-Os</code> gebaut, alle
-        Patches mit Rundreise geprüft. Hinter ein Image mit 64 Seiten passen Patches bis 33 Seiten; größere wendet der
+        Patches mit Rundreise geprüft. Hinter ein Image mit 63 Seiten passen Patches bis 34 Seiten; größere wendet der
         Knoten überlappend an. Wie stark <code>-Os</code> das Signieren eigener Adverts und den Schlüsseltausch bei einer
         Anmeldung verlangsamt, ist auf Hardware noch nicht gemessen; Prüfen, AES und SHA-256 laufen in der CryptoCell.</p>
       <p>Ein Image für alle unterstützten Boards heißt eine Kampagne für das ganze Gebiet. Mit einem Image je Modell
@@ -828,12 +829,13 @@
       <p>The Adafruit core compiles nRF52 firmware with <code>-Ofast</code>, that is for speed. FUOTA builds compile with
         <code>-Os</code> (for size), turn off the unused USB classes (mass storage, HID, MIDI, vendor, video; the serial
         port stays, the UF2 drive belongs to the bootloader), leave out the driver of the VL53L0X laser distance sensor
-        and convert times for the RX8130CE clock chip without the time zone functions of the C library. The unified image
-        also has no display driver any more (the button stays). It shrinks from 375,040 to 260,976 B (92 to 64 pages,
-        RAM 37.5 to 32.7 KB). Because less inlined code moves along,
+        as well as those of the MLX90614 infrared thermometer, the old BMP085 pressure sensor and the RAK12035 soil moisture
+        sensor, drop the tone output of the radio library and convert times for the RX8130CE clock chip without the time
+        zone functions of the C library. The unified image also has no display driver any more (the button stays). It
+        shrinks from 375,040 to 257,768 B (92 to 63 pages, RAM 37.5 to 32.5 KB). Because less inlined code moves along,
         patches between two releases also become 18 to 39 % smaller: measured on the stock FakeTec from the release tags,
-        each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 33
-        pages fit behind an image of 64 pages; a node applies larger ones overlapping. How much <code>-Os</code> slows down
+        each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 34
+        pages fit behind an image of 63 pages; a node applies larger ones overlapping. How much <code>-Os</code> slows down
         signing the node's own adverts and the key exchange of a login is not yet measured on hardware; verification, AES
         and SHA-256 run in the CryptoCell.</p>
       <p>One image for all supported boards means one campaign for the whole area. With one image per model every model
@@ -846,7 +848,7 @@
         <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">60</td><td class="n">9,6 / 2,9 h</td><td class="n">24,4 / 7,3 / 3,7 h</td><td>hinter dem Image</td></tr>
         <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">197</td><td class="n">31,4 / 9,4 h</td><td class="n">46,2 / 13,9 / 6,9 h</td><td>hinter dem Image</td></tr>
         <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">131</td><td class="n">20,9 / 6,3 h</td><td class="n">35,7 / 10,7 / 5,4 h</td><td>hinter dem Image</td></tr>
-        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">770</td><td class="n">5,1 Tage / 36,8 h</td><td class="n">5,7 Tage / 41,3 / 20,6 h</td><td>an der Grenze (33 von 33 Seiten), sonst überlappend</td></tr>
+        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">770</td><td class="n">5,1 Tage / 36,8 h</td><td class="n">5,7 Tage / 41,3 / 20,6 h</td><td>hinter dem Image (33 von 34 Seiten)</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -855,14 +857,14 @@
         <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">60</td><td class="n">9.6 / 2.9 h</td><td class="n">24.4 / 7.3 / 3.7 h</td><td>behind the image</td></tr>
         <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">197</td><td class="n">31.4 / 9.4 h</td><td class="n">46.2 / 13.9 / 6.9 h</td><td>behind the image</td></tr>
         <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">131</td><td class="n">20.9 / 6.3 h</td><td class="n">35.7 / 10.7 / 5.4 h</td><td>behind the image</td></tr>
-        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">770</td><td class="n">5.1 days / 36.8 h</td><td class="n">5.7 days / 41.3 / 20.6 h</td><td>at the limit (33 of 33 pages), else overlapping</td></tr>
+        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">770</td><td class="n">5.1 days / 36.8 h</td><td class="n">5.7 days / 41.3 / 20.6 h</td><td>behind the image (33 of 34 pages)</td></tr>
       </table>
     </div>
     <div class="grid2" lang="de">
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
       <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 0,3 % bis rund 1,8 % Update-Verkehr im dichtesten Zehntel (bei 1 % rund 6 %) <span class="m calc">berechnet</span>. Eine Anfrage nennt einen Anbieter: auch wenn mehrere es haben, sendet für einen Fragenden immer nur einer.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.300 bis 1.700 Datenpakete im ganzen Gebiet, Compilerwechsel 16.900 bis 22.200 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 170.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 260.976 B (64 Seiten), RAM 32,7 KB belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 64 Seiten passen 33, größere werden überlappend angewendet.</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 257.768 B (63 Seiten), RAM 32,5 KB belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 63 Seiten passen 34, größere werden überlappend angewendet.</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Zuhören</h3><p>Während eine Kampagne läuft, hört ein Knoten oft ein Angebot (jeder eigene Fortschritt setzt das Intervall auf 10 s). Wer später dazukommt, wartet höchstens das längste Trickle-Intervall: 2 Tage. Im Testaufbau lagen im Leerlauf 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>. Gewollt für Updates, die ohnehin Tage dauern dürfen: dafür bleibt der Kanal nach einem Update fast ruhig.</p></div>
     </div>
@@ -870,7 +872,7 @@
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
       <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 0.3 % up to about 1.8 % update traffic in the densest tenth (about 6 % at 1 %) <span class="m calc">calculated</span>. A request names one provider: even when several have it, only one sends for a given puller.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,300 to 1,700 data packets in the whole area, compiler change 16,900 to 22,200 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 170,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 260,976 B (64 pages), RAM 32.7 KB used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 33 fit behind an image of 64 pages, larger ones are applied overlapping.</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 257,768 B (63 pages), RAM 32.5 KB used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 34 fit behind an image of 63 pages, larger ones are applied overlapping.</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Listening</h3><p>While a campaign runs, a node hears offers often (every own progress sets the interval back to 10 s). A node that joins later waits at most the longest Trickle interval: 2 days. On the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. Intended for updates that may take days anyway: in return the channel stays almost quiet after an update.</p></div>
     </div>
@@ -1066,7 +1068,7 @@
       <p>Keine Kollisionen und versteckten Endgeräte, kein normaler Verkehr, keine Paketverluste, ein Anbieter je Seite
         (mehrere würden schneller liefern, im Testaufbau doppelt so schnell). Ein Anbieter, der mehrere Nachbarn mit
         verschiedenem Stand versorgt, teilt sein Budget; das rechnet das Modell nicht ein. Nachbardaten gibt es nur von
-        Repeatern, deren Nachbarn jemand abgerufen hat. Real dauert es eher länger. Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags. Der Compilerwechsel liegt mit 33 Seiten genau an der Grenze dessen, was hinter ein Image mit 64 Seiten passt. Wird er größer, wendet ein Knoten ihn überlappend an, erst nach dem Fenster, in dem er weitergibt; diese Wartezeit rechnet das Modell nicht ein.</p>
+        Repeatern, deren Nachbarn jemand abgerufen hat. Real dauert es eher länger. Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags. Der Compilerwechsel passt mit 33 Seiten gerade noch hinter ein Image mit 63 Seiten (34 frei). Wird er größer, wendet ein Knoten ihn überlappend an, erst nach dem Fenster, in dem er weitergibt; diese Wartezeit rechnet das Modell nicht ein.</p>
     </div>
     <div lang="en" class="callout warn">
       <b>What the model cannot do</b>
@@ -1074,7 +1076,7 @@
         (several would deliver faster, twice as fast on the bench). A provider that serves several neighbours with
         different states shares its budget; the model does not account for that. Neighbour data exists only for
         repeaters whose neighbours somebody has fetched. Real runs take longer. The patch sizes come from the stock FakeTec with <code>-Os</code> from the release
-        tags. With 33 pages the compiler change sits exactly at the limit of what fits behind an image of 64 pages. If it
+        tags. With 33 pages the compiler change just fits behind an image of 63 pages (34 free). If it
         grows, a node applies it overlapping, only after the window in which it passes it on; the model does not include
         that wait.</p>
     </div>
@@ -1144,8 +1146,9 @@
       <h2>Lücken und offene Fragen</h2>
       <ul>
         <li><b>Ein Image für mehrere Boards hat Grenzen.</b> RAK4631 ist nur gebaut, nicht auf Hardware getestet. Sein
-          WisBlock-GPS (I2C-Modul, Versorgung über IO-Pins) und die BSEC-Auswertung des BME680 fehlen im gemeinsamen Image:
-          beide passen nicht in 96 Seiten (WisBlock-GPS 30.244 B mehr, BSEC 9.920 B über der Grenze)
+          WisBlock-GPS (I2C-Modul, Versorgung über IO-Pins), die BSEC-Auswertung des BME680 und der Bodenfeuchtesensor
+          RAK12035 fehlen im gemeinsamen Image. Mit dem kleineren Image hätte BSEC Platz (Probe-Build: 72 Seiten), das WisBlock-GPS
+          rechnerisch auch (Probe vorher: 30.244 B mehr); BSEC ist ein Binary von Bosch unter eigener Lizenz
           <span class="m meas">gemessen</span>. Neue Boards brauchen einen Tabelleneintrag
           und eine Board-ID. <span class="m open">offen</span></li>
         <li><b>Ein Knoten hält eine Kampagne.</b> Ein Knoten, der per USB eine Kampagne anbietet, die er selbst nicht
@@ -1212,8 +1215,9 @@
       <h2>Gaps and open questions</h2>
       <ul>
         <li><b>One image for several boards has limits.</b> RAK4631 is built only, not tested on hardware. Its WisBlock
-          GPS (I2C module, power through IO pins) and the BSEC evaluation of the BME680 are not in the shared image: neither
-          fits into 96 pages (WisBlock GPS adds 30,244 B, BSEC ends 9,920 B over the limit)
+          GPS (I2C module, power through IO pins), the BSEC evaluation of the BME680 and the RAK12035 soil moisture sensor
+          are not in the shared image. With the smaller image BSEC would fit (probe build: 72 pages), WisBlock GPS by calculation
+          too (earlier probe: 30,244 B more); BSEC is a binary by Bosch under its own licence
           <span class="m meas">measured</span>. New boards need a table entry and a board id.
           <span class="m open">open</span></li>
         <li><b>A node holds one campaign.</b> A node that offers a campaign loaded over USB which it cannot apply itself
@@ -1414,7 +1418,7 @@
     transfers.forEach(function (t) { senders[t.m] = 1; var key = t.m + ":" + t.k;
       if (!sendPairs[key]) { sendPairs[key] = 1; packets += t.k < 0 ? mfFr : Math.ceil(Math.min(PAGE, patch - t.k * PAGE) / FRAG); } });
     return { seed: seed, part: part, tm: tm, tp: tp, pages: pages, total: total, reached: reached, parts: parts, patch: patch, mfFr: mfFr,
-             transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 33 };
+             transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 34 };
   }
 
   var cv = document.getElementById("map"), ctx = cv.getContext("2d"), S = null, t = 0, playing = false, last = 0;
@@ -1558,12 +1562,12 @@
       ["eben", justNow(true)], ["fertig", done + " von " + S.parts], ["holt gerade", pulling], ["senden gerade", Object.keys(senders).length],
       ["alle Erreichbaren fertig nach", fmt(S.total)], ["nie erreicht", unreached + (S.part.length - S.parts ? " (+" + (S.part.length - S.parts) + " ohne FUOTA)" : "")],
       ["Knoten, die je Daten senden", S.senders], ["Datenpakete gesamt, ca.", S.packets.toLocaleString("de-DE")],
-      ["Patch passt hinter das Image (64 Seiten)", S.fits ? "ja, " + S.pages + " von höchstens 33 Seiten" : "nein: " + S.pages + " Seiten, frei sind 33; überlappend nach dem Fenster"]
+      ["Patch passt hinter das Image (63 Seiten)", S.fits ? "ja, " + S.pages + " von höchstens 34 Seiten" : "nein: " + S.pages + " Seiten, frei sind 34; überlappend nach dem Fenster"]
     ] : [
       ["just now", justNow(false)], ["done", done + " of " + S.parts], ["pulling now", pulling], ["sending now", Object.keys(senders).length],
       ["all reachable done after", fmt(S.total)], ["never reached", unreached + (S.part.length - S.parts ? " (+" + (S.part.length - S.parts) + " without FUOTA)" : "")],
       ["nodes that ever send data", S.senders], ["data packets in total, approx.", S.packets.toLocaleString("en-GB")],
-      ["patch fits behind the image (64 pages)", S.fits ? "yes, " + S.pages + " of at most 33 pages" : "no: " + S.pages + " pages, 33 are free; overlapping after the window"]
+      ["patch fits behind the image (63 pages)", S.fits ? "yes, " + S.pages + " of at most 34 pages" : "no: " + S.pages + " pages, 34 are free; overlapping after the window"]
     ];
     el("stats").innerHTML = rows.map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("");
     if (hfocus >= 0) {   // the focused action on top of everything
