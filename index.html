@@ -832,8 +832,9 @@
         Weil weniger eingebetteter Code mitwandert, werden auch die Patches zwischen zwei Releases 18 bis 39 % kleiner:
         gemessen am Stock-FakeTec aus den Release-Tags, je mit <code>-Ofast</code> und mit <code>-Os</code> gebaut, alle
         Patches mit Rundreise geprüft. Hinter ein Image mit 63 Seiten passen Patches bis 34 Seiten; größere wendet der
-        Knoten überlappend an. Wie stark <code>-Os</code> das Signieren eigener Adverts und den Schlüsseltausch bei einer
-        Anmeldung verlangsamt, ist auf Hardware noch nicht gemessen; Prüfen, AES und SHA-256 laufen in der CryptoCell.</p>
+        Knoten überlappend an. Auf einem FakeTec gemessen: Signieren eines eigenen Adverts 12,9 statt 11,7 ms, Schlüsseltausch
+        bei einer Anmeldung 30,6 statt 30,3 ms; Prüfen, AES und SHA-256 laufen in der CryptoCell (Prüfen 17,8 ms) und hängen
+        nicht am Compiler.</p>
       <h3>Eingefrorene Toolchain, reproduzierbarer Build <span class="m meas">gemessen</span></h3>
       <p>Ein Patch ist nur klein, solange altes und neues Image mit demselben Compiler und denselben Bibliotheken
         entstehen: Der Wechsel von GCC 7 auf GCC 14 machte aus 32,6 KB 219 KB (bsdiff, <code>-Ofast</code>). Die
@@ -870,9 +871,9 @@
         shrinks from 375,040 to 257,768 B (92 to 63 pages, RAM 37.5 to 32.5 KB). Because less inlined code moves along,
         patches between two releases also become 18 to 39 % smaller: measured on the stock FakeTec from the release tags,
         each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 34
-        pages fit behind an image of 63 pages; a node applies larger ones overlapping. How much <code>-Os</code> slows down
-        signing the node's own adverts and the key exchange of a login is not yet measured on hardware; verification, AES
-        and SHA-256 run in the CryptoCell.</p>
+        pages fit behind an image of 63 pages; a node applies larger ones overlapping. Measured on a FakeTec: signing the node's
+        own advert 12.9 instead of 11.7 ms, the key exchange of a login 30.6 instead of 30.3 ms; verification, AES and
+        SHA-256 run in the CryptoCell (verification 17.8 ms) and do not depend on the compiler.</p>
       <h3>Frozen toolchain, reproducible build <span class="m meas">measured</span></h3>
       <p>A patch is only small while old and new image come from the same compiler and the same libraries: the change
         from GCC 7 to GCC 14 turned 32.6 KB into 219 KB (bsdiff, <code>-Ofast</code>). The stock configuration of
@@ -1165,6 +1166,7 @@
         <tr><td>Überlappend anwenden, Fenster</td><td>Patch 4 Seiten passt nicht hinter ein 94-Seiten-Image: der Knoten gibt ihn im Fenster weiter (ein zweiter Knoten holt ihn dort komplett, 0 Duplikate), wendet 180 s nach der letzten Lieferung überlappend an (Lese-Abstand 8.192 B, 12,8 s), bestätigt und bietet danach nichts mehr an; passt der Patch dahinter, wendet er sofort an und bietet weiter an</td></tr>
         <tr><td>P1 über Funk</td><td>holt 72 Fragmente von einem FakeTec (der die P1-Kampagne nur weitergibt), wendet überlappend an, Lese-Abstand 8.139 B wie auf dem Rechner berechnet, bestätigt; Rückfall nach drei Fehlstarts auch auf dem P1</td></tr>
         <tr><td>Größenwächter</td><td>Image über 96 Seiten: der Build bricht ab (FakeTec und P1)</td></tr>
+        <tr><td>Kleineres Image (<code>-Os</code>) auf Hardware</td><td>v1 per USB auf zwei FakeTecs, einen P1 und einen T114: bestätigt, Board über den Deskriptor erkannt, USB meldet wie vorher nur die serielle Schnittstelle; eine Kampagne v1→v2 holen drei Knoten in 4,4 bis 4,7 min über Funk, überlappend v2→v3 mit Fenster (Lese-Abstand 5.013 B wie auf dem Rechner), Slot-Hashes gleich dem gebauten Image; 1200-Baud-Sprung ins serielle DFU, das Bootstrap per <code>adafruit-nrfutil</code> schreibt Stage-0 an 0x26000, der Knoten startet und behält seinen Schlüssel</td></tr>
         <tr><td>Kette A-B-C bei 1 %</td><td>Hop 1 nach 4.664 s (gerechnet 4.694 s, das Zehnfache von 10 %); Budget über eine Stunde 1,02 %, dazu die normalen Adverts des Repeaters; Hop 2 nach 7.053 s statt 6.192 s, weil eine verlorene Anfrage 15 min kostete (siehe Lücken)</td></tr>
       </table>
     </div>
@@ -1186,6 +1188,7 @@
         <tr><td>Overlapping apply, window</td><td>A 4-page patch does not fit behind a 94-page image: the node passes it on during the window (a second node pulls all of it there, 0 duplicates), applies overlapping 180 s after its last delivery (read margin 8,192 B, 12.8 s), confirms and offers nothing afterwards; if the patch fits behind, it applies at once and keeps offering</td></tr>
         <tr><td>P1 over the air</td><td>pulls 72 fragments from a FakeTec (which only passes the P1 campaign on), applies overlapping, read margin 8,139 B as calculated on the computer, confirms; revert after three failed boots on the P1 as well</td></tr>
         <tr><td>Size guard</td><td>Image above 96 pages: the build stops (FakeTec and P1)</td></tr>
+        <tr><td>Smaller image (<code>-Os</code>) on hardware</td><td>v1 over USB onto two FakeTecs, one P1 and one T114: confirmed, board identified by the descriptor, USB reports only the serial port as before; three nodes pull a campaign v1→v2 over the air in 4.4 to 4.7 min, overlapping v2→v3 with window (read margin 5,013 B as on the computer), slot hashes equal to the built image; 1200 baud touch into the serial DFU, the bootstrap through <code>adafruit-nrfutil</code> writes Stage-0 at 0x26000, the node starts and keeps its key</td></tr>
         <tr><td>Chain A-B-C at 1 %</td><td>Hop 1 after 4,664 s (calculated 4,694 s, ten times the 10 % run); budget over one hour 1.02 %, plus the repeater's regular adverts; hop 2 after 7,053 s instead of 6,192 s because one lost request cost 15 min (see gaps)</td></tr>
       </table>
     </div>
