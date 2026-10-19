@@ -848,7 +848,10 @@
         byte-gleich. Ein Build unter Linux ist es gegenüber macOS nicht: Das Toolchain-Paket gleicher Version enthält für
         beide Systeme dieselben 376 Objektdateien der C-Mathebibliothek, aber in anderer Reihenfolge im Archiv, und der
         Linker ordnet die Funktionen entsprechend anders (gleicher Code, Patch zwischen beiden 8.259 B). Release-Images
-        sollen darum immer in derselben Build-Umgebung entstehen (Vorschlag, offen: ein Linux-Container). Patches werden immer gegen das archivierte
+        entstehen darum immer im selben Linux-Container: Basis-Image per Digest und auf <code>linux/arm64</code>
+        festgelegt, PlatformIO 6.2.0 und seine Python-Pakete mit Version und Hash, dazu die Pins oben; gebaut wird genau
+        ein Commit. Zwei Läufe und ein unabhängiger Linux-Build ohne dieses Container-Image (Python-Pakete ohne Hashes, anderer Pfad) ergaben alle Images byte-gleich
+        <span class="m meas">gemessen</span>. Ob ein x86_64-Rechner dasselbe Image baut, ist offen. Patches werden immer gegen das archivierte
         Release-Binary gebaut, das auf den Geräten läuft, nie gegen einen Neubau. Eine falsche Quelle kann ohnehin nichts
         zerstören: Ein Knoten zieht nur, wenn der Quell-Hash im Angebot zu seinem Image passt.</p>
       <p>Ein Image für alle unterstützten Boards heißt eine Kampagne für das ganze Gebiet. Mit einem Image je Modell
@@ -887,7 +890,10 @@
         byte-identical. A build on Linux is not, compared with macOS: the toolchain package of the same version contains
         the same 376 object files of the C math library for both systems, but in a different order inside the archive,
         and the linker orders the functions accordingly (same code, patch between the two 8,259 B). Release images
-        should therefore always come from the same build environment (proposal, open: a Linux container). Patches are always built against the archived
+        therefore always come from the same Linux container: base image pinned by digest and to <code>linux/arm64</code>,
+        PlatformIO 6.2.0 and its Python packages pinned by version and hash, plus the pins above; exactly one commit is
+        built. Two runs and an independent Linux build without this container image (Python packages without hashes, another path) gave byte-identical images
+        <span class="m meas">measured</span>. Whether an x86_64 machine builds the same image is open. Patches are always built against the archived
         release binary that runs on the devices, never against a rebuild. A wrong source cannot break anything anyway: a
         node only pulls when the source hash in the offer matches its image.</p>
       <p>One image for all supported boards means one campaign for the whole area. With one image per model every model
