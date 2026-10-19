@@ -25,3 +25,5 @@ MeshCore. The source code follows later. We are looking for flaws in the reasoni
 
 **Lizenz / License:** Text und Abbildungen / text and figures: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 siehe / see `LICENSE`. Namensnennung / attribution: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“.
+Ausgenommen ist das Logo (Ordner `logo/`): Es steht nicht unter CC BY 4.0. / The logo (folder `logo/`) is excluded: it is
+not licensed under CC BY 4.0.
