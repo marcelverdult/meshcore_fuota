@@ -7,7 +7,9 @@
 <meta property="og:title" content="MeshCore FUOTA">
 <meta property="og:description" content="Firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
 <meta property="og:image" content="https://marcelverdult.github.io/meshcore_fuota/logo/logo-dark.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="logo/favicon-48.png">
 <link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>FUOTA Design Review</title>
@@ -57,7 +59,7 @@
   /* Logo: transparent version on the light theme, the dark banner on the dark theme (same selectors as the palette) */
   .brand{display:flex;flex-direction:column;gap:8px}
   .logo{display:block;width:min(280px,64vw);height:auto}
-  .logo.on-dark{display:none;border-radius:8px;width:min(330px,76vw)}   /* banner padding: wider for the same lettering */
+  .logo.on-dark{display:none;border-radius:8px;width:min(310px,72vw)}   /* banner padding: wider for the same lettering */
   @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo.on-light{display:none}
     :root:not([data-theme="light"]) .logo.on-dark{display:block}}
   :root[data-theme="dark"] .logo.on-light{display:none}
@@ -150,8 +152,8 @@
 <div class="wrap">
   <div class="topbar">
     <div class="brand">
-      <img class="logo on-light" src="logo/logo.png" width="800" height="288" alt="MeshCore FUOTA: Firmware Update Over the Air">
-      <img class="logo on-dark" src="logo/logo-dark.png" width="800" height="208" alt="MeshCore FUOTA: Firmware Update Over the Air">
+      <img class="logo on-light" src="logo/logo.png" width="1067" height="402" alt="MeshCore FUOTA: Firmware Update Over the Air">
+      <img class="logo on-dark" src="logo/logo-dark.png" width="1180" height="420" alt="MeshCore FUOTA: Firmware Update Over the Air">
       <span class="eyebrow"><span lang="de">Entwurf zur Prüfung</span><span lang="en">draft for review</span></span>
     </div>
     <div class="langs" role="group" aria-label="Sprache / language">
