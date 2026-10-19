@@ -524,13 +524,18 @@
         <code>auto on</code> wendet danach von selbst an; Funkeinstellungen und Schlüssel blieben über fünf Image-Wechsel gleich.
         Geprüft per USB und über eine Testhilfe, die einen Befehl wie aus dem Mesh ausführt; der Weg über LoRa vom
         Admin-Login an ist noch offen. <span class="m open">offen</span></p>
-      <p>Der Release-Build verhält sich wie ein Stock-Repeater: Stock-Funkvorgaben, Advert beim Start, gespeicherte
-        Einstellungen und Schlüssel bleiben (FUOTA schreibt nur seine eigene Datei). Die Schalter des Testaufbaus (SF7 und
-        1 dBm beim Start erzwungen, kein Advert, 10 % Budget, Testbefehle) gibt es nur im Test-Build; eine Build-Sperre
-        bricht den Release-Build ab, sobald einer davon hineingerät. Release und Test haben verschiedene Ziel-IDs, eine
-        Kampagne für den Testaufbau passt also nie auf einen Release-Knoten. Den öffentlichen Schlüssel teilen beide im
-        Proof of Concept aber noch (siehe Lücken). <span class="m meas">gemessen</span>:
-        375.040 B (92 von 96 Seiten), die Sperre greift bei allen fünf Schaltern.</p>
+      <p>Der Release-Build nutzt die Stock-Vorgaben für Frequenz, Bandbreite und Spreizfaktor, sendet beim Start ein
+        Advert und lässt gespeicherte Einstellungen und Schlüssel unverändert (FUOTA schreibt nur seine eigene Datei). Ein Stock-Repeater ist er trotzdem nicht.
+        Unterschiede zum Stock-Env des FakeTec (<code>ProMicro_repeater</code>), laut Build-Konfiguration und Code: kein BLE in der App (<code>start ota</code> startet den BLE-DFU
+        des Bootloaders), keine Anzeige (<code>NullDisplayDriver</code> statt des Anzeige-Treibers), Board und Pins kommen
+        zur Laufzeit aus dem Deskriptor, gebaut mit <code>-Os</code> statt <code>-Ofast</code>, zusätzlich die Sensor-Treiber
+        für SHTC3, SHT4x, LPS22HB, INA260 und BME680. Gegenüber den Stock-Envs anderer Boards fehlt je nach Board etwas
+        (siehe „Was es kostet“ und „Lücken“). Die Schalter des Testaufbaus (SF7 und 1 dBm beim Start erzwungen, kein
+        Advert, 10 % Budget, Testbefehle) gibt es nur im Test-Build; eine Build-Sperre bricht den Release-Build ab, sobald
+        einer davon hineingerät. Release und Test haben verschiedene Ziel-IDs, und jedes Anwenden prüft die Ziel-ID des
+        Manifests: Eine Kampagne für den Testaufbau passt nie auf einen Release-Knoten. Den öffentlichen Schlüssel teilen
+        beide im Proof of Concept aber noch (siehe Lücken). <span class="m meas">gemessen</span> (Stand 19.10.2026):
+        260.568 B (64 von 96 Seiten), kein BLE-Symbol im Image, die Sperre greift bei allen fünf Schaltern.</p>
     </div>
     <div lang="en" class="prose">
       <h3>Starting by manual installation <span class="m open">proposal, open</span></h3>
@@ -560,11 +565,18 @@
         settings and keys stayed the same across five image changes. Checked over USB and with a test helper that runs a
         command as if it came from the mesh; the path over LoRa from the admin login on is still open.
         <span class="m open">open</span></p>
-      <p>The release build behaves like a stock repeater: stock radio defaults, advert at boot, saved settings and keys
-        stay (FUOTA writes only its own file). The bench switches (SF7 and 1 dBm forced at boot, no advert, 10 % budget,
-        test commands) exist only in the test build; a build guard stops the release build as soon as one of them gets in.
-        Release and test have different target IDs, so a campaign for the bench never fits a release node. Both still
-        share the public key in the proof of concept, though (see gaps). <span class="m meas">measured</span>: 375,040 B (92 of 96 pages), the guard fires for all five switches.</p>
+      <p>The release build uses the stock defaults for frequency, bandwidth and spreading factor, sends an advert at
+        boot and leaves saved settings and keys unchanged (FUOTA writes only its own file). It is still not a stock repeater. Differences from the stock env of the FakeTec
+        (<code>ProMicro_repeater</code>) according to the build configuration and the code: no BLE in the app (<code>start ota</code> starts the BLE DFU of the bootloader), no
+        display (<code>NullDisplayDriver</code> instead of the display driver), board and pins come from the descriptor at
+        run time, built with <code>-Os</code> instead of <code>-Ofast</code>, plus the sensor drivers for SHTC3, SHT4x,
+        LPS22HB, INA260 and BME680. Compared with the stock envs of other boards, some parts are missing depending on the
+        board (see “What it costs” and “Gaps”). The bench switches (SF7 and 1 dBm forced at boot, no advert, 10 % budget, test commands)
+        exist only in the test build; a build guard stops the release build as soon as one of them gets in. Release and
+        test have different target IDs, and every apply checks the target ID of the manifest: a campaign for the bench
+        never fits a release node. Both still share the public key in the proof of concept, though (see gaps).
+        <span class="m meas">measured</span> (as of 19 Oct 2026): 260,568 B (64 of 96 pages), no BLE symbol in the image,
+        the guard fires for all five switches.</p>
     </div>
   </section>
 
