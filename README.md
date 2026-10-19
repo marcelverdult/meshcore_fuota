@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="logo/logo-dark.png">
+    <img src="logo/logo.png" width="420" alt="MeshCore FUOTA: Firmware Update Over the Air">
+  </picture>
+</p>
+
 # MeshCore FUOTA
 
 **Deutsch:** Firmware-Updates über LoRa für MeshCore-Repeater. Dieses Repository enthält vorerst nur die Beschreibung
