@@ -293,9 +293,11 @@
         Bootloaders). Dasselbe Image läuft darum mit beiden SoftDevice-Versionen: ein P1-Image, nur mit den Headern von
         S140 6.1.1 gebaut, ist byte-gleich zu dem, das auf dem P1 mit S140 7.3.0 läuft <span class="m meas">gemessen</span>.
         Repeater-Images laufen nur an ihrer Link-Adresse, darum ist Slot B Zwischenlager und kein zweites Startziel.</p>
-      <p><b>Ein Image für mehrere Boards.</b> Ein Repeater-Image für FakeTec, SenseCAP P1 und RAK4631 (alle nRF52840 mit
-        SX1262) wählt das Board beim Start: Pins von Funkchip, SPI, I2C, GPS, LEDs, Taste und Batteriemessung, TCXO,
-        RF-Schalter, DC/DC und 32-kHz-Takt stehen in einer Tabelle im Image. Welches Board es ist, sagt ein Deskriptor von
+      <p><b>Ein Image für mehrere Boards.</b> Ein Repeater-Image für FakeTec, SenseCAP P1, RAK4631, Heltec T114, Seeed Xiao
+        nRF52840 und Heltec T096 (alle nRF52840 mit SX1262; die letzten drei gebaut, nicht auf Hardware getestet) wählt das
+        Board beim Start: Pins von Funkchip, SPI, I2C, GPS, LEDs, Taste und Batteriemessung, TCXO,
+        RF-Schalter, DC/DC, 32-kHz-Takt und die Sendeleistung (Vorgabe und Obergrenze, wichtig bei Boards mit
+        Verstärker) stehen in einer Tabelle im Image. Welches Board es ist, sagt ein Deskriptor von
         32 Byte am Ende der Stage-0-Seite (Magie, Version, Board-ID, Adresse der Seite, CRC-32). Stage-0 wird je Board
         einmal per Kabel installiert, FUOTA schreibt diese Seite nie. Die App liest den Deskriptor an der Adresse, die das
         SoftDevice als Sprungziel des Bootloaders nennt, und vergleicht mit der Board-ID im Bootloader; nennt der ein anderes
@@ -315,9 +317,11 @@
         with the S140 6.1.1 headers is byte-identical to the one running on the P1 with S140 7.3.0
         <span class="m meas">measured</span>. Repeater images run only at their link address, so slot B is a staging
         area and never a second boot target.</p>
-      <p><b>One image for several boards.</b> One repeater image for FakeTec, SenseCAP P1 and RAK4631 (all nRF52840 with
-        SX1262) picks the board at start: the pins of radio, SPI, I2C, GPS, LEDs, button and battery measurement, TCXO, RF
-        switch, DC/DC and the 32 kHz clock are in a table inside the image. Which board it is comes from a 32-byte
+      <p><b>One image for several boards.</b> One repeater image for FakeTec, SenseCAP P1, RAK4631, Heltec T114, Seeed
+        Xiao nRF52840 and Heltec T096 (all nRF52840 with SX1262; the last three built, not tested on hardware) picks the
+        board at start: the pins of radio, SPI, I2C, GPS, LEDs, button and battery measurement, TCXO, RF
+        switch, DC/DC, the 32 kHz clock and the transmit power (default and upper limit, important for boards with an
+        amplifier) are in a table inside the image. Which board it is comes from a 32-byte
         descriptor at the end of the Stage-0 page (magic, version, board id, address of the page, CRC-32). Stage-0 is
         installed once per board by cable; FUOTA never writes that page. The app reads the descriptor at the address the
         SoftDevice names as the jump target of the bootloader and compares it with the board id in the bootloader; if that
