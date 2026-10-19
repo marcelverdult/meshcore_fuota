@@ -502,8 +502,14 @@
         von der Vorversion: leere Status-Seite, Image in Slot A, Manifest in der letzten Seite von Slot B, der Patch direkt
         davor. Beim Start findet der Knoten die Kampagne dort, prüft Signatur und Patch-Hash und bietet sie an, weil sie
         für ihn selbst nicht passt. Wer manuell aktualisiert, wird so zum Seed. Diesen Startpfad gibt es heute für Seeds
-        per USB; mit einem UF2-Paket ist er nicht getestet, ebenso wenig, ob der UF2-Bootloader Slot B mitschreibt. Ein
-        Paket trägt eine Kampagne, also nur den Patch von der Vorversion; Kampagnen gibt es ab der zweiten FUOTA-Version.</p>
+        per USB. Ein Paket trägt eine Kampagne, also nur den Patch von der Vorversion; Kampagnen gibt es ab der zweiten
+        FUOTA-Version.</p>
+      <p>So geht es per UF2 nicht <span class="m meas">gemessen</span>: Der UF2-Bootloader schreibt nur unterhalb 0xEA000
+        (die 40 KB vor dem Bootloader hält er frei). Manifest und kleine Patches liegen in den letzten drei Seiten von
+        Slot B, also darüber. Diese Blöcke lehnt der Bootloader ab und zählt sie nicht; die Übertragung wird nie fertig,
+        er startet nicht neu, und die letzte Seite des Images bleibt ungeschrieben. Serielles DFU hat laut Quelle
+        dieselbe Grenze. Ein Paket braucht darum für die Kampagne einen Platz unterhalb 0xEA000, den die Firmware beim
+        Start übernimmt. <span class="m open">offen</span></p>
       <p>Ist das Netz schon aktuell, bietet ein frisch installierter Knoten nur an. Nachbarn auf dem Ziel-Build verwerfen
         das Angebot ohne Rückfrage (Build nicht höher, Quelle passt nicht), es fließen keine Daten. Ein Angebot kostet bei
         SF8 rund 0,48 s Airtime <span class="m calc">berechnet</span>; nach Trickle sind das 15 Angebote in den ersten
@@ -532,9 +538,14 @@
         version next to the new image: an empty status page, the image in slot A, the manifest in the last page of slot B
         and the patch right in front of it. At boot the node finds the campaign there, checks signature and patch hash and
         offers it, because it does not fit the node itself. Whoever updates by hand thus becomes a seed. This start path
-        exists today for seeds loaded over USB; it is not tested with a UF2 package, nor whether the UF2 bootloader writes
-        slot B as well. A package carries one campaign, so only the patch from the previous version; campaigns start with
-        the second FUOTA version.</p>
+        exists today for seeds loaded over USB. A package carries one campaign, so only the patch from the previous
+        version; campaigns start with the second FUOTA version.</p>
+      <p>Over UF2 it does not work this way <span class="m meas">measured</span>: the UF2 bootloader writes only below
+        0xEA000 (it keeps the 40 KB in front of the bootloader free). The manifest and small patches lie in the last three
+        pages of slot B, above that limit. The bootloader rejects those blocks and does not count them; the transfer never
+        completes, it does not restart, and the last page of the image stays unwritten. Per its source, serial DFU has the
+        same limit. A package therefore needs a place for the campaign below 0xEA000 that the firmware takes over at boot.
+        <span class="m open">open</span></p>
       <p>If the network is already up to date, a freshly installed node only offers. Neighbours on the target build drop
         the offer without asking back (build not higher, source does not match), no data flows. One offer costs about
         0.48 s of airtime at SF8 <span class="m calc">calculated</span>; with Trickle that is 15 offers in the first
