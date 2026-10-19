@@ -266,7 +266,7 @@
         <tr><td><b>Teilnehmender Repeater</b></td><td>Normale MeshCore-Repeater-Firmware mit FUOTA-Modul: hört Angebote, holt, prüft, gibt weiter, wendet an.</td><td>Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
         <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB)</td><td>Läuft nur beim Booten: führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Kein Funk, keine Signaturprüfung (vertraut dem Auftrag der App, siehe Lücken).</td></tr>
         <tr><td><b>Repeater ohne FUOTA</b>, Companions</td><td>Verwerfen Typ 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, bewusst nicht geroutet).</td><td>Ein Update weitertragen.</td></tr>
-        <tr><td><b>Betreiber</b></td><td>Entscheidet, ob er mitmacht. Ab Werk wendet ein Knoten ein fertiges Update selbst an; der Betreiber kann das abschalten (<code>fuota auto off</code>) und ein fertiges Update selbst starten (<code>fuota apply</code>), auch über die Fern-CLI per LoRa. <code>fuota info</code> zeigt den Stand. Gebaut, auf Hardware noch nicht getestet.</td><td>Andere Knoten beeinflussen.</td></tr>
+        <tr><td><b>Betreiber</b></td><td>Entscheidet, ob er mitmacht. Ab Werk wendet ein Knoten ein fertiges Update selbst an; der Betreiber kann das abschalten (<code>fuota auto off</code>) und ein fertiges Update selbst starten (<code>fuota apply</code>), auch über die Fern-CLI per LoRa. <code>fuota info</code> zeigt den Stand. Am Testaufbau getestet; der Weg über LoRa vom Admin-Login an ist noch offen.</td><td>Andere Knoten beeinflussen.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -277,7 +277,7 @@
         <tr><td><b>Participating repeater</b></td><td>Normal MeshCore repeater firmware with a FUOTA module: hears offers, pulls, checks, passes on, applies.</td><td>Exceed its airtime budget, pass on unchecked data, update foreign nodes.</td></tr>
         <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB)</td><td>Runs only at boot: executes a swap job, with journal, test boot and revert.</td><td>No radio, no signature check (trusts the job from the app, see gaps).</td></tr>
         <tr><td><b>Repeater without FUOTA</b>, companions</td><td>Drop type 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, deliberately not routed).</td><td>Carry an update further.</td></tr>
-        <tr><td><b>Operator</b></td><td>Decides whether to take part. By default a node applies a complete update on its own; the operator can turn that off (<code>fuota auto off</code>) and start a complete update (<code>fuota apply</code>), also over LoRa via the remote CLI. <code>fuota info</code> shows the state. Built, not yet tested on hardware.</td><td>Influence other nodes.</td></tr>
+        <tr><td><b>Operator</b></td><td>Decides whether to take part. By default a node applies a complete update on its own; the operator can turn that off (<code>fuota auto off</code>) and start a complete update (<code>fuota apply</code>), also over LoRa via the remote CLI. <code>fuota info</code> shows the state. Tested on the bench; the path over LoRa from the admin login on is still open.</td><td>Influence other nodes.</td></tr>
       </table>
     </div>
   </section>
@@ -491,8 +491,12 @@
       <p>Repeater werden meist über LoRa administriert. Darum gehen die Befehle für Betreiber auch über die Fern-CLI
         (Admin-Login): <code>fuota info</code> zeigt Build, Auto-Apply und den Stand des Updates, <code>fuota auto on|off</code>
         legt fest, ob ein fertiges Update von selbst angewendet wird (gespeichert, ab Werk an), <code>fuota apply</code>
-        startet ein fertiges Update nach 5 s. Alle anderen <code>fuota</code>-Befehle gibt es nur über USB. Gebaut, auf
-        Hardware noch nicht getestet. <span class="m open">offen</span></p>
+        startet ein fertiges Update nach 5 s. Alle anderen <code>fuota</code>-Befehle gibt es nur über USB. Am Testaufbau
+        <span class="m meas">gemessen</span>: Warten mit <code>auto off</code> übersteht Neustart, <code>fuota apply</code> startet ein
+        Update (99 s bis zur Bestätigung, überlappend 128 s), <code>auto off</code> bricht ein laufendes Fenster ab,
+        <code>auto on</code> wendet danach von selbst an; Funkeinstellungen und Schlüssel blieben über fünf Image-Wechsel gleich.
+        Geprüft per USB und über eine Testhilfe, die einen Befehl wie aus dem Mesh ausführt; der Weg über LoRa vom
+        Admin-Login an ist noch offen. <span class="m open">offen</span></p>
       <p>Der Release-Build verhält sich wie ein Stock-Repeater: Stock-Funkvorgaben, Advert beim Start, gespeicherte
         Einstellungen und Schlüssel bleiben (FUOTA schreibt nur seine eigene Datei). Die Schalter des Testaufbaus (SF7 und
         1 dBm beim Start erzwungen, kein Advert, 10 % Budget, Testbefehle) gibt es nur im Test-Build; eine Build-Sperre
@@ -517,7 +521,11 @@
       <p>Repeaters are mostly administered over LoRa. The operator commands therefore work over the remote CLI as well
         (admin login): <code>fuota info</code> shows build, auto apply and the state of the update, <code>fuota auto on|off</code>
         sets whether a complete update applies on its own (saved, on by default), <code>fuota apply</code> starts a
-        complete update after 5 s. All other <code>fuota</code> commands are USB only. Built, not yet tested on hardware.
+        complete update after 5 s. All other <code>fuota</code> commands are USB only. <span class="m meas">measured</span> on the bench:
+        waiting with <code>auto off</code> survives a reboot, <code>fuota apply</code> starts an update (99 s until confirmed,
+        overlapping 128 s), <code>auto off</code> cancels a running window, <code>auto on</code> then applies on its own; radio
+        settings and keys stayed the same across five image changes. Checked over USB and with a test helper that runs a
+        command as if it came from the mesh; the path over LoRa from the admin login on is still open.
         <span class="m open">open</span></p>
       <p>The release build behaves like a stock repeater: stock radio defaults, advert at boot, saved settings and keys
         stay (FUOTA writes only its own file). The bench switches (SF7 and 1 dBm forced at boot, no advert, 10 % budget,
