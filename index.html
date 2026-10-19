@@ -151,7 +151,7 @@
         Geschrieben, damit ihr Denkfehler findet: Jede Zahl ist als <span class="m meas">gemessen</span> oder
         <span class="m calc">berechnet</span> markiert, Offenes als <span class="m open">offen</span>.</p>
       <div class="meta">
-        <span class="tag">Stand 18.10.2026</span>
+        <span class="tag">Stand 19.10.2026</span>
         <span class="tag">Proof of Concept auf 3 FakeTecs (nRF52840)</span>
         <span class="tag">Basis MeshCore 1.18.0</span>
         <span class="tag">nichts davon ist upstream</span>
@@ -164,7 +164,7 @@
         We wrote it so that you can find our design errors: every number is marked <span class="m meas">measured</span> or
         <span class="m calc">calculated</span>, open points are marked <span class="m open">open</span>.</p>
       <div class="meta">
-        <span class="tag">As of 18 Oct 2026</span>
+        <span class="tag">As of 19 Oct 2026</span>
         <span class="tag">Proof of concept on 3 FakeTecs (nRF52840)</span>
         <span class="tag">Based on MeshCore 1.18.0</span>
         <span class="tag">none of it is upstream</span>
@@ -262,22 +262,22 @@
       <table>
         <tr><th>Rolle</th><th>Was sie tut</th><th>Was sie nicht kann</th></tr>
         <tr><td><b>Release-Schlüssel</b> (offline, Release-CI)</td><td>Baut je Repeater-Modell und Quell-Version einen Patch, signiert das Manifest, kann einen Build zurückziehen (Retract).</td><td>Nichts eingeschränkt: wer den Schlüssel hat, bestimmt, was installiert werden darf.</td></tr>
-        <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Bekommt Manifest und Patch per USB und bietet sie an.</td><td>Eigene Kampagnen erzeugen; Unsigniertes wird schon beim Laden abgelehnt.</td></tr>
+        <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Bekommt Manifest und Patch per USB und bietet sie an (Vorschlag: auch aus einem manuell installierten Release-Paket, siehe Ablauf).</td><td>Eigene Kampagnen erzeugen; Unsigniertes wird schon beim Laden abgelehnt.</td></tr>
         <tr><td><b>Teilnehmender Repeater</b></td><td>Normale MeshCore-Repeater-Firmware mit FUOTA-Modul: hört Angebote, holt, prüft, gibt weiter, wendet an.</td><td>Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
         <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB)</td><td>Läuft nur beim Booten: führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Kein Funk, keine Signaturprüfung (vertraut dem Auftrag der App, siehe Lücken).</td></tr>
         <tr><td><b>Repeater ohne FUOTA</b>, Companions</td><td>Verwerfen Typ 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, bewusst nicht geroutet).</td><td>Ein Update weitertragen.</td></tr>
-        <tr><td><b>Betreiber</b></td><td>Entscheidet: mitmachen, Budget, sofort oder später anwenden.</td><td>Andere Knoten beeinflussen.</td></tr>
+        <tr><td><b>Betreiber</b></td><td>Entscheidet, ob er mitmacht. Ab Werk wendet ein Knoten ein fertiges Update selbst an; der Betreiber kann das abschalten (<code>fuota auto off</code>) und ein fertiges Update selbst starten (<code>fuota apply</code>), auch über die Fern-CLI per LoRa. <code>fuota info</code> zeigt den Stand. Gebaut, auf Hardware noch nicht getestet.</td><td>Andere Knoten beeinflussen.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Role</th><th>What it does</th><th>What it cannot do</th></tr>
         <tr><td><b>Release key</b> (offline, release CI)</td><td>Builds a patch per repeater model and source version, signs the manifest, can retract a build.</td><td>Nothing limits it: whoever holds the key decides what may be installed.</td></tr>
-        <tr><td><b>Seed</b> (any participant)</td><td>Receives manifest and patch over USB and offers them.</td><td>Create its own campaigns; unsigned material is rejected already at load time.</td></tr>
+        <tr><td><b>Seed</b> (any participant)</td><td>Receives manifest and patch over USB and offers them (proposal: also from a release package installed by hand, see the update flow).</td><td>Create its own campaigns; unsigned material is rejected already at load time.</td></tr>
         <tr><td><b>Participating repeater</b></td><td>Normal MeshCore repeater firmware with a FUOTA module: hears offers, pulls, checks, passes on, applies.</td><td>Exceed its airtime budget, pass on unchecked data, update foreign nodes.</td></tr>
         <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB)</td><td>Runs only at boot: executes a swap job, with journal, test boot and revert.</td><td>No radio, no signature check (trusts the job from the app, see gaps).</td></tr>
         <tr><td><b>Repeater without FUOTA</b>, companions</td><td>Drop type 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, deliberately not routed).</td><td>Carry an update further.</td></tr>
-        <tr><td><b>Operator</b></td><td>Decides: take part or not, airtime budget, apply at once or later.</td><td>Influence other nodes.</td></tr>
+        <tr><td><b>Operator</b></td><td>Decides whether to take part. By default a node applies a complete update on its own; the operator can turn that off (<code>fuota auto off</code>) and start a complete update (<code>fuota apply</code>), also over LoRa via the remote CLI. <code>fuota info</code> shows the state. Built, not yet tested on hardware.</td><td>Influence other nodes.</td></tr>
       </table>
     </div>
   </section>
@@ -454,7 +454,7 @@
       <div class="step"><div><span class="who">Nachbar</span><b>Patch holen</b><span>Anfrage für den niedrigsten Block mit Lücken (16 Fragmente, Bitmap der fehlenden) an genau einen Nachbarn: den zuletzt gehörten, dessen Angebot den Block abdeckt. Nur er antwortet. Kommt nichts, nennt die nächste Anfrage einen anderen Anbieter; kennt der Knoten keinen weiteren, fragt er alle (Kennung 0xFF). Fragmente landen direkt im Flash.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Jede Seite sofort prüfen</b><span>Ist eine 4-KB-Seite vollständig, wird sie gegen ihren Hash aus dem Manifest geprüft. Falsch: Seite löschen, neu holen. Richtig: ab sofort darf er sie weitergeben.</span></div></div>
       <div class="step"><div><span class="who">derselbe Knoten</span><b>Weitergeben, während er noch holt</b><span>Er bietet an, sobald sein Manifest geprüft ist, mit der Zahl geprüfter Seiten. Fragt ein Nachbar nach etwas, das er noch nicht hat, merkt er sich das und bietet sofort an, wenn die Seite fertig ist.</span></div></div>
-      <div class="step"><div><span class="who">derselbe Knoten</span><b>Vollständig: anwenden</b><span>Passt der Patch hinter das neue Image: sofort. Sonst erst nach einem Fenster, in dem er weitergibt: frühestens nach einer Mindestzeit und erst, wenn eine Weile niemand mehr danach gefragt hat und nichts mehr auszuliefern ist (Werte für das Feld: Vorschlag, offen; im Testaufbau 120 s und 180 s). Dann: SHA-256 über den ganzen Patch, neues Image in Slot B bauen (12 s <span class="m meas">gemessen</span>), SHA-256 des Ergebnisses gegen das Manifest, Tausch-Auftrag in die Status-Seite, Neustart.</span></div></div>
+      <div class="step"><div><span class="who">derselbe Knoten</span><b>Vollständig: anwenden</b><span>Ab Werk wendet der Knoten selbst an; nach <code>fuota auto off</code> wartet er auf <code>fuota apply</code> des Betreibers. Passt der Patch hinter das neue Image: sofort. Sonst erst nach einem Fenster, in dem er weitergibt: frühestens nach einer Mindestzeit und erst, wenn eine Weile niemand mehr danach gefragt hat und nichts mehr auszuliefern ist (Werte für das Feld: Vorschlag, offen; im Testaufbau 120 s und 180 s). Dann: SHA-256 über den ganzen Patch, neues Image in Slot B bauen (12 s <span class="m meas">gemessen</span>), SHA-256 des Ergebnisses gegen das Manifest, Tausch-Auftrag in die Status-Seite, Neustart.</span></div></div>
       <div class="step"><div><span class="who">Stage-0</span><b>Prüfen, tauschen, Probestart</b><span>Vor dem Tausch: Vektortabelle und SHA-256 von Slot B (neu) und Slot A (alt) gegen den Auftrag. Dann seitenweise tauschen, jeder Schritt im Journal (30 bis 39 s <span class="m meas">gemessen</span>), danach Slot A erneut gegen den Soll-Hash. Probestart mit Watchdog (30 s).</span></div></div>
       <div class="step"><div><span class="who">neue Firmware</span><b>Bestätigen oder zurück</b><span>60 s gesunde Hauptschleife bestätigt. Drei Fehlstarts: Stage-0 tauscht zurück. Der Knoten bleibt nicht alt: jedes spätere Release mit einem Patch von seinem Stand installiert er normal. Gesperrt ist nur dieses eine Image, er installiert es nie wieder und bietet es nicht an.</span></div></div>
       <div class="step"><div><span class="who">derselbe Knoten</span><b>Weiter anbieten</b><span>Lag der Patch hinter dem neuen Image, liegt er nach dem Tausch noch da: Der Knoten prüft ihn beim Boot erneut und bietet weiter an. Nach einem überlappenden Anwenden ist er weg, der Knoten bietet ihn nicht mehr an.</span></div></div>
@@ -469,11 +469,61 @@
       <div class="step"><div><span class="who">Neighbour</span><b>Pull the patch</b><span>Request for the lowest block with missing fragments (16 fragments, bitmap of the missing ones) to exactly one neighbour: the most recent one whose offer covers the block. Only that one answers. If nothing comes, the next request names another provider; if the node knows no other one, it asks everybody (ID 0xFF). Fragments go straight to flash.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Check every page at once</b><span>When a 4 KB page is complete, the node checks it against its hash from the manifest. Wrong: erase the page, pull it again. Right: the node may pass it on from now on.</span></div></div>
       <div class="step"><div><span class="who">same node</span><b>Pass on while still pulling</b><span>It offers as soon as its manifest is checked, with the number of checked pages. If a neighbour asks for something it does not have yet, it remembers that and offers at once when the page is complete.</span></div></div>
-      <div class="step"><div><span class="who">same node</span><b>Complete: apply</b><span>If the patch fits behind the new image: at once. Otherwise only after a window in which the node passes it on: not before a minimum time, and only once nobody has asked for it for a while and nothing is left to deliver (values for the field: proposal, open; on the bench 120 s and 180 s). Then: SHA-256 over the whole patch, build the new image in slot B (12 s <span class="m meas">measured</span>), SHA-256 of the result against the manifest, swap job into the status page, reboot.</span></div></div>
+      <div class="step"><div><span class="who">same node</span><b>Complete: apply</b><span>By default the node applies on its own; after <code>fuota auto off</code> it waits for the operator’s <code>fuota apply</code>. If the patch fits behind the new image: at once. Otherwise only after a window in which the node passes it on: not before a minimum time, and only once nobody has asked for it for a while and nothing is left to deliver (values for the field: proposal, open; on the bench 120 s and 180 s). Then: SHA-256 over the whole patch, build the new image in slot B (12 s <span class="m meas">measured</span>), SHA-256 of the result against the manifest, swap job into the status page, reboot.</span></div></div>
       <div class="step"><div><span class="who">Stage-0</span><b>Check, swap, test boot</b><span>Before the swap: vector table and SHA-256 of slot B (new) and slot A (old) against the job. Then swap page by page, every step in the journal (30 to 39 s <span class="m meas">measured</span>), then slot A again against the target hash. Test boot with watchdog (30 s).</span></div></div>
       <div class="step"><div><span class="who">new firmware</span><b>Confirm or revert</b><span>60 s of a healthy main loop confirm. Three failed boots: Stage-0 reverts the swap. The node does not stay old: it installs any later release that has a patch from its current version as usual. Only this one image is blocked: the node never installs it again and does not offer it.</span></div></div>
       <div class="step"><div><span class="who">same node</span><b>Keep offering</b><span>If the patch sat behind the new image, it is still there after the swap: the node checks it again at boot and keeps offering. After an overlapping apply it is gone, and the node no longer offers it.</span></div></div>
       <div class="step"><div><span class="who">Release key, any time</span><b>Retract</b><span>A signed retract (80 B) for target and build. Every node that verifies it stops pulling and offering, stores it, sends it three times and answers every offer of this build with the retract.</span></div></div>
+    </div>
+    <div lang="de" class="prose">
+      <h3>Start durch manuelle Installation <span class="m open">Vorschlag, offen</span></h3>
+      <p>Das Release-Paket, das Betreiber ohnehin per USB installieren, trägt neben dem neuen Image auch die Kampagne
+        von der Vorversion: leere Status-Seite, Image in Slot A, Manifest in der letzten Seite von Slot B, der Patch direkt
+        davor. Beim Start findet der Knoten die Kampagne dort, prüft Signatur und Patch-Hash und bietet sie an, weil sie
+        für ihn selbst nicht passt. Wer manuell aktualisiert, wird so zum Seed. Diesen Startpfad gibt es heute für Seeds
+        per USB; mit einem UF2-Paket ist er nicht getestet, ebenso wenig, ob der UF2-Bootloader Slot B mitschreibt. Ein
+        Paket trägt eine Kampagne, also nur den Patch von der Vorversion; Kampagnen gibt es ab der zweiten FUOTA-Version.</p>
+      <p>Ist das Netz schon aktuell, bietet ein frisch installierter Knoten nur an. Nachbarn auf dem Ziel-Build verwerfen
+        das Angebot ohne Rückfrage (Build nicht höher, Quelle passt nicht), es fließen keine Daten. Ein Angebot kostet bei
+        SF8 rund 0,48 s Airtime <span class="m calc">berechnet</span>; nach Trickle sind das 15 Angebote in den ersten
+        3,8 Tagen und danach eins je 2 Tage.</p>
+      <h3>Betreiber und Release-Build</h3>
+      <p>Repeater werden meist über LoRa administriert. Darum gehen die Befehle für Betreiber auch über die Fern-CLI
+        (Admin-Login): <code>fuota info</code> zeigt Build, Auto-Apply und den Stand des Updates, <code>fuota auto on|off</code>
+        legt fest, ob ein fertiges Update von selbst angewendet wird (gespeichert, ab Werk an), <code>fuota apply</code>
+        startet ein fertiges Update nach 5 s. Alle anderen <code>fuota</code>-Befehle gibt es nur über USB. Gebaut, auf
+        Hardware noch nicht getestet. <span class="m open">offen</span></p>
+      <p>Der Release-Build verhält sich wie ein Stock-Repeater: Stock-Funkvorgaben, Advert beim Start, gespeicherte
+        Einstellungen und Schlüssel bleiben (FUOTA schreibt nur seine eigene Datei). Die Schalter des Testaufbaus (SF7 und
+        1 dBm beim Start erzwungen, kein Advert, 10 % Budget, Testbefehle) gibt es nur im Test-Build; eine Build-Sperre
+        bricht den Release-Build ab, sobald einer davon hineingerät. Release und Test haben verschiedene Ziel-IDs, eine
+        Kampagne für den Testaufbau passt also nie auf einen Release-Knoten. <span class="m meas">gemessen</span>:
+        375.040 B (92 von 96 Seiten), die Sperre greift bei allen fünf Schaltern.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Starting by manual installation <span class="m open">proposal, open</span></h3>
+      <p>The release package that operators install over USB anyway also carries the campaign from the previous
+        version next to the new image: an empty status page, the image in slot A, the manifest in the last page of slot B
+        and the patch right in front of it. At boot the node finds the campaign there, checks signature and patch hash and
+        offers it, because it does not fit the node itself. Whoever updates by hand thus becomes a seed. This start path
+        exists today for seeds loaded over USB; it is not tested with a UF2 package, nor whether the UF2 bootloader writes
+        slot B as well. A package carries one campaign, so only the patch from the previous version; campaigns start with
+        the second FUOTA version.</p>
+      <p>If the network is already up to date, a freshly installed node only offers. Neighbours on the target build drop
+        the offer without asking back (build not higher, source does not match), no data flows. One offer costs about
+        0.48 s of airtime at SF8 <span class="m calc">calculated</span>; with Trickle that is 15 offers in the first
+        3.8 days and then one every 2 days.</p>
+      <h3>Operators and the release build</h3>
+      <p>Repeaters are mostly administered over LoRa. The operator commands therefore work over the remote CLI as well
+        (admin login): <code>fuota info</code> shows build, auto apply and the state of the update, <code>fuota auto on|off</code>
+        sets whether a complete update applies on its own (saved, on by default), <code>fuota apply</code> starts a
+        complete update after 5 s. All other <code>fuota</code> commands are USB only. Built, not yet tested on hardware.
+        <span class="m open">open</span></p>
+      <p>The release build behaves like a stock repeater: stock radio defaults, advert at boot, saved settings and keys
+        stay (FUOTA writes only its own file). The bench switches (SF7 and 1 dBm forced at boot, no advert, 10 % budget,
+        test commands) exist only in the test build; a build guard stops the release build as soon as one of them gets in.
+        Release and test have different target IDs, so a campaign for the bench never fits a release node.
+        <span class="m meas">measured</span>: 375,040 B (92 of 96 pages), the guard fires for all five switches.</p>
     </div>
   </section>
 
