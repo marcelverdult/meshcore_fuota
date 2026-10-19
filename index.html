@@ -834,6 +834,22 @@
         Patches mit Rundreise geprüft. Hinter ein Image mit 63 Seiten passen Patches bis 34 Seiten; größere wendet der
         Knoten überlappend an. Wie stark <code>-Os</code> das Signieren eigener Adverts und den Schlüsseltausch bei einer
         Anmeldung verlangsamt, ist auf Hardware noch nicht gemessen; Prüfen, AES und SHA-256 laufen in der CryptoCell.</p>
+      <h3>Eingefrorene Toolchain, reproduzierbarer Build <span class="m meas">gemessen</span></h3>
+      <p>Ein Patch ist nur klein, solange altes und neues Image mit demselben Compiler und denselben Bibliotheken
+        entstehen: Der Wechsel von GCC 7 auf GCC 14 machte aus 32,6 KB 219 KB (bsdiff, <code>-Ofast</code>). Die
+        Stock-Konfiguration von MeshCore erlaubt neuere Versionen (Platform ohne Version, Toolchain und 14 Bibliotheken
+        mit <code>^</code>, transitive ohne Version); eine neue Bibliotheksversion ändert dort das Image, ohne dass sich
+        im Quelltext etwas ändert. Die FUOTA-Builds legen darum alles exakt fest: Platform <code>nordicnrf52</code>
+        11.0.0, GCC 14.2.1 (<code>toolchain-gccarmnoneeabi</code> 1.140201.0), Framework und Git-Bibliotheken per Commit,
+        alle Bibliotheken samt der transitiven, die ins Image gehen. Zwischen zwei Builds desselben Commits wich nur der
+        Build-Stempel der Funkbibliothek ab (<code>__DATE__</code>, <code>__TIME__</code>); der Release-Build setzt
+        <code>SOURCE_DATE_EPOCH</code> auf die Commit-Zeit. Zwei Builds desselben Commits in verschiedenen Verzeichnissen sind
+        byte-gleich. Ein Build unter Linux ist es gegenüber macOS nicht: Das Toolchain-Paket gleicher Version enthält für
+        beide Systeme dieselben 376 Objektdateien der C-Mathebibliothek, aber in anderer Reihenfolge im Archiv, und der
+        Linker ordnet die Funktionen entsprechend anders (gleicher Code, Patch zwischen beiden 8.259 B). Release-Images
+        sollen darum immer in derselben Build-Umgebung entstehen (Vorschlag, offen: ein Linux-Container). Patches werden immer gegen das archivierte
+        Release-Binary gebaut, das auf den Geräten läuft, nie gegen einen Neubau. Eine falsche Quelle kann ohnehin nichts
+        zerstören: Ein Knoten zieht nur, wenn der Quell-Hash im Angebot zu seinem Image passt.</p>
       <p>Ein Image für alle unterstützten Boards heißt eine Kampagne für das ganze Gebiet. Mit einem Image je Modell
         bräuchte jedes Modell eine eigene Kampagne mit eigenem Patch, ein Knoten könnte nur von Knoten desselben Modells
         holen, und die Datenpakete vervielfachten sich mit der Zahl der Modelle.</p>
@@ -857,6 +873,22 @@
         pages fit behind an image of 63 pages; a node applies larger ones overlapping. How much <code>-Os</code> slows down
         signing the node's own adverts and the key exchange of a login is not yet measured on hardware; verification, AES
         and SHA-256 run in the CryptoCell.</p>
+      <h3>Frozen toolchain, reproducible build <span class="m meas">measured</span></h3>
+      <p>A patch is only small while old and new image come from the same compiler and the same libraries: the change
+        from GCC 7 to GCC 14 turned 32.6 KB into 219 KB (bsdiff, <code>-Ofast</code>). The stock configuration of
+        MeshCore allows newer versions (platform without version, toolchain and 14 libraries with <code>^</code>,
+        transitive ones without version); a new library release changes the image there without any change in the source.
+        The FUOTA builds therefore pin everything exactly: platform <code>nordicnrf52</code> 11.0.0, GCC 14.2.1
+        (<code>toolchain-gccarmnoneeabi</code> 1.140201.0), framework and git libraries by commit, all libraries
+        including the transitive ones that end up in the image. Between two builds of the same commit only the build
+        stamp of the radio library differed (<code>__DATE__</code>, <code>__TIME__</code>); the release build sets
+        <code>SOURCE_DATE_EPOCH</code> to the commit time. Two builds of the same commit in different directories are
+        byte-identical. A build on Linux is not, compared with macOS: the toolchain package of the same version contains
+        the same 376 object files of the C math library for both systems, but in a different order inside the archive,
+        and the linker orders the functions accordingly (same code, patch between the two 8,259 B). Release images
+        should therefore always come from the same build environment (proposal, open: a Linux container). Patches are always built against the archived
+        release binary that runs on the devices, never against a rebuild. A wrong source cannot break anything anyway: a
+        node only pulls when the source hash in the offer matches its image.</p>
       <p>One image for all supported boards means one campaign for the whole area. With one image per model every model
         would need its own campaign with its own patch, a node could only pull from nodes of the same model, and the data
         packets would multiply with the number of models.</p>
@@ -1214,7 +1246,10 @@
           (im Testaufbau lief v1 nach v3 direkt). Aber jeder Knoten hält nur eine Kampagne: Nachbarn, die selbst v2 nach v3
           bekamen, können v1 nach v3 nicht liefern. Der Nachzügler hängt dann an einem Seed in Reichweite. Möglicher
           Ausweg: das Fenster aus Manifest plus zwei Seiten (vorgeschlagen für fremde Modelle) auch für Kampagnen anderer
-          Quellversionen. <span class="m open">offen</span></li>
+          Quellversionen. Vorschlag für den Patch selbst: Die Release-Seite hat jedes alte Release-Binary und baut für
+          Nachzügler einen direkten Patch von ihrer Version. Patches zu verketten oder zusammenzuführen ist unnötig, und
+          direkt ist kleiner: 1.16.0 nach 1.18.0 direkt 231.743 B, als Kette über 1.17.0 und 1.17.1 275.454 B
+          (Stock-FakeTec, bsdiff) <span class="m meas">gemessen</span>. <span class="m open">offen</span></li>
         <li><b>Sperrliste mit 8 Plätzen.</b> Viele gefälschte IDs schieben alte Sperren hinaus; Folge ist nur ein
           erneuter Manifest-Abruf.</li>
         <li><b>Testaufbau ist nicht das Mesh.</b> Im Testaufbau hört jeder jeden (der Testfilter wirkt nur in Software), versteckte
@@ -1281,7 +1316,10 @@
           revert from v2) needs its own campaign v1 to v3; technically that works (on the bench v1 to v3 ran
           directly). But every node holds only one campaign: neighbours that got v2 to v3 themselves cannot deliver
           v1 to v3. The straggler then depends on a seed in range. Possible way out: the window of manifest plus two
-          pages (proposed for foreign models) also for campaigns of other source versions.
+          pages (proposed for foreign models) also for campaigns of other source versions. Proposal for the patch
+          itself: the release side keeps every old release binary and builds a direct patch from the straggler's version.
+          Chaining or merging patches is not needed, and direct is smaller: 1.16.0 to 1.18.0 directly 231,743 B, as a
+          chain via 1.17.0 and 1.17.1 275,454 B (stock FakeTec, bsdiff) <span class="m meas">measured</span>.
           <span class="m open">open</span></li>
         <li><b>Ban list with 8 slots.</b> Many forged IDs push old bans out; the only consequence is another
           manifest fetch.</li>
