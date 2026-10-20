@@ -342,7 +342,7 @@
     </div>
     <div class="steps" lang="de">
       <div class="step"><div><span class="who">Release-Build, Signatur offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (292 B + 8 B je 4-KB-Seite, mit Angebots-Ticket): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, ein Flag „überlappend anwenden ist sicher“ (vorher mit dem Apply-Code des Geräts geprüft), dazu je Seite die ersten 8 Byte ihres SHA-256; am Ende das Angebots-Ticket (Ziel, Build, Patch-Größe, Quelle und Hash des Manifests), das jedes Angebot mitträgt. Signiert wird beides offline mit dem Release-Schlüssel, getrennt vom Build: die Build-Umgebung hat den privaten Schlüssel nie.</span></div></div>
-      <div class="step"><div><span class="who">Irgendein Betreiber, per USB</span><b>Neuestes Release-Paket installieren</b><span>Das signierte Release-Paket enthält das neue Image und die Kampagne von der Vorversion (Manifest und Patch). Wer es installiert, per UF2 oder seriellem DFU, ist der Seed: Beim Start prüft die Firmware die Kampagne wie eine geholte und bietet sie an, alle anderen holen sie per Funk <span class="m meas">gemessen</span>. Die Kampagne liegt im Paket am Anfang von Slot B, weil der UF2-Bootloader nicht bis an dessen Ende schreibt; die Firmware verschiebt sie beim Start dorthin. Mehrere Seeds schaden nicht, die Kampagne zählt über ihre ID. Am Testaufbau lassen sich Manifest und Patch auch einzeln per USB-Befehl laden.</span></div></div>
+      <div class="step"><div><span class="who">Irgendein Betreiber, per USB oder BLE</span><b>Neuestes Release-Paket installieren</b><span>Das signierte Release-Paket enthält das neue Image und die Kampagne von der Vorversion (Manifest und Patch). Wer es installiert, per UF2, seriellem DFU oder BLE, ist der Seed: Beim Start prüft die Firmware die Kampagne wie eine geholte und bietet sie an, alle anderen holen sie per Funk <span class="m meas">gemessen</span>. Die Kampagne liegt im Paket am Anfang von Slot B, weil der UF2-Bootloader nicht bis an dessen Ende schreibt; die Firmware verschiebt sie beim Start dorthin. Mehrere Seeds schaden nicht, die Kampagne zählt über ihre ID. Am Testaufbau lassen sich Manifest und Patch auch einzeln per USB-Befehl laden.</span></div></div>
       <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit dem signierten Ticket (ID, Größe, Ziel, Build, Quell-Präfix) und der Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 2 Tage, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle), aber nur in Intervallen unter 1 h. Danach bietet jeder einmal je Intervall an, damit auch ein Nachbar, der die anderen nicht hört, ein Angebot bekommt.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Dann prüft er die Signatur des Tickets; ein gefälschtes Angebot verwirft er hier. Sonst bleibt der Knoten still; ist das Netz schon aktuell, fließen also keine Daten. Während eines Probestarts zieht er nicht.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Erst nur das Manifest</b><span>2 bis 4 Fragmente. Prüft Signatur (Ed25519 über die CryptoCell), Ziel, Quelle, Build, Platz und ob dieses Update hier schon gescheitert ist. Fällt eine Prüfung durch, holt er kein einziges Patch-Fragment; gesperrt (über Neustarts) wird nur, was signiert ist und hier nie passen kann, sonst ruht die Kampagne 10 min.</span></div></div>
@@ -357,7 +357,7 @@
     </div>
     <div class="steps" lang="en">
       <div class="step"><div><span class="who">Release build, signed offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (292 B + 8 B per 4 KB page, with offer ticket): target device, build number, sizes, SHA-256 of source image, new image and patch, a flag “safe to apply overlapping” (checked beforehand with the device’s apply code), plus the first 8 bytes of the SHA-256 of each page; at the end the offer ticket (target, build, patch size, source and hash of the manifest) that every offer carries. Both are signed offline with the release key, separate from the build: the build environment never holds the private key.</span></div></div>
-      <div class="step"><div><span class="who">any operator, over USB</span><b>Install the latest release package</b><span>The signed release package contains the new image and the campaign from the previous version (manifest and patch). Whoever installs it, over UF2 or serial DFU, is the seed: at boot the firmware checks the campaign like a pulled one and offers it, and all others pull it over the air <span class="m meas">measured</span>. In the package the campaign sits at the start of slot B, because the UF2 bootloader does not write up to its end; the firmware moves it there at boot. Several seeds do no harm, the campaign counts by its ID. On the bench, manifest and patch can also be loaded separately by USB command.</span></div></div>
+      <div class="step"><div><span class="who">any operator, over USB or BLE</span><b>Install the latest release package</b><span>The signed release package contains the new image and the campaign from the previous version (manifest and patch). Whoever installs it, over UF2, serial DFU or BLE, is the seed: at boot the firmware checks the campaign like a pulled one and offers it, and all others pull it over the air <span class="m meas">measured</span>. In the package the campaign sits at the start of slot B, because the UF2 bootloader does not write up to its end; the firmware moves it there at boot. Several seeds do no harm, the campaign counts by its ID. On the bench, manifest and patch can also be loaded separately by USB command.</span></div></div>
       <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with the signed ticket (ID, size, target, build, source prefix) and the number of checked pages. Interval 10 s, doubling up to 2 days, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle), but only in intervals below 1 h. After that every node offers once per interval, so that a neighbour that cannot hear the others still gets an offer.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Then it checks the signature of the ticket; a forged offer is dropped here. Otherwise the node stays silent, so no data flows when the network is already up to date. During a test boot it does not pull.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Manifest first</b><span>2 to 4 fragments. Checks signature (Ed25519 via the CryptoCell), target, source, build, space and whether this update has already failed here. If a check fails, it pulls no patch fragment at all; banned (across reboots) is only what is signed and can never fit here, otherwise the campaign rests for 10 min.</span></div></div>
@@ -1423,8 +1423,11 @@
           beginnt das Fenster neu) und ein ganzes Image (seitenweise komprimiert, 1.841 statt 1.251 Fragmente beim
           Compilerwechsel) als Rückfall für Nachzügler, die das Fenster verpasst haben. <span class="m open">offen</span></li>
         <li><b>Update per Telefon.</b> Die App enthält kein BLE; <code>start ota</code> startet neu in den BLE-DFU des
-          Bootloaders. Dort wartet der Knoten ohne Zeitlimit, bis ein Update fertig ist oder der Strom weg ist, und ein so
-          eingespieltes Image ersetzt auch Stage-0. Auf Hardware noch nicht getestet. <span class="m open">offen</span></li>
+          Bootloaders. Unser Paket (Bootstrap oder Release-Paket, ab dem Sprungziel, mit Stage-0) lässt sich so einspielen:
+          vom Rechner aus auf FakeTec und P1 <span class="m meas">gemessen</span>, rund 4 min. Voraussetzung ist ein OTAFIX-Bootloader ab 2.1; ältere
+          starten die App nach dem Update nicht von selbst, solange USB verbunden ist <span class="m meas">gemessen</span>. Ein normales MeshCore-Paket
+          per BLE ersetzt Stage-0. Ungetestet: nRF Connect am Handy, RAK4631. Im BLE-DFU wartet der Knoten ohne Zeitlimit,
+          bis ein Update fertig ist oder der Strom weg ist. <span class="m open">offen</span></li>
         <li><b>Nachbarn, die sich nicht hören.</b> Hört ein Knoten viele Anbieter, die sich gegenseitig nicht hören,
           greift die Unterdrückung gleicher Angebote kaum, und früher antworteten alle auf jede Anfrage. Darum heute: eine
           Anfrage nennt einen Anbieter, Angebote werden bis alle 2 Tage selten und ab 1 h nicht mehr unterdrückt, ein
@@ -1456,8 +1459,8 @@
           erneuter Manifest-Abruf.</li>
         <li><b>Testaufbau ist nicht das Mesh.</b> Im Testaufbau hört jeder jeden (der Testfilter wirkt nur in Software), versteckte
           Endgeräte gibt es dort nicht. Messwerte sind eher zu gut.</li>
-        <li><b>Erstinstallation</b> einmal per Kabel (neues Flash-Layout). Ob das BLE-DFU des Bootloaders das kann, ist
-          ungeprüft. Ein Stromausfall, während die Firmware die Kampagne aus einem Release-Paket verschiebt, ist ebenfalls
+        <li><b>Erstinstallation</b> einmal per Kabel (neues Flash-Layout). Per BLE-DFU des Bootloaders geht es auch (siehe
+          „Update per Telefon“). Ein Stromausfall, während die Firmware die Kampagne aus einem Release-Paket verschiebt, ist ebenfalls
           ungeprüft. <span class="m open">offen</span></li>
         <li><b>Protokollversion</b> fehlt in den Nachrichten; für upstream nötig.</li>
         <li><b>Mehr als drei Knoten</b> und echte Distanzen sind noch nicht gemessen.</li>
@@ -1504,8 +1507,11 @@
           again) and a full image (compressed page by page, 1,841 instead of 1,251 fragments for the compiler change) as
           a fallback for stragglers that missed the window. <span class="m open">open</span></li>
         <li><b>Update by phone.</b> The app contains no BLE; <code>start ota</code> reboots into the BLE DFU of the
-          bootloader. There the node waits without a time limit until an update is complete or power is cut, and an image
-          installed that way also replaces Stage-0. Not tested on hardware yet. <span class="m open">open</span></li>
+          bootloader. Our package (bootstrap or release package, from the jump target on, with Stage-0) installs that way:
+          from a computer on FakeTec and P1 <span class="m meas">measured</span>, about 4 min. It needs an OTAFIX bootloader from 2.1 on; older ones do
+          not start the app by themselves after the update while USB is connected <span class="m meas">measured</span>. A normal MeshCore package over
+          BLE replaces Stage-0. Untested: nRF Connect on a phone, RAK4631. In the BLE DFU the node waits without a time limit
+          until an update is complete or power is cut. <span class="m open">open</span></li>
         <li><b>Neighbours that cannot hear each other.</b> If a node hears many providers that cannot hear each other,
           suppressing equal offers hardly works there, and earlier every provider answered every request. Hence today: a
           request names one provider, offers become rare down to once every 2 days and are no longer suppressed from 1 h
@@ -1537,8 +1543,8 @@
           manifest fetch.</li>
         <li><b>The bench is not the mesh.</b> On the bench everyone hears everyone (the test filter works in software only), and there are no hidden
           terminals. Measured values tend to be too good.</li>
-        <li><b>First installation</b> once by cable (new flash layout). Whether the BLE DFU of the bootloader can do it
-          is unchecked. A power cut while the firmware moves the campaign out of a release package is unchecked as well.
+        <li><b>First installation</b> once by cable (new flash layout). It also works over the BLE DFU of the bootloader (see
+          “Update by phone”). A power cut while the firmware moves the campaign out of a release package is unchecked as well.
           <span class="m open">open</span></li>
         <li><b>Protocol version</b> is missing in the messages; needed for upstream.</li>
         <li><b>More than three nodes</b> and real distances have not been measured yet.</li>
