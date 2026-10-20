@@ -326,3 +326,5 @@
   .anim-fig{margin:6px 0 4px}
   .anim-fig .hero-anim{margin:0}
   .anim-fig figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+  /* long paths in running text (file:line) break instead of widening the page on a phone */
+  main p code,main li code{overflow-wrap:anywhere}

@@ -33,8 +33,19 @@
   var prog = bar.querySelector(".progress"), here = bar.querySelector(".here"), rail = document.querySelector(".rail");
   var head = document.querySelector("main header.hero");
   var secs = [].slice.call(document.querySelectorAll("main section[id]"));
+  // the element matching sel inside root whose nearest lang block is language l. A selector like [lang="en"] h2
+  // is wrong here: <html lang="en"> is an ancestor of every heading, so it would also match the German one.
+  function inLang(root, sel, l) {
+    var all = root.querySelectorAll(sel), loose = null;
+    for (var i = 0; i < all.length; i++) {
+      var b = all[i].parentElement && all[i].parentElement.closest("[lang]");
+      if (b && b !== document.documentElement) { if (b.getAttribute("lang") === l) return all[i]; }
+      else if (!loose) loose = all[i];   // language-neutral heading, used only if no heading of l exists
+    }
+    return loose;
+  }
   function heading(s, l) {
-    var h = s.querySelector('[lang="' + l + '"] h2') || s.querySelector("h2") || s.querySelector("h3");
+    var h = inLang(s, "h2", l) || inLang(s, "h3", l);
     return h ? h.textContent.replace(/\s+/g, " ").trim() : "";
   }
   if (secs.length > 1) {

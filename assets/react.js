@@ -6,6 +6,18 @@
   var pop = document.querySelector(".react"), toast = document.querySelector(".toast"), wrap = document.querySelector(".wrap");
   var cur = null;
   function lang() { return document.documentElement.getAttribute("data-lang") || "de"; }
+  // the element matching sel inside root whose nearest lang block is language l. A selector like [lang="en"] h2
+  // is wrong here: <html lang="en"> is an ancestor of every heading, so it would also match the German one.
+  function inLang(root, sel, l) {
+    var all = root.querySelectorAll(sel), loose = null;
+    for (var i = 0; i < all.length; i++) {
+      var b = all[i].parentElement && all[i].parentElement.closest("[lang]");
+      if (b && b !== document.documentElement) { if (b.getAttribute("lang") === l) return all[i]; }
+      else if (!loose) loose = all[i];   // language-neutral heading, used only if no heading of l exists
+    }
+    return loose;
+  }
+
   function enc(s) { return encodeURIComponent(s).replace(/-/g, "%2D").replace(/,/g, "%2C").replace(/&/g, "%26"); }
   function fragment(t) {
     var w = t.split(/\s+/);
@@ -13,9 +25,9 @@
   }
   function section(node) {
     var s = node.parentElement && node.parentElement.closest("section[id]");
-    var h1 = document.querySelector('[lang="' + lang() + '"] h1') || document.querySelector("h1");
+    var h1 = inLang(document, "h1", lang());
     if (!s) return { id: "", title: h1 ? h1.textContent.trim() : "MeshCore FUOTA" };
-    var h2 = s.querySelector('[lang="' + lang() + '"] h2') || s.querySelector("h2");
+    var h2 = inLang(s, "h2", lang());
     return { id: s.id, title: h2 ? h2.textContent.trim() : s.id };
   }
   function hide() { pop.hidden = true; cur = null; }
