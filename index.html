@@ -554,7 +554,7 @@
         einer davon hineingerät. Release und Test haben verschiedene Ziel-IDs, und jedes Anwenden prüft die Ziel-ID des
         Manifests: Eine Kampagne für den Testaufbau passt nie auf einen Release-Knoten. Den öffentlichen Schlüssel teilen
         beide im Proof of Concept aber noch (siehe Lücken). <span class="m meas">gemessen</span> (Stand 20.10.2026):
-        269.100 B (66 von 96 Seiten), kein BLE-Symbol im Image, die Sperre greift bei allen 14 geprüften Schaltern (dazu
+        268.972 B (66 von 96 Seiten), kein BLE-Symbol im Image, die Sperre greift bei allen 14 geprüften Schaltern (dazu
         gehören jetzt die Woche von <code>delay</code>, <code>delay</code> als Vorgabe und die Grenzen der Flut-Angebote).</p>
     </div>
     <div lang="en" class="prose">
@@ -613,7 +613,7 @@
         exist only in the test build; a build guard stops the release build as soon as one of them gets in. Release and
         test have different target IDs, and every apply checks the target ID of the manifest: a campaign for the bench
         never fits a release node. Both still share the public key in the proof of concept, though (see gaps).
-        <span class="m meas">measured</span> (as of 20 Oct 2026): 269,100 B (66 of 96 pages), no BLE symbol in the image,
+        <span class="m meas">measured</span> (as of 20 Oct 2026): 268,972 B (66 of 96 pages), no BLE symbol in the image,
         the guard fires for all 14 switches tested (now including the week of <code>delay</code>, <code>delay</code> as
         the default and the limits of flooded offers).</p>
     </div>
@@ -915,8 +915,8 @@
         die Zeitzonen-Funktionen der C-Bibliothek. Das Einheits-Image hat außerdem keinen Display-Treiber mehr (die Taste
         bleibt). Es schrumpft so von 375.040 auf 257.768 B (92 auf 63 Seiten, RAM 37,5 auf 32,5 KB); mit dem Code, der
         Lücken aus normalen Repeatern überbrückt (seltene Flut-Angebote, Daten per Pfad), den Betreiber-Befehlen über LoRa,
-        dem Release-Paket, der Härtung nach dem externen Review und dem Schutz gegen wiederholte Fern-Befehle sind es heute
-        269.100 B (66 Seiten, RAM 36.248 B).
+        dem Release-Paket, der Härtung nach dem externen Review und dem Schutz gegen wiederholte Fern-Befehle, ohne die Testhilfe <code>fuota hang</code>, sind es heute
+        268.972 B (66 Seiten, RAM 36.248 B).
         Weil weniger eingebetteter Code mitwandert, werden auch die Patches zwischen zwei Releases 18 bis 39 % kleiner:
         gemessen am Stock-FakeTec aus den Release-Tags, je mit <code>-Ofast</code> und mit <code>-Os</code> gebaut, alle
         Patches mit Rundreise geprüft. Hinter ein Image mit 66 Seiten passen Patches bis 31 Seiten; größere wendet der
@@ -961,7 +961,7 @@
         zone functions of the C library. The unified image also has no display driver any more (the button stays). It
         shrinks from 375,040 to 257,768 B (92 to 63 pages, RAM 37.5 to 32.5 KB); with the code that bridges gaps of normal
         repeaters (rare flooded offers, data along paths), the operator commands over LoRa, the release package and the
-        hardening after the external review and the protection against replayed remote commands it is 269,100 B today
+        hardening after the external review and the protection against replayed remote commands, without the test helper <code>fuota hang</code>, it is 268,972 B today
         (66 pages, RAM 36,248 B). Because less inlined code moves along,
         patches between two releases also become 18 to 39 % smaller: measured on the stock FakeTec from the release tags,
         each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 31
@@ -1013,7 +1013,7 @@
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
       <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 0,3 % bis rund 1,8 % Update-Verkehr im dichtesten Zehntel (bei 1 % rund 6 %) <span class="m calc">berechnet</span>. Eine Anfrage nennt einen Anbieter: auch wenn mehrere es haben, sendet für einen Fragenden immer nur einer.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.300 bis 1.700 Datenpakete im ganzen Gebiet, Compilerwechsel 16.900 bis 22.200 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 170.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 269.100 B (66 Seiten), RAM 36.248 B belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 66 Seiten passen 31, größere werden überlappend angewendet.</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 268.972 B (66 Seiten), RAM 36.248 B belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 66 Seiten passen 31, größere werden überlappend angewendet.</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Zuhören</h3><p>Während eine Kampagne läuft, hört ein Knoten oft ein Angebot (jeder eigene Fortschritt setzt das Intervall auf 10 s). Wer später dazukommt, wartet höchstens das längste Trickle-Intervall: 2 Tage. Im Testaufbau lagen im Leerlauf 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>. Gewollt für Updates, die ohnehin Tage dauern dürfen: dafür bleibt der Kanal nach einem Update fast ruhig.</p></div>
     </div>
@@ -1021,7 +1021,7 @@
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
       <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 0.3 % up to about 1.8 % update traffic in the densest tenth (about 6 % at 1 %) <span class="m calc">calculated</span>. A request names one provider: even when several have it, only one sends for a given puller.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,300 to 1,700 data packets in the whole area, compiler change 16,900 to 22,200 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 170,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 269,100 B (66 pages), RAM 36,248 B used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 31 fit behind an image of 66 pages, larger ones are applied overlapping.</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 268,972 B (66 pages), RAM 36,248 B used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 31 fit behind an image of 66 pages, larger ones are applied overlapping.</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Listening</h3><p>While a campaign runs, a node hears offers often (every own progress sets the interval back to 10 s). A node that joins later waits at most the longest Trickle interval: 2 days. On the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. Intended for updates that may take days anyway: in return the channel stays almost quiet after an update.</p></div>
     </div>
