@@ -308,10 +308,10 @@
     </div>
     <div class="steps" lang="de">
       <div class="step"><div><span class="who">Release-Build, Signatur offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (292 B + 8 B je 4-KB-Seite, mit Angebots-Ticket): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, ein Flag „überlappend anwenden ist sicher“ (vorher mit dem Apply-Code des Geräts geprüft), dazu je Seite die ersten 8 Byte ihres SHA-256; am Ende das Angebots-Ticket (Ziel, Build, Patch-Größe, Quelle und Hash des Manifests), das jedes Angebot mitträgt. Signiert wird beides offline mit dem Release-Schlüssel, getrennt vom Build: die Build-Umgebung hat den privaten Schlüssel nie.</span></div></div>
-      <div class="step"><div><span class="who">Seed, USB</span><b>Einspeisen</b><span>Manifest und Patch per USB; der Knoten prüft Signatur und Patch-Hash und bietet an. Mehrere Seeds derselben Kampagne schaden nicht, die Kampagne zählt über ihre ID (erste 4 Byte von SHA-256 des Manifests ohne Ticket; sie steht signiert im Ticket).</span></div></div>
+      <div class="step"><div><span class="who">Irgendein Betreiber, per USB</span><b>Neuestes Release-Paket installieren</b><span>Das signierte Release-Paket enthält das neue Image und die Kampagne von der Vorversion (Manifest und Patch). Wer es installiert, per UF2 oder seriellem DFU, ist der Seed: Beim Start prüft die Firmware die Kampagne wie eine geholte und bietet sie an, alle anderen holen sie per Funk <span class="m meas">gemessen</span>. Die Kampagne liegt im Paket am Anfang von Slot B, weil der UF2-Bootloader nicht bis an dessen Ende schreibt; die Firmware verschiebt sie beim Start dorthin. Mehrere Seeds schaden nicht, die Kampagne zählt über ihre ID. Am Testaufbau lassen sich Manifest und Patch auch einzeln per USB-Befehl laden.</span></div></div>
       <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit dem signierten Ticket (ID, Größe, Ziel, Build, Quell-Präfix) und der Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 2 Tage, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle), aber nur in Intervallen unter 1 h. Danach bietet jeder einmal je Intervall an, damit auch ein Nachbar, der die anderen nicht hört, ein Angebot bekommt.</span></div></div>
-      <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Dann prüft er die Signatur des Tickets; ein gefälschtes Angebot verwirft er hier. Sonst bleibt der Knoten still. Während eines Probestarts zieht er nicht.</span></div></div>
-      <div class="step"><div><span class="who">Nachbar</span><b>Erst nur das Manifest</b><span>2 bis 4 Fragmente. Prüft Signatur (Ed25519 über die CryptoCell), Ziel, Quelle, Build, Platz und ob dieses Update hier schon gescheitert ist. Fällt eine Prüfung durch: Kampagne gesperrt (übersteht Neustart), kein einziges Patch-Fragment.</span></div></div>
+      <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Dann prüft er die Signatur des Tickets; ein gefälschtes Angebot verwirft er hier. Sonst bleibt der Knoten still; ist das Netz schon aktuell, fließen also keine Daten. Während eines Probestarts zieht er nicht.</span></div></div>
+      <div class="step"><div><span class="who">Nachbar</span><b>Erst nur das Manifest</b><span>2 bis 4 Fragmente. Prüft Signatur (Ed25519 über die CryptoCell), Ziel, Quelle, Build, Platz und ob dieses Update hier schon gescheitert ist. Fällt eine Prüfung durch, holt er kein einziges Patch-Fragment; gesperrt (über Neustarts) wird nur, was signiert ist und hier nie passen kann, sonst ruht die Kampagne 10 min.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Patch holen</b><span>Anfrage für den niedrigsten Block mit Lücken (16 Fragmente, Bitmap der fehlenden) an genau einen Nachbarn: den zuletzt gehörten, dessen Angebot den Block abdeckt. Nur er antwortet. Kommt nichts, nennt die nächste Anfrage einen anderen Anbieter; kennt der Knoten keinen weiteren, fragt er alle (Kennung 0xFF). Fragmente landen direkt im Flash.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Jede Seite sofort prüfen</b><span>Ist eine 4-KB-Seite vollständig, wird sie gegen ihren Hash aus dem Manifest geprüft. Falsch: Seite löschen, neu holen. Richtig: ab sofort darf er sie weitergeben.</span></div></div>
       <div class="step"><div><span class="who">derselbe Knoten</span><b>Weitergeben, während er noch holt</b><span>Er bietet an, sobald sein Manifest geprüft ist, mit der Zahl geprüfter Seiten. Fragt ein Nachbar nach etwas, das er noch nicht hat, merkt er sich das und bietet sofort an, wenn die Seite fertig ist.</span></div></div>
@@ -323,10 +323,10 @@
     </div>
     <div class="steps" lang="en">
       <div class="step"><div><span class="who">Release build, signed offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (292 B + 8 B per 4 KB page, with offer ticket): target device, build number, sizes, SHA-256 of source image, new image and patch, a flag “safe to apply overlapping” (checked beforehand with the device’s apply code), plus the first 8 bytes of the SHA-256 of each page; at the end the offer ticket (target, build, patch size, source and hash of the manifest) that every offer carries. Both are signed offline with the release key, separate from the build: the build environment never holds the private key.</span></div></div>
-      <div class="step"><div><span class="who">Seed, USB</span><b>Feed in</b><span>Manifest and patch over USB; the node checks signature and patch hash and offers them. Several seeds for the same campaign do no harm: the campaign counts by its ID (first 4 bytes of the SHA-256 of the manifest without the ticket; it is signed in the ticket).</span></div></div>
+      <div class="step"><div><span class="who">any operator, over USB</span><b>Install the latest release package</b><span>The signed release package contains the new image and the campaign from the previous version (manifest and patch). Whoever installs it, over UF2 or serial DFU, is the seed: at boot the firmware checks the campaign like a pulled one and offers it, and all others pull it over the air <span class="m meas">measured</span>. In the package the campaign sits at the start of slot B, because the UF2 bootloader does not write up to its end; the firmware moves it there at boot. Several seeds do no harm, the campaign counts by its ID. On the bench, manifest and patch can also be loaded separately by USB command.</span></div></div>
       <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with the signed ticket (ID, size, target, build, source prefix) and the number of checked pages. Interval 10 s, doubling up to 2 days, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle), but only in intervals below 1 h. After that every node offers once per interval, so that a neighbour that cannot hear the others still gets an offer.</span></div></div>
-      <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Then it checks the signature of the ticket; a forged offer is dropped here. Otherwise the node stays silent. During a test boot it does not pull.</span></div></div>
-      <div class="step"><div><span class="who">Neighbour</span><b>Manifest first</b><span>2 to 4 fragments. Checks signature (Ed25519 via the CryptoCell), target, source, build, space and whether this update has already failed here. If a check fails: campaign banned (survives reboot), no patch fragment at all.</span></div></div>
+      <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Then it checks the signature of the ticket; a forged offer is dropped here. Otherwise the node stays silent, so no data flows when the network is already up to date. During a test boot it does not pull.</span></div></div>
+      <div class="step"><div><span class="who">Neighbour</span><b>Manifest first</b><span>2 to 4 fragments. Checks signature (Ed25519 via the CryptoCell), target, source, build, space and whether this update has already failed here. If a check fails, it pulls no patch fragment at all; banned (across reboots) is only what is signed and can never fit here, otherwise the campaign rests for 10 min.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Pull the patch</b><span>Request for the lowest block with missing fragments (16 fragments, bitmap of the missing ones) to exactly one neighbour: the most recent one whose offer covers the block. Only that one answers. If nothing comes, the next request names another provider; if the node knows no other one, it asks everybody (ID 0xFF). Fragments go straight to flash.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Check every page at once</b><span>When a 4 KB page is complete, the node checks it against its hash from the manifest. Wrong: erase the page, pull it again. Right: the node may pass it on from now on.</span></div></div>
       <div class="step"><div><span class="who">same node</span><b>Pass on while still pulling</b><span>It offers as soon as its manifest is checked, with the number of checked pages. If a neighbour asks for something it does not have yet, it remembers that and offers at once when the page is complete.</span></div></div>
@@ -337,28 +337,6 @@
       <div class="step"><div><span class="who">Release key, any time</span><b>Retract</b><span>A signed retract (80 B) for target and build. Every node that verifies it stops pulling and offering, stores it, sends it three times and answers every offer of this build with the retract.</span></div></div>
     </div>
     <div lang="de" class="prose">
-      <h3>Start durch manuelle Installation <span class="m meas">gemessen</span></h3>
-      <p>Das Release-Paket, das Betreiber ohnehin per USB installieren, trägt neben dem neuen Image auch die Kampagne
-        von der Vorversion: leere Status-Seite, Image in Slot A, Manifest in der ersten Seite von Slot B, der Patch ab der
-        zweiten. Beim Start prüft die Firmware Signatur, Patch- und Seiten-Hashes, Retracts, gesperrte und hier
-        gescheiterte Kampagnen und ob sie schon eine Kampagne mit höherem Build hält. Passt alles, kopiert sie Manifest und
-        Patch ans Ende von Slot B, wo jeder Knoten seine Kampagne hält, löscht die Kopie am Anfang und bietet die Kampagne
-        an, weil sie für den Knoten selbst nicht passt. Wer manuell aktualisiert, wird so zum Seed. Ein abgelehntes Paket
-        lässt die gehaltene Kampagne unberührt. Ein Paket trägt eine Kampagne, also nur den Patch von der Vorversion;
-        Kampagnen gibt es ab der zweiten FUOTA-Version.</p>
-      <p>Direkt ans Ende von Slot B geht es nicht <span class="m meas">gemessen</span>: Der UF2-Bootloader schreibt nur
-        unterhalb 0xEA000 (die 40 KB vor dem Bootloader hält er frei), Manifest und kleine Patches liegen darüber. Diese
-        Blöcke lehnt der Bootloader ab und zählt sie nicht; die Übertragung wird nie fertig. Darum der Umweg über den
-        Anfang von Slot B. Am Testaufbau <span class="m meas">gemessen</span>: Paket per UF2, auch mit Stage-0-Seite für
-        die Erstinstallation, und per seriellem DFU; Übernahme und Angebot; ein älteres Paket und eines mit
-        zurückgezogenem Build abgelehnt, die gehaltene Kampagne bleibt; ein Nachbar holt die Kampagne von einem so
-        installierten Knoten und wendet sie an. Ungeprüft: Stromausfall während des Verschiebens.
-        <span class="m open">offen</span></p>
-      <p>Ist das Netz schon aktuell, bietet ein frisch installierter Knoten nur an. Nachbarn auf dem Ziel-Build verwerfen
-        das Angebot ohne Rückfrage (Build nicht höher, Quelle passt nicht), es fließen keine Daten. Ein Angebot kostet bei
-        SF8 rund 0,48 s Airtime <span class="m calc">berechnet</span>; nach Trickle sind das 15 Angebote in den ersten
-        3,8 Tagen und danach eins je 2 Tage. Geflutet wird das Angebot nur in der ersten Woche oder nach einer gehörten
-        Anfrage (siehe „Es kann nicht fluten“).</p>
       <h3>Betreiber und Release-Build</h3>
       <p>Repeater werden meist über LoRa administriert. Darum gehen die Befehle für Betreiber auch über die Fern-CLI
         (Admin-Login): <code>fuota info</code> zeigt Build, Auto-Apply und den Stand des Updates, <code>fuota auto now|delay|off</code>
@@ -398,27 +376,6 @@
         gehören jetzt die Woche von <code>delay</code>, <code>delay</code> als Vorgabe und die Grenzen der Flut-Angebote).</p>
     </div>
     <div lang="en" class="prose">
-      <h3>Starting by manual installation <span class="m meas">measured</span></h3>
-      <p>The release package that operators install over USB anyway also carries the campaign from the previous
-        version next to the new image: an empty status page, the image in slot A, the manifest in the first page of slot B
-        and the patch from the second page on. At boot the firmware checks signature, patch and page hashes, retracts,
-        banned campaigns and campaigns that failed here, and whether it already holds a campaign with a higher build. If
-        all is well, it copies manifest and patch to the end of slot B, where every node keeps its campaign, erases the copy
-        at the start and offers the campaign, because it does not fit the node itself. Whoever updates by hand thus becomes
-        a seed. A rejected package leaves the held campaign untouched. A package carries one campaign, so only the patch
-        from the previous version; campaigns start with the second FUOTA version.</p>
-      <p>Writing straight to the end of slot B does not work <span class="m meas">measured</span>: the UF2 bootloader
-        writes only below 0xEA000 (it keeps the 40 KB in front of the bootloader free), and the manifest and small patches
-        lie above that. The bootloader rejects those blocks and does not count them; the transfer never completes. Hence
-        the detour through the start of slot B. <span class="m meas">measured</span> on the bench: package over UF2, also
-        with the Stage-0 page for a first installation, and over serial DFU; adoption and offer; an older package and one
-        with a retracted build rejected, the held campaign stays; a neighbour pulls the campaign from a node installed this
-        way and applies it. Not checked: power loss while moving. <span class="m open">open</span></p>
-      <p>If the network is already up to date, a freshly installed node only offers. Neighbours on the target build drop
-        the offer without asking back (build not higher, source does not match), no data flows. One offer costs about
-        0.48 s of airtime at SF8 <span class="m calc">calculated</span>; with Trickle that is 15 offers in the first
-        3.8 days and then one every 2 days. The offer is flooded only in the first week or after a request was heard
-        (see “It cannot flood”).</p>
       <h3>Operators and the release build</h3>
       <p>Repeaters are mostly administered over LoRa. The operator commands therefore work over the remote CLI as well
         (admin login): <code>fuota info</code> shows build, auto apply and the state of the update, <code>fuota auto now|delay|off</code>
@@ -472,7 +429,7 @@
         <tr><th>Rolle</th><th>Was sie tut</th><th>Was sie nicht kann</th></tr>
         <tr><td><b>Release-Build</b> (fester Linux-Container)</td><td>Baut die Images und je Repeater-Modell und Quell-Version einen Patch samt Manifest.</td><td>Signieren: den privaten Schlüssel gibt es dort nie, auch nicht in einer CI.</td></tr>
         <tr><td><b>Release-Schlüssel</b> (offline)</td><td>Signiert Manifeste und Retracts offline, getrennt vom Build; so wird auch ein Build zurückgezogen (Retract).</td><td>Nichts eingeschränkt: wer den Schlüssel hat, bestimmt, was installiert werden darf.</td></tr>
-        <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Bekommt Manifest und Patch per USB und bietet sie an, auch aus einem manuell installierten Release-Paket (siehe Ablauf).</td><td>Eigene Kampagnen erzeugen; Unsigniertes wird schon beim Laden abgelehnt.</td></tr>
+        <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Installiert das neueste Release-Paket per USB und bietet die Kampagne darin an (siehe Ablauf).</td><td>Eigene Kampagnen erzeugen; Unsigniertes wird schon beim Laden abgelehnt.</td></tr>
         <tr><td><b>Teilnehmender Repeater</b></td><td>Normale MeshCore-Repeater-Firmware mit FUOTA-Modul: hört Angebote, holt, prüft, gibt weiter, wendet an.</td><td>Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
         <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB)</td><td>Läuft nur beim Booten: führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Kein Funk, keine Signaturprüfung (vertraut dem Auftrag der App, siehe „Was noch offen ist“).</td></tr>
         <tr><td><b>Repeater ohne FUOTA</b>, Companions</td><td>Verwerfen Typ 0x0E ohne Pfad (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, bewusst nicht geroutet). Ein Paket mit Pfad leiten sie weiter wie jedes Direct-Paket (<code>src/Mesh.cpp:78-106</code>), ein geflutetes Angebot wie jede Gruppen-Nachricht: So tragen sie Anfragen und Daten über Lücken (siehe „Wer was weitergibt“).</td><td>Ein Update prüfen, halten oder selbst anbieten.</td></tr>
@@ -484,7 +441,7 @@
         <tr><th>Role</th><th>What it does</th><th>What it cannot do</th></tr>
         <tr><td><b>Release build</b> (fixed Linux container)</td><td>Builds the images and, per repeater model and source version, a patch with its manifest.</td><td>Sign: the private key is never there, nor in any CI.</td></tr>
         <tr><td><b>Release key</b> (offline)</td><td>Signs manifests and retracts offline, separate from the build; this is also how a build is retracted.</td><td>Nothing limits it: whoever holds the key decides what may be installed.</td></tr>
-        <tr><td><b>Seed</b> (any participant)</td><td>Receives manifest and patch over USB and offers them, also from a release package installed by hand (see the update flow).</td><td>Create its own campaigns; unsigned material is rejected already at load time.</td></tr>
+        <tr><td><b>Seed</b> (any participant)</td><td>Installs the latest release package over USB and offers the campaign it contains (see the update flow).</td><td>Create its own campaigns; unsigned material is rejected already at load time.</td></tr>
         <tr><td><b>Participating repeater</b></td><td>Normal MeshCore repeater firmware with a FUOTA module: hears offers, pulls, checks, passes on, applies.</td><td>Exceed its airtime budget, pass on unchecked data, update foreign nodes.</td></tr>
         <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB)</td><td>Runs only at boot: executes a swap job, with journal, test boot and revert.</td><td>No radio, no signature check (trusts the job from the app, see “What is still open”).</td></tr>
         <tr><td><b>Repeater without FUOTA</b>, companions</td><td>Drop type 0x0E without a path (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, deliberately not routed). A packet with a path they forward like any direct packet (<code>src/Mesh.cpp:78-106</code>), a flooded offer like any group message: this is how they carry requests and data across gaps (see “Who passes on what”).</td><td>Check, hold or offer an update themselves.</td></tr>
@@ -1466,7 +1423,8 @@
         <li><b>Testaufbau ist nicht das Mesh.</b> Im Testaufbau hört jeder jeden (der Testfilter wirkt nur in Software), versteckte
           Endgeräte gibt es dort nicht. Messwerte sind eher zu gut.</li>
         <li><b>Erstinstallation</b> einmal per Kabel (neues Flash-Layout). Ob das BLE-DFU des Bootloaders das kann, ist
-          ungeprüft.</li>
+          ungeprüft. Ein Stromausfall, während die Firmware die Kampagne aus einem Release-Paket verschiebt, ist ebenfalls
+          ungeprüft. <span class="m open">offen</span></li>
         <li><b>Protokollversion</b> fehlt in den Nachrichten; für upstream nötig.</li>
         <li><b>Mehr als drei Knoten</b> und echte Distanzen sind noch nicht gemessen.</li>
         <li><b>Eine verlorene Anfrage kostete zu viel Zeit (behoben).</b> Im Lauf mit 1 % Budget ging eine einzelne
@@ -1546,7 +1504,8 @@
         <li><b>The bench is not the mesh.</b> On the bench everyone hears everyone (the test filter works in software only), and there are no hidden
           terminals. Measured values tend to be too good.</li>
         <li><b>First installation</b> once by cable (new flash layout). Whether the BLE DFU of the bootloader can do it
-          is unchecked.</li>
+          is unchecked. A power cut while the firmware moves the campaign out of a release package is unchecked as well.
+          <span class="m open">open</span></li>
         <li><b>Protocol version</b> is missing in the messages; needed for upstream.</li>
         <li><b>More than three nodes</b> and real distances have not been measured yet.</li>
         <li><b>A lost request cost too much time (fixed).</b> In the run with a 1 % budget a single request was
