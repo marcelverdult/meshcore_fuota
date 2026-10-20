@@ -467,10 +467,10 @@
         budget (default) and SF8, times on the bench assume 10 % and SF7.</p>
     </div>
     <div class="steps" lang="de">
-      <div class="step"><div><span class="who">Release-Build, Signatur offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (188 B + 8 B je 4-KB-Seite): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, ein Flag „überlappend anwenden ist sicher“ (vorher mit dem Apply-Code des Geräts geprüft), dazu je Seite die ersten 8 Byte ihres SHA-256. Signiert wird offline mit dem Release-Schlüssel, getrennt vom Build: die Build-Umgebung hat den privaten Schlüssel nie.</span></div></div>
-      <div class="step"><div><span class="who">Seed, USB</span><b>Einspeisen</b><span>Manifest und Patch per USB; der Knoten prüft Signatur und Patch-Hash und bietet an. Mehrere Seeds derselben Kampagne schaden nicht, die Kampagne zählt über ihre ID (erste 4 Byte von SHA-256 des Manifests).</span></div></div>
-      <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit ID, Größen, Ziel, Build, Quell-Präfix und Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 2 Tage, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle), aber nur in Intervallen unter 1 h. Danach bietet jeder einmal je Intervall an, damit auch ein Nachbar, der die anderen nicht hört, ein Angebot bekommt.</span></div></div>
-      <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Sonst bleibt der Knoten still. Während eines Probestarts zieht er nicht.</span></div></div>
+      <div class="step"><div><span class="who">Release-Build, Signatur offline</span><b>Patch und Manifest bauen</b><span>Je Modell und Quell-Version ein Patch. Manifest (292 B + 8 B je 4-KB-Seite, mit Angebots-Ticket): Ziel-Gerät, Build-Nummer, Größen, SHA-256 von Quell-Image, neuem Image und Patch, ein Flag „überlappend anwenden ist sicher“ (vorher mit dem Apply-Code des Geräts geprüft), dazu je Seite die ersten 8 Byte ihres SHA-256; am Ende das Angebots-Ticket (Ziel, Build, Patch-Größe, Quelle und Hash des Manifests), das jedes Angebot mitträgt. Signiert wird beides offline mit dem Release-Schlüssel, getrennt vom Build: die Build-Umgebung hat den privaten Schlüssel nie.</span></div></div>
+      <div class="step"><div><span class="who">Seed, USB</span><b>Einspeisen</b><span>Manifest und Patch per USB; der Knoten prüft Signatur und Patch-Hash und bietet an. Mehrere Seeds derselben Kampagne schaden nicht, die Kampagne zählt über ihre ID (erste 4 Byte von SHA-256 des Manifests ohne Ticket; sie steht signiert im Ticket).</span></div></div>
+      <div class="step"><div><span class="who">jeder Knoten mit geprüftem Manifest</span><b>Anbieten</b><span>Angebot mit dem signierten Ticket (ID, Größe, Ziel, Build, Quell-Präfix) und der Zahl geprüfter Seiten. Intervall 10 s, verdoppelt bis 2 Tage, gesendet in der zweiten Hälfte; hört er vorher ein gleiches Angebot, schweigt er (Trickle), aber nur in Intervallen unter 1 h. Danach bietet jeder einmal je Intervall an, damit auch ein Nachbar, der die anderen nicht hört, ein Angebot bekommt.</span></div></div>
+      <div class="step"><div><span class="who">Nachbar</span><b>Passt es zu mir?</b><span>Nur bei gleichem Ziel-Gerät, höherer Build-Nummer und passendem Quell-Präfix (erste 8 Byte von SHA-256 des laufenden Images). Dann prüft er die Signatur des Tickets; ein gefälschtes Angebot verwirft er hier. Sonst bleibt der Knoten still. Während eines Probestarts zieht er nicht.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Erst nur das Manifest</b><span>2 bis 4 Fragmente. Prüft Signatur (Ed25519 über die CryptoCell), Ziel, Quelle, Build, Platz und ob dieses Update hier schon gescheitert ist. Fällt eine Prüfung durch: Kampagne gesperrt (übersteht Neustart), kein einziges Patch-Fragment.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Patch holen</b><span>Anfrage für den niedrigsten Block mit Lücken (16 Fragmente, Bitmap der fehlenden) an genau einen Nachbarn: den zuletzt gehörten, dessen Angebot den Block abdeckt. Nur er antwortet. Kommt nichts, nennt die nächste Anfrage einen anderen Anbieter; kennt der Knoten keinen weiteren, fragt er alle (Kennung 0xFF). Fragmente landen direkt im Flash.</span></div></div>
       <div class="step"><div><span class="who">Nachbar</span><b>Jede Seite sofort prüfen</b><span>Ist eine 4-KB-Seite vollständig, wird sie gegen ihren Hash aus dem Manifest geprüft. Falsch: Seite löschen, neu holen. Richtig: ab sofort darf er sie weitergeben.</span></div></div>
@@ -482,10 +482,10 @@
       <div class="step"><div><span class="who">Release-Schlüssel, jederzeit</span><b>Zurückziehen</b><span>Ein signierter Retract (80 B) für Ziel und Build. Jeder Knoten, der ihn prüft, stoppt Holen und Anbieten, speichert ihn, sendet ihn dreimal und antwortet auf jedes Angebot dieses Builds mit dem Retract.</span></div></div>
     </div>
     <div class="steps" lang="en">
-      <div class="step"><div><span class="who">Release build, signed offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (188 B + 8 B per 4 KB page): target device, build number, sizes, SHA-256 of source image, new image and patch, a flag “safe to apply overlapping” (checked beforehand with the device’s apply code), plus the first 8 bytes of the SHA-256 of each page. Signed offline with the release key, separate from the build: the build environment never holds the private key.</span></div></div>
-      <div class="step"><div><span class="who">Seed, USB</span><b>Feed in</b><span>Manifest and patch over USB; the node checks signature and patch hash and offers them. Several seeds for the same campaign do no harm: the campaign counts by its ID (first 4 bytes of the SHA-256 of the manifest).</span></div></div>
-      <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with ID, sizes, target, build, source prefix and number of checked pages. Interval 10 s, doubling up to 2 days, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle), but only in intervals below 1 h. After that every node offers once per interval, so that a neighbour that cannot hear the others still gets an offer.</span></div></div>
-      <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Otherwise the node stays silent. During a test boot it does not pull.</span></div></div>
+      <div class="step"><div><span class="who">Release build, signed offline</span><b>Build patch and manifest</b><span>One patch per model and source version. Manifest (292 B + 8 B per 4 KB page, with offer ticket): target device, build number, sizes, SHA-256 of source image, new image and patch, a flag “safe to apply overlapping” (checked beforehand with the device’s apply code), plus the first 8 bytes of the SHA-256 of each page; at the end the offer ticket (target, build, patch size, source and hash of the manifest) that every offer carries. Both are signed offline with the release key, separate from the build: the build environment never holds the private key.</span></div></div>
+      <div class="step"><div><span class="who">Seed, USB</span><b>Feed in</b><span>Manifest and patch over USB; the node checks signature and patch hash and offers them. Several seeds for the same campaign do no harm: the campaign counts by its ID (first 4 bytes of the SHA-256 of the manifest without the ticket; it is signed in the ticket).</span></div></div>
+      <div class="step"><div><span class="who">every node with a checked manifest</span><b>Offer</b><span>Offer with the signed ticket (ID, size, target, build, source prefix) and the number of checked pages. Interval 10 s, doubling up to 2 days, sent in the second half; if the node hears an equal offer before that, it stays silent (Trickle), but only in intervals below 1 h. After that every node offers once per interval, so that a neighbour that cannot hear the others still gets an offer.</span></div></div>
+      <div class="step"><div><span class="who">Neighbour</span><b>Does it fit me?</b><span>Only with the same target device, a higher build number and a matching source prefix (first 8 bytes of the SHA-256 of the running image). Then it checks the signature of the ticket; a forged offer is dropped here. Otherwise the node stays silent. During a test boot it does not pull.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Manifest first</b><span>2 to 4 fragments. Checks signature (Ed25519 via the CryptoCell), target, source, build, space and whether this update has already failed here. If a check fails: campaign banned (survives reboot), no patch fragment at all.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Pull the patch</b><span>Request for the lowest block with missing fragments (16 fragments, bitmap of the missing ones) to exactly one neighbour: the most recent one whose offer covers the block. Only that one answers. If nothing comes, the next request names another provider; if the node knows no other one, it asks everybody (ID 0xFF). Fragments go straight to flash.</span></div></div>
       <div class="step"><div><span class="who">Neighbour</span><b>Check every page at once</b><span>When a 4 KB page is complete, the node checks it against its hash from the manifest. Wrong: erase the page, pull it again. Right: the node may pass it on from now on.</span></div></div>
@@ -554,7 +554,7 @@
         einer davon hineingerät. Release und Test haben verschiedene Ziel-IDs, und jedes Anwenden prüft die Ziel-ID des
         Manifests: Eine Kampagne für den Testaufbau passt nie auf einen Release-Knoten. Den öffentlichen Schlüssel teilen
         beide im Proof of Concept aber noch (siehe Lücken). <span class="m meas">gemessen</span> (Stand 20.10.2026):
-        268.972 B (66 von 96 Seiten), kein BLE-Symbol im Image, die Sperre greift bei allen 14 geprüften Schaltern (dazu
+        270.080 B (66 von 96 Seiten, mit signierten Angeboten), kein BLE-Symbol im Image, die Sperre greift bei allen 14 geprüften Schaltern (dazu
         gehören jetzt die Woche von <code>delay</code>, <code>delay</code> als Vorgabe und die Grenzen der Flut-Angebote).</p>
     </div>
     <div lang="en" class="prose">
@@ -613,7 +613,7 @@
         exist only in the test build; a build guard stops the release build as soon as one of them gets in. Release and
         test have different target IDs, and every apply checks the target ID of the manifest: a campaign for the bench
         never fits a release node. Both still share the public key in the proof of concept, though (see gaps).
-        <span class="m meas">measured</span> (as of 20 Oct 2026): 268,972 B (66 of 96 pages), no BLE symbol in the image,
+        <span class="m meas">measured</span> (as of 20 Oct 2026): 270,080 B (66 of 96 pages, with signed offers), no BLE symbol in the image,
         the guard fires for all 14 switches tested (now including the week of <code>delay</code>, <code>delay</code> as
         the default and the limits of flooded offers).</p>
     </div>
@@ -624,11 +624,12 @@
     <div lang="de" class="prose">
       <h2>Die Nachrichten auf Funk</h2>
       <p>Alle als MeshCore-Paket Typ 0x0E, Route Direct: zwischen Nachbarn ohne Pfad (Zero-Hop), über Repeater ohne
-        FUOTA mit Pfad (siehe „Wer was weitergibt“). Byte 1 ist bei allen die Kennung des Absenders (erstes Byte seines
-        öffentlichen Schlüssels); sie ist nicht signiert und dient nur Logs, dem Testfilter und der Erkennung eines
-        beschäftigten Anbieters. Airtime: MeshCore EU narrow (869,618 MHz, BW 62,5 kHz, SF8) mit CR 4/8, wie das App-Preset
+        FUOTA mit Pfad (siehe „Wer was weitergibt“). Byte 1 und 2 sind bei allen die Kennung des Absenders (erste 2 Byte
+        seines öffentlichen Schlüssels); sie ist nicht signiert und dient der Wahl des Anbieters, Logs, dem Testfilter und
+        der Erkennung eines beschäftigten Anbieters. Das Angebot trägt das Angebots-Ticket, das der Release-Schlüssel beim
+        Release signiert: Ein gefälschtes Angebot verwirft ein Knoten, bevor er etwas anfragt. Airtime: MeshCore EU narrow (869,618 MHz, BW 62,5 kHz, SF8) mit CR 4/8, wie das App-Preset
         „EU/UK (Narrow)“, der langsamere Fall <span class="m calc">berechnet</span>; die großen Repeater in Hamburg laufen mit CR 4/5, dort brauchen
-        Angebot 366 ms, Anfrage 263 ms, Daten 1.144 ms und Retract 632 ms (Faktor 0,66, alle Dauern rund ein Drittel
+        Angebot 775 ms, Anfrage 284 ms, Daten 1.144 ms und Retract 632 ms (Faktor 0,66, alle Dauern rund ein Drittel
         kürzer) <span class="m calc">berechnet</span>. Im Testaufbau SF7 CR 4/5 <span class="m meas">gemessen</span>. Die Firmware rechnet ihr Budget mit der Airtime ihrer aktuellen
         Einstellungen. In der Sendewarteschlange von MeshCore stehen FUOTA-Pakete mit der niedrigsten Priorität und
         höchstens eins zur Zeit: Fällige Mesh-Pakete gehen vor, nur ein schon gesendetes FUOTA-Paket hält eines auf.</p>
@@ -636,10 +637,12 @@
     <div lang="en" class="prose">
       <h2>The messages on air</h2>
       <p>All as MeshCore packet type 0x0E, route direct: between neighbours without a path (zero hop), across repeaters
-        without FUOTA with a path (see “Who passes on what”). Byte 1 in every message is the sender ID (first byte of
-        its public key); it is unsigned and serves only logs, the test filter and the detection of a busy provider.
+        without FUOTA with a path (see “Who passes on what”). Bytes 1 and 2 in every message are the sender ID (first two
+        bytes of its public key); it is unsigned and serves to pick a provider, logs, the test filter and the detection of
+        a busy provider. The offer carries the offer ticket the release key signs at release time: a node drops a forged
+        offer before it asks for anything.
         Airtime: MeshCore EU narrow (869.618 MHz, BW 62.5 kHz, SF8) with CR 4/8, like the app preset “EU/UK (Narrow)”,
-        the slower case <span class="m calc">calculated</span>; the large repeaters in Hamburg run CR 4/5, where an offer takes 366 ms, a request 263 ms,
+        the slower case <span class="m calc">calculated</span>; the large repeaters in Hamburg run CR 4/5, where an offer takes 775 ms, a request 284 ms,
         a data packet 1,144 ms and a retract 632 ms (factor 0.66, every duration about a third shorter) <span class="m calc">calculated</span>. On the
         bench SF7 CR 4/5 <span class="m meas">measured</span>. The firmware computes its budget from the airtime of its current settings. In the
         MeshCore transmit queue FUOTA packets have the lowest priority and at most one is queued: due mesh packets go
@@ -648,19 +651,19 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Nachricht</th><th>Aufbau</th><th>Bytes</th><th>Airtime Mesh</th><th>Testaufbau</th><th>wer sendet</th><th>wer reagiert</th></tr>
-        <tr><td><b>Angebot</b></td><td class="fmt">[1][snd][id 4][Manifest-Länge 2][Patch-Größe 4][Ziel 4][Build 4][Quelle 8][Seiten][nonce]</td><td class="n">30</td><td class="n">476 ms</td><td class="n">193 ms</td><td>jeder Knoten mit geprüftem Manifest, nach Trickle</td><td>Nachbarn, für die es passt; Nachbarn mit derselben Kampagne zählen es als Bestätigung</td></tr>
-        <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd][id 4][Block 2][Maske 2][Ziel][nonce]</td><td class="n">12</td><td class="n">312 ms</td><td class="n">142 ms</td><td>wer zieht</td><td>nur der genannte Anbieter (Ziel = seine Kennung); bei 0xFF jeder mit den geprüften Fragmenten</td></tr>
-        <tr><td><b>Daten</b></td><td class="fmt">[3][snd][id 4][Fragment 2][bis 176 B]</td><td class="n">184</td><td class="n">1.721 ms</td><td class="n">643 ms</td><td>wer die Seite geprüft hat und angefragt wurde</td><td>alle Nachbarn, die dieselbe Kampagne ziehen (ein Paket bedient alle)</td></tr>
-        <tr><td><b>Retract</b></td><td class="fmt">[4][snd][signierter Retract 80 B]</td><td class="n">82</td><td class="n">902 ms</td><td class="n">347 ms</td><td>wer ihn geprüft hat: dreimal, und als Antwort auf ein Angebot des Builds</td><td>alle teilnehmenden Nachbarn</td></tr>
+        <tr><td><b>Angebot</b></td><td class="fmt">[1][snd 2][Seiten][nonce][Ticket 104: Ziel 4, Build 4, Patch-Größe 4, Quelle 8, Manifest-Hash 16, Signatur 64]</td><td class="n">109</td><td class="n">1.132 ms</td><td class="n">429 ms</td><td>jeder Knoten mit geprüftem Manifest, nach Trickle</td><td>Nachbarn, für die es passt; Nachbarn mit derselben Kampagne zählen es als Bestätigung</td></tr>
+        <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd 2][id 4][Block 2][Maske 2][Ziel 2][nonce]</td><td class="n">14</td><td class="n">345 ms</td><td class="n">152 ms</td><td>wer zieht</td><td>nur der genannte Anbieter (Ziel = seine Kennung); bei 0xFFFF jeder mit den geprüften Fragmenten</td></tr>
+        <tr><td><b>Daten</b></td><td class="fmt">[3][snd 2][id, erste 3 B][Fragment 2][bis 176 B]</td><td class="n">184</td><td class="n">1.721 ms</td><td class="n">643 ms</td><td>wer die Seite geprüft hat und angefragt wurde</td><td>alle Nachbarn, die dieselbe Kampagne ziehen (ein Paket bedient alle)</td></tr>
+        <tr><td><b>Retract</b></td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td class="n">902 ms</td><td class="n">347 ms</td><td>wer ihn geprüft hat: dreimal, und als Antwort auf ein Angebot des Builds</td><td>alle teilnehmenden Nachbarn</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Message</th><th>Layout</th><th>Bytes</th><th>Airtime mesh</th><th>Bench</th><th>Sender</th><th>Reacts</th></tr>
-        <tr><td><b>Offer</b></td><td class="fmt">[1][snd][id 4][manifest length 2][patch size 4][target 4][build 4][source 8][pages][nonce]</td><td class="n">30</td><td class="n">476 ms</td><td class="n">193 ms</td><td>every node with a checked manifest, per Trickle</td><td>neighbours it fits; neighbours with the same campaign count it as a confirmation</td></tr>
-        <tr><td><b>Request</b></td><td class="fmt">[2][snd][id 4][block 2][mask 2][target][nonce]</td><td class="n">12</td><td class="n">312 ms</td><td class="n">142 ms</td><td>the puller</td><td>only the named provider (target = its ID); with 0xFF everyone holding the checked fragments</td></tr>
-        <tr><td><b>Data</b></td><td class="fmt">[3][snd][id 4][fragment 2][up to 176 B]</td><td class="n">184</td><td class="n">1,721 ms</td><td class="n">643 ms</td><td>whoever has checked the page and was asked</td><td>all neighbours pulling the same campaign (one packet serves all)</td></tr>
-        <tr><td><b>Retract</b></td><td class="fmt">[4][snd][signed retract 80 B]</td><td class="n">82</td><td class="n">902 ms</td><td class="n">347 ms</td><td>whoever has verified it: three times, and as a reply to an offer of that build</td><td>all participating neighbours</td></tr>
+        <tr><td><b>Offer</b></td><td class="fmt">[1][snd 2][pages][nonce][ticket 104: target 4, build 4, patch size 4, source 8, manifest hash 16, signature 64]</td><td class="n">109</td><td class="n">1,132 ms</td><td class="n">429 ms</td><td>every node with a checked manifest, per Trickle</td><td>neighbours it fits; neighbours with the same campaign count it as a confirmation</td></tr>
+        <tr><td><b>Request</b></td><td class="fmt">[2][snd 2][id 4][block 2][mask 2][target 2][nonce]</td><td class="n">14</td><td class="n">345 ms</td><td class="n">152 ms</td><td>the puller</td><td>only the named provider (target = its ID); with 0xFFFF everyone holding the checked fragments</td></tr>
+        <tr><td><b>Data</b></td><td class="fmt">[3][snd 2][id, first 3 B][fragment 2][up to 176 B]</td><td class="n">184</td><td class="n">1,721 ms</td><td class="n">643 ms</td><td>whoever has checked the page and was asked</td><td>all neighbours pulling the same campaign (one packet serves all)</td></tr>
+        <tr><td><b>Retract</b></td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td class="n">902 ms</td><td class="n">347 ms</td><td>whoever has verified it: three times, and as a reply to an offer of that build</td><td>all participating neighbours</td></tr>
       </table>
     </div>
     <div class="panel scroll" lang="de">
@@ -915,8 +918,8 @@
         die Zeitzonen-Funktionen der C-Bibliothek. Das Einheits-Image hat außerdem keinen Display-Treiber mehr (die Taste
         bleibt). Es schrumpft so von 375.040 auf 257.768 B (92 auf 63 Seiten, RAM 37,5 auf 32,5 KB); mit dem Code, der
         Lücken aus normalen Repeatern überbrückt (seltene Flut-Angebote, Daten per Pfad), den Betreiber-Befehlen über LoRa,
-        dem Release-Paket, der Härtung nach dem externen Review und dem Schutz gegen wiederholte Fern-Befehle, ohne die Testhilfe <code>fuota hang</code>, sind es heute
-        268.972 B (66 Seiten, RAM 36.248 B).
+        dem Release-Paket, der Härtung nach dem externen Review und dem Schutz gegen wiederholte Fern-Befehle, ohne die Testhilfe <code>fuota hang</code> und mit signierten Angeboten sind es heute
+        270.080 B (66 Seiten, RAM 37.036 B).
         Weil weniger eingebetteter Code mitwandert, werden auch die Patches zwischen zwei Releases 18 bis 39 % kleiner:
         gemessen am Stock-FakeTec aus den Release-Tags, je mit <code>-Ofast</code> und mit <code>-Os</code> gebaut, alle
         Patches mit Rundreise geprüft. Hinter ein Image mit 66 Seiten passen Patches bis 31 Seiten; größere wendet der
@@ -961,8 +964,8 @@
         zone functions of the C library. The unified image also has no display driver any more (the button stays). It
         shrinks from 375,040 to 257,768 B (92 to 63 pages, RAM 37.5 to 32.5 KB); with the code that bridges gaps of normal
         repeaters (rare flooded offers, data along paths), the operator commands over LoRa, the release package and the
-        hardening after the external review and the protection against replayed remote commands, without the test helper <code>fuota hang</code>, it is 268,972 B today
-        (66 pages, RAM 36,248 B). Because less inlined code moves along,
+        hardening after the external review and the protection against replayed remote commands, without the test helper <code>fuota hang</code> and with signed offers, it is 270,080 B today
+        (66 pages, RAM 37,036 B). Because less inlined code moves along,
         patches between two releases also become 18 to 39 % smaller: measured on the stock FakeTec from the release tags,
         each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 31
         pages fit behind an image of 66 pages; a node applies larger ones overlapping. Measured on a FakeTec: signing the node's
@@ -1013,7 +1016,7 @@
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
       <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 0,3 % bis rund 1,8 % Update-Verkehr im dichtesten Zehntel (bei 1 % rund 6 %) <span class="m calc">berechnet</span>. Eine Anfrage nennt einen Anbieter: auch wenn mehrere es haben, sendet für einen Fragenden immer nur einer.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.300 bis 1.700 Datenpakete im ganzen Gebiet, Compilerwechsel 16.900 bis 22.200 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 170.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 268.972 B (66 Seiten), RAM 36.248 B belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 66 Seiten passen 31, größere werden überlappend angewendet.</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 270.080 B (66 Seiten, 256 B bis Seite 67), RAM 37.036 B belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 66 Seiten passen 31, größere werden überlappend angewendet.</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Zuhören</h3><p>Während eine Kampagne läuft, hört ein Knoten oft ein Angebot (jeder eigene Fortschritt setzt das Intervall auf 10 s). Wer später dazukommt, wartet höchstens das längste Trickle-Intervall: 2 Tage. Im Testaufbau lagen im Leerlauf 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>. Gewollt für Updates, die ohnehin Tage dauern dürfen: dafür bleibt der Kanal nach einem Update fast ruhig.</p></div>
     </div>
@@ -1021,7 +1024,7 @@
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
       <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 0.3 % up to about 1.8 % update traffic in the densest tenth (about 6 % at 1 %) <span class="m calc">calculated</span>. A request names one provider: even when several have it, only one sends for a given puller.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,300 to 1,700 data packets in the whole area, compiler change 16,900 to 22,200 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 170,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 268,972 B (66 pages), RAM 36,248 B used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 31 fit behind an image of 66 pages, larger ones are applied overlapping.</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 270,080 B (66 pages, 256 B short of page 67), RAM 37,036 B used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 31 fit behind an image of 66 pages, larger ones are applied overlapping.</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Listening</h3><p>While a campaign runs, a node hears offers often (every own progress sets the interval back to 10 s). A node that joins later waits at most the longest Trickle interval: 2 days. On the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. Intended for updates that may take days anyway: in return the channel stays almost quiet after an update.</p></div>
     </div>
@@ -1129,7 +1132,7 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Angriff</th><th>Was passiert</th><th>Schaden</th></tr>
-        <tr><td>Manifest mit eigenem Schlüssel anbieten</td><td>Opfer holt 2 bis 4 Fragmente, Signatur falsch: Die ID ruht 10 min, nach einem Neustart lehnt der Knoten das Manifest aus dem Flash erneut ab, ohne Fragmente zu holen <span class="m meas">gemessen</span>. Nicht gesperrt: Die ID ist ein 4-Byte-Präfix und könnte zu einer echten Kampagne gehören (gefunden per Rechenaufwand)</td><td>einige Anfragen Airtime je ID und alle 10 min</td></tr>
+        <tr><td>Manifest mit eigenem Schlüssel anbieten, oder ein Angebot fälschen</td><td>Das Ticket im Angebot ist nicht vom Release-Schlüssel signiert: Der Knoten verwirft das Angebot, bevor er etwas anfragt, auch wenn er gerade eine Kampagne hält <span class="m meas">gemessen</span>; eine Prüfung (17,8 ms) je neuem Ticket, Angebote, die den Knoten nicht betreffen, ignoriert er ungeprüft</td><td>Rechenzeit, keine Airtime</td></tr>
         <tr><td>Echte Fragmente verfälschen</td><td>Seiten-Hash schlägt an, Seite wird neu geholt <span class="m meas">gemessen</span></td><td>Verzögerung; wer schneller fälscht als echte Quellen senden, kann einen Knoten aufhalten (DoS)</td></tr>
         <tr><td>Altes echtes Manifest wiederholen</td><td>Build nicht höher als der laufende: abgelehnt <span class="m meas">gemessen</span></td><td>keiner</td></tr>
         <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>abgelehnt, bevor ein Fragment angefragt wird, auch wenn danach ein anderes Update kam: dauerhafte Liste der letzten 4 gescheiterten Images <span class="m meas">gemessen</span></td><td>erst ab dem 5. gescheiterten Image fällt das älteste heraus</td></tr>
@@ -1137,9 +1140,9 @@
         <tr><td>Echter Retract wiederholt</td><td>gleiche Wirkung wie beim ersten Mal</td><td>keiner (er ist ohnehin endgültig)</td></tr>
         <tr><td>Altes Fern-Kommando eines Admins nach einem Neustart wiederholen</td><td>Stock hält den Zeitstempel eines Admins nur im RAM; FUOTA speichert den des letzten ändernden Befehls (<code>auto</code>, <code>apply</code>) und lehnt gleiche und ältere ab, <code>fuota apply</code> verlangt dazu die Build-Nummer <span class="m meas">gemessen</span></td><td>keiner für diese Befehle, außer ein nie zugestellter, mitgeschnittener neuerer Befehl; Stock-Befehle wie <code>reboot</code> oder <code>start ota</code> bleiben wiederholbar (Stock)</td></tr>
         <tr><td>Billige Anfragen senden</td><td>der genannte Anbieter sendet bis 16 Datenpakete je Anfrage (Faktor ~88 in Airtime); mit Ziel 0xFF jeder Anbieter in Reichweite, über einen Pfad auch aus der Ferne. Der Anbieter bedient reihum ab dem zuletzt gesendeten Fragment: Eine immer wiederholte Anfrage bekommt ihren Anteil, keinen Vorrang <span class="m meas">gemessen</span>; Anfragen über Pfade bekommen höchstens die Hälfte seiner Airtime</td><td>Anbieter schöpfen ihr Budget aus; eine echte Anfrage kommt spätestens nach einem Umlauf dran</td></tr>
-        <tr><td>Gefälschtes Angebot mit passendem Quell-Präfix und höherem Build</td><td>Ein Knoten, der eine Kampagne hält (bedient, wartet aufs Anwenden, Pull pausiert), holt nur das neue Manifest in den RAM und wechselt erst, wenn Signatur, Passung, Größe und ein höherer Build stimmen; sonst behält er seine Kampagne <span class="m meas">gemessen</span></td><td>einige Anfragen; als Flut erreicht das Angebot eine ganze Region, kostet dort aber auch nicht mehr</td></tr>
-        <tr><td>Angebot mit echter ID und falscher Größe oder falschem Quell-Präfix</td><td>das echte Manifest passt nicht zum Angebot oder nicht zu diesem Knoten: 10 min Ruhe, keine Sperre; danach oder nach einem Neustart holt der Knoten die echte Kampagne normal <span class="m meas">gemessen</span></td><td>Verzögerung um 10 min</td></tr>
-        <tr><td>Aus der Ferne über Pfade und Flut</td><td>Pfade über beliebige Repeater tragen Anfragen und Daten bis zum Ziel, geflutete Angebote erreichen eine Region</td><td>die Kopien der Repeater zählen in kein Budget; gegen gefälschte Angebote: signierte Angebote (Vorschlag, siehe Lücken)</td></tr>
+        <tr><td>Echtes Angebot eines neueren Builds (auch mitgeschnitten und wiederholt)</td><td>Ein Knoten, der eine Kampagne hält (bedient, wartet aufs Anwenden, Pull pausiert), holt nur das neue Manifest in den RAM und wechselt erst, wenn Signatur, Passung, Größe und ein höherer Build stimmen; sonst behält er seine Kampagne <span class="m meas">gemessen</span></td><td>nur echte Kampagnen; ein wiederholtes echtes Angebot mit falscher Seitenzahl oder Absender kann Anfragen ins Leere lenken</td></tr>
+        <tr><td>Angebot mit echter ID und falscher Größe oder falschem Quell-Präfix</td><td>Größe, Quelle und ID stehen im signierten Ticket: Ein geändertes Feld bricht die Signatur, das Angebot wird verworfen <span class="m meas">gemessen</span></td><td>keiner</td></tr>
+        <tr><td>Aus der Ferne über Pfade und Flut</td><td>Pfade über beliebige Repeater tragen Anfragen und Daten bis zum Ziel, geflutete Angebote erreichen eine Region</td><td>die Kopien der Repeater zählen in kein Budget; gefälschte Angebote verwirft jeder Knoten an der Ticket-Signatur <span class="m meas">gemessen</span></td></tr>
         <tr><td>Absender-Kennung fälschen</td><td>betrifft Logs, den Testfilter und die Erkennung eines beschäftigten Anbieters: Gefälschte Daten mit der echten Kampagnen-ID im Namen des angefragten Anbieters verlängern das Warten eines Ziehers</td><td>Verzögerung</td></tr>
         <tr><td>Eigener Knoten ohne Budget</td><td>sendet so viel er will, wie jeder Störsender</td><td>Kanal; installieren kann er bei anderen nichts</td></tr>
         <tr><td>Stören (Jamming)</td><td>gilt für jedes Funkprotokoll</td><td>Update stockt, geht später weiter</td></tr>
@@ -1148,7 +1151,7 @@
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Attack</th><th>What happens</th><th>Damage</th></tr>
-        <tr><td>Offer a manifest signed with an own key</td><td>Victim pulls 2 to 4 fragments, signature wrong: the ID rests for 10 min, after a reboot the node rejects the manifest from flash again without pulling fragments <span class="m meas">measured</span>. Not banned: the ID is a 4-byte prefix and may belong to a genuine campaign (found by brute force)</td><td>a few requests of airtime per ID and every 10 min</td></tr>
+        <tr><td>Offer a manifest signed with an own key, or forge an offer</td><td>The ticket in the offer is not signed by the release key: the node drops the offer before it asks for anything, also while it holds a campaign <span class="m meas">measured</span>; one check (17.8 ms) per new ticket, offers that do not concern the node are ignored unchecked</td><td>CPU time, no airtime</td></tr>
         <tr><td>Corrupt genuine fragments</td><td>Page hash fails, page is pulled again <span class="m meas">measured</span></td><td>Delay; whoever forges faster than genuine sources send can stall a node (DoS)</td></tr>
         <tr><td>Replay an old genuine manifest</td><td>Build not higher than the running one: rejected <span class="m meas">measured</span></td><td>none</td></tr>
         <tr><td>Replay a genuine update that has already failed here</td><td>rejected before a fragment is requested, also after another update came in between: persistent list of the last 4 failed images <span class="m meas">measured</span></td><td>only from the 5th failed image on the oldest one drops out</td></tr>
@@ -1156,9 +1159,9 @@
         <tr><td>Replay a genuine retract</td><td>same effect as the first time</td><td>none (it is final anyway)</td></tr>
         <tr><td>Replay an old remote command of an admin after a reboot</td><td>stock keeps the timestamp of an admin only in RAM; FUOTA saves the one of the last command that changes something (<code>auto</code>, <code>apply</code>) and refuses equal and older ones, <code>fuota apply</code> also requires the build number <span class="m meas">measured</span></td><td>none for these commands, except a recorded newer command that was never delivered; stock commands such as <code>reboot</code> or <code>start ota</code> stay replayable (stock)</td></tr>
         <tr><td>Send cheap requests</td><td>the named provider sends up to 16 data packets per request (factor ~88 in airtime); with target 0xFF every provider in range, along a path also from afar. The provider serves in turn from the fragment sent last: a request repeated again and again gets its share, not priority <span class="m meas">measured</span>; requests along paths get at most half of its airtime</td><td>Providers exhaust their budget; a genuine request is served within one round at the latest</td></tr>
-        <tr><td>Forged offer with matching source prefix and higher build</td><td>A node that holds a campaign (serving, waiting to apply, pull paused) pulls only the new manifest into RAM and switches only once signature, fit, size and a higher build check out; otherwise it keeps its campaign <span class="m meas">measured</span></td><td>a few requests; as a flood the offer reaches a whole region, but costs no more there either</td></tr>
-        <tr><td>Offer with a genuine ID and a wrong size or source prefix</td><td>the genuine manifest does not match the offer or this node: 10 min rest, no ban; afterwards or after a reboot the node pulls the genuine campaign normally <span class="m meas">measured</span></td><td>a delay of 10 min</td></tr>
-        <tr><td>From afar via paths and floods</td><td>paths across any repeaters carry requests and data to the target, flooded offers reach a region</td><td>the copies of the repeaters count in no budget; against forged offers: signed offers (proposal, see gaps)</td></tr>
+        <tr><td>Genuine offer of a newer build (also recorded and replayed)</td><td>A node that holds a campaign (serving, waiting to apply, pull paused) pulls only the new manifest into RAM and switches only once signature, fit, size and a higher build check out; otherwise it keeps its campaign <span class="m meas">measured</span></td><td>genuine campaigns only; a replayed genuine offer with wrong pages or sender can send requests nowhere</td></tr>
+        <tr><td>Offer with a genuine ID and a wrong size or source prefix</td><td>size, source and ID are in the signed ticket: a changed field breaks the signature, the offer is dropped <span class="m meas">measured</span></td><td>none</td></tr>
+        <tr><td>From afar via paths and floods</td><td>paths across any repeaters carry requests and data to the target, flooded offers reach a region</td><td>the copies of the repeaters count in no budget; forged offers are dropped at the ticket signature <span class="m meas">measured</span></td></tr>
         <tr><td>Fake the sender ID</td><td>affects logs, the test filter and the detection of a busy provider: forged data with the genuine campaign ID in the name of the asked provider make a puller wait longer</td><td>a delay</td></tr>
         <tr><td>Own node without budget</td><td>sends as much as it wants, like any jammer</td><td>the channel; it cannot install anything on other nodes</td></tr>
         <tr><td>Jamming</td><td>applies to every radio protocol</td><td>update stalls, resumes later</td></tr>
@@ -1350,14 +1353,10 @@
           Bibliotheken schon 16 KB <span class="m meas">gemessen</span>; Stage-0 hat eine Seite (4 KB). <span class="m open">offen</span></li>
         <li><b>„Gesund“ ist schwach.</b> Bestätigt wird nach 60 s laufender Hauptschleife. Eine Firmware, die läuft, aber
           nicht mehr funkt, bleibt drauf; der Knoten ist dann nur noch per Kabel zu retten. <span class="m open">offen</span></li>
-        <li><b>Angebote sind unsigniert.</b> Ein gefälschtes Angebot kostet heute einige Anfragen und erreicht als Flut
-          eine ganze Region; einem Knoten nimmt es nichts <span class="m meas">gemessen</span>. Vorschlag: Der Release-Schlüssel signiert beim Release
-          auch ein Angebots-Ticket (Ziel, Build, Quelle, Größen, 8 Byte Manifest-Hash), das jedes Angebot trägt; dann
-          verwirft ein Knoten Gefälschtes sofort. Das Angebot wüchse von 30 auf 98 Byte (714 statt 366 ms bei CR 4/5
-          <span class="m calc">berechnet</span>), Prüfen einmal je Kampagne 17,8 ms <span class="m meas">gemessen</span>. <span class="m open">offen</span></li>
-        <li><b>Kennung aus einem Byte.</b> Haben zwei Anbieter, die ein Zieher hört, dasselbe erste Schlüsselbyte (0,39 %
-          bei 2, 5,73 % bei 6 Anbietern <span class="m calc">berechnet</span>), antworten beide auf eine Anfrage: Das kostet Airtime, nicht das Update.
-          Eine 2-Byte-Kennung in Angebot und Anfrage macht die Anfrage 284 statt 263 ms lang (CR 4/5). <span class="m open">offen</span></li>
+        <li><b>Angebote signiert, Rest nicht.</b> Seit 20.10. trägt jedes Angebot ein vom Release-Schlüssel signiertes
+          Ticket, Kennungen haben 2 Byte <span class="m meas">gemessen</span>. Unsigniert bleiben Absender, Seitenzahl, Anfragen und Daten (dafür die
+          Seiten-Hashes): Ein mitgeschnittenes echtes Angebot mit falschen Seiten kann Anfragen ins Leere lenken, wie vorher,
+          aber nur für eine laufende echte Kampagne. Das Angebot kostet dafür 775 statt 366 ms bei CR 4/5 <span class="m calc">berechnet</span>.</li>
         <li><b>Zahlen mit CR 4/8.</b> Die Dauern auf dieser Seite sind mit CR 4/8 gerechnet (App-Preset), Hamburg läuft
           mit CR 4/5: dort rund ein Drittel kürzer. Die Zahlen durchgehend auf CR 4/5 umzurechnen ist offen. <span class="m open">offen</span></li>
         <li><b>Große Updates.</b> Gebaut und im Testaufbau gemessen: Patch ganz in Slot B, Fenster, überlappend anwenden,
@@ -1434,14 +1433,10 @@
           so far <span class="m meas">measured</span>; Stage-0 has one page (4 KB). <span class="m open">open</span></li>
         <li><b>“Healthy” is weak.</b> Confirmation comes after 60 s of a running main loop. Firmware that runs but
           no longer transmits stays on; the node can then only be rescued by cable. <span class="m open">open</span></li>
-        <li><b>Offers are unsigned.</b> Today a forged offer costs a few requests and as a flood reaches a whole region; it
-          takes nothing away from a node <span class="m meas">measured</span>. Proposal: at release time the release key also signs an offer ticket
-          (target, build, source, sizes, 8 bytes of the manifest hash) that every offer carries; a node then drops
-          forged offers at once. The offer would grow from 30 to 98 bytes (714 instead of 366 ms at CR 4/5 <span class="m calc">calculated</span>),
-          checking once per campaign 17.8 ms <span class="m meas">measured</span>. <span class="m open">open</span></li>
-        <li><b>One-byte ID.</b> If two providers a puller hears share the first key byte (0.39 % with 2, 5.73 % with 6
-          providers <span class="m calc">calculated</span>), both answer a request: this costs airtime, not the update. A 2-byte ID in offer and request
-          makes a request 284 instead of 263 ms (CR 4/5). <span class="m open">open</span></li>
+        <li><b>Offers signed, the rest not.</b> Since 20 Oct every offer carries a ticket signed by the release key, IDs
+          have 2 bytes <span class="m meas">measured</span>. Sender, page count, requests and data stay unsigned (page hashes cover the data): a
+          recorded genuine offer with wrong pages can send requests nowhere, as before, but only for a running genuine
+          campaign. The offer costs 775 instead of 366 ms at CR 4/5 for it <span class="m calc">calculated</span>.</li>
         <li><b>Figures at CR 4/8.</b> The durations on this page are computed with CR 4/8 (app preset), Hamburg runs CR
           4/5: about a third shorter there. Recomputing all figures at CR 4/5 is open. <span class="m open">open</span></li>
         <li><b>Large updates.</b> Built and measured on the bench: whole patch in slot B, window, overlapping apply, on
