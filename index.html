@@ -285,7 +285,7 @@
         <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Bekommt Manifest und Patch per USB und bietet sie an, auch aus einem manuell installierten Release-Paket (siehe Ablauf).</td><td>Eigene Kampagnen erzeugen; Unsigniertes wird schon beim Laden abgelehnt.</td></tr>
         <tr><td><b>Teilnehmender Repeater</b></td><td>Normale MeshCore-Repeater-Firmware mit FUOTA-Modul: hört Angebote, holt, prüft, gibt weiter, wendet an.</td><td>Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
         <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB)</td><td>Läuft nur beim Booten: führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Kein Funk, keine Signaturprüfung (vertraut dem Auftrag der App, siehe Lücken).</td></tr>
-        <tr><td><b>Repeater ohne FUOTA</b>, Companions</td><td>Verwerfen Typ 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, bewusst nicht geroutet).</td><td>Ein Update weitertragen.</td></tr>
+        <tr><td><b>Repeater ohne FUOTA</b>, Companions</td><td>Verwerfen Typ 0x0E ohne Pfad (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, bewusst nicht geroutet). Ein Paket mit Pfad leiten sie weiter wie jedes Direct-Paket (<code>src/Mesh.cpp:78-106</code>), ein geflutetes Angebot wie jede Gruppen-Nachricht: So tragen sie Anfragen und Daten über Lücken (siehe „Wer was weitergibt“).</td><td>Ein Update prüfen, halten oder selbst anbieten.</td></tr>
         <tr><td><b>Betreiber</b></td><td>Entscheidet, ob er mitmacht. Ab Werk wendet ein Knoten ein fertiges Update erst an, wenn er es eine Woche gehalten und weitergegeben hat, und gar nicht, wenn in der Woche ein Retract kommt (<code>fuota auto delay</code>). Der Betreiber kann sofort anwenden lassen (<code>fuota auto now</code>) oder nur auf Befehl (<code>fuota auto off</code>) und ein fertiges Update selbst starten (<code>fuota apply</code>), auch über die Fern-CLI per LoRa. <code>fuota info</code> zeigt den Stand. Am Testaufbau getestet, auch über LoRa.</td><td>Andere Knoten beeinflussen.</td></tr>
       </table>
     </div>
@@ -297,7 +297,7 @@
         <tr><td><b>Seed</b> (any participant)</td><td>Receives manifest and patch over USB and offers them, also from a release package installed by hand (see the update flow).</td><td>Create its own campaigns; unsigned material is rejected already at load time.</td></tr>
         <tr><td><b>Participating repeater</b></td><td>Normal MeshCore repeater firmware with a FUOTA module: hears offers, pulls, checks, passes on, applies.</td><td>Exceed its airtime budget, pass on unchecked data, update foreign nodes.</td></tr>
         <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB)</td><td>Runs only at boot: executes a swap job, with journal, test boot and revert.</td><td>No radio, no signature check (trusts the job from the app, see gaps).</td></tr>
-        <tr><td><b>Repeater without FUOTA</b>, companions</td><td>Drop type 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, deliberately not routed).</td><td>Carry an update further.</td></tr>
+        <tr><td><b>Repeater without FUOTA</b>, companions</td><td>Drop type 0x0E without a path (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, deliberately not routed). A packet with a path they forward like any direct packet (<code>src/Mesh.cpp:78-106</code>), a flooded offer like any group message: this is how they carry requests and data across gaps (see “Who passes on what”).</td><td>Check, hold or offer an update themselves.</td></tr>
         <tr><td><b>Operator</b></td><td>Decides whether to take part. By default a node applies a complete update only after it has held and passed it on for a week, and not at all if a retract arrives within that week (<code>fuota auto delay</code>). The operator can have it apply at once (<code>fuota auto now</code>) or only on command (<code>fuota auto off</code>) and start a complete update (<code>fuota apply</code>), also over LoRa via the remote CLI. <code>fuota info</code> shows the state. Tested on the bench, over LoRa as well.</td><td>Influence other nodes.</td></tr>
       </table>
     </div>
@@ -611,17 +611,27 @@
     <p class="num">// 5</p>
     <div lang="de" class="prose">
       <h2>Die Nachrichten auf Funk</h2>
-      <p>Alle als MeshCore-Paket Typ 0x0E, Route Direct ohne Pfad (Zero-Hop). Byte 1 ist bei allen die Kennung des
-        Absenders (erstes Byte seines öffentlichen Schlüssels); sie ist nicht signiert und dient nur Logs und dem
-        Testfilter. Airtime: MeshCore EU narrow (869,618 MHz, BW 62,5 kHz, SF8, CR 4/8)
-        <span class="m calc">berechnet</span>, im Testaufbau SF7 CR 4/5 <span class="m meas">gemessen</span>.</p>
+      <p>Alle als MeshCore-Paket Typ 0x0E, Route Direct: zwischen Nachbarn ohne Pfad (Zero-Hop), über Repeater ohne
+        FUOTA mit Pfad (siehe „Wer was weitergibt“). Byte 1 ist bei allen die Kennung des Absenders (erstes Byte seines
+        öffentlichen Schlüssels); sie ist nicht signiert und dient nur Logs, dem Testfilter und der Erkennung eines
+        beschäftigten Anbieters. Airtime: MeshCore EU narrow (869,618 MHz, BW 62,5 kHz, SF8) mit CR 4/8, wie das App-Preset
+        „EU/UK (Narrow)“, der langsamere Fall <span class="m calc">berechnet</span>; die großen Repeater in Hamburg laufen mit CR 4/5, dort brauchen
+        Angebot 366 ms, Anfrage 263 ms, Daten 1.144 ms und Retract 632 ms (Faktor 0,66, alle Dauern rund ein Drittel
+        kürzer) <span class="m calc">berechnet</span>. Im Testaufbau SF7 CR 4/5 <span class="m meas">gemessen</span>. Die Firmware rechnet ihr Budget mit der Airtime ihrer aktuellen
+        Einstellungen. In der Sendewarteschlange von MeshCore stehen FUOTA-Pakete mit der niedrigsten Priorität und
+        höchstens eins zur Zeit: Fällige Mesh-Pakete gehen vor, nur ein schon gesendetes FUOTA-Paket hält eines auf.</p>
     </div>
     <div lang="en" class="prose">
       <h2>The messages on air</h2>
-      <p>All as MeshCore packet type 0x0E, route direct without path (zero hop). Byte 1 in every message is the sender
-        ID (first byte of its public key); it is unsigned and serves only logs and the test filter. Airtime: MeshCore EU narrow (869.618 MHz,
-        BW 62.5 kHz, SF8, CR 4/8)
-        <span class="m calc">calculated</span>, on the bench SF7 CR 4/5 <span class="m meas">measured</span>.</p>
+      <p>All as MeshCore packet type 0x0E, route direct: between neighbours without a path (zero hop), across repeaters
+        without FUOTA with a path (see “Who passes on what”). Byte 1 in every message is the sender ID (first byte of
+        its public key); it is unsigned and serves only logs, the test filter and the detection of a busy provider.
+        Airtime: MeshCore EU narrow (869.618 MHz, BW 62.5 kHz, SF8) with CR 4/8, like the app preset “EU/UK (Narrow)”,
+        the slower case <span class="m calc">calculated</span>; the large repeaters in Hamburg run CR 4/5, where an offer takes 366 ms, a request 263 ms,
+        a data packet 1,144 ms and a retract 632 ms (factor 0.66, every duration about a third shorter) <span class="m calc">calculated</span>. On the
+        bench SF7 CR 4/5 <span class="m meas">measured</span>. The firmware computes its budget from the airtime of its current settings. In the
+        MeshCore transmit queue FUOTA packets have the lowest priority and at most one is queued: due mesh packets go
+        first, only a FUOTA packet already on air holds one back.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
@@ -754,59 +764,69 @@
     <p class="num">// 6</p>
     <div lang="de" class="prose">
       <h2>Wer was weitergibt und was nie</h2>
-      <p><b>Kein Paket wird weitergeleitet.</b> „Weitergeben“ heißt bei FUOTA: empfangen, prüfen, im eigenen Flash
-        speichern und später aus dem eigenen Budget selbst neu senden. Damit trägt jedes Paket genau einen Hop weit,
-        und nur Geprüftes wird erneut gesendet.</p>
+      <p><b>Zwischen Teilnehmern wird kein Paket weitergeleitet.</b> „Weitergeben“ heißt bei FUOTA: empfangen, prüfen,
+        im eigenen Flash speichern und später aus dem eigenen Budget selbst neu senden; nur Geprüftes wird erneut
+        gesendet. Die Ausnahme sind Lücken aus Repeatern ohne FUOTA: Ein Knoten mit einer ganzen Kampagne flutet sein
+        Angebot selten als Gruppen-Nachricht in seiner Standard-Region, und wer es nur über die Flut hört, fragt über
+        den Pfad der Flut an; Anfrage und Daten leitet MeshCore entlang des Pfads weiter wie jedes Direct-Paket. Der
+        Anbieter rechnet jede Kopie entlang des Pfads in sein Budget (k Repeater: k + 1 Sendungen je Fragment). Was ein
+        Angreifer über fremde Repeater schickt, zählt dagegen in kein Budget (siehe „Bösartige Sendungen“).</p>
     </div>
     <div lang="en" class="prose">
       <h2>Who passes on what, and what never</h2>
-      <p><b>No packet is forwarded.</b> In FUOTA, “passing on” means: receive, check, store in your own flash and
-        later resend it yourself from your own budget. Each packet thus travels exactly one hop,
-        and only checked data is sent again.</p>
+      <p><b>No packet is forwarded between participants.</b> In FUOTA, “passing on” means: receive, check, store in your
+        own flash and later resend it yourself from your own budget; only checked data is sent again. The exception
+        are gaps of repeaters without FUOTA: a node with a whole campaign rarely floods its offer as a group message in
+        its default region, and a node that hears it only through the flood asks along the path of that flood; MeshCore
+        forwards request and data along the path like any direct packet. The provider counts every copy along the path
+        in its budget (k repeaters: k + 1 transmissions per fragment). What an attacker sends through foreign repeaters
+        counts in no budget (see “Malicious transmissions”).</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Was kommt an</th><th>Teilnehmer, gleiches Modell</th><th>Teilnehmer, anderes Modell</th><th>Repeater ohne FUOTA, Companion</th></tr>
-        <tr><td>Angebot</td><td>prüft, ob es passt; zieht oder zählt es als Bestätigung</td><td>ignoriert (Vorschlag: hält ein Fenster, siehe unten)</td><td>verwirft</td></tr>
-        <tr><td>Anfrage</td><td>bedient aus eigenen geprüften Seiten, wenn sie ihn nennt (oder 0xFF)</td><td>ignoriert</td><td>verwirft</td></tr>
-        <tr><td>Daten</td><td>speichert, was fehlt (nur nach geprüftem Manifest); streicht aus der eigenen Sendeliste, was ein anderer gerade gesendet hat</td><td>ignoriert</td><td>verwirft</td></tr>
+        <tr><td>Angebot</td><td>prüft, ob es passt; zieht oder zählt es als Bestätigung</td><td>ignoriert (Vorschlag: hält ein Fenster, siehe unten)</td><td>verwirft; ein geflutetes leitet er weiter wie jede Gruppen-Nachricht</td></tr>
+        <tr><td>Angebot eines höheren Builds, während er eine Kampagne hält</td><td>holt nur dessen Manifest in den RAM und wechselt erst, wenn es geprüft ist; bis dahin bedient er die alte weiter <span class="m meas">gemessen</span></td><td>ignoriert</td><td>wie Angebot</td></tr>
+        <tr><td>Anfrage</td><td>bedient aus eigenen geprüften Seiten, wenn sie ihn nennt (oder 0xFF), reihum ab dem zuletzt gesendeten Fragment <span class="m meas">gemessen</span></td><td>ignoriert</td><td>verwirft; mit Pfad leitet er sie weiter wie jedes Direct-Paket</td></tr>
+        <tr><td>Daten</td><td>speichert, was fehlt (nur nach geprüftem Manifest); streicht aus der eigenen Sendeliste, was ein anderer gerade gesendet hat</td><td>ignoriert</td><td>verwirft; mit Pfad leitet er sie weiter wie jedes Direct-Paket</td></tr>
         <tr><td>Retract, gültig</td><td>stoppt, speichert, sendet ihn dreimal und als Antwort</td><td>verwirft (andere Ziel-ID)</td><td>verwirft</td></tr>
-        <tr><td>Manifest mit falscher Signatur</td><td>holt nur dessen 2 bis 4 Fragmente, sperrt die ID, gibt nichts davon weiter</td><td>zieht gar nicht</td><td>verwirft</td></tr>
+        <tr><td>Manifest mit falscher Signatur</td><td>holt nur dessen 2 bis 4 Fragmente und gibt nichts davon weiter; die ID ruht 10 min, gesperrt wird sie nicht <span class="m meas">gemessen</span> (sie ist ein 4-Byte-Präfix und könnte zu einer echten Kampagne gehören)</td><td>zieht gar nicht</td><td>verwirft</td></tr>
         <tr><td>Seite mit falschem Hash</td><td>löscht sie, holt sie neu, gibt sie nie weiter</td><td>zieht gar nicht</td><td>verwirft</td></tr>
         <tr><td>Angebot eines zurückgezogenen Builds</td><td>zieht nicht, antwortet höchstens alle 30 s mit dem Retract</td><td>ignoriert</td><td>verwirft</td></tr>
-        <tr><td>Normale MeshCore-Pakete</td><td colspan="3">unverändert: FUOTA ändert die Weiterleitung von MeshCore nicht (nur ein zusätzlicher Fall für Typ 0x0E ohne Pfad)</td></tr>
+        <tr><td>Normale MeshCore-Pakete</td><td colspan="3">unverändert: FUOTA ändert die Weiterleitung von MeshCore nicht (nur ein zusätzlicher Fall für Typ 0x0E ohne Pfad); FUOTA-Pakete stehen in der Sendewarteschlange hinter allen fälligen Mesh-Paketen</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>What arrives</th><th>Participant, same model</th><th>Participant, other model</th><th>Repeater without FUOTA, companion</th></tr>
-        <tr><td>Offer</td><td>checks whether it fits; pulls or counts it as a confirmation</td><td>ignores (proposal: holds a window, see below)</td><td>drops</td></tr>
-        <tr><td>Request</td><td>serves from its own checked pages if it names this node (or 0xFF)</td><td>ignores</td><td>drops</td></tr>
-        <tr><td>Data</td><td>stores what is missing (only after a checked manifest); strikes from its own send list what another node has just sent</td><td>ignores</td><td>drops</td></tr>
+        <tr><td>Offer</td><td>checks whether it fits; pulls or counts it as a confirmation</td><td>ignores (proposal: holds a window, see below)</td><td>drops; a flooded one it forwards like any group message</td></tr>
+        <tr><td>Offer of a higher build while it holds a campaign</td><td>pulls only its manifest into RAM and switches only once it checked out; until then it keeps serving the old one <span class="m meas">measured</span></td><td>ignores</td><td>as offer</td></tr>
+        <tr><td>Request</td><td>serves from its own checked pages if it names this node (or 0xFF), in turn from the fragment sent last <span class="m meas">measured</span></td><td>ignores</td><td>drops; with a path it forwards it like any direct packet</td></tr>
+        <tr><td>Data</td><td>stores what is missing (only after a checked manifest); strikes from its own send list what another node has just sent</td><td>ignores</td><td>drops; with a path it forwards it like any direct packet</td></tr>
         <tr><td>Retract, valid</td><td>stops, stores, sends it three times and as a reply</td><td>drops (other target ID)</td><td>drops</td></tr>
-        <tr><td>Manifest with wrong signature</td><td>pulls only its 2 to 4 fragments, bans the ID, passes nothing of it on</td><td>does not pull at all</td><td>drops</td></tr>
+        <tr><td>Manifest with wrong signature</td><td>pulls only its 2 to 4 fragments and passes nothing of it on; the ID rests for 10 min, it is not banned <span class="m meas">measured</span> (it is a 4-byte prefix and may belong to a genuine campaign)</td><td>does not pull at all</td><td>drops</td></tr>
         <tr><td>Page with wrong hash</td><td>erases it, pulls it again, never passes it on</td><td>does not pull at all</td><td>drops</td></tr>
         <tr><td>Offer of a retracted build</td><td>does not pull, answers with the retract at most every 30 s</td><td>ignores</td><td>drops</td></tr>
-        <tr><td>Normal MeshCore packets</td><td colspan="3">unchanged: FUOTA does not change the MeshCore forwarding (only one extra case for type 0x0E without path)</td></tr>
+        <tr><td>Normal MeshCore packets</td><td colspan="3">unchanged: FUOTA does not change the MeshCore forwarding (only one extra case for type 0x0E without path); FUOTA packets wait in the transmit queue behind every due mesh packet</td></tr>
       </table>
     </div>
     <div lang="de" class="callout">
       <b>Fremdes Modell in der Mitte (A und C gleiches Modell, B ein anderes)</b>
-      <p>Heute endet ein Update dort. Gemessen haben wir zwei Auswege: ein gerichtetes Relay über B (Direct mit Pfad,
-        jeder Stock-Repeater leitet das weiter: 30 von 30 Paketen, +0,47 s median <span class="m meas">gemessen</span>)
-        und Zwischenspeichern auf B. Beide kosten zwei Sendungen je Fragment. Vorgeschlagener Weg: B nimmt Kampagnen
-        fremder Modelle an, prüft Signatur und Seiten-Hashes, wendet sie nie an und hält nur das Manifest und zwei
-        geprüfte Seiten, die er weitergibt. Das Relay löst nicht, wie C vom Update erfährt, und sendet außerhalb jedes
-        Budgets. Noch nicht gebaut. <span class="m open">offen</span></p>
+      <p>B leitet wie jeder Repeater Pakete mit Pfad und geflutete Angebote weiter: C erfährt über ein geflutetes
+        Angebot von A und holt das Update über B per Pfad, zwei Sendungen je Fragment, beide im Budget von A. Gemessen
+        mit einem Repeater ohne FUOTA als B, auch mit einem Nachbarn, den C hört, der C aber nicht hört <span class="m meas">gemessen</span>; ein
+        Teilnehmer anderen Modells leitet mit demselben MeshCore-Code weiter (nicht eigens gemessen). Vorschlag für
+        weniger Airtime: B hält Kampagnen fremder Modelle, prüft Signatur und Seiten-Hashes, wendet sie nie an und
+        hält nur das Manifest und zwei geprüfte Seiten, die er weitergibt. Noch nicht gebaut. <span class="m open">offen</span></p>
     </div>
     <div lang="en" class="callout">
       <b>Foreign model in the middle (A and C same model, B a different one)</b>
-      <p>Today an update ends there. We measured two ways out: a directed relay via B (direct with path,
-        every stock repeater forwards it: 30 of 30 packets, +0.47 s median <span class="m meas">measured</span>)
-        and caching on B. Both cost two transmissions per fragment. Proposed way: B accepts campaigns of
-        foreign models, verifies signature and page hashes, never applies them and holds only the manifest and two
-        checked pages, which it passes on. The relay does not solve how C learns about the update, and it transmits outside every
-        budget. Not built yet. <span class="m open">open</span></p>
+      <p>Like any repeater, B forwards packets with a path and flooded offers: C learns about the update from a
+        flooded offer of A and pulls it via B along the path, two transmissions per fragment, both in A's budget.
+        Measured with a repeater without FUOTA as B, also with a neighbour that C hears but that does not hear C <span class="m meas">measured</span>;
+        a participant of another model forwards with the same MeshCore code (not measured separately). Proposal for
+        less airtime: B holds campaigns of foreign models, verifies signature and page hashes, never applies them and
+        holds only the manifest and two checked pages, which it passes on. Not built yet. <span class="m open">open</span></p>
     </div>
   </section>
 
@@ -1078,28 +1098,34 @@
     <p class="num">// 10</p>
     <div lang="de" class="prose">
       <h2>Bösartige Sendungen</h2>
-      <p>Annahme: Ein Angreifer in Funkreichweite kann beliebige Pakete senden, fremde mitschneiden und wiederholen,
-        jede Absender-Kennung vortäuschen und eigene Knoten mit veränderter Firmware betreiben. Er hat den
-        Release-Schlüssel nicht und keinen physischen Zugang zu fremden Knoten.</p>
+      <p>Annahme: Ein Angreifer in Funkreichweite eines Knotens, mit einem Pfad zu ihm (jeder Repeater leitet
+        Direct-Pakete mit Pfad weiter, auch FUOTA-Pakete) oder in derselben Region (ein geflutetes Angebot erreicht die
+        ganze Region; der Schlüssel des FUOTA-Kanals folgt aus einem festen Namen) kann beliebige Pakete senden, fremde
+        mitschneiden und wiederholen, jede Absender-Kennung vortäuschen und eigene Knoten mit veränderter Firmware
+        betreiben. Er hat den Release-Schlüssel nicht und keinen physischen Zugang zu fremden Knoten.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Malicious transmissions</h2>
-      <p>Assumption: an attacker within radio range can send arbitrary packets, record foreign ones and replay them,
-        fake any sender ID and run own nodes with modified firmware. The attacker does not have the
-        release key and has no physical access to foreign nodes.</p>
+      <p>Assumption: an attacker within radio range of a node, with a path to it (every repeater forwards direct
+        packets with a path, FUOTA packets too) or in the same region (a flooded offer reaches the whole region; the key
+        of the FUOTA channel follows from a fixed name) can send arbitrary packets, record foreign ones and replay them,
+        fake any sender ID and run own nodes with modified firmware. The attacker does not have the release key and
+        has no physical access to foreign nodes.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Angriff</th><th>Was passiert</th><th>Schaden</th></tr>
-        <tr><td>Manifest mit eigenem Schlüssel anbieten</td><td>Opfer holt 2 bis 4 Fragmente, Signatur falsch, ID gesperrt (auch nach Neustart) <span class="m meas">gemessen</span></td><td>einige Anfragen Airtime je neuer ID; Sperrliste hat 8 Plätze, ältere rutschen raus</td></tr>
+        <tr><td>Manifest mit eigenem Schlüssel anbieten</td><td>Opfer holt 2 bis 4 Fragmente, Signatur falsch: Die ID ruht 10 min, nach einem Neustart lehnt der Knoten das Manifest aus dem Flash erneut ab, ohne Fragmente zu holen <span class="m meas">gemessen</span>. Nicht gesperrt: Die ID ist ein 4-Byte-Präfix und könnte zu einer echten Kampagne gehören (gefunden per Rechenaufwand)</td><td>einige Anfragen Airtime je ID und alle 10 min</td></tr>
         <tr><td>Echte Fragmente verfälschen</td><td>Seiten-Hash schlägt an, Seite wird neu geholt <span class="m meas">gemessen</span></td><td>Verzögerung; wer schneller fälscht als echte Quellen senden, kann einen Knoten aufhalten (DoS)</td></tr>
         <tr><td>Altes echtes Manifest wiederholen</td><td>Build nicht höher als der laufende: abgelehnt <span class="m meas">gemessen</span></td><td>keiner</td></tr>
         <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>abgelehnt, bevor ein Fragment angefragt wird, auch wenn danach ein anderes Update kam: dauerhafte Liste der letzten 4 gescheiterten Images <span class="m meas">gemessen</span></td><td>erst ab dem 5. gescheiterten Image fällt das älteste heraus</td></tr>
         <tr><td>Gefälschter Retract</td><td>Signatur falsch, verworfen <span class="m meas">gemessen</span></td><td>keiner</td></tr>
         <tr><td>Echter Retract wiederholt</td><td>gleiche Wirkung wie beim ersten Mal</td><td>keiner (er ist ohnehin endgültig)</td></tr>
-        <tr><td>Billige Anfragen senden</td><td>der genannte Anbieter sendet bis 16 Datenpakete je Anfrage (Faktor ~88 in Airtime); mit Ziel 0xFF jeder Anbieter in Reichweite</td><td>Anbieter schöpfen ihr Budget aus, mehr nicht; echte Zieher bekommen dieselben Pakete</td></tr>
-        <tr><td>Gefälschtes Angebot mit passendem Quell-Präfix und höherem Build</td><td>Knoten verwirft seinen bedienten Patch und beginnt einen Pull, der nie kommt (Code gelesen, nicht am Gerät gezeigt)</td><td>Knoten fällt als Quelle aus; Verteilung langsamer (Lücke)</td></tr>
-        <tr><td>Absender-Kennung fälschen</td><td>betrifft nur Logs und den Testfilter</td><td>keiner im Feld</td></tr>
+        <tr><td>Billige Anfragen senden</td><td>der genannte Anbieter sendet bis 16 Datenpakete je Anfrage (Faktor ~88 in Airtime); mit Ziel 0xFF jeder Anbieter in Reichweite, über einen Pfad auch aus der Ferne. Der Anbieter bedient reihum ab dem zuletzt gesendeten Fragment: Eine immer wiederholte Anfrage bekommt ihren Anteil, keinen Vorrang <span class="m meas">gemessen</span>; Anfragen über Pfade bekommen höchstens die Hälfte seiner Airtime</td><td>Anbieter schöpfen ihr Budget aus; eine echte Anfrage kommt spätestens nach einem Umlauf dran</td></tr>
+        <tr><td>Gefälschtes Angebot mit passendem Quell-Präfix und höherem Build</td><td>Ein Knoten, der eine Kampagne hält (bedient, wartet aufs Anwenden, Pull pausiert), holt nur das neue Manifest in den RAM und wechselt erst, wenn Signatur, Passung, Größe und ein höherer Build stimmen; sonst behält er seine Kampagne <span class="m meas">gemessen</span></td><td>einige Anfragen; als Flut erreicht das Angebot eine ganze Region, kostet dort aber auch nicht mehr</td></tr>
+        <tr><td>Angebot mit echter ID und falscher Größe oder falschem Quell-Präfix</td><td>das echte Manifest passt nicht zum Angebot oder nicht zu diesem Knoten: 10 min Ruhe, keine Sperre; danach oder nach einem Neustart holt der Knoten die echte Kampagne normal <span class="m meas">gemessen</span></td><td>Verzögerung um 10 min</td></tr>
+        <tr><td>Aus der Ferne über Pfade und Flut</td><td>Pfade über beliebige Repeater tragen Anfragen und Daten bis zum Ziel, geflutete Angebote erreichen eine Region</td><td>die Kopien der Repeater zählen in kein Budget; gegen gefälschte Angebote: signierte Angebote (Vorschlag, siehe Lücken)</td></tr>
+        <tr><td>Absender-Kennung fälschen</td><td>betrifft Logs, den Testfilter und die Erkennung eines beschäftigten Anbieters: Gefälschte Daten mit der echten Kampagnen-ID im Namen des angefragten Anbieters verlängern das Warten eines Ziehers</td><td>Verzögerung</td></tr>
         <tr><td>Eigener Knoten ohne Budget</td><td>sendet so viel er will, wie jeder Störsender</td><td>Kanal; installieren kann er bei anderen nichts</td></tr>
         <tr><td>Stören (Jamming)</td><td>gilt für jedes Funkprotokoll</td><td>Update stockt, geht später weiter</td></tr>
       </table>
@@ -1107,15 +1133,17 @@
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Attack</th><th>What happens</th><th>Damage</th></tr>
-        <tr><td>Offer a manifest signed with an own key</td><td>Victim pulls 2 to 4 fragments, signature wrong, ID banned (also after reboot) <span class="m meas">measured</span></td><td>a few requests of airtime per new ID; the ban list has 8 slots, older entries drop out</td></tr>
+        <tr><td>Offer a manifest signed with an own key</td><td>Victim pulls 2 to 4 fragments, signature wrong: the ID rests for 10 min, after a reboot the node rejects the manifest from flash again without pulling fragments <span class="m meas">measured</span>. Not banned: the ID is a 4-byte prefix and may belong to a genuine campaign (found by brute force)</td><td>a few requests of airtime per ID and every 10 min</td></tr>
         <tr><td>Corrupt genuine fragments</td><td>Page hash fails, page is pulled again <span class="m meas">measured</span></td><td>Delay; whoever forges faster than genuine sources send can stall a node (DoS)</td></tr>
         <tr><td>Replay an old genuine manifest</td><td>Build not higher than the running one: rejected <span class="m meas">measured</span></td><td>none</td></tr>
         <tr><td>Replay a genuine update that has already failed here</td><td>rejected before a fragment is requested, also after another update came in between: persistent list of the last 4 failed images <span class="m meas">measured</span></td><td>only from the 5th failed image on the oldest one drops out</td></tr>
         <tr><td>Forged retract</td><td>Signature wrong, dropped <span class="m meas">measured</span></td><td>none</td></tr>
         <tr><td>Replay a genuine retract</td><td>same effect as the first time</td><td>none (it is final anyway)</td></tr>
-        <tr><td>Send cheap requests</td><td>the named provider sends up to 16 data packets per request (factor ~88 in airtime); with target 0xFF every provider in range</td><td>Providers exhaust their budget at worst; genuine pullers get the same packets</td></tr>
-        <tr><td>Forged offer with matching source prefix and higher build</td><td>Node discards the patch it serves and starts a pull that never arrives (code read, not shown on the device)</td><td>Node drops out as a source; distribution slower (gap)</td></tr>
-        <tr><td>Fake the sender ID</td><td>affects only logs and the test filter</td><td>none in the field</td></tr>
+        <tr><td>Send cheap requests</td><td>the named provider sends up to 16 data packets per request (factor ~88 in airtime); with target 0xFF every provider in range, along a path also from afar. The provider serves in turn from the fragment sent last: a request repeated again and again gets its share, not priority <span class="m meas">measured</span>; requests along paths get at most half of its airtime</td><td>Providers exhaust their budget; a genuine request is served within one round at the latest</td></tr>
+        <tr><td>Forged offer with matching source prefix and higher build</td><td>A node that holds a campaign (serving, waiting to apply, pull paused) pulls only the new manifest into RAM and switches only once signature, fit, size and a higher build check out; otherwise it keeps its campaign <span class="m meas">measured</span></td><td>a few requests; as a flood the offer reaches a whole region, but costs no more there either</td></tr>
+        <tr><td>Offer with a genuine ID and a wrong size or source prefix</td><td>the genuine manifest does not match the offer or this node: 10 min rest, no ban; afterwards or after a reboot the node pulls the genuine campaign normally <span class="m meas">measured</span></td><td>a delay of 10 min</td></tr>
+        <tr><td>From afar via paths and floods</td><td>paths across any repeaters carry requests and data to the target, flooded offers reach a region</td><td>the copies of the repeaters count in no budget; against forged offers: signed offers (proposal, see gaps)</td></tr>
+        <tr><td>Fake the sender ID</td><td>affects logs, the test filter and the detection of a busy provider: forged data with the genuine campaign ID in the name of the asked provider make a puller wait longer</td><td>a delay</td></tr>
         <tr><td>Own node without budget</td><td>sends as much as it wants, like any jammer</td><td>the channel; it cannot install anything on other nodes</td></tr>
         <tr><td>Jamming</td><td>applies to every radio protocol</td><td>update stalls, resumes later</td></tr>
       </table>
@@ -1123,15 +1151,18 @@
     <div lang="de" class="callout">
       <b>Wie sicher ist das?</b>
       <p>Ohne Release-Schlüssel kann niemand einen Knoten dazu bringen, etwas anderes als einen signierten Build zu
-        installieren, und niemand kann Verkehr über mehrere Hops tragen. Ein Angreifer in Reichweite kann ein Update
-        verlangsamen und Airtime verbrauchen, im schlimmsten Fall bis zum Budget der Knoten um ihn herum. Das schwächste
+        installieren. Ein Angreifer erreicht einen Knoten auch über mehrere Hops (Pfade über normale Repeater, geflutete
+        Angebote in einer Region). Er kann ein Update verlangsamen und Airtime verbrauchen, im schlimmsten Fall bis zum
+        Budget der erreichten Knoten, aber mit gefälschten Angeboten, falschen Größen oder fremden Schlüsseln einem Knoten weder seine geprüfte
+        Kampagne nehmen noch eine echte Kampagne sperren lassen <span class="m meas">gemessen</span>. Das schwächste
         Glied ist der Schlüssel selbst: wer ihn hat, darf alles, auch einen Build, der FUOTA abschaltet.</p>
     </div>
     <div lang="en" class="callout">
       <b>How safe is it?</b>
-      <p>Without the release key nobody can make a node install anything but a signed build, and nobody can carry
-        traffic over several hops. An attacker in range can slow an update down and use up airtime, at worst up to the
-        budget of the nodes around them. The weakest link is the key itself: whoever has it may do anything, including a
+      <p>Without the release key nobody can make a node install anything but a signed build. An attacker reaches a
+        node also over several hops (paths across normal repeaters, flooded offers in a region). The attacker can slow
+        an update down and use up airtime, at worst up to the budget of the nodes reached, but with forged offers,
+        wrong sizes or foreign keys can neither take a node's checked campaign away nor get a genuine campaign banned <span class="m meas">measured</span>. The weakest link is the key itself: whoever has it may do anything, including a
         build that switches FUOTA off.</p>
     </div>
   </section>
@@ -1236,7 +1267,7 @@
         <tr><td>Zwei Anbieter</td><td>erst Gleichschritt (41 Duplikate auf 73), mit „nicht senden, solange ein Nachbar sendet“ 0 Duplikate und doppelt so schnell; heute nennt jede Anfrage einen Anbieter, es sendet nur einer</td></tr>
         <tr><td>Anfrage an einen Anbieter</td><td>Kette nach 484 / 696 s, 0 Duplikate; schweigt der einzige bekannte Anbieter, fragt der Knoten nach 23,5 s alle (0xFF) und ein anderer liefert; nach Neustart ebenso; im Leerlauf 877 s zwischen zwei Angeboten</td></tr>
         <tr><td>Retract</td><td>Fälschung verworfen; echter stoppt Pull und Angebot, erreicht Nachbarn in Sekunden, auch als Antwort auf ein Angebot; übersteht Neustart</td></tr>
-        <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt</td></tr>
+        <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt (seit dem 20.10. sperren Signatur- und Formatfehler nicht mehr, siehe Bösartige Sendungen)</td></tr>
         <tr><td>Verlorene Anfrage</td><td>absichtlich verworfen: neue Anfrage nach 17,9 s (vorher 108 s), sonst keine zusätzlichen Anfragen, 0 Duplikate</td></tr>
         <tr><td>Rückfall und gescheitertes Image</td><td>drei Fehlstarts, Rückfall; danach wird das gescheiterte Update dauerhaft abgelehnt und nie angeboten, v1 nach v3 klappt</td></tr>
         <tr><td>Ein Layout für S140 6.1.1 und 7.3.0</td><td>FakeTec (6.1.1) und P1 (7.3.0) laufen im selben Layout, App ab 0x29000; das P1-Image, nur mit den 6.1.1-Headern gebaut, ist byte-gleich zum laufenden</td></tr>
@@ -1260,7 +1291,7 @@
         <tr><td>Two providers</td><td>first in lockstep (41 duplicates out of 73), with “do not send while a neighbour is sending” 0 duplicates and twice as fast; today every request names one provider, only one sends</td></tr>
         <tr><td>Request to one provider</td><td>chain done after 484 / 696 s, 0 duplicates; if the only known provider stays silent, the node asks everybody (0xFF) after 23.5 s and another one delivers; after a reboot likewise; 877 s between two offers when idle</td></tr>
         <tr><td>Retract</td><td>Forgery dropped; a genuine one stops pull and offer, reaches neighbours within seconds, also as a reply to an offer; survives reboot</td></tr>
-        <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned</td></tr>
+        <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned (since 20.10. signature and format errors no longer ban, see malicious transmissions)</td></tr>
         <tr><td>Lost request</td><td>dropped on purpose: new request after 17.9 s (before: 108 s), no other extra requests, 0 duplicates</td></tr>
         <tr><td>Revert and failed image</td><td>three failed boots, revert; afterwards the failed update is rejected for good and never offered, v1 to v3 works</td></tr>
         <tr><td>One layout for S140 6.1.1 and 7.3.0</td><td>FakeTec (6.1.1) and P1 (7.3.0) run in the same layout, app from 0x29000; the P1 image built only with the 6.1.1 headers is byte-identical to the running one</td></tr>
@@ -1303,8 +1334,16 @@
           Bibliotheken schon 16 KB <span class="m meas">gemessen</span>; Stage-0 hat eine Seite (4 KB). <span class="m open">offen</span></li>
         <li><b>„Gesund“ ist schwach.</b> Bestätigt wird nach 60 s laufender Hauptschleife. Eine Firmware, die läuft, aber
           nicht mehr funkt, bleibt drauf; der Knoten ist dann nur noch per Kabel zu retten. <span class="m open">offen</span></li>
-        <li><b>Gefälschte Angebote</b> können einen Knoten seinen bedienten Patch verwerfen lassen (siehe oben). Abhilfe:
-          das Neue erst prüfen, dann das Alte löschen. <span class="m open">offen</span></li>
+        <li><b>Angebote sind unsigniert.</b> Ein gefälschtes Angebot kostet heute einige Anfragen und erreicht als Flut
+          eine ganze Region; einem Knoten nimmt es nichts <span class="m meas">gemessen</span>. Vorschlag: Der Release-Schlüssel signiert beim Release
+          auch ein Angebots-Ticket (Ziel, Build, Quelle, Größen, 8 Byte Manifest-Hash), das jedes Angebot trägt; dann
+          verwirft ein Knoten Gefälschtes sofort. Das Angebot wüchse von 30 auf 98 Byte (714 statt 366 ms bei CR 4/5
+          <span class="m calc">berechnet</span>), Prüfen einmal je Kampagne 17,8 ms <span class="m meas">gemessen</span>. <span class="m open">offen</span></li>
+        <li><b>Kennung aus einem Byte.</b> Haben zwei Anbieter, die ein Zieher hört, dasselbe erste Schlüsselbyte (0,39 %
+          bei 2, 5,73 % bei 6 Anbietern <span class="m calc">berechnet</span>), antworten beide auf eine Anfrage: Das kostet Airtime, nicht das Update.
+          Eine 2-Byte-Kennung in Angebot und Anfrage macht die Anfrage 284 statt 263 ms lang (CR 4/5). <span class="m open">offen</span></li>
+        <li><b>Zahlen mit CR 4/8.</b> Die Dauern auf dieser Seite sind mit CR 4/8 gerechnet (App-Preset), Hamburg läuft
+          mit CR 4/5: dort rund ein Drittel kürzer. Die Zahlen durchgehend auf CR 4/5 umzurechnen ist offen. <span class="m open">offen</span></li>
         <li><b>Große Updates.</b> Gebaut und im Testaufbau gemessen: Patch ganz in Slot B, Fenster, überlappend anwenden,
           auf FakeTec und P1 <span class="m meas">gemessen</span>. Offen sind die Werte für das Fenster im Feld (im Code
           heute 24 h nach Vollständigkeit und 6 h nach der letzten Anfrage, Vorschlag; nach Betriebszeit, ein Neustart
@@ -1379,8 +1418,16 @@
           so far <span class="m meas">measured</span>; Stage-0 has one page (4 KB). <span class="m open">open</span></li>
         <li><b>“Healthy” is weak.</b> Confirmation comes after 60 s of a running main loop. Firmware that runs but
           no longer transmits stays on; the node can then only be rescued by cable. <span class="m open">open</span></li>
-        <li><b>Forged offers</b> can make a node discard the patch it serves (see above). Remedy:
-          check the new one first, then delete the old one. <span class="m open">open</span></li>
+        <li><b>Offers are unsigned.</b> Today a forged offer costs a few requests and as a flood reaches a whole region; it
+          takes nothing away from a node <span class="m meas">measured</span>. Proposal: at release time the release key also signs an offer ticket
+          (target, build, source, sizes, 8 bytes of the manifest hash) that every offer carries; a node then drops
+          forged offers at once. The offer would grow from 30 to 98 bytes (714 instead of 366 ms at CR 4/5 <span class="m calc">calculated</span>),
+          checking once per campaign 17.8 ms <span class="m meas">measured</span>. <span class="m open">open</span></li>
+        <li><b>One-byte ID.</b> If two providers a puller hears share the first key byte (0.39 % with 2, 5.73 % with 6
+          providers <span class="m calc">calculated</span>), both answer a request: this costs airtime, not the update. A 2-byte ID in offer and request
+          makes a request 284 instead of 263 ms (CR 4/5). <span class="m open">open</span></li>
+        <li><b>Figures at CR 4/8.</b> The durations on this page are computed with CR 4/8 (app preset), Hamburg runs CR
+          4/5: about a third shorter there. Recomputing all figures at CR 4/5 is open. <span class="m open">open</span></li>
         <li><b>Large updates.</b> Built and measured on the bench: whole patch in slot B, window, overlapping apply, on
           FakeTec and P1 <span class="m meas">measured</span>. Open are the window values for the field (in the code
           today 24 h after completion and 6 h after the last request, proposal; by uptime, a reboot starts the window
