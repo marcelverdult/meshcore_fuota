@@ -529,13 +529,14 @@
         Unterschiede zum Stock-Env des FakeTec (<code>ProMicro_repeater</code>), laut Build-Konfiguration und Code: kein BLE in der App (<code>start ota</code> startet den BLE-DFU
         des Bootloaders), keine Anzeige (<code>NullDisplayDriver</code> statt des Anzeige-Treibers), Board und Pins kommen
         zur Laufzeit aus dem Deskriptor, gebaut mit <code>-Os</code> statt <code>-Ofast</code>, zusätzlich die Sensor-Treiber
-        für SHTC3, SHT4x, LPS22HB, INA260 und BME680. Gegenüber den Stock-Envs anderer Boards fehlt je nach Board etwas
+        für SHTC3, SHT4x, LPS22HB, INA260 und BME680, und es flutet selten ein Update-Angebot in seiner Standard-Region
+        (siehe „Warum es funktioniert“). Gegenüber den Stock-Envs anderer Boards fehlt je nach Board etwas
         (siehe „Was es kostet“ und „Lücken“). Die Schalter des Testaufbaus (SF7 und 1 dBm beim Start erzwungen, kein
         Advert, 10 % Budget, Testbefehle) gibt es nur im Test-Build; eine Build-Sperre bricht den Release-Build ab, sobald
         einer davon hineingerät. Release und Test haben verschiedene Ziel-IDs, und jedes Anwenden prüft die Ziel-ID des
         Manifests: Eine Kampagne für den Testaufbau passt nie auf einen Release-Knoten. Den öffentlichen Schlüssel teilen
-        beide im Proof of Concept aber noch (siehe Lücken). <span class="m meas">gemessen</span> (Stand 19.10.2026):
-        260.568 B (64 von 96 Seiten), kein BLE-Symbol im Image, die Sperre greift bei allen fünf Schaltern.</p>
+        beide im Proof of Concept aber noch (siehe Lücken). <span class="m meas">gemessen</span> (Stand 20.10.2026):
+        261.564 B (64 von 96 Seiten), kein BLE-Symbol im Image, die Sperre greift bei allen fünf Schaltern.</p>
     </div>
     <div lang="en" class="prose">
       <h3>Starting by manual installation <span class="m open">proposal, open</span></h3>
@@ -570,12 +571,13 @@
         (<code>ProMicro_repeater</code>) according to the build configuration and the code: no BLE in the app (<code>start ota</code> starts the BLE DFU of the bootloader), no
         display (<code>NullDisplayDriver</code> instead of the display driver), board and pins come from the descriptor at
         run time, built with <code>-Os</code> instead of <code>-Ofast</code>, plus the sensor drivers for SHTC3, SHT4x,
-        LPS22HB, INA260 and BME680. Compared with the stock envs of other boards, some parts are missing depending on the
+        LPS22HB, INA260 and BME680, and it rarely floods an update offer in its default region (see “Why it works”).
+        Compared with the stock envs of other boards, some parts are missing depending on the
         board (see “What it costs” and “Gaps”). The bench switches (SF7 and 1 dBm forced at boot, no advert, 10 % budget, test commands)
         exist only in the test build; a build guard stops the release build as soon as one of them gets in. Release and
         test have different target IDs, and every apply checks the target ID of the manifest: a campaign for the bench
         never fits a release node. Both still share the public key in the proof of concept, though (see gaps).
-        <span class="m meas">measured</span> (as of 19 Oct 2026): 260,568 B (64 of 96 pages), no BLE symbol in the image,
+        <span class="m meas">measured</span> (as of 20 Oct 2026): 261,564 B (64 of 96 pages), no BLE symbol in the image,
         the guard fires for all five switches.</p>
     </div>
   </section>
@@ -854,10 +856,12 @@
         Laser-Abstandssensors VL53L0X, des Infrarot-Thermometers MLX90614, des alten Drucksensors BMP085 und des
         Bodenfeuchtesensors RAK12035 weg, ebenso die Tonausgabe der Funkbibliothek, und rechnen beim Uhrenchip RX8130CE ohne
         die Zeitzonen-Funktionen der C-Bibliothek. Das Einheits-Image hat außerdem keinen Display-Treiber mehr (die Taste
-        bleibt). Es schrumpft so von 375.040 auf 257.768 B (92 auf 63 Seiten, RAM 37,5 auf 32,5 KB).
+        bleibt). Es schrumpft so von 375.040 auf 257.768 B (92 auf 63 Seiten, RAM 37,5 auf 32,5 KB); mit dem Code, der
+        Lücken aus normalen Repeatern überbrückt (seltene Flut-Angebote, Daten per Pfad), sind es heute 261.564 B (64 Seiten,
+        RAM 34.360 B).
         Weil weniger eingebetteter Code mitwandert, werden auch die Patches zwischen zwei Releases 18 bis 39 % kleiner:
         gemessen am Stock-FakeTec aus den Release-Tags, je mit <code>-Ofast</code> und mit <code>-Os</code> gebaut, alle
-        Patches mit Rundreise geprüft. Hinter ein Image mit 63 Seiten passen Patches bis 34 Seiten; größere wendet der
+        Patches mit Rundreise geprüft. Hinter ein Image mit 64 Seiten passen Patches bis 33 Seiten; größere wendet der
         Knoten überlappend an. Auf einem FakeTec gemessen: Signieren eines eigenen Adverts 12,9 statt 11,7 ms, Schlüsseltausch
         bei einer Anmeldung 30,6 statt 30,3 ms; Prüfen, AES und SHA-256 laufen in der CryptoCell (Prüfen 17,8 ms) und hängen
         nicht am Compiler.</p>
@@ -897,10 +901,11 @@
         as well as those of the MLX90614 infrared thermometer, the old BMP085 pressure sensor and the RAK12035 soil moisture
         sensor, drop the tone output of the radio library and convert times for the RX8130CE clock chip without the time
         zone functions of the C library. The unified image also has no display driver any more (the button stays). It
-        shrinks from 375,040 to 257,768 B (92 to 63 pages, RAM 37.5 to 32.5 KB). Because less inlined code moves along,
+        shrinks from 375,040 to 257,768 B (92 to 63 pages, RAM 37.5 to 32.5 KB); with the code that bridges gaps of normal
+        repeaters (rare flooded offers, data along paths) it is 261,564 B today (64 pages, RAM 34,360 B). Because less inlined code moves along,
         patches between two releases also become 18 to 39 % smaller: measured on the stock FakeTec from the release tags,
-        each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 34
-        pages fit behind an image of 63 pages; a node applies larger ones overlapping. Measured on a FakeTec: signing the node's
+        each built with <code>-Ofast</code> and with <code>-Os</code>, every patch round trip checked. Patches of up to 33
+        pages fit behind an image of 64 pages; a node applies larger ones overlapping. Measured on a FakeTec: signing the node's
         own advert 12.9 instead of 11.7 ms, the key exchange of a login 30.6 instead of 30.3 ms; verification, AES and
         SHA-256 run in the CryptoCell (verification 17.8 ms) and do not depend on the compiler.</p>
       <h3>Frozen toolchain, reproducible build <span class="m meas">measured</span></h3>
@@ -948,7 +953,7 @@
       <div class="kv"><h3>Budget</h3><p>Hart je Knoten, für alle FUOTA-Pakete zusammen. Im Testaufbau bei 10 %: höchster Anteil je 120 s 10,1 % geschätzt, 10,8 % vom Funkmodul gemessen <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts des Repeaters (alle 2 min, 449 ms); ohne sie stimmt die Schätzung mit der gemessenen Sendezeit überein.</p></div>
       <div class="kv"><h3>Kanallast</h3><p>Jeder Sender höchstens sein Budget. In Hamburg hört ein Knoten median 2, p90 6 Sender in Reichweite, also bei 0,3 % bis rund 1,8 % Update-Verkehr im dichtesten Zehntel (bei 1 % rund 6 %) <span class="m calc">berechnet</span>. Eine Anfrage nennt einen Anbieter: auch wenn mehrere es haben, sendet für einen Fragenden immer nur einer.</p></div>
       <div class="kv"><h3>Sendungen je Kampagne in HH</h3><p>Nur Knoten, die Nachbarn versorgen, senden Daten: mindestens etwa 22 von 152 (kleinste verbundene Sendermenge), in der Animation unten 28, weil dort jede Seite vom schnellsten Nachbarn kommt. Kleines Release 1.300 bis 1.700 Datenpakete im ganzen Gebiet, Compilerwechsel 16.900 bis 22.200 <span class="m calc">berechnet</span>. Nur zum Vergleich: Ein flutendes Verfahren, bei dem jeder Repeater jedes Fragment einmal weitersendet (wie über einen Kanal), käme beim Compilerwechsel auf rund 170.000. Bei FUOTA passiert das nie, weil kein Paket weitergeleitet wird.</p></div>
-      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 257.768 B (63 Seiten), RAM 32,5 KB belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 63 Seiten passen 34, größere werden überlappend angewendet.</p></div>
+      <div class="kv"><h3>Flash und RAM</h3><p>Einheits-Image mit FUOTA, Release-Build für alle Boards: 261.564 B (64 Seiten), RAM 34.360 B belegt; Stock-P1 mit BLE-OTA zum Vergleich 365.292 B <span class="m meas">gemessen</span>. Ohne BLE in der App spart der P1 34,4 KB, <code>-Os</code> statt <code>-Ofast</code> weitere 69,7 KB. Grenze je Image 96 Seiten. Stage-0 2,7 KB in einer Seite. Patches bis 64 Seiten; hinter ein Image mit 64 Seiten passen 33, größere werden überlappend angewendet.</p></div>
       <div class="kv"><h3>Ausfallzeit</h3><p>Rund 1 min beim Anwenden (12 s bauen, 30 bis 39 s tauschen, Boot). Bei sofortigem Anwenden fehlt der Knoten so lange als Quelle; im Testaufbau kostete das den nächsten Hop 56 s <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Zuhören</h3><p>Während eine Kampagne läuft, hört ein Knoten oft ein Angebot (jeder eigene Fortschritt setzt das Intervall auf 10 s). Wer später dazukommt, wartet höchstens das längste Trickle-Intervall: 2 Tage. Im Testaufbau lagen im Leerlauf 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>. Gewollt für Updates, die ohnehin Tage dauern dürfen: dafür bleibt der Kanal nach einem Update fast ruhig.</p></div>
     </div>
@@ -956,7 +961,7 @@
       <div class="kv"><h3>Airtime budget</h3><p>Hard per node, for all FUOTA packets together. On the bench at 10 %: highest share in any 120 s window 10.1 % estimated, 10.8 % as reported by the radio module <span class="m meas">measured</span>. The difference is the repeater's normal local adverts (every 2 min, 449 ms); without them the estimate matches the measured transmit time.</p></div>
       <div class="kv"><h3>Channel load</h3><p>Each sender transmits at most its budget. In Hamburg a node hears a median of 2 senders in radio range, p90 6, so at 0.3 % up to about 1.8 % update traffic in the densest tenth (about 6 % at 1 %) <span class="m calc">calculated</span>. A request names one provider: even when several have it, only one sends for a given puller.</p></div>
       <div class="kv"><h3>Transmissions per campaign in Hamburg</h3><p>Only nodes that supply neighbours send data: at least about 22 of 152 (smallest connected set of senders), 28 in the animation below, because every page comes from the fastest neighbour there. Small release 1,300 to 1,700 data packets in the whole area, compiler change 16,900 to 22,200 <span class="m calc">calculated</span>. Only for comparison: a flooding approach, in which every repeater re-sends every fragment once (as through a channel), would reach about 170,000 for the compiler change. This never happens with FUOTA, because no packet is forwarded.</p></div>
-      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 257,768 B (63 pages), RAM 32.5 KB used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 34 fit behind an image of 63 pages, larger ones are applied overlapping.</p></div>
+      <div class="kv"><h3>Flash and RAM</h3><p>Unified image with FUOTA, release build for all boards: 261,564 B (64 pages), RAM 34,360 B used; stock P1 with BLE OTA for comparison 365,292 B <span class="m meas">measured</span>. Without BLE in the app the P1 saves 34.4 KB, <code>-Os</code> instead of <code>-Ofast</code> another 69.7 KB. Limit per image 96 pages. Stage-0 2.7 KB in one page. Patches up to 64 pages; 33 fit behind an image of 64 pages, larger ones are applied overlapping.</p></div>
       <div class="kv"><h3>Downtime</h3><p>About 1 min while applying (12 s build, 30 to 39 s swap, boot). With immediate apply the node is missing as a source for that long; on the bench this cost the next hop 56 s <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Listening</h3><p>While a campaign runs, a node hears offers often (every own progress sets the interval back to 10 s). A node that joins later waits at most the longest Trickle interval: 2 days. On the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. Intended for updates that may take days anyway: in return the channel stays almost quiet after an update.</p></div>
     </div>
@@ -983,9 +988,14 @@
         der Seite. Ist die Menge der Teilnehmer vom Seed aus zusammenhängend, erreicht das Update jeden von ihnen. Ein
         unterbrochener Pull behält seine geprüften Seiten <span class="m meas">gemessen</span>.</p>
       <h3>Es kann nicht fluten</h3>
-      <p>Kein Paket reist weiter als einen Hop, und jeder Knoten sendet höchstens sein Budget. Die gesamte Last ist damit
+      <p>Update-Daten gehen an direkte Nachbarn, und jeder Knoten sendet höchstens sein Budget. Die gesamte Last ist damit
         nach oben begrenzt durch Zahl der Sender × Budget, unabhängig davon, wie viele Knoten mitmachen. Anfragen
-        lösen keine Kettenreaktion aus: wer anfragt, fragt nur seine Nachbarn.</p>
+        lösen keine Kettenreaktion aus: eine Anfrage nennt genau einen Anbieter. Zwei Ausnahmen, beide für Knoten hinter
+        Repeatern ohne FUOTA: Ein Knoten mit einer ganzen Kampagne flutet sein Angebot höchstens einmal am Tag je
+        Kampagne, als Gruppen-Daten in seiner Standard-Region und nur, wenn er an dem Tag keine Flut dieser Kampagne
+        gehört hat (ohne Standard-Region gar nicht; jeder Repeater der Region sendet sie einmal weiter). Anfrage und
+        Daten für einen solchen Knoten laufen per Direct entlang eines Pfads und zählen im Budget des Senders so oft,
+        wie das Paket im Netz gesendet wird. Mit einem normalen Repeater als Relais <span class="m meas">gemessen</span>.</p>
       <h3>Ein Update kann nicht halb installiert sein</h3>
       <p>Die laufende Firmware wird nur von Stage-0 ersetzt, Seite für Seite, mit Journal. Nach einem Stromausfall setzt
         Stage-0 genau dort fort: im Simulator 2.718 Szenarien, auf dem Gerät 82 zufällige Watchdog-Resets mitten im
@@ -1014,9 +1024,14 @@
         the page. If the set of participants is connected from the seed, the update reaches every one of them. An
         interrupted pull keeps its checked pages <span class="m meas">measured</span>.</p>
       <h3>It cannot flood</h3>
-      <p>No packet travels further than one hop, and every node sends at most its budget. The total load is therefore
+      <p>Update data goes to direct neighbours, and every node sends at most its budget. The total load is therefore
         bounded above by number of senders × budget, regardless of how many nodes take part. Requests
-        trigger no chain reaction: a node that asks asks only its neighbours.</p>
+        trigger no chain reaction: a request names exactly one provider. Two exceptions, both for nodes behind repeaters
+        without FUOTA: a node with a whole campaign floods its offer at most once a day per campaign, as group data in
+        its default region and only if it heard no flood of that campaign that day (without a default region not at
+        all; every repeater of the region repeats it once). Request and data for such a node travel direct along a path
+        and count in the sender's budget as often as the packet is sent in the mesh. <span class="m meas">measured</span>
+        with a normal repeater as relay.</p>
       <h3>An update cannot be half-installed</h3>
       <p>Only Stage-0 replaces the running firmware, page by page, with a journal. After a power loss
         Stage-0 resumes exactly where it stopped: 2,718 scenarios in the simulator, 82 random watchdog resets in the middle of the
@@ -1152,7 +1167,7 @@
       <p>Keine Kollisionen und versteckten Endgeräte, kein normaler Verkehr, keine Paketverluste, ein Anbieter je Seite
         (mehrere würden schneller liefern, im Testaufbau doppelt so schnell). Ein Anbieter, der mehrere Nachbarn mit
         verschiedenem Stand versorgt, teilt sein Budget; das rechnet das Modell nicht ein. Nachbardaten gibt es nur von
-        Repeatern, deren Nachbarn jemand abgerufen hat. Real dauert es eher länger. Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags. Der Compilerwechsel passt mit 33 Seiten gerade noch hinter ein Image mit 63 Seiten (34 frei). Wird er größer, wendet ein Knoten ihn überlappend an, erst nach dem Fenster, in dem er weitergibt; diese Wartezeit rechnet das Modell nicht ein.</p>
+        Repeatern, deren Nachbarn jemand abgerufen hat. Real dauert es eher länger. Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags. Der Compilerwechsel passt mit 33 Seiten genau hinter ein Image mit 64 Seiten (33 frei). Wird er größer, wendet ein Knoten ihn überlappend an, erst nach dem Fenster, in dem er weitergibt; diese Wartezeit rechnet das Modell nicht ein.</p>
     </div>
     <div lang="en" class="callout warn">
       <b>What the model cannot do</b>
@@ -1160,7 +1175,7 @@
         (several would deliver faster, twice as fast on the bench). A provider that serves several neighbours with
         different states shares its budget; the model does not account for that. Neighbour data exists only for
         repeaters whose neighbours somebody has fetched. Real runs take longer. The patch sizes come from the stock FakeTec with <code>-Os</code> from the release
-        tags. With 33 pages the compiler change just fits behind an image of 63 pages (34 free). If it
+        tags. With 33 pages the compiler change exactly fits behind an image of 64 pages (33 free). If it
         grows, a node applies it overlapping, only after the window in which it passes it on; the model does not include
         that wait.</p>
     </div>
@@ -1200,6 +1215,8 @@
         <tr><td>Größenwächter</td><td>Image über 96 Seiten: der Build bricht ab (FakeTec und P1)</td></tr>
         <tr><td>Kleineres Image (<code>-Os</code>) auf Hardware</td><td>v1 per USB auf zwei FakeTecs, einen P1 und einen T114: bestätigt, Board über den Deskriptor erkannt, USB meldet wie vorher nur die serielle Schnittstelle; eine Kampagne v1→v2 holen drei Knoten in 4,4 bis 4,7 min über Funk, überlappend v2→v3 mit Fenster (Lese-Abstand 5.013 B wie auf dem Rechner), Slot-Hashes gleich dem gebauten Image; 1200-Baud-Sprung ins serielle DFU, das Bootstrap per <code>adafruit-nrfutil</code> schreibt Stage-0 an 0x26000, der Knoten startet und behält seinen Schlüssel; ohne Display-Treiber schaltet langes Drücken der Taste den FakeTec weiterhin aus</td></tr>
         <tr><td>Kette A-B-C bei 1 %</td><td>Hop 1 nach 4.664 s (gerechnet 4.694 s, das Zehnfache von 10 %); Budget über eine Stunde 1,02 %, dazu die normalen Adverts des Repeaters; Hop 2 nach 7.053 s statt 6.192 s, weil eine verlorene Anfrage 15 min kostete (siehe Lücken)</td></tr>
+        <tr><td>Über einen normalen Repeater</td><td>B mit der unveränderten Firmware 1.18.0 (Release-Paket), nur die Test-Region eingetragen; A und C hören sich laut Testfilter nicht direkt: Flut-Angebot von A kommt über B bei C an, 4 Anfragen und 37 Fragmente per Pfad über B ohne Verlust, Kampagne nach 466 und 467 s vollständig, bestätigt; zweimal, vor und nach den Korrekturen aus dem dritten Review</td></tr>
+        <tr><td>Dauerlauf 12 h</td><td>FakeTec, P1, T114, vier Test-Releases im Abstand von 3 h: alle Kampagnen über Funk geholt und bestätigt (hinter dem Image und überlappend), keine unerwarteten Neustarts; der geplante Rückfall lief nicht, weil das Testwerkzeug die Bootmeldung des T114 verpasste</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -1222,6 +1239,8 @@
         <tr><td>Size guard</td><td>Image above 96 pages: the build stops (FakeTec and P1)</td></tr>
         <tr><td>Smaller image (<code>-Os</code>) on hardware</td><td>v1 over USB onto two FakeTecs, one P1 and one T114: confirmed, board identified by the descriptor, USB reports only the serial port as before; three nodes pull a campaign v1→v2 over the air in 4.4 to 4.7 min, overlapping v2→v3 with window (read margin 5,013 B as on the computer), slot hashes equal to the built image; 1200 baud touch into the serial DFU, the bootstrap through <code>adafruit-nrfutil</code> writes Stage-0 at 0x26000, the node starts and keeps its key; without the display driver a long press of the button still switches the FakeTec off</td></tr>
         <tr><td>Chain A-B-C at 1 %</td><td>Hop 1 after 4,664 s (calculated 4,694 s, ten times the 10 % run); budget over one hour 1.02 %, plus the repeater's regular adverts; hop 2 after 7,053 s instead of 6,192 s because one lost request cost 15 min (see gaps)</td></tr>
+        <tr><td>Across a normal repeater</td><td>B with the unchanged firmware 1.18.0 (release package), only the test region added; A and C do not hear each other directly by test filter: A's flooded offer reaches C through B, 4 requests and 37 fragments along the path through B without loss, campaign complete after 466 and 467 s, confirmed; twice, before and after the fixes from the third review</td></tr>
+        <tr><td>Endurance run 12 h</td><td>FakeTec, P1, T114, four test releases 3 h apart: every campaign pulled over the air and confirmed (behind the image and overlapping), no unexpected reboots; the planned revert did not run because the test tool missed the boot message of the T114</td></tr>
       </table>
     </div>
   </section>
@@ -1520,7 +1539,7 @@
     transfers.forEach(function (t) { senders[t.m] = 1; var key = t.m + ":" + t.k;
       if (!sendPairs[key]) { sendPairs[key] = 1; packets += t.k < 0 ? mfFr : Math.ceil(Math.min(PAGE, patch - t.k * PAGE) / FRAG); } });
     return { seed: seed, part: part, tm: tm, tp: tp, pages: pages, total: total, reached: reached, parts: parts, patch: patch, mfFr: mfFr,
-             transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 34 };
+             transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 33 };
   }
 
   var cv = document.getElementById("map"), ctx = cv.getContext("2d"), S = null, t = 0, playing = false, last = 0;
@@ -1664,12 +1683,12 @@
       ["eben", justNow(true)], ["fertig", done + " von " + S.parts], ["holt gerade", pulling], ["senden gerade", Object.keys(senders).length],
       ["alle Erreichbaren fertig nach", fmt(S.total)], ["nie erreicht", unreached + (S.part.length - S.parts ? " (+" + (S.part.length - S.parts) + " ohne FUOTA)" : "")],
       ["Knoten, die je Daten senden", S.senders], ["Datenpakete gesamt, ca.", S.packets.toLocaleString("de-DE")],
-      ["Patch passt hinter das Image (63 Seiten)", S.fits ? "ja, " + S.pages + " von höchstens 34 Seiten" : "nein: " + S.pages + " Seiten, frei sind 34; überlappend nach dem Fenster"]
+      ["Patch passt hinter das Image (64 Seiten)", S.fits ? "ja, " + S.pages + " von höchstens 33 Seiten" : "nein: " + S.pages + " Seiten, frei sind 33; überlappend nach dem Fenster"]
     ] : [
       ["just now", justNow(false)], ["done", done + " of " + S.parts], ["pulling now", pulling], ["sending now", Object.keys(senders).length],
       ["all reachable done after", fmt(S.total)], ["never reached", unreached + (S.part.length - S.parts ? " (+" + (S.part.length - S.parts) + " without FUOTA)" : "")],
       ["nodes that ever send data", S.senders], ["data packets in total, approx.", S.packets.toLocaleString("en-GB")],
-      ["patch fits behind the image (63 pages)", S.fits ? "yes, " + S.pages + " of at most 34 pages" : "no: " + S.pages + " pages, 34 are free; overlapping after the window"]
+      ["patch fits behind the image (64 pages)", S.fits ? "yes, " + S.pages + " of at most 33 pages" : "no: " + S.pages + " pages, 33 are free; overlapping after the window"]
     ];
     el("stats").innerHTML = rows.map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("");
     if (hfocus >= 0) {   // the focused action on top of everything
