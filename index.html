@@ -77,6 +77,11 @@
   .m.calc{background:color-mix(in srgb,var(--slota) 16%,transparent);color:var(--slota)}
   .m.open{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
   header.hero{border-bottom:1px solid var(--line);padding-bottom:26px}
+  .synopsis{margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--surface);border-radius:12px;padding:14px 18px;max-width:72ch}
+  .synopsis dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:8px 16px}
+  .synopsis dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+  .synopsis dd{margin:0;font-size:16.5px}
+  @media (max-width:520px){.synopsis dl{grid-template-columns:1fr;gap:2px}.synopsis dd{margin-bottom:8px}}
   nav.toc{margin-top:22px}
   nav.toc ol{margin:0;padding-left:20px;columns:2 260px;column-gap:28px;font-size:15px}
   nav.toc li{margin:2px 0;break-inside:avoid}
@@ -174,6 +179,19 @@
   <header class="hero">
     <div lang="de">
       <h1>Firmware-Updates über LoRa für MeshCore-Repeater</h1>
+      <div class="synopsis" role="note" aria-label="Kurz gesagt">
+        <dl>
+          <dt>Problem</dt><dd>Viele Repeater stehen weit weg, auf Dächern und Masten, ohne Bildschirm. Ein Firmware-Update
+            heißt heute: hinfahren und per Kabel oder Bluetooth aufspielen.</dd>
+          <dt>Idee</dt><dd>Einmal per Kabel installieren. Danach geben sich die Repeater neue Firmware selbst über LoRa weiter,
+            langsam im Hintergrund, mit höchstens 0,3 % Sendezeit je Knoten.</dd>
+          <dt>Schutz</dt><dd>Ein Knoten nimmt nur Firmware an, die mit dem Release-Schlüssel signiert ist. Startet sie nicht,
+            läuft wieder die alte.</dd>
+          <dt>Stand</dt><dd>Proof of Concept am Testaufbau, nichts davon ist in MeshCore. Diese Seite legt den Entwurf offen,
+            damit andere ihn prüfen. Für den Überblick reichen dieser Kasten und <a href="#kurz">das Prinzip in sechs
+            Sätzen</a>; alles darunter ist Detail zum Nachprüfen.</dd>
+        </dl>
+      </div>
       <p class="lede">Repeater holen neue Firmware selbst über Funk, von Nachbar zu Nachbar, auch über Repeater ohne FUOTA
         hinweg. Über die Luft geht nur ein kleiner, signierter Delta-Patch; jeder Knoten nutzt dafür höchstens 0,3 %
         Airtime, und startet die neue Version nicht, fällt er auf die alte zurück. Alles hier läuft am Testaufbau: Jede
@@ -194,6 +212,19 @@
     </div>
     <div lang="en">
       <h1>Firmware updates over LoRa for MeshCore repeaters</h1>
+      <div class="synopsis" role="note" aria-label="In short">
+        <dl>
+          <dt>Problem</dt><dd>Many repeaters sit far away, on roofs and masts, without a screen. Today a firmware update means
+            going there and flashing it by cable or Bluetooth.</dd>
+          <dt>Idea</dt><dd>Install once by cable. After that the repeaters pass new firmware to each other over LoRa, slowly in
+            the background, with at most 0.3 % airtime per node.</dd>
+          <dt>Safety</dt><dd>A node only accepts firmware signed with the release key. If it does not start, the old one runs
+            again.</dd>
+          <dt>Status</dt><dd>Proof of concept on the bench, none of it is in MeshCore. This page lays the design open so that
+            others can check it. For the overview, this box and <a href="#kurz">the principle in six sentences</a> are
+            enough; everything below is detail for checking.</dd>
+        </dl>
+      </div>
       <p class="lede">Repeaters fetch new firmware themselves over the air, from neighbour to neighbour, also across
         repeaters without FUOTA. Only a small, signed delta patch travels over the air; each node spends at most 0.3 %
         airtime on it, and if the new version does not start, the node falls back to the old one. Everything here runs on
