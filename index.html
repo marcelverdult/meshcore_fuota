@@ -109,6 +109,7 @@
   .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
   .stat b{font-size:24px;line-height:1.2;color:var(--fg)}
   .stat span{font-size:13px;color:var(--muted)}
+  .aufwand{display:flex;flex-direction:column;gap:12px;margin-top:22px}
   .faq{display:flex;flex-direction:column;gap:10px;max-width:76ch}
   .qa{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
   .qa h3{font-size:16px}
@@ -212,6 +213,39 @@
         <span class="tag">none of it is upstream</span>
       </div>
     </div>
+        <div id="aufwand" class="aufwand">
+    <div lang="de" class="prose">
+      <h2>Was ein Update dem Mesh abverlangt</h2>
+      <p>Ein Release ändert meist wenig Code. Über Funk geht nur dieser Unterschied, als Patch. Gemessen an echten
+        MeshCore-Releases (Stock-FakeTec, aus den Tags mit <code>-Os</code> gebaut) <span class="m meas">gemessen</span>; daraus berechnet, was ein Knoten
+        sendet, der einen Nachbarn versorgt <span class="m calc">berechnet</span>:</p>
+    </div>
+    <div lang="de"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Datenpakete</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10.076 B</td><td class="n">60</td><td class="n">103 s</td><td class="n">69 s</td></tr><tr><td>Release ohne Compilerwechsel (1.17.1 mit GCC 14 nach 1.18.0)</td><td class="n">22.680 B</td><td class="n">131</td><td class="n">225 s</td><td class="n">150 s</td></tr><tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34.179 B</td><td class="n">198</td><td class="n">341 s</td><td class="n">227 s</td></tr></table></div></div>
+    <div lang="de" class="prose">
+      <p>Gesendet wird das nicht am Stück, sondern verteilt: Jeder Knoten nutzt höchstens 0,3 % Airtime, und senden
+        müssen nur Knoten, die Nachbarn versorgen. Für das ganze Gebiet um Hamburg sind es beim kleinen Release 1.300 bis
+        1.700 Datenpakete <span class="m calc">berechnet</span> (Abschnitt <a href="#kosten">Was es kostet</a>). Ein Compilerwechsel wie von 1.17.1 nach
+        1.18.0 passiert mit FUOTA nicht nebenbei: Die FUOTA-Builds frieren Compiler und Bibliotheken ein, ein Wechsel ist
+        eine bewusste Entscheidung.</p>
+      <p>Installieren alle Teilnehmer dieselben signierten Images aus unseren Releases, laufen alle auf derselben
+        Quelle: Dann erreicht ein Patch, eine Kampagne jeden Teilnehmer.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>What an update asks of the mesh</h2>
+      <p>A release usually changes little code. Only that difference travels over the air, as a patch. Measured on real
+        MeshCore releases (stock FakeTec, built from the tags with <code>-Os</code>) <span class="m meas">measured</span>; from that, calculated what a node
+        sends that supplies one neighbour <span class="m calc">calculated</span>:</p>
+    </div>
+    <div lang="en"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Data packets</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10,076 B</td><td class="n">60</td><td class="n">103 s</td><td class="n">69 s</td></tr><tr><td>release without compiler change (1.17.1 with GCC 14 to 1.18.0)</td><td class="n">22,680 B</td><td class="n">131</td><td class="n">225 s</td><td class="n">150 s</td></tr><tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34,179 B</td><td class="n">198</td><td class="n">341 s</td><td class="n">227 s</td></tr></table></div></div>
+    <div lang="en" class="prose">
+      <p>It is not sent in one go but spread out: every node uses at most 0.3 % airtime, and only nodes that supply
+        neighbours have to send. For the whole area around Hamburg a small release takes 1,300 to 1,700 data packets
+        <span class="m calc">calculated</span> (section <a href="#kosten">What it costs</a>). A compiler change like the one from 1.17.1 to 1.18.0 does not
+        happen by the way with FUOTA: the FUOTA builds freeze compiler and libraries, a change is a deliberate decision.</p>
+      <p>If all participants install the same signed images from our releases, they all run the same source: then one
+        patch, one campaign reaches every participant.</p>
+    </div>
+      </div>
     <nav class="toc" aria-label="Inhalt">
       <ol lang="de">
         <li><a href="#kurz">Das Prinzip in sechs Sätzen</a></li>
@@ -784,10 +818,10 @@
         <tr><th>Was kommt an</th><th>Teilnehmer, gleiches Modell</th><th>Teilnehmer, anderes Modell</th><th>Repeater ohne FUOTA, Companion</th></tr>
         <tr><td>Angebot</td><td>prüft, ob es passt; zieht oder zählt es als Bestätigung</td><td>ignoriert (Vorschlag: hält ein Fenster, siehe unten)</td><td>verwirft; ein geflutetes leitet er weiter wie jede Gruppen-Nachricht</td></tr>
         <tr><td>Angebot eines höheren Builds, während er eine Kampagne hält</td><td>holt nur dessen Manifest in den RAM und wechselt erst, wenn es geprüft ist; bis dahin bedient er die alte weiter <span class="m meas">gemessen</span></td><td>ignoriert</td><td>wie Angebot</td></tr>
-        <tr><td>Anfrage</td><td>bedient aus eigenen geprüften Seiten, wenn sie ihn nennt (oder 0xFF), reihum ab dem zuletzt gesendeten Fragment <span class="m meas">gemessen</span></td><td>ignoriert</td><td>verwirft; mit Pfad leitet er sie weiter wie jedes Direct-Paket</td></tr>
+        <tr><td>Anfrage</td><td>bedient aus eigenen geprüften Seiten, wenn sie ihn nennt (oder 0xFFFF), reihum ab dem zuletzt gesendeten Fragment <span class="m meas">gemessen</span></td><td>ignoriert</td><td>verwirft; mit Pfad leitet er sie weiter wie jedes Direct-Paket</td></tr>
         <tr><td>Daten</td><td>speichert, was fehlt (nur nach geprüftem Manifest); streicht aus der eigenen Sendeliste, was ein anderer gerade gesendet hat</td><td>ignoriert</td><td>verwirft; mit Pfad leitet er sie weiter wie jedes Direct-Paket</td></tr>
         <tr><td>Retract, gültig</td><td>stoppt, speichert, sendet ihn dreimal und als Antwort</td><td>verwirft (andere Ziel-ID)</td><td>verwirft</td></tr>
-        <tr><td>Manifest mit falscher Signatur</td><td>holt nur dessen 2 bis 4 Fragmente und gibt nichts davon weiter; die ID ruht 10 min, gesperrt wird sie nicht <span class="m meas">gemessen</span> (sie ist ein 4-Byte-Präfix und könnte zu einer echten Kampagne gehören)</td><td>zieht gar nicht</td><td>verwirft</td></tr>
+        <tr><td>Angebot mit gefälschtem Ticket</td><td>verwirft es, bevor er etwas anfragt, und gibt nichts davon weiter <span class="m meas">gemessen</span></td><td>ignoriert</td><td>verwirft; ein geflutetes leitet er weiter wie jede Gruppen-Nachricht</td></tr>
         <tr><td>Seite mit falschem Hash</td><td>löscht sie, holt sie neu, gibt sie nie weiter</td><td>zieht gar nicht</td><td>verwirft</td></tr>
         <tr><td>Angebot eines zurückgezogenen Builds</td><td>zieht nicht, antwortet höchstens alle 30 s mit dem Retract</td><td>ignoriert</td><td>verwirft</td></tr>
         <tr><td>Normale MeshCore-Pakete</td><td colspan="3">unverändert: FUOTA ändert die Weiterleitung von MeshCore nicht (nur ein zusätzlicher Fall für Typ 0x0E ohne Pfad); FUOTA-Pakete stehen in der Sendewarteschlange hinter allen fälligen Mesh-Paketen</td></tr>
@@ -798,10 +832,10 @@
         <tr><th>What arrives</th><th>Participant, same model</th><th>Participant, other model</th><th>Repeater without FUOTA, companion</th></tr>
         <tr><td>Offer</td><td>checks whether it fits; pulls or counts it as a confirmation</td><td>ignores (proposal: holds a window, see below)</td><td>drops; a flooded one it forwards like any group message</td></tr>
         <tr><td>Offer of a higher build while it holds a campaign</td><td>pulls only its manifest into RAM and switches only once it checked out; until then it keeps serving the old one <span class="m meas">measured</span></td><td>ignores</td><td>as offer</td></tr>
-        <tr><td>Request</td><td>serves from its own checked pages if it names this node (or 0xFF), in turn from the fragment sent last <span class="m meas">measured</span></td><td>ignores</td><td>drops; with a path it forwards it like any direct packet</td></tr>
+        <tr><td>Request</td><td>serves from its own checked pages if it names this node (or 0xFFFF), in turn from the fragment sent last <span class="m meas">measured</span></td><td>ignores</td><td>drops; with a path it forwards it like any direct packet</td></tr>
         <tr><td>Data</td><td>stores what is missing (only after a checked manifest); strikes from its own send list what another node has just sent</td><td>ignores</td><td>drops; with a path it forwards it like any direct packet</td></tr>
         <tr><td>Retract, valid</td><td>stops, stores, sends it three times and as a reply</td><td>drops (other target ID)</td><td>drops</td></tr>
-        <tr><td>Manifest with wrong signature</td><td>pulls only its 2 to 4 fragments and passes nothing of it on; the ID rests for 10 min, it is not banned <span class="m meas">measured</span> (it is a 4-byte prefix and may belong to a genuine campaign)</td><td>does not pull at all</td><td>drops</td></tr>
+        <tr><td>Offer with a forged ticket</td><td>drops it before asking for anything and passes nothing of it on <span class="m meas">measured</span></td><td>ignores</td><td>drops; a flooded one it forwards like any group message</td></tr>
         <tr><td>Page with wrong hash</td><td>erases it, pulls it again, never passes it on</td><td>does not pull at all</td><td>drops</td></tr>
         <tr><td>Offer of a retracted build</td><td>does not pull, answers with the retract at most every 30 s</td><td>ignores</td><td>drops</td></tr>
         <tr><td>Normal MeshCore packets</td><td colspan="3">unchanged: FUOTA does not change the MeshCore forwarding (only one extra case for type 0x0E without path); FUOTA packets wait in the transmit queue behind every due mesh packet</td></tr>
@@ -1193,7 +1227,7 @@
         <tr><td>Zwei Anbieter</td><td>erst Gleichschritt (41 Duplikate auf 73), mit „nicht senden, solange ein Nachbar sendet“ 0 Duplikate und doppelt so schnell; heute nennt jede Anfrage einen Anbieter, es sendet nur einer</td></tr>
         <tr><td>Anfrage an einen Anbieter</td><td>Kette nach 484 / 696 s, 0 Duplikate; schweigt der einzige bekannte Anbieter, fragt der Knoten nach 23,5 s alle (0xFF) und ein anderer liefert; nach Neustart ebenso; im Leerlauf 877 s zwischen zwei Angeboten</td></tr>
         <tr><td>Retract</td><td>Fälschung verworfen; echter stoppt Pull und Angebot, erreicht Nachbarn in Sekunden, auch als Antwort auf ein Angebot; übersteht Neustart</td></tr>
-        <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt (seit dem 20.10. sperren Signatur- und Formatfehler nicht mehr, siehe Bösartige Sendungen)</td></tr>
+        <tr><td>Neustart mitten im Pull</td><td>„2 of 4 pages checked“, nur der Rest wird geholt; gesperrte Kampagne bleibt gesperrt (seit dem 20.10. sperren Signatur- und Formatfehler nicht mehr, siehe Angriffe im Detail)</td></tr>
         <tr><td>Verlorene Anfrage</td><td>absichtlich verworfen: neue Anfrage nach 17,9 s (vorher 108 s), sonst keine zusätzlichen Anfragen, 0 Duplikate</td></tr>
         <tr><td>Rückfall und gescheitertes Image</td><td>drei Fehlstarts, Rückfall; danach wird das gescheiterte Update dauerhaft abgelehnt und nie angeboten, v1 nach v3 klappt</td></tr>
         <tr><td>Ein Layout für S140 6.1.1 und 7.3.0</td><td>FakeTec (6.1.1) und P1 (7.3.0) laufen im selben Layout, App ab 0x29000; das P1-Image, nur mit den 6.1.1-Headern gebaut, ist byte-gleich zum laufenden</td></tr>
@@ -1217,7 +1251,7 @@
         <tr><td>Two providers</td><td>first in lockstep (41 duplicates out of 73), with “do not send while a neighbour is sending” 0 duplicates and twice as fast; today every request names one provider, only one sends</td></tr>
         <tr><td>Request to one provider</td><td>chain done after 484 / 696 s, 0 duplicates; if the only known provider stays silent, the node asks everybody (0xFF) after 23.5 s and another one delivers; after a reboot likewise; 877 s between two offers when idle</td></tr>
         <tr><td>Retract</td><td>Forgery dropped; a genuine one stops pull and offer, reaches neighbours within seconds, also as a reply to an offer; survives reboot</td></tr>
-        <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned (since 20.10. signature and format errors no longer ban, see malicious transmissions)</td></tr>
+        <tr><td>Reboot in the middle of a pull</td><td>“2 of 4 pages checked”, only the rest is pulled; a banned campaign stays banned (since 20.10. signature and format errors no longer ban, see attacks in detail)</td></tr>
         <tr><td>Lost request</td><td>dropped on purpose: new request after 17.9 s (before: 108 s), no other extra requests, 0 duplicates</td></tr>
         <tr><td>Revert and failed image</td><td>three failed boots, revert; afterwards the failed update is rejected for good and never offered, v1 to v3 works</td></tr>
         <tr><td>One layout for S140 6.1.1 and 7.3.0</td><td>FakeTec (6.1.1) and P1 (7.3.0) run in the same layout, app from 0x29000; the P1 image built only with the 6.1.1 headers is byte-identical to the running one</td></tr>
