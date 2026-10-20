@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Last im Mesh · MeshCore FUOTA</title>
+<meta name="description" content="MeshCore FUOTA: firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:title" content="Last im Mesh · MeshCore FUOTA">
+<meta property="og:description" content="Firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:image" content="https://marcelverdult.github.io/meshcore_fuota/logo/logo-dark.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="logo/favicon-48.png">
+<link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+(function () {
+  // before the first paint: forward old section links of the single page, then pick the language
+  // (#de / #en, saved choice, else the browser language) so the other language never flashes
+  var moved = window.fuotaMoved = {}, h = location.hash.slice(1);
+  if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
+  var l = (h === "de" || h === "en") ? h : null;
+  if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
+  if (l !== "de" && l !== "en") l = (navigator.language || "de").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+  document.documentElement.setAttribute("data-lang", l);
+  document.documentElement.setAttribute("lang", l);
+})();
+</script>
+</head>
+<body class="has-rail" data-title-de="Last im Mesh · MeshCore FUOTA" data-title-en="Load on the mesh · MeshCore FUOTA">
+<div class="bar"><div class="bar-in">
+  <a class="mark" href="index.html" aria-label="MeshCore FUOTA"><img src="logo/icon.png" alt="" width="28" height="28"><span>MeshCore <b>FUOTA</b></span></a>
+  <span class="chip-draft"><span lang="de">Entwurf zur Prüfung</span><span lang="en">Draft for review</span></span>
+  <span class="here" aria-hidden="true"></span>
+  <div class="langs" role="group" aria-label="Sprache / language">
+    <button type="button" id="btn-de" data-l="de" aria-pressed="true">DE</button>
+    <button type="button" id="btn-en" data-l="en" aria-pressed="false">EN</button>
+  </div>
+</div><div class="progress"></div></div>
+<nav class="rail" aria-hidden="true"></nav>
+<div class="wrap">
+  <nav class="pages" aria-label="Seiten / pages">
+    <ul>
+      <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
+      <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
+      <li><a href="kosten.html" aria-current="page"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
+      <li><a href="sicherheit.html"><span lang="de">Sicherheit</span><span lang="en">Safety</span></a></li>
+      <li><a href="funk.html"><span lang="de">Funk</span><span lang="en">On air</span></a></li>
+      <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
+      <li><a href="tests.html"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
+      <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
+    </ul>
+  </nav>
+  <main>
+  <header class="hero">
+    <div lang="de">
+      <h1>Was ein Update das Mesh kostet</h1>
+      <p class="lede">Über Funk geht nur der Patch, beim kleinen Release 10.076 B <span class="m meas">gemessen</span>. Das sind 60
+        Datenpakete an einen Nachbarn <span class="m calc">berechnet</span>, und jeder Knoten sendet höchstens 0,3 % Airtime
+        <span class="m code">im Code geprüft</span>. Für 152 verbundene Repeater um Hamburg sind es 1.300 bis 1.700 Datenpakete
+        <span class="m calc">berechnet</span>.</p>
+    </div>
+    <div lang="en">
+      <h1>What an update costs the mesh</h1>
+      <p class="lede">Only the patch travels over the air, 10,076 B for the small release <span class="m meas">measured</span>. That is 60
+        data packets to one neighbour <span class="m calc">calculated</span>, and every node sends at most 0.3 % airtime
+        <span class="m code">checked in the code</span>. For 152 connected repeaters around Hamburg it takes 1,300 to 1,700 data
+        packets <span class="m calc">calculated</span>.</p>
+    </div>
+  </header>
+
+  <section id="aufwand">
+    <div class="aufwand">
+    <div lang="de" class="prose">
+      <h2>Patch, Datenpakete und Airtime je Release</h2>
+      <p>Ein Patch ist der Unterschied zwischen 2 Images. Airtime ist die Sendezeit auf dem Kanal. Die Größen stammen von
+        echten MeshCore-Releases. Wir haben ihre Tags für den FakeTec gebaut, ein nRF52840-Board. Gebaut ist Stock (MeshCore
+        unverändert) mit <code>-Os</code>, also auf Größe übersetzt <span class="m meas">gemessen</span>. Daraus folgt, was ein
+        Knoten sendet, der einen Nachbarn versorgt <span class="m calc">berechnet</span>:</p>
+    </div>
+    <div lang="de"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Datenpakete</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10.076 B</td><td class="n">60</td><td class="n">103 s</td><td class="n">69 s</td></tr><tr><td>Release ohne Compilerwechsel (1.17.1 mit GCC 14 nach 1.18.0)</td><td class="n">22.680 B</td><td class="n">131</td><td class="n">225 s</td><td class="n">150 s</td></tr><tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34.179 B</td><td class="n">198</td><td class="n">341 s</td><td class="n">227 s</td></tr></table></div></div>
+    <div lang="de" class="prose">
+      <p>Die Airtime-Spalten zeigen die Sendezeit für ein Release. Sie gilt für alle Datenpakete, einmal an einen Nachbarn gesendet.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Patch, data packets and airtime per release</h2>
+      <p>A patch is the difference between 2 images. Airtime is the time a node transmits on the channel. The sizes come
+        from real MeshCore releases. We built their tags for the FakeTec, an nRF52840 board. We built stock (MeshCore
+        unchanged) with <code>-Os</code>, that is for size <span class="m meas">measured</span>. From them follows what a node
+        sends that supplies one neighbour <span class="m calc">calculated</span>:</p>
+    </div>
+    <div lang="en"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Data packets</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10,076 B</td><td class="n">60</td><td class="n">103 s</td><td class="n">69 s</td></tr><tr><td>release without compiler change (1.17.1 with GCC 14 to 1.18.0)</td><td class="n">22,680 B</td><td class="n">131</td><td class="n">225 s</td><td class="n">150 s</td></tr><tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34,179 B</td><td class="n">198</td><td class="n">341 s</td><td class="n">227 s</td></tr></table></div></div>
+    <div lang="en" class="prose">
+      <p>The airtime columns show the transmit time for one release. It covers all data packets, sent once to one neighbour.</p>
+    </div>
+    </div>
+
+    <div class="grid2" lang="de">
+      <div class="kv"><h3>Airtime-Budget</h3><p>Jeder Knoten sendet höchstens 0,3 % Airtime <span class="m code">im Code geprüft</span>. Das Budget ist eine
+        harte Grenze für alle FUOTA-Pakete zusammen. Nur Knoten, die Nachbarn versorgen, senden Daten. Im Testaufbau galt ein Budget von
+        10 %. In FUOTAs eigener Rechnung war der höchste Anteil je 120 s 10,1 % <span class="m calc">berechnet</span>. Das
+        Funkmodul meldete 10,8 % <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts
+        (Selbstmeldungen) des Repeaters, alle 2 min, 449 ms. Ohne sie stimmt die Rechnung mit der gemessenen Sendezeit
+        überein.</p></div>
+      <div class="kv"><h3>Kanallast</h3><p>Jeder Sender nutzt höchstens sein Budget. In Hamburg hört ein Knoten im Median 2 Sender in
+        Reichweite, im 90. Perzentil (p90) 6. Bei 0,3 % Budget sind es im dichtesten Zehntel bis rund 1,8 % Update-Verkehr
+        <span class="m calc">berechnet</span>. Bei 1 % sind es rund 6 % <span class="m calc">berechnet</span>. Eine Anfrage
+        nennt genau einen Anbieter. Auch wenn mehrere das Update haben, sendet für einen Fragenden immer nur einer. Die Zahlen für ganz Hamburg stehen unter
+        <a href="#hh">Verteilung in Hamburg</a>.</p></div>
+    </div>
+    <div class="grid2" lang="en">
+      <div class="kv"><h3>Airtime budget</h3><p>Every node sends at most 0.3 % airtime <span class="m code">checked in the code</span>. The budget is a hard
+        limit for all FUOTA packets together. Only nodes that supply neighbours send data. On the bench the budget was 10 %. By FUOTA's own
+        count the highest share per 120 s was 10.1 % <span class="m calc">calculated</span>. The radio module
+        reported 10.8 % <span class="m meas">measured</span>. The difference is the repeater's normal local adverts
+        (self-announcements), every 2 min, 449 ms. Without them the calculation matches the measured transmit time.</p></div>
+      <div class="kv"><h3>Channel load</h3><p>Each sender uses at most its budget. In Hamburg a node hears 2 senders in range (median).
+        At the 90th percentile (p90) it hears 6. At 0.3 % the densest tenth sees up to about 1.8 % update traffic
+        <span class="m calc">calculated</span>. At 1 % it is about 6 % <span class="m calc">calculated</span>. A request
+        names exactly one provider. Even when several have the update, only one sends for a given puller. The figures for all of Hamburg are under
+        <a href="#hh">Distribution in Hamburg</a>.</p></div>
+    </div>
+
+    <div lang="de" class="prose">
+      <h3>Dauer je Hop</h3>
+      <p>Ein Hop ist der Weg eines Updates von einem Knoten zu seinem direkten Nachbarn. Die Rechnung nimmt SF8, 1.721 ms je
+        Datenpaket und 4-KB-Seiten <span class="m calc">berechnet</span>.</p>
+      <ul>
+        <li>Hop 1 braucht alle Datenpakete des Patches.</li>
+        <li>Jeder weitere Hop braucht nur eine Seite mehr, weil geprüfte Seiten sofort weitergehen.</li>
+        <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 3,7 h
+          <span class="m calc">berechnet</span>.</li>
+        <li>Bei 1 % sind es rund 1,1 h <span class="m calc">berechnet</span>.</li>
+        <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 464 s <span class="m meas">gemessen</span>, gerechnet
+          waren es 469 s. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
+      </ul>
+      <p>Aus den gemessenen Patches folgt die Dauer <span class="m calc">berechnet</span>:</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Duration per hop</h3>
+      <p>A hop is an update's way from one node to its direct neighbour. The calculation uses SF8, 1,721 ms per data packet
+        and 4 KB pages <span class="m calc">calculated</span>.</p>
+      <ul>
+        <li>Hop 1 needs all data packets of the patch.</li>
+        <li>Each further hop needs only one page more, because checked pages move on at once.</li>
+        <li>A page is 23.3 data packets. At 0.3 % each further hop takes about 3.7 h
+          <span class="m calc">calculated</span>.</li>
+        <li>At 1 % it is about 1.1 h <span class="m calc">calculated</span>.</li>
+        <li>On the bench the calculation holds. Hop 1 took 464 s at 10 % <span class="m meas">measured</span>. The calculation
+          gave 469 s. Hop 2 was one page behind <span class="m meas">measured</span>.</li>
+      </ul>
+      <p>From the measured patches follows the duration <span class="m calc">calculated</span>:</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Update</th><th>Patch mit -Os (mit -Ofast)</th><th>Seiten</th><th>Datenpakete</th><th>Hop 1 bei 0,3 / 1 %</th><th>5 Hops bei 0,3 / 1 / 2 %</th><th>Anwenden</th></tr>
+        <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">60</td><td class="n">9,6 / 2,9 h</td><td class="n">24,4 / 7,3 / 3,7 h</td><td>hinter dem Image</td></tr>
+        <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">131</td><td class="n">20,9 / 6,3 h</td><td class="n">35,7 / 10,7 / 5,4 h</td><td>hinter dem Image</td></tr>
+        <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">198</td><td class="n">31,6 / 9,5 h</td><td class="n">46,4 / 13,9 / 7,0 h</td><td>hinter dem Image</td></tr>
+        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">5,1 Tage / 36,9 h</td><td class="n">5,7 Tage / 41,3 / 20,7 h</td><td>überlappend (33 Seiten, hinter das Image mit 66 Seiten passen 31)</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Update</th><th>Patch with -Os (with -Ofast)</th><th>Pages</th><th>Data packets</th><th>Hop 1 at 0.3 / 1 %</th><th>5 hops at 0.3 / 1 / 2 %</th><th>Applied</th></tr>
+        <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">60</td><td class="n">9.6 / 2.9 h</td><td class="n">24.4 / 7.3 / 3.7 h</td><td>behind the image</td></tr>
+        <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">131</td><td class="n">20.9 / 6.3 h</td><td class="n">35.7 / 10.7 / 5.4 h</td><td>behind the image</td></tr>
+        <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">198</td><td class="n">31.6 / 9.5 h</td><td class="n">46.4 / 13.9 / 7.0 h</td><td>behind the image</td></tr>
+        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">5.1 days / 36.9 h</td><td class="n">5.7 days / 41.3 / 20.7 h</td><td>overlapping (33 pages; 31 fit behind the 66-page image)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="hh">
+    <div lang="de" class="prose">
+      <h2>Verteilung in Hamburg</h2>
+      <p>Grundlage sind echte Nachbardaten von Repeatern im Umkreis von 50 km um das Rathaus. Stand ist der 18. Oktober 2026.
+        Das sind 168 Repeater und 534 Verbindungen mit mindestens −7 dB SNR. Von den 168 Repeatern sind 152 verbunden.
+        Positionen sind auf 0,5 km gerundet, ohne Namen.</p>
+      <h3>Sendungen je Kampagne</h3>
+      <p>Senden müssen nur Knoten, die Nachbarn versorgen. Das sind mindestens etwa 22 von 152, die kleinste verbundene
+        Sendermenge <span class="m calc">berechnet</span>. Die Animation unten kommt auf 28, weil dort jede Seite vom
+        schnellsten Nachbarn kommt <span class="m calc">berechnet</span>. Daraus folgen die Datenpakete im ganzen Gebiet:</p>
+      <div class="tscroll"><table>
+        <tr><th>Update</th><th>Datenpakete im ganzen Gebiet</th></tr>
+        <tr><td>kleines Release</td><td class="n">1.300 bis 1.700 <span class="m calc">berechnet</span></td></tr>
+        <tr><td>Compilerwechsel</td><td class="n">16.900 bis 22.200 <span class="m calc">berechnet</span></td></tr>
+        <tr><td>Compilerwechsel, geflutet wie über einen Kanal (nur zum Vergleich)</td><td class="n">rund 170.000 <span class="m calc">berechnet</span></td></tr>
+      </table></div>
+      <p>Geflutet heißt: Jeder Repeater sendet jedes Datenpaket einmal weiter. Bei FUOTA flutet nichts. Update-Daten gehen nur an direkte Nachbarn oder auf einem festen Pfad.</p>
+      <h3>Animation</h3>
+      <p>Die Animation rechnet die Verteilung selbst, mit dem Ablauf von oben. Sie geht Hop für Hop und Seite für Seite vor.
+        Jede Seite kommt von dem Nachbarn, der sie am frühesten liefern kann.</p>
+      <p>Du wählst Update, Budget, den Anteil der Repeater mit FUOTA und den Seed. Der Seed ist der erste Knoten mit dem neuen
+        Release. Er ist per USB oder BLE installiert und gibt es weiter. Er sitzt in der Mitte oder am Rand. Spiele die
+        Verteilung ab oder geh sie Schritt für Schritt durch.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Distribution in Hamburg</h2>
+      <p>The basis is real neighbour data of repeaters within 50 km of city hall. The data is from 18 October 2026. That is
+        168 repeaters and 534 links with at least −7 dB SNR. Of the 168 repeaters, 152 are connected. Positions are rounded
+        to 0.5 km, without names.</p>
+      <h3>Transmissions per campaign</h3>
+      <p>Only nodes that supply neighbours have to send. That is at least about 22 of 152, the smallest connected set of
+        senders <span class="m calc">calculated</span>. The animation below uses 28, because every page comes from the
+        fastest neighbour there <span class="m calc">calculated</span>. From this follow the data packets for the whole
+        area:</p>
+      <div class="tscroll"><table>
+        <tr><th>Update</th><th>Data packets in the whole area</th></tr>
+        <tr><td>small release</td><td class="n">1,300 to 1,700 <span class="m calc">calculated</span></td></tr>
+        <tr><td>compiler change</td><td class="n">16,900 to 22,200 <span class="m calc">calculated</span></td></tr>
+        <tr><td>compiler change, flooded as through a channel (for comparison only)</td><td class="n">about 170,000 <span class="m calc">calculated</span></td></tr>
+      </table></div>
+      <p>Flooded means that every repeater re-sends every data packet once. With FUOTA nothing floods. Update data only goes to direct neighbours or along a fixed path.</p>
+      <h3>Animation</h3>
+      <p>The animation computes the spread itself, using the sequence from above. It works hop by hop and page by page.
+        Each page comes from the neighbour that can deliver it earliest.</p>
+      <p>You choose the update, the budget, the share of repeaters running FUOTA and the seed. The seed is the first node with
+        the new release. It is installed by USB or BLE and passes it on. It sits in the centre or at the edge. Play the
+        spread or step through it.</p>
+    </div>
+    <div class="sim">
+      <div class="canvas-box" id="mapBox" tabindex="0"><canvas id="map" aria-label="Karte der Verteilung / map of the spread"></canvas></div>
+      <div class="controls">
+        <div class="ctl"><label for="sz"><span lang="de">Update</span><span lang="en">Update</span></label>
+          <select id="sz">
+            <option value="10076" data-de="kleines Release, 10,1 KB" data-en="small release, 10.1 KB">kleines Release, 10,1 KB</option>
+            <option value="34179" data-de="mittleres Release, 34,2 KB" data-en="medium release, 34.2 KB">mittleres Release, 34,2 KB</option>
+            <option value="134894" data-de="Compilerwechsel, 135 KB" data-en="compiler change, 135 KB">Compilerwechsel, 135 KB</option>
+          </select></div>
+        <div class="ctl"><label for="bud">Budget</label>
+          <select id="bud"><option value="0.003" data-de="0,3 % (Standard)" data-en="0.3 % (default)" selected>0,3 % (Standard)</option><option value="0.005" data-de="0,5 %" data-en="0.5 %">0,5 %</option><option value="0.01">1 %</option><option value="0.02">2 %</option></select></div>
+        <div class="ctl"><label for="share"><span lang="de">Anteil Repeater mit FUOTA</span><span lang="en">share of repeaters running FUOTA</span></label>
+          <select id="share"><option value="1" selected>100 %</option><option value="0.75">75 %</option><option value="0.5">50 %</option><option value="0.25">25 %</option></select></div>
+        <div class="ctl"><label for="seed">Seed</label>
+          <select id="seed">
+            <option value="center" data-de="gut verbunden (Mitte)" data-en="well connected (centre)">gut verbunden (Mitte)</option>
+            <option value="edge" data-de="am Rand" data-en="at the edge">am Rand</option>
+          </select></div>
+        <div class="ctl"><label for="hspeed"><span lang="de">Tempo (ganzer Rollout)</span><span lang="en">speed (whole rollout)</span></label>
+          <select id="hspeed"><option value="180" data-de="langsam, 3 min" data-en="slow, 3 min">langsam, 3 min</option><option value="90" selected data-de="mittel, 90 s" data-en="medium, 90 s">mittel, 90 s</option><option value="30" data-de="schnell, 30 s" data-en="fast, 30 s">schnell, 30 s</option></select></div>
+        <div class="timebar"><button type="button" class="stepbtn" id="hprev"><span lang="de">◂ zurück</span><span lang="en">◂ back</span></button>
+          <button type="button" class="play" id="play"><span lang="de">Abspielen</span><span lang="en">Play</span></button>
+          <button type="button" class="stepbtn" id="hnext"><span lang="de">vor ▸</span><span lang="en">next ▸</span></button></div>
+        <div class="timebar">
+          <input type="range" id="t" min="0" max="1000" value="220" aria-label="Zeit"><output id="tout">0 h</output></div>
+        <dl class="readout" id="stats"></dl>
+        <div class="legend">
+          <span><i class="pk" style="background:var(--pk-offer)"></i><span lang="de">Angebot</span><span lang="en">offer</span></span>
+          <span><i class="pk" style="background:var(--pk-req)"></i><span lang="de">Anfrage</span><span lang="en">request</span></span>
+          <span><i class="pk" style="background:var(--pk-data)"></i><span lang="de">Daten</span><span lang="en">data</span></span>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--panel)"></i><span lang="de">wartet</span><span lang="en">waiting</span></span>
+          <span><i style="background:var(--accent-soft);border-color:var(--accent)"></i><span lang="de">holt (Ring = Seiten)</span><span lang="en">pulling (ring = pages)</span></span>
+          <span><i style="background:var(--accent);border-color:var(--accent)"></i><span lang="de">fertig</span><span lang="en">done</span></span>
+          <span><i style="background:transparent;border-style:dashed"></i><span lang="de">ohne FUOTA</span><span lang="en">no FUOTA</span></span>
+          <span><i style="background:transparent;border-color:var(--crit)"></i><span lang="de">nie erreicht</span><span lang="en">never reached</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="evlog" id="hlog"></div>
+    <div lang="de" class="callout warn">
+      <b>Was das Modell nicht kann</b>
+      <ul>
+        <li>Es rechnet keine Kollisionen ein, auch keine durch versteckte Knoten (die einander nicht hören).</li>
+        <li>Es rechnet keinen normalen Verkehr und keine Paketverluste ein.</li>
+        <li>Es nimmt einen Anbieter je Seite. Mehrere würden schneller liefern: im Testaufbau doppelt so schnell
+          <span class="m meas">gemessen</span>.</li>
+        <li>Ein Anbieter, der mehrere Nachbarn mit verschiedenem Stand versorgt, teilt sein Budget. Das rechnet das Modell
+          nicht ein.</li>
+        <li>Nachbardaten gibt es nur von Repeatern, deren Nachbarn jemand abgerufen hat.</li>
+        <li>Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags.</li>
+        <li>Mit 33 Seiten passt der Compilerwechsel nicht hinter das Image (66 Seiten, 31 frei). Ein Knoten wendet
+          ihn überlappend an, erst nach dem Fenster, in dem er weitergibt. Diese Wartezeit rechnet das Modell nicht ein.</li>
+        <li>Real dauert es eher länger: Kollisionen, Paketverluste und normaler Verkehr kommen dazu.</li>
+      </ul>
+    </div>
+    <div lang="en" class="callout warn">
+      <b>What the model cannot do</b>
+      <ul>
+        <li>It does not model collisions, also none from hidden nodes (that cannot hear each other).</li>
+        <li>It does not model normal traffic or packet loss.</li>
+        <li>It assumes one provider per page. Several would deliver faster: on the bench twice as fast
+          <span class="m meas">measured</span>.</li>
+        <li>A provider that serves several neighbours with different states shares its budget. The model does not account
+          for that.</li>
+        <li>Neighbour data exists only for repeaters whose neighbours somebody has fetched.</li>
+        <li>The patch sizes come from the stock FakeTec with <code>-Os</code> from the release tags.</li>
+        <li>At 33 pages the compiler change does not fit behind the 66-page image (31 free). A node applies it
+          overlapping, only after the window in which it passes it on. The model does not include that wait.</li>
+        <li>Real runs tend to take longer: collisions, packet loss and normal traffic add to it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="kosten">
+    <div lang="de" class="prose">
+      <h2>Warum Patches klein bleiben</h2>
+      <p>Das Ziel ist, dass alle dieselben signierten Images aus den Releases auf GitHub installieren. Dann erreicht ein Patch,
+        eine Kampagne jeden Repeater mit FUOTA. Ein Knoten mit selbst gebautem Image bekommt keinen Patch von seinen Nachbarn.
+        Signierte Releases gibt es noch nicht <span class="m open">offen</span>.</p>
+      <p>Einen Compilerwechsel wie von 1.17.1 nach 1.18.0 gibt es mit FUOTA nur mit Absicht. Die FUOTA-Builds frieren Compiler
+        und Bibliotheken ein.</p>
+
+      <h3>Eingefrorene Toolchain, reproduzierbarer Build</h3>
+      <p>Ein Patch bleibt nur klein, wenn beide Images dieselbe Toolchain nutzen. Die Toolchain sind Compiler und Bibliotheken.
+        Der Wechsel von GCC 7 auf GCC 14 machte aus 32,6 KB 219 KB <span class="m meas">gemessen</span>. Beide Patches
+        sind mit bsdiff und <code>-Ofast</code> gebaut.</p>
+      <p>Die Stock-Konfiguration von MeshCore erlaubt neuere Versionen:</p>
+      <ul>
+        <li>die Platform ohne Version</li>
+        <li>die Toolchain und 14 Bibliotheken mit <code>^</code></li>
+        <li>transitive Bibliotheken (die Bibliotheken der Bibliotheken) ohne Version</li>
+      </ul>
+      <p>Eine neue Bibliotheksversion ändert dort das Image, ohne dass sich der Quelltext ändert. Die FUOTA-Builds legen
+        darum alles exakt fest:</p>
+      <ul>
+        <li>Platform <code>nordicnrf52</code> 11.0.0</li>
+        <li>GCC 14.2.1 (<code>toolchain-gccarmnoneeabi</code> 1.140201.0)</li>
+        <li>Framework und Git-Bibliotheken per Commit</li>
+        <li>alle Bibliotheken, auch die transitiven, die ins Image gehen</li>
+      </ul>
+      <p>Zwei Builds desselben Commits wichen nur an einer Stelle ab. Das ist der Build-Stempel der Funkbibliothek
+        (<code>__DATE__</code>, <code>__TIME__</code>). Der Release-Build setzt <code>SOURCE_DATE_EPOCH</code> auf die
+        Commit-Zeit.</p>
+      <ul>
+        <li>Zwei Builds desselben Commits in verschiedenen Verzeichnissen sind byte-gleich <span class="m meas">gemessen</span>.</li>
+        <li>Ein Linux-Build ist nicht byte-gleich zu einem macOS-Build. Das Toolchain-Paket einer Version enthält für beide
+          Systeme dieselben 376 Objektdateien der C-Mathebibliothek. Im Archiv liegen sie in anderer Reihenfolge. Der Linker ordnet
+          die Funktionen entsprechend anders: gleicher Code, Patch zwischen beiden 8.259 B
+          <span class="m meas">gemessen</span>.</li>
+      </ul>
+      <p>Release-Images entstehen darum immer im selben Linux-Container:</p>
+      <ul>
+        <li>Basis-Image per Digest und auf <code>linux/arm64</code> festgelegt</li>
+        <li>PlatformIO 6.2.0 und seine Python-Pakete mit Version und Hash</li>
+        <li>dazu die festgelegten Versionen von oben</li>
+        <li>gebaut wird genau ein Commit</li>
+      </ul>
+      <p>Zwei Läufe und ein unabhängiger Linux-Build ohne dieses Container-Image ergaben alle Images byte-gleich
+        <span class="m meas">gemessen</span>. Der unabhängige Build nutzte Python-Pakete ohne Hashes und einen anderen Pfad.
+        Ob ein x86_64-Rechner dasselbe Image baut, ist nicht geprüft <span class="m open">offen</span>.</p>
+      <p>Patches entstehen immer gegen das archivierte Release-Image, das auf den Geräten läuft. Nie gegen einen Neubau.
+        Ein Patch für das falsche Image zerstört nichts. Der Knoten zieht nur, wenn der Quell-Hash im Angebot zu seinem
+        Image passt.</p>
+
+      <h3>Kleineres Image, kleinere Patches</h3>
+      <p>Der Adafruit-Core übersetzt nRF52-Firmware mit <code>-Ofast</code>, also auf Tempo. FUOTA-Builds übersetzen mit
+        <code>-Os</code>, also auf Größe, und ändern außerdem:</p>
+      <ul>
+        <li>USB: Die ungenutzten Klassen sind aus (Massenspeicher, HID, MIDI, Vendor, Video). Die serielle Schnittstelle
+          bleibt, das UF2-Laufwerk gehört dem Bootloader.</li>
+        <li>Sensoren: Es fehlen die Treiber für
+          <ul>
+            <li>den Laser-Abstandssensor VL53L0X</li>
+            <li>das Infrarot-Thermometer MLX90614</li>
+            <li>den alten Drucksensor BMP085</li>
+            <li>den Bodenfeuchtesensor RAK12035</li>
+          </ul></li>
+        <li>Funkbibliothek: Es fehlt die Tonausgabe.</li>
+        <li>Uhrenchip RX8130CE: Die Zeit wird ohne die Zeitzonen-Funktionen der C-Bibliothek gerechnet.</li>
+        <li>Einheits-Image (ein Image für alle Boards): kein Display-Treiber mehr, die Taste bleibt.</li>
+      </ul>
+      <p>So schrumpft das Image <span class="m meas">gemessen</span>:</p>
+      <div class="tscroll"><table>
+        <tr><th>Einheits-Image</th><th>Größe</th><th>Seiten</th><th>RAM</th></tr>
+        <tr><td>vorher</td><td class="n">375.040 B</td><td class="n">92</td><td class="n">37,5 KB</td></tr>
+        <tr><td>nach diesen Änderungen</td><td class="n">257.768 B</td><td class="n">63</td><td class="n">32,5 KB</td></tr>
+      </table></div>
+      <p>Heute kommen dazu:</p>
+      <ul>
+        <li>Code, der Lücken bei normalen Repeatern überbrückt (Flut-Angebote höchstens einmal am Tag, Daten per Pfad)</li>
+        <li>die Betreiber-Befehle über LoRa</li>
+        <li>das Release-Paket</li>
+        <li>die Härtung nach dem externen Review</li>
+        <li>der Schutz gegen wiederholte Fern-Befehle</li>
+        <li>signierte Angebote</li>
+      </ul>
+      <p>Die Testhilfe <code>fuota hang</code> ist nicht mehr dabei. Zusammen waren es am 20. Oktober 2026 270.080 B, 66 Seiten und 37.036 B RAM
+        <span class="m meas">gemessen</span>. Seitdem kamen 64 B für den Abbruch durch Stage-0 dazu.</p>
+      <p>Weil weniger eingebetteter Code mitwandert, sind die Patches 18 bis 39 % kleiner <span class="m meas">gemessen</span>.
+        Wir haben die Release-Tags am Stock-FakeTec gebaut, einmal mit <code>-Ofast</code>, einmal mit <code>-Os</code>.
+        Jeder Patch hat eine Rundreise bestanden: anwenden, dann das neue Image prüfen. Beide Werte
+        stehen in der <a href="#aufwand">Tabelle oben</a>.</p>
+      <p>Hinter ein Image mit 66 Seiten passen Patches bis 31 Seiten. Größere wendet der Knoten überlappend an.</p>
+      <p>Das kleinere Image kostet etwas Rechenzeit. Auf einem FakeTec <span class="m meas">gemessen</span>:</p>
+      <div class="tscroll"><table>
+        <tr><th>Vorgang</th><th>mit -Os</th><th>mit -Ofast</th></tr>
+        <tr><td>Signieren eines eigenen Adverts</td><td class="n">12,9 ms</td><td class="n">11,7 ms</td></tr>
+        <tr><td>Schlüsseltausch bei einer Anmeldung</td><td class="n">30,6 ms</td><td class="n">30,3 ms</td></tr>
+      </table></div>
+      <p>Prüfen, AES und SHA-256 laufen in der CryptoCell (Prüfen 17,8 ms). Sie hängen nicht am Compiler
+        <span class="m meas">gemessen</span>.</p>
+
+      <h3>Ein Image für alle Boards</h3>
+      <p>Ein Image für alle unterstützten Boards heißt eine Kampagne für das ganze Gebiet. Bei einem Image je Modell:</p>
+      <ul>
+        <li>Jedes Modell bräuchte eine eigene Kampagne mit eigenem Patch.</li>
+        <li>Ein Knoten könnte nur von Knoten desselben Modells holen.</li>
+        <li>Die Datenpakete vervielfachten sich mit der Zahl der Modelle.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Why patches stay small</h2>
+      <p>The goal is that everyone installs the same signed images from the releases on GitHub. Then one patch, one campaign
+        reaches every repeater with FUOTA. A node with a self-built image gets no patch from its neighbours. There are no signed
+        releases yet <span class="m open">open</span>.</p>
+      <p>A compiler change like 1.17.1 to 1.18.0 happens with FUOTA only on purpose. The FUOTA builds freeze compiler and
+        libraries.</p>
+
+      <h3>Frozen toolchain, reproducible build</h3>
+      <p>A patch stays small only when both images use the same toolchain. A toolchain is the compiler plus the libraries. The
+        change from GCC 7 to GCC 14 turned 32.6 KB into 219 KB <span class="m meas">measured</span>. Both patches use bsdiff
+        and <code>-Ofast</code>.</p>
+      <p>The stock configuration of MeshCore allows newer versions:</p>
+      <ul>
+        <li>the platform without a version</li>
+        <li>the toolchain and 14 libraries with <code>^</code></li>
+        <li>transitive libraries (the libraries of the libraries) without a version</li>
+      </ul>
+      <p>A new library release changes the image there without any change in the source. The FUOTA builds therefore pin
+        everything exactly:</p>
+      <ul>
+        <li>platform <code>nordicnrf52</code> 11.0.0</li>
+        <li>GCC 14.2.1 (<code>toolchain-gccarmnoneeabi</code> 1.140201.0)</li>
+        <li>framework and git libraries by commit</li>
+        <li>all libraries, including the transitive ones that end up in the image</li>
+      </ul>
+      <p>Two builds of one commit differed only in one place. That is the build stamp of the radio library
+        (<code>__DATE__</code>, <code>__TIME__</code>). The release build sets <code>SOURCE_DATE_EPOCH</code> to the commit
+        time.</p>
+      <ul>
+        <li>Two builds of the same commit in different directories are byte-identical <span class="m meas">measured</span>.</li>
+        <li>A Linux build is not byte-identical to a macOS build. The toolchain package of one version holds the same 376 object files
+          for both systems. They belong to the C math library and sit in another order in the archive. The linker orders the
+          functions accordingly: same code, patch between the two 8,259 B <span class="m meas">measured</span>.</li>
+      </ul>
+      <p>Release images therefore always come from the same Linux container:</p>
+      <ul>
+        <li>base image pinned by digest and to <code>linux/arm64</code></li>
+        <li>PlatformIO 6.2.0 and its Python packages pinned by version and hash</li>
+        <li>plus the pinned versions above</li>
+        <li>exactly one commit is built</li>
+      </ul>
+      <p>Two runs and an independent Linux build without this container image gave byte-identical images
+        <span class="m meas">measured</span>. The independent build used Python packages without hashes and another path.
+        Whether an x86_64 machine builds the same image is not checked <span class="m open">open</span>.</p>
+      <p>Patches are always built against the archived release image on the devices. Never against a rebuild. A patch for the
+        wrong image breaks nothing. The node only pulls when the source hash in the offer matches its image.</p>
+
+      <h3>Smaller image, smaller patches</h3>
+      <p>The Adafruit core compiles nRF52 firmware with <code>-Ofast</code>, that is for speed. FUOTA builds compile with
+        <code>-Os</code>, that is for size, and also change:</p>
+      <ul>
+        <li>USB: the unused classes are off (mass storage, HID, MIDI, vendor, video). The serial port stays, the UF2 drive
+          belongs to the bootloader.</li>
+        <li>Sensors: the drivers are missing for
+          <ul>
+            <li>the VL53L0X laser distance sensor</li>
+            <li>the MLX90614 infrared thermometer</li>
+            <li>the old BMP085 pressure sensor</li>
+            <li>the RAK12035 soil moisture sensor</li>
+          </ul></li>
+        <li>Radio library: the tone output is missing.</li>
+        <li>RX8130CE clock chip: times are converted without the time zone functions of the C library.</li>
+        <li>Unified image (one image for all boards): no display driver any more, the button stays.</li>
+      </ul>
+      <p>The image shrinks like this <span class="m meas">measured</span>:</p>
+      <div class="tscroll"><table>
+        <tr><th>Unified image</th><th>Size</th><th>Pages</th><th>RAM</th></tr>
+        <tr><td>before</td><td class="n">375,040 B</td><td class="n">92</td><td class="n">37.5 KB</td></tr>
+        <tr><td>after these changes</td><td class="n">257,768 B</td><td class="n">63</td><td class="n">32.5 KB</td></tr>
+      </table></div>
+      <p>Today it also carries:</p>
+      <ul>
+        <li>code that bridges gaps of normal repeaters (flooded offers at most once a day, data along paths)</li>
+        <li>the operator commands over LoRa</li>
+        <li>the release package</li>
+        <li>the hardening after the external review</li>
+        <li>the protection against replayed remote commands</li>
+        <li>signed offers</li>
+      </ul>
+      <p>The test helper <code>fuota hang</code> is no longer in it. On 20 October 2026 that was 270,080 B, 66 pages and 37,036 B RAM
+        <span class="m meas">measured</span>. Since then 64 B came in for the Stage-0 abort.</p>
+      <p>Because less inlined code moves along, patches are 18 to 39 % smaller <span class="m meas">measured</span>. We built
+        the release tags on the stock FakeTec, once with <code>-Ofast</code>, once with <code>-Os</code>. Every patch passed a
+        round trip: apply it, then check the new image. Both values are in the
+        <a href="#aufwand">table above</a>.</p>
+      <p>Patches of up to 31 pages fit behind an image of 66 pages. A node applies larger ones overlapping.</p>
+      <p>The smaller image costs some compute time. On a FakeTec <span class="m meas">measured</span>:</p>
+      <div class="tscroll"><table>
+        <tr><th>Step</th><th>with -Os</th><th>with -Ofast</th></tr>
+        <tr><td>signing the node's own advert</td><td class="n">12.9 ms</td><td class="n">11.7 ms</td></tr>
+        <tr><td>key exchange of a login</td><td class="n">30.6 ms</td><td class="n">30.3 ms</td></tr>
+      </table></div>
+      <p>Verification, AES and SHA-256 run in the CryptoCell (verification 17.8 ms). They do not depend on the compiler
+        <span class="m meas">measured</span>.</p>
+
+      <h3>One image for all boards</h3>
+      <p>One image for all supported boards means one campaign for the whole area. With one image per model:</p>
+      <ul>
+        <li>Every model would need its own campaign with its own patch.</li>
+        <li>A node could only pull from nodes of the same model.</li>
+        <li>The data packets would multiply with the number of models.</li>
+      </ul>
+    </div>
+
+    <div lang="de" class="prose">
+      <h2>Ausfall und Wartezeit</h2>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Downtime and waiting</h2>
+    </div>
+    <div class="grid2" lang="de">
+      <div class="kv"><h3>Ausfallzeit beim Anwenden</h3><p>Das Anwenden dauert rund 1 min. Es sind 12 s bauen, 30 bis 39 s tauschen, dazu der Start. Bei
+        sofortigem Anwenden fehlt der Knoten so lange als Anbieter. Im Testaufbau kostete das den nächsten Hop 56 s
+        <span class="m meas">gemessen</span>.</p></div>
+      <div class="kv"><h3>Wartezeit auf ein Angebot</h3><p>Das Angebots-Intervall springt auf 10 s zurück <span class="m code">im Code geprüft</span>. Das passiert, wenn das Manifest geprüft
+        oder der Patch vollständig ist. Ebenso, wenn ein Pull weitergeht oder das Anbieten startet, etwa nach einem
+        Neustart. Danach verdoppelt es sich bis auf 2 Tage <span class="m code">im Code geprüft</span>. Diesen Zeitgeber nennt man Trickle (mehr dazu auf der Seite <a href="funk.html#zeiten">Funk</a>). Das Angebot liegt in der zweiten Hälfte des Intervalls. Wer später dazukommt,
+        hört darum spätestens nach rund 3 Tagen ein Angebot <span class="m code">im Code geprüft</span>. Im Leerlauf lagen im Testaufbau 877 s zwischen zwei Angeboten
+        <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p></div>
+    </div>
+    <div class="grid2" lang="en">
+      <div class="kv"><h3>Downtime while applying</h3><p>Applying takes about 1 min. That is 12 s build, 30 to 39 s swap, plus the start. With immediate
+        apply the node is missing as a provider for that long. On the bench this cost the next hop 56 s
+        <span class="m meas">measured</span>.</p></div>
+      <div class="kv"><h3>Waiting for an offer</h3><p>The offer interval jumps back to 10 s <span class="m code">checked in the code</span>. This happens when the manifest is checked or the
+        patch is complete. It also happens when a pull resumes or offering starts, for instance after a reboot. It then
+        doubles up to 2 days <span class="m code">checked in the code</span>. This timer is called Trickle (more on the <a href="funk.html#zeiten">On air</a> page). The offer falls in the second half of the interval. A node that joins later
+        therefore hears an offer within about 3 days <span class="m code">checked in the code</span>. On
+        the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. This is intended: updates
+        may take days. When idle, a node offers only once per interval.</p></div>
+    </div>
+  </section>
+  </main>
+  <p class="next"><a href="sicherheit.html"><span lang="de">Weiter: Sicherheit</span><span lang="en">Next: Safety</span> →</a></p>
+  <footer>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Wir signieren nur mit dem Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. We sign only with the test key, no release key exists yet. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
+    <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
+    <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
+    <span lang="en">Text and figures on this page: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded: it is not licensed under CC BY 4.0.</span>
+  </footer>
+</div>
+<div class="react" hidden role="toolbar"><button type="button" data-a="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg><span></span></button><button type="button" data-a="issue"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H7l-3 2.5V11h-.5a1 1 0 0 1-1-1z"/></svg><span></span></button></div>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="assets/site.js"></script>
+<script src="assets/react.js"></script>
+<script src="assets/hh.js"></script>
+</body>
+</html>

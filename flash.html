@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Flash · MeshCore FUOTA</title>
+<meta name="description" content="MeshCore FUOTA: firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:title" content="Flash · MeshCore FUOTA">
+<meta property="og:description" content="Firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:image" content="https://marcelverdult.github.io/meshcore_fuota/logo/logo-dark.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="logo/favicon-48.png">
+<link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+(function () {
+  // before the first paint: forward old section links of the single page, then pick the language
+  // (#de / #en, saved choice, else the browser language) so the other language never flashes
+  var moved = window.fuotaMoved = {}, h = location.hash.slice(1);
+  if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
+  var l = (h === "de" || h === "en") ? h : null;
+  if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
+  if (l !== "de" && l !== "en") l = (navigator.language || "de").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+  document.documentElement.setAttribute("data-lang", l);
+  document.documentElement.setAttribute("lang", l);
+})();
+</script>
+</head>
+<body data-title-de="Flash · MeshCore FUOTA" data-title-en="Flash · MeshCore FUOTA">
+<div class="bar"><div class="bar-in">
+  <a class="mark" href="index.html" aria-label="MeshCore FUOTA"><img src="logo/icon.png" alt="" width="28" height="28"><span>MeshCore <b>FUOTA</b></span></a>
+  <span class="chip-draft"><span lang="de">Entwurf zur Prüfung</span><span lang="en">Draft for review</span></span>
+  <span class="here" aria-hidden="true"></span>
+  <div class="langs" role="group" aria-label="Sprache / language">
+    <button type="button" id="btn-de" data-l="de" aria-pressed="true">DE</button>
+    <button type="button" id="btn-en" data-l="en" aria-pressed="false">EN</button>
+  </div>
+</div><div class="progress"></div></div>
+<nav class="rail" aria-hidden="true"></nav>
+<div class="wrap">
+  <nav class="pages" aria-label="Seiten / pages">
+    <ul>
+      <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
+      <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
+      <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
+      <li><a href="sicherheit.html"><span lang="de">Sicherheit</span><span lang="en">Safety</span></a></li>
+      <li><a href="funk.html"><span lang="de">Funk</span><span lang="en">On air</span></a></li>
+      <li><a href="flash.html" aria-current="page"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
+      <li><a href="tests.html"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
+      <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
+    </ul>
+  </nav>
+  <main>
+<header class="hero">
+    <div lang="de">
+      <h1>Wo was im Flash liegt</h1>
+      <p class="lede">FakeTec und SenseCAP P1 nutzen ein Flash-Layout. Stage-0 liegt direkt hinter dem SoftDevice, danach folgen Status-Seite, Slot A und Slot B. Das Release-Image mit FUOTA belegte am 20. Oktober 2026 270.080 B, also 66 Seiten <span class="m meas">gemessen</span>.</p>
+    </div>
+    <div lang="en">
+      <h1>What lives where in flash</h1>
+      <p class="lede">FakeTec and SenseCAP P1 share one flash layout. Stage-0 sits behind the SoftDevice, then come the status page, slot A and slot B. On 20 October 2026 the release image with FUOTA took 270,080 B, which is 66 pages <span class="m meas">measured</span>.</p>
+    </div>
+  </header>
+
+  <section id="speicher">
+    <div lang="de" class="prose">
+      <h2>Aufteilung</h2>
+      <p>Die Boards sind nRF52840 mit Adafruit-Bootloader. Der Bootloader springt ans Ende des SoftDevice, des Bluetooth-Stacks von Nordic. Dort sitzt Stage-0, der Lader, der beim Start die Images tauscht.</p>
+      <ul>
+        <li><b>S140 6.1.1</b> (FakeTec, RAK4631): Sprungziel 0x26000.</li>
+        <li><b>S140 7.3.0</b> (SenseCAP P1, T1000-E): Sprungziel 0x27000.</li>
+      </ul>
+      <p>Ab 0x28000 ist alles für beide gleich. Dort folgen die Status-Seite und zwei Slots mit je 98 Seiten. Eine Seite im Flash sind 4 KB.</p>
+      <ul>
+        <li><b>Slot A</b> enthält die App, das laufende Repeater-Image.</li>
+        <li><b>Slot B</b> ist das Zwischenlager für den Patch, das Manifest und das neue Image.</li>
+        <li>Der <b>Patch</b> (Delta-Patch) enthält nur den Unterschied zwischen zwei Images.</li>
+        <li>Das <b>Manifest</b> ist die signierte Liste dessen, was zu einem Update gehört.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Layout</h2>
+      <p>The boards are nRF52840 with the Adafruit bootloader. The bootloader jumps to the end of the SoftDevice, Nordic's Bluetooth stack. Stage-0 sits there: the loader that swaps the images at boot.</p>
+      <ul>
+        <li><b>S140 6.1.1</b> (FakeTec, RAK4631): jump target 0x26000.</li>
+        <li><b>S140 7.3.0</b> (SenseCAP P1, T1000-E): jump target 0x27000.</li>
+      </ul>
+      <p>From 0x28000 on, everything is the same for both. The status page follows, then two slots of 98 pages each. A flash page is 4 KB.</p>
+      <ul>
+        <li><b>Slot A</b> contains the app, the running repeater image.</li>
+        <li><b>Slot B</b> is the staging area for the patch, the manifest and the new image.</li>
+        <li>The <b>patch</b> (delta patch) holds only the difference between two images.</li>
+        <li>The <b>manifest</b> is the signed list of what belongs to an update.</li>
+      </ul>
+    </div>
+    <div class="panel scroll" lang="de">
+      <figure>
+        <svg viewBox="0 0 760 250" role="img" style="min-width:620px" aria-label="Flash-Aufteilung und Belegung von Slot B">
+          <g font-family="IBM Plex Mono, monospace" font-size="12">
+            <rect x="10" y="20" width="60" height="44" rx="5" fill="var(--sys)" opacity=".25" stroke="var(--sys)"/>
+            <text x="40" y="46" text-anchor="middle" fill="var(--fg)">SD</text>
+            <rect x="74" y="20" width="34" height="44" rx="5" fill="var(--accent)" opacity=".25" stroke="var(--accent)"/>
+            <text x="91" y="46" text-anchor="middle" fill="var(--fg)">S0</text>
+            <rect x="112" y="20" width="14" height="44" rx="3" fill="var(--warn)"/>
+            <rect x="130" y="20" width="270" height="44" rx="5" fill="var(--slota)" opacity=".2" stroke="var(--slota)"/>
+            <text x="140" y="40" fill="var(--fg)" font-weight="600">Slot A: läuft</text>
+            <text x="140" y="56" fill="var(--muted)">98 Seiten à 4 KB, ab 0x29000</text>
+            <rect x="404" y="20" width="270" height="44" rx="5" fill="var(--slotb)" opacity=".2" stroke="var(--slotb)"/>
+            <text x="414" y="40" fill="var(--fg)" font-weight="600">Slot B: Zwischenlager</text>
+            <text x="414" y="56" fill="var(--muted)">98 Seiten, ab 0x8B000</text>
+            <rect x="678" y="20" width="34" height="44" rx="5" fill="var(--panel)" stroke="var(--line)"/>
+            <text x="695" y="46" text-anchor="middle" fill="var(--fg)">FS</text>
+            <rect x="716" y="20" width="36" height="44" rx="5" fill="var(--sys)" opacity=".25" stroke="var(--sys)"/>
+            <text x="734" y="46" text-anchor="middle" fill="var(--fg)">BL</text>
+            <text x="10" y="86" fill="var(--muted)">SD SoftDevice · S0 Stage-0 (2,7 von 4 KB) · orange Status-Seite · FS InternalFS · BL Bootloader</text>
+            <path d="M404 98 L404 118 M674 98 L674 118" stroke="var(--line)"/>
+            <path d="M404 108 L130 150 M674 108 L752 150" stroke="var(--line)" fill="none"/>
+            <rect x="130" y="150" width="560" height="40" rx="4" fill="var(--slotb)" opacity=".14" stroke="var(--slotb)"/>
+            <rect x="690" y="150" width="62" height="40" rx="4" fill="none" stroke="var(--slotb)"/>
+            <text x="140" y="175" fill="var(--fg)">neues Image, beim Anwenden hier gebaut (bis 96 Seiten)</text>
+            <rect x="606" y="150" width="52" height="40" fill="var(--slotb)" opacity=".45"/>
+            <text x="632" y="175" text-anchor="middle" fill="var(--fg)">Patch</text>
+            <rect x="660" y="150" width="30" height="40" fill="var(--accent)" opacity=".5"/>
+            <text x="675" y="175" text-anchor="middle" fill="var(--fg)">M</text>
+            <text x="130" y="212" fill="var(--muted)">Patch seitenbündig vor der letzten Seite, Manifest (M) in der letzten Seite von Slot B.</text>
+            <text x="130" y="230" fill="var(--muted)">Passt max(alt, neu) + Patch + 1 ≤ 98: dahinter. Sonst überlappend: neu + 1 + 1 ≤ 98.</text>
+          </g>
+        </svg>
+        <figcaption>Die Status-Seite enthält den Tausch-Auftrag mit den Größen und SHA-256 beider Images. Dazu kommt ein Journal: Stage-0 schreibt jeden Schritt hinein. InternalFS ist das Dateisystem im Flash. Es enthält Identität, Einstellungen und die Datei <code>/fuota.dat</code> mit gesperrten Kampagnen und Retracts (signierten Rückrufen).</figcaption>
+      </figure>
+    </div>
+    <div class="panel scroll" lang="en">
+      <figure>
+        <svg viewBox="0 0 760 250" role="img" style="min-width:620px" aria-label="Flash layout and use of slot B">
+          <g font-family="IBM Plex Mono, monospace" font-size="12">
+            <rect x="10" y="20" width="60" height="44" rx="5" fill="var(--sys)" opacity=".25" stroke="var(--sys)"/>
+            <text x="40" y="46" text-anchor="middle" fill="var(--fg)">SD</text>
+            <rect x="74" y="20" width="34" height="44" rx="5" fill="var(--accent)" opacity=".25" stroke="var(--accent)"/>
+            <text x="91" y="46" text-anchor="middle" fill="var(--fg)">S0</text>
+            <rect x="112" y="20" width="14" height="44" rx="3" fill="var(--warn)"/>
+            <rect x="130" y="20" width="270" height="44" rx="5" fill="var(--slota)" opacity=".2" stroke="var(--slota)"/>
+            <text x="140" y="40" fill="var(--fg)" font-weight="600">Slot A: running</text>
+            <text x="140" y="56" fill="var(--muted)">98 pages of 4 KB, from 0x29000</text>
+            <rect x="404" y="20" width="270" height="44" rx="5" fill="var(--slotb)" opacity=".2" stroke="var(--slotb)"/>
+            <text x="414" y="40" fill="var(--fg)" font-weight="600">Slot B: staging area</text>
+            <text x="414" y="56" fill="var(--muted)">98 pages, from 0x8B000</text>
+            <rect x="678" y="20" width="34" height="44" rx="5" fill="var(--panel)" stroke="var(--line)"/>
+            <text x="695" y="46" text-anchor="middle" fill="var(--fg)">FS</text>
+            <rect x="716" y="20" width="36" height="44" rx="5" fill="var(--sys)" opacity=".25" stroke="var(--sys)"/>
+            <text x="734" y="46" text-anchor="middle" fill="var(--fg)">BL</text>
+            <text x="10" y="86" fill="var(--muted)">SD SoftDevice · S0 Stage-0 (2.7/4 KB used) · orange 4 KB status page · FS InternalFS · BL bootloader</text>
+            <path d="M404 98 L404 118 M674 98 L674 118" stroke="var(--line)"/>
+            <path d="M404 108 L130 150 M674 108 L752 150" stroke="var(--line)" fill="none"/>
+            <rect x="130" y="150" width="560" height="40" rx="4" fill="var(--slotb)" opacity=".14" stroke="var(--slotb)"/>
+            <rect x="690" y="150" width="62" height="40" rx="4" fill="none" stroke="var(--slotb)"/>
+            <text x="140" y="175" fill="var(--fg)">new image, built here on apply (up to 96 pages)</text>
+            <rect x="606" y="150" width="52" height="40" fill="var(--slotb)" opacity=".45"/>
+            <text x="632" y="175" text-anchor="middle" fill="var(--fg)">Patch</text>
+            <rect x="660" y="150" width="30" height="40" fill="var(--accent)" opacity=".5"/>
+            <text x="675" y="175" text-anchor="middle" fill="var(--fg)">M</text>
+            <text x="130" y="212" fill="var(--muted)">Patch page-aligned before the last page, manifest (M) in the last page of slot B.</text>
+            <text x="130" y="230" fill="var(--muted)">Fits max(old, new) + patch + 1 ≤ 98: behind. Else overlapping: new + 1 + 1 ≤ 98.</text>
+          </g>
+        </svg>
+        <figcaption>The status page contains the swap job with the sizes and SHA-256 of both images. It also contains a journal: Stage-0 writes every step into it. InternalFS is the file system in flash. It contains identity, settings and the file <code>/fuota.dat</code> with banned campaigns and retracts (signed recalls).</figcaption>
+      </figure>
+    </div>
+    <div lang="de" class="prose">
+      <h3>Wer in welchen Bereich schreibt</h3>
+      <p>Adressen und Seitenzahlen der Tabelle sind Konstanten der Firmware <span class="m code">im Code geprüft</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Who writes to which area</h3>
+      <p>Addresses and page counts of the table are firmware constants <span class="m code">checked in the code</span>.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Bereich</th><th>Adresse bei S140 6.1.1</th><th>Adresse bei S140 7.3.0</th><th>Größe</th><th>Wer schreibt</th></tr>
+        <tr><td>SoftDevice</td><td class="n">0x00000 bis 0x26000</td><td class="n">0x00000 bis 0x27000</td><td>bis zum Sprungziel des Bootloaders</td><td>FUOTA nie</td></tr>
+        <tr><td>Stage-0</td><td class="n">0x26000 bis 0x27000</td><td class="n">0x27000 bis 0x28000</td><td>1 Seite, belegt 2.748 B <span class="m meas">gemessen</span></td><td>per USB (UF2 oder serielles DFU) oder BLE-DFU, einmal je Board. FUOTA nie</td></tr>
+        <tr><td>frei, bleibt gelöscht</td><td class="n">0x27000 bis 0x28000</td><td>entfällt</td><td>1 Seite</td><td>niemand</td></tr>
+        <tr><td>Status-Seite</td><td class="n">0x28000 bis 0x29000</td><td class="n">0x28000 bis 0x29000</td><td>1 Seite</td><td>App: Tausch-Auftrag. Stage-0: Journal</td></tr>
+        <tr><td>Slot A</td><td class="n">0x29000 bis 0x8B000</td><td class="n">0x29000 bis 0x8B000</td><td>98 Seiten</td><td>per USB oder BLE-DFU bei der ersten Installation, danach Stage-0 beim Tausch</td></tr>
+        <tr><td>Slot B</td><td class="n">0x8B000 bis 0xED000</td><td class="n">0x8B000 bis 0xED000</td><td>98 Seiten</td><td>App: Patch, Manifest, neues Image. Stage-0 beim Tausch</td></tr>
+        <tr><td>InternalFS und Bootloader</td><td class="n">ab 0xED000</td><td class="n">ab 0xED000</td><td>InternalFS bis 0xF4000, dahinter der Bootloader</td><td>App: Dateien in InternalFS. Bootloader: FUOTA nie</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Area</th><th>Address with S140 6.1.1</th><th>Address with S140 7.3.0</th><th>Size</th><th>Who writes</th></tr>
+        <tr><td>SoftDevice</td><td class="n">0x00000 to 0x26000</td><td class="n">0x00000 to 0x27000</td><td>up to the jump target of the bootloader</td><td>FUOTA never</td></tr>
+        <tr><td>Stage-0</td><td class="n">0x26000 to 0x27000</td><td class="n">0x27000 to 0x28000</td><td>1 page, 2,748 B used <span class="m meas">measured</span></td><td>by USB (UF2 or serial DFU) or BLE DFU, once per board. FUOTA never</td></tr>
+        <tr><td>free, stays erased</td><td class="n">0x27000 to 0x28000</td><td>not present</td><td>1 page</td><td>nobody</td></tr>
+        <tr><td>Status page</td><td class="n">0x28000 to 0x29000</td><td class="n">0x28000 to 0x29000</td><td>1 page</td><td>App: swap job. Stage-0: journal</td></tr>
+        <tr><td>Slot A</td><td class="n">0x29000 to 0x8B000</td><td class="n">0x29000 to 0x8B000</td><td>98 pages</td><td>by USB or BLE DFU at the first install, then Stage-0 during the swap</td></tr>
+        <tr><td>Slot B</td><td class="n">0x8B000 to 0xED000</td><td class="n">0x8B000 to 0xED000</td><td>98 pages</td><td>App: patch, manifest, new image. Stage-0 during the swap</td></tr>
+        <tr><td>InternalFS and bootloader</td><td class="n">from 0xED000</td><td class="n">from 0xED000</td><td>InternalFS up to 0xF4000, the bootloader behind it</td><td>App: files in InternalFS. Bootloader: FUOTA never</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <ul>
+        <li>Der Flash-Code von FUOTA schreibt nur in die Status-Seite und in Slot B. Er schreibt nie ins SoftDevice oder in den Bootloader <span class="m code">im Code geprüft</span>.</li>
+        <li>Stage-0 schreibt nur in die Status-Seite und in beide Slots <span class="m code">im Code geprüft</span>.</li>
+        <li>Der Build bricht ab, wenn Stage-0 in die Status-Seite ragt. Er bricht auch ab, wenn die Slots nicht bei 0xED000 enden <span class="m code">im Code geprüft</span>.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <ul>
+        <li>The flash code of FUOTA writes only to the status page and slot B. It never writes to the SoftDevice or the bootloader <span class="m code">checked in the code</span>.</li>
+        <li>Stage-0 writes only to the status page and to both slots <span class="m code">checked in the code</span>.</li>
+        <li>The build stops if Stage-0 reaches into the status page. It also stops if the slots do not end at 0xED000 <span class="m code">checked in the code</span>.</li>
+      </ul>
+    </div>
+    <div lang="de" class="prose">
+      <h2>Ein Layout für beide SoftDevice-Versionen</h2>
+      <ul>
+        <li>Die App ist für 0x29000 gelinkt und nutzt das SoftDevice nicht.</li>
+        <li>Für ein Update per Telefon startet sie neu in den BLE-DFU des Bootloaders.</li>
+        <li>Dasselbe Image läuft darum mit beiden SoftDevice-Versionen.</li>
+        <li>Wir haben ein P1-Image nur mit den Headern von S140 6.1.1 gebaut. Es ist byte-gleich zu dem Image, das auf dem P1 mit S140 7.3.0 läuft <span class="m meas">gemessen</span>.</li>
+        <li>Ein Repeater-Image läuft nur an der Adresse, für die es gelinkt ist. Darum ist Slot B ein Zwischenlager und kein zweites Startziel.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <h2>One layout for both SoftDevice versions</h2>
+      <ul>
+        <li>The app is linked for 0x29000 and does not use the SoftDevice.</li>
+        <li>For an update by phone it reboots into the BLE DFU of the bootloader.</li>
+        <li>The same image therefore runs with both SoftDevice versions.</li>
+        <li>We built a P1 image with only the S140 6.1.1 headers. It is byte-identical to the image running on the P1 with S140 7.3.0 <span class="m meas">measured</span>.</li>
+        <li>A repeater image runs only at the address it is linked for. So slot B is a staging area, not a second boot target.</li>
+      </ul>
+    </div>
+    <div lang="de" class="prose">
+      <h2>Flash und RAM</h2>
+      <ul>
+        <li><b>Release-Image mit FUOTA</b> für alle Boards: 270.080 B Flash, gemessen am 20. Oktober 2026 <span class="m meas">gemessen</span>. Das sind 66 von höchstens 96 Seiten. Seitdem kamen 64 B für den Abbruch durch Stage-0 dazu, neu gemessen ist das nicht <span class="m open">offen</span>: Der Release-Build braucht den Release-Schlüssel.</li>
+        <li><b>RAM</b>: 37.036 B belegt <span class="m meas">gemessen</span>.</li>
+        <li><b>Stock-P1</b> (MeshCore unverändert) mit BLE-OTA zum Vergleich: 365.292 B <span class="m meas">gemessen</span>.</li>
+        <li><b>FUOTA selbst</b>: 31.584 B Code und Daten im Release-Image (Linker-Map), Stand vor dem Abbruch durch Stage-0 <span class="m meas">gemessen</span>.</li>
+        <li><b>Stage-0</b> belegt 2.748 B in einer Seite <span class="m meas">gemessen</span>.</li>
+      </ul>
+      <p>Jeder Schalter für sich, auf den Stock-P1 angewendet:</p>
+      <ul>
+        <li>Ohne BLE in der App ist das Image 34,4 KB kleiner <span class="m meas">gemessen</span>.</li>
+        <li>Mit <code>-Os</code> (Größe) statt <code>-Ofast</code> (Tempo) ist es 69,7 KB kleiner <span class="m meas">gemessen</span>.</li>
+      </ul>
+      <p>Ein Image darf höchstens 96 Seiten haben. Der Build bricht sonst ab <span class="m meas">gemessen</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Flash and RAM</h2>
+      <ul>
+        <li><b>Release image with FUOTA</b> for all boards: 270,080 B of flash, measured on 20 October 2026 <span class="m meas">measured</span>. That is 66 of at most 96 pages. Since then 64 B came in for the Stage-0 abort; this is not remeasured <span class="m open">open</span>, because the release build needs the release key.</li>
+        <li><b>RAM</b>: 37,036 B used <span class="m meas">measured</span>.</li>
+        <li><b>Stock P1</b> (MeshCore as published, unchanged) with BLE OTA for comparison: 365,292 B <span class="m meas">measured</span>.</li>
+        <li><b>FUOTA itself</b>: 31,584 B of code and data in the release image (linker map), before the Stage-0 abort <span class="m meas">measured</span>.</li>
+        <li><b>Stage-0</b> takes 2,748 B in one page <span class="m meas">measured</span>.</li>
+      </ul>
+      <p>Each switch on its own, applied to the stock P1:</p>
+      <ul>
+        <li>Without BLE in the app the image is 34.4 KB smaller <span class="m meas">measured</span>.</li>
+        <li>With <code>-Os</code> (size) instead of <code>-Ofast</code> (speed) it is 69.7 KB smaller <span class="m meas">measured</span>.</li>
+      </ul>
+      <p>An image may have at most 96 pages. The build stops otherwise <span class="m meas">measured</span>.</p>
+    </div>
+    <div lang="de" class="prose">
+      <h2>Patch in Slot B</h2>
+      <p>Der Patch liegt seitenbündig am Ende von Slot B. Das neue Image schreibt der Knoten ab dem Anfang von Slot B. Dabei liest er den Patch noch.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Patch in slot B</h2>
+      <p>The patch sits page-aligned at the end of slot B. The node writes the new image from the start of slot B. It is still reading the patch at that moment.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Fall</th><th>Was der Knoten tut</th></tr>
+        <tr><td>Der Patch passt hinter das größere der beiden Images.</td><td>Er übersteht den eigenen Tausch, der nur so viele Seiten bewegt wie das größere Image. Der Knoten wendet sofort an und bietet danach weiter an <span class="m meas">gemessen</span>.</td></tr>
+        <tr><td>Der Patch passt nicht dahinter.</td><td>Der Knoten wendet überlappend an. Er kopiert den Patch in Stücken zu 512 Byte ins RAM <span class="m code">im Code geprüft</span>. Das neue Image überschreibt nur Patch-Seiten, die er schon ganz gelesen hat.</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Case</th><th>What the node does</th></tr>
+        <tr><td>The patch fits behind the larger of the two images.</td><td>It survives its own swap. The swap moves only as many pages as the larger image has. The node applies at once and keeps offering afterwards <span class="m meas">measured</span>.</td></tr>
+        <tr><td>The patch does not fit behind.</td><td>The node applies overlapping. It copies the patch to RAM in chunks of 512 bytes <span class="m code">checked in the code</span>. The new image overwrites only patch pages it has read completely.</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <ul>
+        <li>Das Release-Werkzeug spielt genau diesen Code vorher auf dem Rechner durch.</li>
+        <li>Es setzt im signierten Manifest ein Flag, nur wenn das Überlappen sicher ist.</li>
+        <li>Der Knoten hält die Regel beim Anwenden trotzdem selbst ein und bricht sonst ab.</li>
+        <li>Nach dem überlappenden Anwenden ist der Patch weg. Darum gibt der Knoten ihn vorher ein Fenster lang weiter <span class="m meas">gemessen</span>. Mehr dazu steht unter <a href="ablauf.html#ablauf">Ablauf</a>.</li>
+        <li>Ein Patch darf bis zu 64 Seiten groß sein <span class="m code">im Code geprüft</span>.</li>
+        <li>Hinter ein Image mit 66 Seiten passen 31 Seiten <span class="m calc">berechnet</span>. Das sind 98 im Slot, minus 66 fürs Image, minus 1 fürs Manifest. Größere Patches wendet der Knoten überlappend an.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <ul>
+        <li>The release tool runs exactly this code on a computer beforehand.</li>
+        <li>It sets a flag in the signed manifest only if the overlap is safe.</li>
+        <li>The node still keeps to the rule itself while applying, and stops otherwise.</li>
+        <li>After an overlapping apply the patch is gone. So the node passes it on for a window first <span class="m meas">measured</span>. More on this under <a href="ablauf.html#ablauf">How it runs</a>.</li>
+        <li>A patch may be up to 64 pages <span class="m code">checked in the code</span>.</li>
+        <li>31 pages fit behind an image of 66 pages <span class="m calc">calculated</span>. The slot has 98 pages, minus 66 for the image, minus 1 for the manifest. The node applies larger patches overlapping.</li>
+      </ul>
+    </div>
+    <div lang="de" class="prose">
+      <h2>Ein Image für mehrere Boards</h2>
+      <p>Ein Repeater-Image wählt das Board beim Start. Es läuft auf diesen Boards, alle nRF52840 mit SX1262:</p>
+      <ul>
+        <li>auf Hardware getestet: FakeTec, SenseCAP P1, Heltec T114 <span class="m meas">gemessen</span></li>
+        <li>gebaut, nicht auf Hardware getestet: RAK4631, Seeed Xiao nRF52840, Heltec T096</li>
+      </ul>
+      <p>Eine Tabelle im Image enthält, was sich je Board unterscheidet:</p>
+      <ul>
+        <li>Pins für Funkchip, SPI, I2C, GPS, LEDs, Taste und Batteriemessung</li>
+        <li>TCXO (temperaturkompensierter Quarz), RF-Schalter, DC/DC-Wandler und 32-kHz-Takt</li>
+        <li>Sendeleistung: Vorgabe und Obergrenze, wichtig bei Boards mit Verstärker</li>
+      </ul>
+      <h3>Wie das Image sein Board erkennt</h3>
+      <ol>
+        <li>Ein Deskriptor von 32 Byte am Ende der Stage-0-Seite nennt das Board. Er enthält Magic-Wert, Version, Board-ID, die Adresse der Seite und die Prüfsumme CRC-32.</li>
+        <li>Du installierst Stage-0 je Board einmal per USB oder BLE-DFU. FUOTA schreibt diese Seite nie. Ein BLE-DFU ersetzt Stage-0, darum bringt jedes FUOTA-Paket Stage-0 mit <span class="m meas">gemessen</span>.</li>
+        <li>Die App liest den Deskriptor an der Adresse, die das SoftDevice als Sprungziel nennt.</li>
+        <li>Sie vergleicht ihn mit der Board-ID im Bootloader. Nennt der Bootloader ein anderes bekanntes Board, gilt das als Widerspruch.</li>
+        <li>Ohne Deskriptor reicht die Board-ID nur, wenn der Bootloader zu genau einem Board gehört (P1).</li>
+      </ol>
+      <h3>Unbekanntes oder widersprüchliches Board</h3>
+      <ul>
+        <li>Die App fasst keinen Pin an, sendet nicht und läuft nur im USB-Notbetrieb.</li>
+        <li>Die App bestätigt ein neues Image dann nie. Stage-0 tauscht nach 3 Fehlstarts zurück.</li>
+      </ul>
+      <p>Die App bestätigt ein neues Image außerdem nur, wenn der Funkchip geantwortet hat. Eine signierte Kampagne (eine Ziel-ID, ein Patch) aktualisiert so FakeTec, SenseCAP P1 und Heltec T114 <span class="m meas">gemessen</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>One image for several boards</h2>
+      <p>One repeater image picks the board at start. It runs on these boards, all nRF52840 with SX1262:</p>
+      <ul>
+        <li>tested on hardware: FakeTec, SenseCAP P1, Heltec T114 <span class="m meas">measured</span></li>
+        <li>built, not tested on hardware: RAK4631, Seeed Xiao nRF52840, Heltec T096</li>
+      </ul>
+      <p>A table inside the image contains what differs per board:</p>
+      <ul>
+        <li>pins of radio chip, SPI, I2C, GPS, LEDs, button and battery measurement</li>
+        <li>TCXO (temperature-compensated crystal), RF switch, DC/DC converter and 32 kHz clock</li>
+        <li>transmit power: default and upper limit, important for boards with an amplifier</li>
+      </ul>
+      <h3>How the image recognises its board</h3>
+      <ol>
+        <li>A 32-byte descriptor at the end of the Stage-0 page names the board. It contains a magic number, version, board ID, the page address and the CRC-32 checksum.</li>
+        <li>You install Stage-0 once per board by USB or BLE DFU. FUOTA never writes that page. A BLE DFU replaces Stage-0, so every FUOTA package carries Stage-0 <span class="m meas">measured</span>.</li>
+        <li>The app reads the descriptor at the address the SoftDevice names as the jump target.</li>
+        <li>It compares the descriptor with the board ID in the bootloader. If the bootloader names another known board, that is a contradiction.</li>
+        <li>Without a descriptor, the board ID can suffice. That holds only if the bootloader belongs to exactly one board (P1).</li>
+      </ol>
+      <h3>Unknown or contradictory board</h3>
+      <ul>
+        <li>The app touches no pin and does not transmit. It runs only in a USB fallback mode.</li>
+        <li>The app then never confirms a new image. Stage-0 reverts after 3 failed boots.</li>
+      </ul>
+      <p>The app also confirms a new image only if the radio chip answered. One signed campaign (one target ID, one patch) thus updates FakeTec, SenseCAP P1 and Heltec T114 <span class="m meas">measured</span>.</p>
+    </div>
+  </section>
+  </main>
+  <p class="next"><a href="tests.html"><span lang="de">Weiter: Messungen</span><span lang="en">Next: Measurements</span> →</a></p>
+  <footer>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Wir signieren nur mit dem Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. We sign only with the test key, no release key exists yet. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
+    <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
+    <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
+    <span lang="en">Text and figures on this page: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded: it is not licensed under CC BY 4.0.</span>
+  </footer>
+</div>
+<div class="react" hidden role="toolbar"><button type="button" data-a="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg><span></span></button><button type="button" data-a="issue"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H7l-3 2.5V11h-.5a1 1 0 0 1-1-1z"/></svg><span></span></button></div>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="assets/site.js"></script>
+<script src="assets/react.js"></script>
+</body>
+</html>

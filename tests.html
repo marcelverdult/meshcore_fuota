@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Messungen · MeshCore FUOTA</title>
+<meta name="description" content="MeshCore FUOTA: firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:title" content="Messungen · MeshCore FUOTA">
+<meta property="og:description" content="Firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:image" content="https://marcelverdult.github.io/meshcore_fuota/logo/logo-dark.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="logo/favicon-48.png">
+<link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+(function () {
+  // before the first paint: forward old section links of the single page, then pick the language
+  // (#de / #en, saved choice, else the browser language) so the other language never flashes
+  var moved = window.fuotaMoved = {}, h = location.hash.slice(1);
+  if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
+  var l = (h === "de" || h === "en") ? h : null;
+  if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
+  if (l !== "de" && l !== "en") l = (navigator.language || "de").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+  document.documentElement.setAttribute("data-lang", l);
+  document.documentElement.setAttribute("lang", l);
+})();
+</script>
+</head>
+<body data-title-de="Messungen · MeshCore FUOTA" data-title-en="Measurements · MeshCore FUOTA">
+<div class="bar"><div class="bar-in">
+  <a class="mark" href="index.html" aria-label="MeshCore FUOTA"><img src="logo/icon.png" alt="" width="28" height="28"><span>MeshCore <b>FUOTA</b></span></a>
+  <span class="chip-draft"><span lang="de">Entwurf zur Prüfung</span><span lang="en">Draft for review</span></span>
+  <span class="here" aria-hidden="true"></span>
+  <div class="langs" role="group" aria-label="Sprache / language">
+    <button type="button" id="btn-de" data-l="de" aria-pressed="true">DE</button>
+    <button type="button" id="btn-en" data-l="en" aria-pressed="false">EN</button>
+  </div>
+</div><div class="progress"></div></div>
+<nav class="rail" aria-hidden="true"></nav>
+<div class="wrap">
+  <nav class="pages" aria-label="Seiten / pages">
+    <ul>
+      <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
+      <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
+      <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
+      <li><a href="sicherheit.html"><span lang="de">Sicherheit</span><span lang="en">Safety</span></a></li>
+      <li><a href="funk.html"><span lang="de">Funk</span><span lang="en">On air</span></a></li>
+      <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
+      <li><a href="tests.html" aria-current="page"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
+      <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
+    </ul>
+  </nav>
+  <main>
+<header class="hero">
+    <div lang="de">
+      <h1>Am Testaufbau gemessen</h1>
+      <p class="lede">Jeder Test lief am Testaufbau, die Funktests bei SF7 und 1 dBm. Als Beleg zählt der Abgleich mit
+        den gebauten Dateien: laufendes Image und SHA-256 beider Slots. Was noch nicht getestet ist, steht unter
+        <a href="fragen.html#luecken">Fragen</a> als offen.</p>
+    </div>
+    <div lang="en">
+      <h1>Measured on the bench</h1>
+      <p class="lede">Every test ran on the bench, the radio tests at SF7 and 1 dBm. As evidence, we compare the
+        running image and both slots' SHA-256 with the built files. What is not tested yet appears under
+        <a href="fragen.html#luecken">Questions</a> as open.</p>
+    </div>
+  </header>
+
+  <section id="tests">
+    <div lang="de" class="prose">
+      <h2>Testaufbau</h2>
+      <ul>
+        <li><b>Geräte:</b> bis zu 3 FakeTecs und 1 SenseCAP P1. Der Test „Kleineres Image“ und der Dauerlauf nehmen
+          einen Heltec T114 dazu. Die Tests mit Release-Paket laufen auf den FakeTecs A und C, der P1 ist Nachbar.</li>
+        <li><b>Normaler Repeater:</b> Im Test „Über einen normalen Repeater“ ist der P1 das Relais B. Er läuft mit der
+          unveränderten Firmware 1.18.0, A und C sind FakeTecs.</li>
+        <li><b>Abstand:</b> rund 50 cm.</li>
+        <li><b>Funk:</b> Die Funktests laufen bei SF7 und 1 dBm.</li>
+        <li><b>Airtime-Budget:</b> 10 %. Das ist am Testaufbau zulässig. Bei 1 % dauert derselbe Test 10-mal
+          länger. Im Mesh gelten höchstens 0,3 % <span class="m code">im Code geprüft</span>.</li>
+        <li><b>Kette A-B-C:</b> A ist der Seed. Er ist per USB installiert und bietet das Update an. B holt es von A (Hop 1),
+          C holt es von B (Hop 2). Alle Knoten hören sich. Ein Testfilter in Software stellt die Kette nach.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Bench</h2>
+      <ul>
+        <li><b>Devices:</b> up to 3 FakeTecs and 1 SenseCAP P1. The tests “Smaller image” and “Endurance run” add a
+          Heltec T114. The release package tests run on FakeTecs A and C, with the P1 as a neighbour.</li>
+        <li><b>Normal repeater:</b> In the test “Across a normal repeater” the P1 is relay B. It runs the unchanged
+          firmware 1.18.0, and A and C are FakeTecs.</li>
+        <li><b>Distance:</b> about 50 cm.</li>
+        <li><b>Radio:</b> The radio tests run at SF7 and 1 dBm.</li>
+        <li><b>Airtime budget:</b> 10 %. The bench permits that. At 1 % the same test takes 10 times longer.
+          In the mesh the limit is 0.3 % at most <span class="m code">checked in the code</span>.</li>
+        <li><b>Chain A-B-C:</b> A is the seed. It is installed over USB and offers the update. B pulls it from A (hop 1), C
+          pulls it from B (hop 2). All nodes hear each other. A software test filter recreates the chain.</li>
+      </ul>
+    </div>
+    <div lang="de" class="prose">
+      <h2>Die Tests</h2>
+    </div>
+    <div lang="en" class="prose">
+      <h2>The tests</h2>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Test</th><th>Ergebnis</th></tr>
+        <tr><td>Tausch ohne Funk, Reset mitten im Tausch</td><td><ul>
+          <li>Der Tausch dauert 30 bis 39 s.</li>
+          <li>Nach 82 zufälligen Watchdog-Resets mitten im Tausch ist das Ergebnis jedes Mal bitgenau. Ein echter Kabelzug ist nur teilweise getestet <span class="m open">offen</span>.</li>
+          <li>Nach 3 Fehlstarts läuft wieder die alte Firmware (Rückfall) <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Delta-Patch auf dem Gerät</td><td><ul>
+          <li>Patches von 6 bis 22 KB ergeben in rund 12 s das neue Image.</li>
+          <li>Der Hash des neuen Images stimmt exakt <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Signatur und Manifest</td><td><ul>
+          <li>Das Manifest ist die signierte Liste von allem, was zu einem Update gehört.</li>
+          <li>Der Knoten lehnt ab, bevor das erste Patch-Fragment kommt.</li>
+          <li>Das gilt für fremden Schlüssel, falsches Gerät, falsche Quelle, Downgrade und schon gescheiterte Updates.</li>
+          <li>Ein verfälschtes Fragment kostet eine Seite: Der Knoten holt sie neu <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Kette A-B-C</td><td><ul>
+          <li>Hop 1 ist nach 464 s fertig <span class="m meas">gemessen</span>. Die Rechnung ergab 469 s <span class="m calc">berechnet</span>.</li>
+          <li>Hop 2 liegt eine Seite hinter Hop 1.</li>
+          <li>Alle Pakete laufen nur über B, mit 0 Duplikaten <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Zwei Anbieter</td><td><ul>
+          <li>Zuerst senden beide im Gleichschritt: 41 Duplikate auf 73 Fragmente.</li>
+          <li>Mit der Regel „nicht senden, solange ein Nachbar sendet“ sind es 0 Duplikate.</li>
+          <li>Der Empfänger ist doppelt so schnell fertig wie mit einem Anbieter <span class="m meas">gemessen</span>.</li>
+          <li>Heute nennt jede Anfrage einen Anbieter, und nur dieser sendet.</li>
+        </ul></td></tr>
+        <tr><td>Anfrage an einen Anbieter</td><td><ul>
+          <li>B ist nach 484 s fertig, C nach 696 s, mit 0 Duplikaten.</li>
+          <li>Schweigt der einzige bekannte Anbieter, fragt der Knoten nach 23,5 s alle (0xFFFF).</li>
+          <li>Ein anderer Anbieter liefert. Nach einem Neustart läuft es ebenso.</li>
+          <li>Im Leerlauf liegen 877 s zwischen zwei Angeboten <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Retract (signierter Rückruf)</td><td><ul>
+          <li>Eine Fälschung verwirft der Knoten.</li>
+          <li>Ein echter Retract stoppt Pull und Angebot.</li>
+          <li>Er erreicht Nachbarn in Sekunden, auch als Antwort auf ein Angebot.</li>
+          <li>Er übersteht einen Neustart <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Neustart mitten im Pull</td><td><ul>
+          <li>Der Knoten meldet „2 of 4 pages checked“ und holt nur den Rest.</li>
+          <li>Eine gesperrte Kampagne bleibt gesperrt <span class="m meas">gemessen</span>.</li>
+          <li>Seit dem 20. Oktober 2026 sperren Signatur- und Formatfehler die Kampagne nicht mehr. Siehe <a href="sicherheit.html#angriff">Angriffe im Detail</a>.</li>
+        </ul></td></tr>
+        <tr><td>Verlorene Anfrage</td><td><ul>
+          <li>Wir haben eine Anfrage absichtlich verworfen.</li>
+          <li>Die neue Anfrage kam nach 17,9 s, vorher nach 108 s.</li>
+          <li>Es gab keine zusätzlichen Anfragen und 0 Duplikate <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Rückfall und gescheitertes Image</td><td><ul>
+          <li>Nach 3 Fehlstarts läuft wieder die alte Firmware (Rückfall).</li>
+          <li>Danach lehnt der Knoten das gescheiterte Update dauerhaft ab und bietet es nie an.</li>
+          <li>Ein Update von v1 nach v3 klappt <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Auftrag von Stage-0 abgelehnt</td><td><ul>
+          <li>Die App gibt Stage-0, dem Lader, der beim Start tauscht, einen Auftrag mit unbekannter Formatversion.</li>
+          <li>Stage-0 bricht vor dem Tausch ab.</li>
+          <li>Die alte Firmware startet, das Image ist gesperrt.</li>
+          <li>Auch nach 5 Minuten mit Auto-Apply „now“ und einem Neustart gibt es keinen neuen Versuch.</li>
+          <li>Dasselbe Update lehnt der Knoten danach ab. Ein Update von v1 nach v3 klappt <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Ein Layout für S140 6.1.1 und 7.3.0</td><td><ul>
+          <li>FakeTec (6.1.1) und P1 (7.3.0) laufen im selben Layout, die App ab 0x29000.</li>
+          <li>Das P1-Image, nur mit den 6.1.1-Headern gebaut, ist byte-gleich zum laufenden <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Ein Image für FakeTec und P1 (RAK4631 nur gebaut)</td><td><ul>
+          <li>Dasselbe Image läuft auf 2 FakeTecs und 1 P1.</li>
+          <li>Es enthält GPS, ist ohne Testfüllung 374.412 B groß und belegt 92 von 96 Seiten.</li>
+          <li>Jeder Knoten liest sein Board aus dem Deskriptor in der Stage-0-Seite.</li>
+          <li>Eine Kampagne v1→v2 (43 Fragmente) holen FakeTec und P1 in 270 s und 289 s.</li>
+          <li>Beide bestätigen, die Slot-Hashes sind gleich.</li>
+          <li>Auch v2→v4 überlappend läuft auf beiden, und auf dem P1 klappt der Rückfall.</li>
+          <li>Ein FakeTec ohne Deskriptor hat keinen Funk und fällt nach 3 Fehlstarts zurück <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Überlappend anwenden, Fenster</td><td><ul>
+          <li>Ein Patch mit 4 Seiten passt nicht hinter ein Image mit 94 Seiten.</li>
+          <li>Im Fenster gibt der Knoten den Patch weiter.</li>
+          <li>Ein zweiter Knoten holt ihn dort komplett, mit 0 Duplikaten.</li>
+          <li>180 s nach der letzten Lieferung wendet der Knoten überlappend an.</li>
+          <li>Der Lese-Abstand beträgt 8.192 B. Das Image neu aufzubauen dauert 12,8 s.</li>
+          <li>Er bestätigt und bietet danach nichts mehr an.</li>
+          <li>Passt der Patch dahinter, wendet er sofort an und bietet weiter an <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>P1 über Funk</td><td><ul>
+          <li>Der P1 holt 72 Fragmente von einem FakeTec, der die P1-Kampagne nur weitergibt.</li>
+          <li>Er wendet überlappend an. Der Lese-Abstand ist 8.139 B, gleich der Prüfung am Rechner.</li>
+          <li>Er bestätigt.</li>
+          <li>Auch auf dem P1 folgt nach 3 Fehlstarts der Rückfall <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Größenwächter</td><td><ul>
+          <li>Ein Image über 96 Seiten bricht den Build ab (FakeTec und P1) <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Kleineres Image (<code>-Os</code>) auf Hardware</td><td><ul>
+          <li>v1 kommt per USB auf 2 FakeTecs, 1 P1 und 1 T114, alle bestätigen.</li>
+          <li>Jeder Knoten erkennt sein Board am Deskriptor.</li>
+          <li>USB meldet wie vorher nur die serielle Schnittstelle.</li>
+          <li>3 Knoten holen eine Kampagne v1→v2 in 4,4 bis 4,7 min über Funk.</li>
+          <li>Überlappend v2→v3 mit Fenster: Der Lese-Abstand ist 5.013 B, gleich der Prüfung am Rechner.</li>
+          <li>Die Slot-Hashes gleichen dem gebauten Image.</li>
+          <li>Der 1200-Baud-Sprung führt ins serielle DFU.</li>
+          <li>Das Bootstrap per <code>adafruit-nrfutil</code> schreibt Stage-0 an 0x26000.</li>
+          <li>Der Knoten startet danach und behält seinen Schlüssel.</li>
+          <li>Ohne Display-Treiber schaltet langes Drücken der Taste den FakeTec weiterhin aus <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Kette A-B-C bei 1 %</td><td><ul>
+          <li>Hop 1 ist nach 4.664 s fertig <span class="m meas">gemessen</span>. Die Rechnung ergab 4.694 s <span class="m calc">berechnet</span>, das 10-Fache des Laufs bei 10 %.</li>
+          <li>Das Budget war über eine Stunde mit 1,02 % belegt <span class="m calc">berechnet</span>. Dazu kommen die normalen Adverts des Repeaters.</li>
+          <li>Hop 2 war nach 7.053 s fertig <span class="m meas">gemessen</span>, die Rechnung ergab 6.192 s <span class="m calc">berechnet</span>.</li>
+          <li>Der Grund: Eine verlorene Anfrage kostete 15 min (siehe <a href="fragen.html#luecken">Was noch offen ist</a>) <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Über einen normalen Repeater</td><td><ul>
+          <li>B läuft mit der unveränderten Firmware 1.18.0 (Release-Paket).</li>
+          <li>Dort ist nur die Test-Region eingetragen, der Flood-Scope des Flut-Angebots.</li>
+          <li>A und C hören sich laut Testfilter nicht direkt.</li>
+          <li>Der Test lief 2-mal, vor und nach den Korrekturen aus einem Review.</li>
+          <li>Das Flut-Angebot von A kommt über B bei C an.</li>
+          <li>4 Anfragen und 37 Fragmente laufen per Pfad über B, ohne Verlust.</li>
+          <li>Die Kampagne ist nach 466 s und 467 s vollständig und bestätigt <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Release-Paket per USB (Seed werden)</td><td><ul>
+          <li>Per UF2 und per seriellem DFU installiert. Der Knoten übernimmt die Kampagne aus dem Paket und bietet sie an <span class="m meas">gemessen</span>.</li>
+          <li>Ein Paket mit Stage-0 richtet per UF2 einen neuen Knoten ein <span class="m meas">gemessen</span>.</li>
+          <li>Ein älteres Paket lehnt der Knoten ab. Er bietet weiter die neuere Kampagne an <span class="m meas">gemessen</span>.</li>
+          <li>Die erste Fassung des Pakets war per UF2 nicht installierbar: Der Bootloader schreibt nur unterhalb 0xEA000 <span class="m meas">gemessen</span>. Darum liegt die Kampagne im Paket am Anfang von Slot B.</li>
+          <li>Ungetestet: ein Stromausfall, während der Knoten die Kampagne verschiebt <span class="m open">offen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Vom Paket-Seed zum Nachbarn</td><td><ul>
+          <li>Ein Nachbar holt die Kampagne über Funk vom Seed, mit 4 Anfragen und 27 Datenpaketen <span class="m meas">gemessen</span>.</li>
+          <li>Er wendet sie nach der Wartezeit an, auch über einen Neustart hinweg, und bestätigt das neue Image <span class="m meas">gemessen</span>. Der Test-Build wartet 120 s statt 7 Tagen.</li>
+          <li>Ein Retract während der Wartezeit stoppt das Anwenden <span class="m meas">gemessen</span>.</li>
+          <li>Flut-Angebote: Der Test-Build flutet höchstens 2-mal frisch, der Zähler übersteht einen Neustart. Nach einer gehörten Anfrage flutet der Seed, nach einer alten nicht <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Dauerlauf 12 h</td><td><ul>
+          <li>Auf FakeTec, P1 und T114 liefen 4 Test-Releases im Abstand von 3 h.</li>
+          <li>Die Knoten holten jede Kampagne über Funk und bestätigten sie, hinter dem Image und überlappend.</li>
+          <li>Es gab keine unerwarteten Neustarts.</li>
+          <li>Der geplante Rückfall lief nicht, weil das Testwerkzeug die Bootmeldung des T114 verpasste.</li>
+        </ul></td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Test</th><th>Result</th></tr>
+        <tr><td>Swap without radio, reset mid-swap</td><td><ul>
+          <li>The swap takes 30 to 39 s.</li>
+          <li>After 82 random watchdog resets mid-swap, the result is bit-exact every time. A real cable pull is only partly tested <span class="m open">open</span>.</li>
+          <li>After 3 failed boots the old firmware runs again (revert) <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Delta patch on the device</td><td><ul>
+          <li>Patches of 6 to 22 KB become the new image in about 12 s.</li>
+          <li>The hash of the new image matches exactly <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Signature and manifest</td><td><ul>
+          <li>The manifest is the signed list of everything that belongs to an update.</li>
+          <li>The node refuses before the first patch fragment arrives.</li>
+          <li>That covers a foreign key, wrong device, wrong source, downgrade and an already failed update.</li>
+          <li>A corrupted fragment costs one page: the node pulls it again <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Chain A-B-C</td><td><ul>
+          <li>Hop 1 is done after 464 s <span class="m meas">measured</span>. The calculation gave 469 s <span class="m calc">calculated</span>.</li>
+          <li>Hop 2 is one page behind hop 1.</li>
+          <li>All packets go only through B, with 0 duplicates <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Two providers</td><td><ul>
+          <li>At first both send in lockstep: 41 duplicates out of 73 fragments.</li>
+          <li>With the rule “do not send while a neighbour is sending” there are 0 duplicates.</li>
+          <li>The receiver finishes twice as fast as with one provider <span class="m meas">measured</span>.</li>
+          <li>Today every request names one provider, and only that provider sends.</li>
+        </ul></td></tr>
+        <tr><td>Request to one provider</td><td><ul>
+          <li>B is done after 484 s and C after 696 s, with 0 duplicates.</li>
+          <li>If the only known provider stays silent, the node asks everybody (0xFFFF) after 23.5 s.</li>
+          <li>Another provider delivers. After a reboot it works the same way.</li>
+          <li>When idle, 877 s pass between two offers <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Retract (signed recall)</td><td><ul>
+          <li>The node drops a forgery.</li>
+          <li>A genuine retract stops the pull and the offer.</li>
+          <li>It reaches neighbours within seconds, also as a reply to an offer.</li>
+          <li>It survives a reboot <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Reboot in the middle of a pull</td><td><ul>
+          <li>The node reports “2 of 4 pages checked” and pulls only the rest.</li>
+          <li>A banned campaign stays banned <span class="m meas">measured</span>.</li>
+          <li>Since 20 October 2026, signature and format errors no longer ban the campaign. See <a href="sicherheit.html#angriff">attacks in detail</a>.</li>
+        </ul></td></tr>
+        <tr><td>Lost request</td><td><ul>
+          <li>We dropped a request on purpose.</li>
+          <li>The new request came after 17.9 s, where it used to take 108 s.</li>
+          <li>There were no extra requests and 0 duplicates <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Revert and failed image</td><td><ul>
+          <li>After 3 failed boots the old firmware runs again (revert).</li>
+          <li>The node then rejects the failed update for good and never offers it.</li>
+          <li>An update from v1 to v3 works <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Job refused by Stage-0</td><td><ul>
+          <li>Stage-0 is the loader that swaps at boot. The app gives it a job with an unknown format version.</li>
+          <li>Stage-0 aborts before the swap.</li>
+          <li>The old firmware starts, and the image is blocked.</li>
+          <li>Even 5 minutes of auto apply “now” and a reboot bring no new attempt.</li>
+          <li>The node rejects the same update afterwards. An update from v1 to v3 works <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>One layout for S140 6.1.1 and 7.3.0</td><td><ul>
+          <li>FakeTec (6.1.1) and P1 (7.3.0) run in the same layout, with the app from 0x29000.</li>
+          <li>The P1 image, built only with the 6.1.1 headers, is byte-identical to the running one <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>One image for FakeTec and P1 (RAK4631 built only)</td><td><ul>
+          <li>The same image runs on 2 FakeTecs and 1 P1.</li>
+          <li>It includes GPS, is 374,412 B without test filler and fills 92 of 96 pages.</li>
+          <li>Every node reads its board from the descriptor in the Stage-0 page.</li>
+          <li>FakeTec and P1 pull a campaign v1→v2 (43 fragments) in 270 s and 289 s.</li>
+          <li>Both confirm, and the slot hashes are the same.</li>
+          <li>Overlapping v2→v4 also runs on both, and the revert works on the P1.</li>
+          <li>A FakeTec without descriptor has no radio and reverts after 3 failed boots <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Overlapping apply, window</td><td><ul>
+          <li>A patch of 4 pages does not fit behind an image of 94 pages.</li>
+          <li>During the window the node passes the patch on.</li>
+          <li>A second node pulls all of it there, with 0 duplicates.</li>
+          <li>180 s after its last delivery the node applies overlapping.</li>
+          <li>The read margin is 8,192 B. Rebuilding the image takes 12.8 s.</li>
+          <li>The node confirms and offers nothing afterwards.</li>
+          <li>If the patch fits behind the image, the node applies at once and keeps offering <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>P1 over the air</td><td><ul>
+          <li>The P1 pulls 72 fragments from a FakeTec, which only passes the P1 campaign on.</li>
+          <li>It applies overlapping. The read margin is 8,139 B, as in the check on the computer.</li>
+          <li>It confirms.</li>
+          <li>On the P1, too, the revert follows after 3 failed boots <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Size guard</td><td><ul>
+          <li>An image above 96 pages stops the build (FakeTec and P1) <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Smaller image (<code>-Os</code>) on hardware</td><td><ul>
+          <li>v1 goes onto 2 FakeTecs, 1 P1 and 1 T114 over USB, and all confirm.</li>
+          <li>Every node identifies its board by the descriptor.</li>
+          <li>USB reports only the serial port, as before.</li>
+          <li>3 nodes pull a campaign v1→v2 over the air in 4.4 to 4.7 min.</li>
+          <li>Overlapping v2→v3 with window: read margin 5,013 B, as in the check on the computer.</li>
+          <li>The slot hashes equal the built image.</li>
+          <li>The 1200 baud touch leads into the serial DFU.</li>
+          <li>The bootstrap through <code>adafruit-nrfutil</code> writes Stage-0 at 0x26000.</li>
+          <li>The node starts afterwards and keeps its key.</li>
+          <li>Without the display driver, a long press of the button still switches the FakeTec off <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Chain A-B-C at 1 %</td><td><ul>
+          <li>Hop 1 is done after 4,664 s <span class="m meas">measured</span>. The calculation gave 4,694 s <span class="m calc">calculated</span>, 10 times the 10 % run.</li>
+          <li>Over one hour the budget was used to 1.02 % <span class="m calc">calculated</span>. The repeater's regular adverts come on top.</li>
+          <li>Hop 2 was done after 7,053 s <span class="m meas">measured</span>, where the calculation gave 6,192 s <span class="m calc">calculated</span>.</li>
+          <li>The reason: one lost request cost 15 min (see <a href="fragen.html#luecken">What is still open</a>) <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Across a normal repeater</td><td><ul>
+          <li>B runs the unchanged firmware 1.18.0 (release package).</li>
+          <li>Only the test region is entered there, the flood scope of the flooded offer.</li>
+          <li>A and C do not hear each other directly, by test filter.</li>
+          <li>The test ran twice, before and after the fixes from a review.</li>
+          <li>A's flooded offer reaches C through B.</li>
+          <li>4 requests and 37 fragments travel along the path through B without loss.</li>
+          <li>The campaign is complete and confirmed after 466 s and 467 s <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Release package over USB (becoming the seed)</td><td><ul>
+          <li>Installed by UF2 and by serial DFU. The node takes over the campaign from the package and offers it <span class="m meas">measured</span>.</li>
+          <li>A package with Stage-0 sets up a new node by UF2 <span class="m meas">measured</span>.</li>
+          <li>The node rejects an older package. It keeps offering the newer campaign <span class="m meas">measured</span>.</li>
+          <li>The first version of the package could not be installed by UF2: the bootloader writes only below 0xEA000 <span class="m meas">measured</span>. That is why the package holds the campaign at the start of slot B.</li>
+          <li>Untested: a power cut while the node moves the campaign <span class="m open">open</span>.</li>
+        </ul></td></tr>
+        <tr><td>From the package seed to a neighbour</td><td><ul>
+          <li>A neighbour pulls the campaign over the air from the seed, with 4 requests and 27 data packets <span class="m meas">measured</span>.</li>
+          <li>It applies it after the waiting time, also across a reboot, and confirms the new image <span class="m meas">measured</span>. The test build waits 120 s instead of 7 days.</li>
+          <li>A retract during the waiting time stops the apply <span class="m meas">measured</span>.</li>
+          <li>Flooded offers: the test build floods fresh at most 2 times, and the counter survives a reboot. After a request it heard, the seed floods; after an old one, it does not <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>Endurance run 12 h</td><td><ul>
+          <li>4 test releases ran on FakeTec, P1 and T114, 3 h apart.</li>
+          <li>The nodes pulled and confirmed every campaign over the air, behind the image and overlapping.</li>
+          <li>There were no unexpected reboots.</li>
+          <li>The planned revert did not run: the test tool missed the T114's boot message.</li>
+        </ul></td></tr>
+      </table>
+    </div>
+  </section>
+  </main>
+  <p class="next"><a href="fragen.html"><span lang="de">Weiter: Fragen</span><span lang="en">Next: Questions</span> →</a></p>
+  <footer>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Wir signieren nur mit dem Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. We sign only with the test key, no release key exists yet. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
+    <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
+    <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
+    <span lang="en">Text and figures on this page: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded: it is not licensed under CC BY 4.0.</span>
+  </footer>
+</div>
+<div class="react" hidden role="toolbar"><button type="button" data-a="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg><span></span></button><button type="button" data-a="issue"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H7l-3 2.5V11h-.5a1 1 0 0 1-1-1z"/></svg><span></span></button></div>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="assets/site.js"></script>
+<script src="assets/react.js"></script>
+</body>
+</html>

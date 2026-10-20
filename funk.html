@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Funk · MeshCore FUOTA</title>
+<meta name="description" content="MeshCore FUOTA: firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:title" content="Funk · MeshCore FUOTA">
+<meta property="og:description" content="Firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:image" content="https://marcelverdult.github.io/meshcore_fuota/logo/logo-dark.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="logo/favicon-48.png">
+<link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+(function () {
+  // before the first paint: forward old section links of the single page, then pick the language
+  // (#de / #en, saved choice, else the browser language) so the other language never flashes
+  var moved = window.fuotaMoved = {}, h = location.hash.slice(1);
+  if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
+  var l = (h === "de" || h === "en") ? h : null;
+  if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
+  if (l !== "de" && l !== "en") l = (navigator.language || "de").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+  document.documentElement.setAttribute("data-lang", l);
+  document.documentElement.setAttribute("lang", l);
+})();
+</script>
+</head>
+<body class="has-rail" data-title-de="Funk · MeshCore FUOTA" data-title-en="On air · MeshCore FUOTA">
+<div class="bar"><div class="bar-in">
+  <a class="mark" href="index.html" aria-label="MeshCore FUOTA"><img src="logo/icon.png" alt="" width="28" height="28"><span>MeshCore <b>FUOTA</b></span></a>
+  <span class="chip-draft"><span lang="de">Entwurf zur Prüfung</span><span lang="en">Draft for review</span></span>
+  <span class="here" aria-hidden="true"></span>
+  <div class="langs" role="group" aria-label="Sprache / language">
+    <button type="button" id="btn-de" data-l="de" aria-pressed="true">DE</button>
+    <button type="button" id="btn-en" data-l="en" aria-pressed="false">EN</button>
+  </div>
+</div><div class="progress"></div></div>
+<nav class="rail" aria-hidden="true"></nav>
+<div class="wrap">
+  <nav class="pages" aria-label="Seiten / pages">
+    <ul>
+      <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
+      <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
+      <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
+      <li><a href="sicherheit.html"><span lang="de">Sicherheit</span><span lang="en">Safety</span></a></li>
+      <li><a href="funk.html" aria-current="page"><span lang="de">Funk</span><span lang="en">On air</span></a></li>
+      <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
+      <li><a href="tests.html"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
+      <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
+    </ul>
+  </nav>
+  <main>
+<header class="hero">
+    <div lang="de">
+      <span class="kicker">Früher Abschnitt 5 der Einzelseite</span>
+      <h1>Die Nachrichten auf Funk</h1>
+      <p class="lede">FUOTA sendet 4 Nachrichten: Angebot, Anfrage, Daten und Retract. Alle sind MeshCore-Pakete vom
+        eigenen Typ 0x0E, zwischen direkten Nachbarn oder auf einem festen Pfad. Hier stehen ihr Aufbau, wer was
+        weitergibt und welche Zeitgeber laufen.</p>
+    </div>
+    <div lang="en">
+      <span class="kicker">Formerly section 5 of the single page</span>
+      <h1>The messages on air</h1>
+      <p class="lede">FUOTA sends 4 messages: offer, request, data and retract. All are MeshCore packets of their own
+        type 0x0E. They travel between direct neighbours or along a fixed path. This page shows their layout, who
+        passes on what, and which timers run.</p>
+    </div>
+  </header>
+
+  <section id="funk">
+    <div lang="de" class="prose">
+      <h2>Aufbau der Nachrichten</h2>
+      <p>Jede Nachricht ist ein MeshCore-Paket vom Typ 0x0E mit Route Direct. Zwischen direkten Nachbarn läuft sie ohne
+        Pfad (Zero-Hop). Hinter Repeatern ohne FUOTA läuft sie mit Pfad, siehe <a href="#weiter">Wer was weitergibt</a>.
+        Byte 1 und 2 jeder Nachricht sind die Kennung des Absenders. Das sind die ersten 2 Byte seines
+        öffentlichen Schlüssels. Die Kennung ist nicht signiert. Knoten wählen damit den Anbieter und erkennen einen
+        beschäftigten Anbieter. Logs und der Testfilter nutzen sie auch.</p>
+      <p>Das Angebot trägt ein Ticket. Es hängt am Manifest, der signierten Liste dessen, was zu einem Update gehört.
+        Der Release-Schlüssel signiert das Ticket beim Release. Ein gefälschtes Angebot verwirft ein Knoten, bevor er
+        etwas anfragt.</p>
+      <p>FUOTA-Pakete haben in der Sendewarteschlange von MeshCore die niedrigste Priorität. Höchstens eins wartet
+        gleichzeitig. Fällige Mesh-Pakete gehen vor: Nur ein schon gesendetes FUOTA-Paket hält eines auf. FUOTA-Pakete
+        zählen auch im Sendebudget von MeshCore.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Layout of the messages</h2>
+      <p>Every message is a MeshCore packet of type 0x0E with route direct. Between direct neighbours it travels
+        without a path (zero hop). Behind repeaters without FUOTA it travels with a path, see
+        <a href="#weiter">Who passes on what</a>. Bytes 1 and 2 of every message are the sender ID. They are the first 2 bytes of
+        its public key. The ID is unsigned. Nodes use it to pick a provider and to spot a busy provider. Logs and the
+        test filter use it too.</p>
+      <p>The offer carries a ticket. It hangs on the manifest, the signed list of what belongs to an update. The
+        release key signs the ticket at release time. A node drops a forged offer before it asks for anything.</p>
+      <p>FUOTA packets have the lowest priority in the MeshCore transmit queue. At most one waits at a time. Due mesh
+        packets go first: only a FUOTA packet already on air holds one back. FUOTA packets also count against the
+        MeshCore transmit budget.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Nachricht</th><th>Aufbau</th><th>Bytes</th><th>Wer sendet</th><th>Wer reagiert</th></tr>
+        <tr><td><b>Angebot</b></td><td class="fmt">[1][snd 2][Seiten][nonce][Ticket 104]</td><td class="n">109</td><td>Jeder Knoten mit geprüftem Manifest, im Trickle-Takt (siehe <a href="#zeiten">Zeiten und Zeitgeber</a>)</td><td>Nachbarn, für die es passt. Nachbarn mit derselben Kampagne zählen es als Bestätigung.</td></tr>
+        <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd 2][id 4][Block 2][Maske 2][Ziel 2][nonce]</td><td class="n">14</td><td>Der Knoten, der den Patch holt</td><td>Nur der genannte Anbieter (Ziel = seine Kennung). Bei 0xFFFF jeder, der die Fragmente geprüft hat.</td></tr>
+        <tr><td><b>Daten</b></td><td class="fmt">[3][snd 2][id, erste 3 B][Fragment 2][bis 176 B]</td><td class="n">184</td><td>Wer die Seite geprüft hat und angefragt wurde</td><td>Alle Nachbarn, die dieselbe Kampagne holen. Ein Paket bedient alle.</td></tr>
+        <tr><td><b>Retract</b> (signierter Rückruf)</td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td>Wer ihn geprüft hat: 3-mal, und als Antwort auf ein Angebot dieses Builds</td><td>Alle Nachbarn mit FUOTA</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Message</th><th>Layout</th><th>Bytes</th><th>Sender</th><th>Reacts</th></tr>
+        <tr><td><b>Offer</b></td><td class="fmt">[1][snd 2][pages][nonce][ticket 104]</td><td class="n">109</td><td>Every node with a checked manifest, on a Trickle schedule (see <a href="#zeiten">Times and timers</a>)</td><td>Neighbours it fits. Neighbours with the same campaign count it as a confirmation.</td></tr>
+        <tr><td><b>Request</b></td><td class="fmt">[2][snd 2][id 4][block 2][mask 2][target 2][nonce]</td><td class="n">14</td><td>The node that pulls the patch</td><td>Only the named provider (target = its ID). With 0xFFFF everyone who has checked the fragments.</td></tr>
+        <tr><td><b>Data</b></td><td class="fmt">[3][snd 2][id, first 3 B][fragment 2][up to 176 B]</td><td class="n">184</td><td>Whoever has checked the page and was asked</td><td>All neighbours pulling the same campaign. One packet serves all.</td></tr>
+        <tr><td><b>Retract</b> (signed recall)</td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td>Whoever verified it: 3 times, and in reply to an offer of that build</td><td>All neighbours with FUOTA</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <ul>
+        <li>Zahlen im Aufbau sind Bytes <span class="m code">im Code geprüft</span>. Die erste Klammer ist der Typ der Nachricht. Eine Klammer ohne Zahl ist 1 Byte.</li>
+        <li>snd ist die Kennung des Absenders. Seiten ist die Zahl der geprüften 4-KB-Seiten des Patches.</li>
+        <li>nonce ist ein Zähler des Absenders. Er steigt mit jedem Angebot und jeder Anfrage um 1, der Empfänger wertet ihn nicht aus <span class="m code">im Code geprüft</span>.</li>
+        <li>Ein Block sind 16 Fragmente. Jedes Bit der Maske steht für ein Fragment des Blocks, gesetzt heißt „fehlt“.</li>
+        <li>Ziel ist die Kennung des Anbieters, 0xFFFF heißt „wer es hat“. MeshCore erzeugt keinen Schlüssel, der mit 0xFF beginnt. 0xFFFF ist darum keine echte Kennung <span class="m code">im Code geprüft</span>.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <ul>
+        <li>Numbers in the layout are bytes <span class="m code">checked in the code</span>. The first bracket is the message type. A bracket without a number is 1 byte.</li>
+        <li>snd is the sender ID. Pages is the number of checked 4 KB pages of the patch.</li>
+        <li>A block is 16 fragments. Each mask bit stands for one fragment of the block. A set bit means “missing”.</li>
+        <li>Target is the ID of the provider, and 0xFFFF means “whoever has it”. MeshCore never generates a key that starts with 0xFF. So 0xFFFF is never a real ID <span class="m code">checked in the code</span>.</li>
+      </ul>
+    </div>
+
+    <div lang="de" class="prose">
+      <h3>Das Angebots-Ticket</h3>
+      <p>Das Ticket hat 104 B <span class="m code">im Code geprüft</span>. Es muss zum Manifest passen, an dem es hängt.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>The offer ticket</h3>
+      <p>The ticket is 104 B <span class="m code">checked in the code</span>. It has to match the manifest it hangs on.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Feld</th><th>Bytes</th><th>Inhalt</th></tr>
+        <tr><td>Magic</td><td class="n">4</td><td>„FUO1“</td></tr>
+        <tr><td>Ziel</td><td class="n">4</td><td>Ziel-ID des Modells</td></tr>
+        <tr><td>Build</td><td class="n">4</td><td>Build des Updates</td></tr>
+        <tr><td>Patch-Größe</td><td class="n">4</td><td>Größe des Patches in Byte</td></tr>
+        <tr><td>Quelle</td><td class="n">8</td><td>SHA-256 des Quell-Images, erste 8 B</td></tr>
+        <tr><td>Manifest-Hash</td><td class="n">16</td><td>SHA-256 des Manifest-Kerns, erste 16 B</td></tr>
+        <tr><td>Signatur</td><td class="n">64</td><td>Ed25519 über die 40 Byte davor</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Field</th><th>Bytes</th><th>Content</th></tr>
+        <tr><td>Magic</td><td class="n">4</td><td>“FUO1”</td></tr>
+        <tr><td>Target</td><td class="n">4</td><td>Target ID of the model</td></tr>
+        <tr><td>Build</td><td class="n">4</td><td>Build of the update</td></tr>
+        <tr><td>Patch size</td><td class="n">4</td><td>Size of the patch in bytes</td></tr>
+        <tr><td>Source</td><td class="n">8</td><td>SHA-256 of the source image, first 8 B</td></tr>
+        <tr><td>Manifest hash</td><td class="n">16</td><td>SHA-256 of the manifest core, first 16 B</td></tr>
+        <tr><td>Signature</td><td class="n">64</td><td>Ed25519 over the 40 bytes before it</td></tr>
+      </table>
+    </div>
+
+    <div lang="de" class="prose">
+      <h3>Anfrage und Daten über einen Pfad</h3>
+      <p>Hinter Repeatern ohne FUOTA tragen Anfrage und Daten einen Pfad. Der Sender setzt dafür das Flag 0x40 im
+        Typ-Byte <span class="m code">im Code geprüft</span>. Bei den Daten steckt der Sendezähler seq in den Bits 4 und 5 des Typ-Bytes. Seine übrigen 5 Bit stehen
+        oben im Fragment-Feld.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Request and data along a path</h3>
+      <p>Behind repeaters without FUOTA, request and data carry a path. The sender sets the flag 0x40 in the type byte
+        for it <span class="m code">checked in the code</span>. In data packets, the counter seq sits in bits 4 and 5 of the type byte. Its other 5 bits sit at
+        the top of the fragment field.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Nachricht</th><th>Aufbau</th><th>Bytes</th></tr>
+        <tr><td><b>Anfrage über Pfad</b></td><td class="fmt">[0x42][snd 2][id 4][Block 2][Maske 2][Ziel 2][nonce][Pfadlänge][Pfad vom Anbieter]</td><td class="n">15 + Pfad</td></tr>
+        <tr><td><b>Daten über Pfad</b></td><td class="fmt">[0x43 + (seq &amp; 3) · 0x10][snd 2][id, erste 3 B][Fragment + (seq &gt;&gt; 2) · 2048, 2][bis 176 B]</td><td class="n">184</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Message</th><th>Layout</th><th>Bytes</th></tr>
+        <tr><td><b>Request along a path</b></td><td class="fmt">[0x42][snd 2][id 4][block 2][mask 2][target 2][nonce][path length][path from the provider]</td><td class="n">15 + path</td></tr>
+        <tr><td><b>Data along a path</b></td><td class="fmt">[0x43 + (seq &amp; 3) · 0x10][snd 2][id, first 3 B][fragment + (seq &gt;&gt; 2) · 2048, 2][up to 176 B]</td><td class="n">184</td></tr>
+      </table>
+    </div>
+
+    <div lang="de" class="prose">
+      <h3>Airtime</h3>
+      <p>Die Airtime zählt 2 Byte mehr als die Nachricht selbst <span class="m code">im Code geprüft</span>.
+        Das sind das Header-Byte und die Pfadlänge. Alle Werte folgen aus der LoRa-Formel.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Airtime</h3>
+      <p>The airtime counts 2 bytes more than the message itself <span class="m code">checked in the code</span>.
+        They are the header byte and the path length. All values follow from the LoRa formula.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Nachricht</th><th>MeshCore EU narrow, SF8, CR 4/8</th><th>Hamburg, SF8, CR 4/5</th><th>Testaufbau, SF7, CR 4/5</th></tr>
+        <tr><td><b>Angebot</b></td><td class="n">1.132 ms</td><td class="n">775 ms</td><td class="n">429 ms</td></tr>
+        <tr><td><b>Anfrage</b></td><td class="n">345 ms</td><td class="n">284 ms</td><td class="n">152 ms</td></tr>
+        <tr><td><b>Daten</b></td><td class="n">1.721 ms</td><td class="n">1.144 ms</td><td class="n">643 ms</td></tr>
+        <tr><td><b>Retract</b></td><td class="n">902 ms</td><td class="n">632 ms</td><td class="n">347 ms</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Message</th><th>MeshCore EU narrow, SF8, CR 4/8</th><th>Hamburg, SF8, CR 4/5</th><th>Bench, SF7, CR 4/5</th></tr>
+        <tr><td><b>Offer</b></td><td class="n">1,132 ms</td><td class="n">775 ms</td><td class="n">429 ms</td></tr>
+        <tr><td><b>Request</b></td><td class="n">345 ms</td><td class="n">284 ms</td><td class="n">152 ms</td></tr>
+        <tr><td><b>Data</b></td><td class="n">1,721 ms</td><td class="n">1,144 ms</td><td class="n">643 ms</td></tr>
+        <tr><td><b>Retract</b></td><td class="n">902 ms</td><td class="n">632 ms</td><td class="n">347 ms</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <ul>
+        <li>MeshCore EU narrow: 869,618 MHz, BW 62,5 kHz, SF8, CR 4/8 (App-Preset „EU/UK (Narrow)“). Das ist der langsamere Fall <span class="m calc">berechnet</span>.</li>
+        <li>Die großen Repeater in Hamburg laufen laut ihren Betreibern mit CR 4/5. Das Datenpaket braucht dort nur das 0,66-fache der Zeit <span class="m calc">berechnet</span>.</li>
+        <li>Der Testaufbau läuft mit SF7 und CR 4/5 <span class="m meas">gemessen</span>.</li>
+        <li>Die Firmware rechnet ihr Airtime-Budget mit der Airtime ihrer aktuellen Einstellungen.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <ul>
+        <li>MeshCore EU narrow: 869.618 MHz, BW 62.5 kHz, SF8, CR 4/8 (app preset “EU/UK (Narrow)”). This is the slower case <span class="m calc">calculated</span>.</li>
+        <li>According to their operators, the large repeaters in Hamburg run CR 4/5. A data packet takes only 0.66 times as long there <span class="m calc">calculated</span>.</li>
+        <li>The bench runs SF7 and CR 4/5 <span class="m meas">measured</span>.</li>
+        <li>The firmware computes its airtime budget from the airtime of its current settings.</li>
+      </ul>
+    </div>
+
+    <div lang="de" class="prose">
+      <h3>Doppelte Pakete</h3>
+      <p>MeshCore führt eine Duplikat-Tabelle mit 160 Einträgen aus Typ und Inhalt. Beim Empfang von Typ 0x0E umgeht
+        FUOTA diese Tabelle. FUOTA erkennt doppelte Fragmente selbst, an Kampagne und Fragmentnummer. Normale Repeater
+        auf einem Pfad nutzen die Tabelle aber. Darum trägt jedes Datenpaket über einen Pfad einen 7-Bit-Sendezähler.
+        Eine Wiederholung ist so nie byte-gleich mit der ersten Sendung. Erst nach 128 Sendungen desselben Fragments
+        wiederholt sich der Zähler <span class="m code">im Code geprüft</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Duplicate packets</h3>
+      <p>MeshCore keeps a duplicate table of 160 entries made of type and payload. When it receives type 0x0E, FUOTA
+        bypasses that table. FUOTA detects duplicate fragments itself, by campaign and fragment number. Normal
+        repeaters on a path do use the table. So every data packet along a path carries a 7-bit send counter. A repeat
+        is never byte-identical to the first send. The counter repeats after 128 sends of the same fragment
+        <span class="m code">checked in the code</span>.</p>
+    </div>
+
+    <div lang="de" class="prose">
+      <h3>Zeitlicher Ablauf über vier Knoten</h3>
+      <p>A ist der Seed. Er hat das Release per USB oder BLE installiert und gibt es weiter. B hört A, C hört nur B. S ist ein Repeater ohne FUOTA. MeshCore verwirft unbekannte Typen,
+        also auch das Angebot (Typ 0x0E). Jede Zeile ist eine Sendung, die Zeit läuft nach unten.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h3>Timeline across four nodes</h3>
+      <p>A is the seed. It installed the release by USB or BLE and passes it on. B hears A, and C hears only B. S is a repeater without FUOTA. MeshCore drops unknown types, so
+        it drops the offer too (type 0x0E). Each line is one transmission, and time runs downwards.</p>
+    </div>
+    <div class="panel scroll" lang="de">
+      <figure>
+        <svg viewBox="0 0 780 640" role="img" aria-label="Zeitlicher Ablauf zwischen vier Knoten" style="min-width:640px">
+          <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker>
+            <marker id="ahm" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+          <g font-family="IBM Plex Mono, monospace" font-size="12">
+            <text x="100" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">A (Seed)</text>
+            <text x="300" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">B</text>
+            <text x="500" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">C (hört A nicht)</text>
+            <text x="690" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">S (ohne FUOTA)</text>
+            <path d="M100 34 V630 M300 34 V630 M500 34 V630 M690 34 V630" stroke="var(--line)" stroke-dasharray="3 4"/>
+            <path d="M100 60 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="54" fill="var(--fg)">Angebot X, 4 Seiten</text>
+            <path d="M100 66 H684" stroke="var(--muted)" stroke-dasharray="2 4"/><text x="600" y="82" fill="var(--muted)">verwirft (Typ 0x0E)</text>
+            <path d="M300 104 H104" stroke="var(--accent)" marker-end="url(#ah)"/><text x="122" y="98" fill="var(--fg)">Anfrage an A: Manifest</text>
+            <path d="M100 136 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="130" fill="var(--fg)">Daten: Manifest 1/2, 2/2</text>
+            <rect x="306" y="146" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="162" fill="var(--fg)">Signatur, Ziel, Quelle,</text><text x="314" y="176" fill="var(--fg)">Build geprüft</text>
+            <path d="M300 204 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="198" fill="var(--fg)">Angebot X, 0 Seiten</text>
+            <path d="M500 238 H304" stroke="var(--accent)" marker-end="url(#ah)"/><text x="330" y="232" fill="var(--fg)">Anfrage an B: Manifest</text>
+            <path d="M300 266 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="260" fill="var(--fg)">Daten: Manifest</text>
+            <path d="M300 300 H104" stroke="var(--accent)" marker-end="url(#ah)"/><text x="122" y="294" fill="var(--fg)">Anfrage an A: Block 0</text>
+            <path d="M100 330 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="324" fill="var(--fg)">Daten × 16 (einzeln, im Budget)</text>
+            <path d="M500 352 H304" stroke="var(--muted)" marker-end="url(#ahm)"/><text x="330" y="346" fill="var(--muted)">Anfrage Block 0: B hat sie</text><text x="330" y="370" fill="var(--muted)">noch nicht, merkt sich die Nachfrage</text>
+            <rect x="306" y="380" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="396" fill="var(--fg)">Seite 0 voll:</text><text x="314" y="410" fill="var(--fg)">Block-Hash stimmt</text>
+            <path d="M300 438 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="432" fill="var(--fg)">Angebot X, 1 Seite</text>
+            <path d="M500 468 H304" stroke="var(--accent)" marker-end="url(#ah)"/><text x="330" y="462" fill="var(--fg)">Anfrage an B: Block 0</text>
+            <path d="M300 498 H496" stroke="var(--accent)" marker-end="url(#ah)"/><text x="308" y="492" fill="var(--fg)">Daten Seite 0</text>
+            <path d="M100 506 H296" stroke="var(--accent)" marker-end="url(#ah)"/><text x="108" y="522" fill="var(--fg)">gleichzeitig: Seite 1 an B</text>
+            <rect x="306" y="540" width="190" height="50" rx="6" fill="var(--accent-soft)"/><text x="314" y="556" fill="var(--fg)">alle Seiten + SHA-256:</text><text x="314" y="570" fill="var(--fg)">anwenden, tauschen,</text><text x="314" y="584" fill="var(--fg)">dann weiter anbieten</text>
+            <text x="508" y="612" fill="var(--muted)">C holt den Rest von B, wendet an</text>
+          </g>
+        </svg>
+        <figcaption>Der Testaufbau lief mit genau dieser Kette. Ein Testfilter sorgt dafür, dass C den Seed nicht hört.
+          C hatte Seite 0 geprüft, bevor B fertig war. C bekam alle 73 Fragmente von B, keines von A, kein Duplikat
+          <span class="m meas">gemessen</span>.</figcaption>
+      </figure>
+    </div>
+    <div class="panel scroll" lang="en">
+      <figure>
+        <svg viewBox="0 0 780 640" role="img" aria-label="Timeline between four nodes" style="min-width:640px">
+          <defs><marker id="ah-en" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker>
+            <marker id="ahm-en" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/></marker></defs>
+          <g font-family="IBM Plex Mono, monospace" font-size="12">
+            <text x="100" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">A (seed)</text>
+            <text x="300" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">B</text>
+            <text x="500" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">C (cannot hear A)</text>
+            <text x="690" y="24" text-anchor="middle" font-weight="600" fill="var(--fg)">S (without FUOTA)</text>
+            <path d="M100 34 V630 M300 34 V630 M500 34 V630 M690 34 V630" stroke="var(--line)" stroke-dasharray="3 4"/>
+            <path d="M100 60 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="54" fill="var(--fg)">Offer X, 4 pages</text>
+            <path d="M100 66 H684" stroke="var(--muted)" stroke-dasharray="2 4"/><text x="600" y="82" fill="var(--muted)">drops (type 0x0E)</text>
+            <path d="M300 104 H104" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="122" y="98" fill="var(--fg)">Request to A: manifest</text>
+            <path d="M100 136 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="130" fill="var(--fg)">Data: manifest 1/2, 2/2</text>
+            <rect x="306" y="146" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="162" fill="var(--fg)">Signature, target,</text><text x="314" y="176" fill="var(--fg)">source, build checked</text>
+            <path d="M300 204 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="198" fill="var(--fg)">Offer X, 0 pages</text>
+            <path d="M500 238 H304" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="330" y="232" fill="var(--fg)">Request to B: manifest</text>
+            <path d="M300 266 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="260" fill="var(--fg)">Data: manifest</text>
+            <path d="M300 300 H104" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="122" y="294" fill="var(--fg)">Request to A: block 0</text>
+            <path d="M100 330 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="324" fill="var(--fg)">Data × 16 (paced by budget)</text>
+            <path d="M500 352 H304" stroke="var(--muted)" marker-end="url(#ahm-en)"/><text x="330" y="346" fill="var(--muted)">Request block 0: B does not</text><text x="330" y="370" fill="var(--muted)">have it yet, notes the request</text>
+            <rect x="306" y="380" width="170" height="36" rx="6" fill="var(--accent-soft)"/><text x="314" y="396" fill="var(--fg)">Page 0 full:</text><text x="314" y="410" fill="var(--fg)">block hash matches</text>
+            <path d="M300 438 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="432" fill="var(--fg)">Offer X, 1 page</text>
+            <path d="M500 468 H304" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="330" y="462" fill="var(--fg)">Request to B: block 0</text>
+            <path d="M300 498 H496" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="308" y="492" fill="var(--fg)">Data page 0</text>
+            <path d="M100 506 H296" stroke="var(--accent)" marker-end="url(#ah-en)"/><text x="108" y="522" fill="var(--fg)">in parallel: page 1 to B</text>
+            <rect x="306" y="540" width="190" height="50" rx="6" fill="var(--accent-soft)"/><text x="314" y="556" fill="var(--fg)">all pages + SHA-256:</text><text x="314" y="570" fill="var(--fg)">apply, swap,</text><text x="314" y="584" fill="var(--fg)">then keep offering</text>
+            <text x="508" y="612" fill="var(--muted)">C pulls the rest from B, applies</text>
+          </g>
+        </svg>
+        <figcaption>The bench ran exactly this chain. A test filter makes sure C does not hear the seed. C had checked
+          page 0 before B had finished. C received all 73 fragments from B, none from A, no duplicate
+          <span class="m meas">measured</span>.</figcaption>
+      </figure>
+    </div>
+    <div lang="de" class="prose">
+      <h3>Ein gemessener Lauf zum Abspielen</h3>
+      <p>Der Lauf spielt die Logs aller 3 Knoten aus dem Kettentest ab. Jede Farbe ist ein Nachrichtentyp.
+        Unter jedem Knoten stehen das Manifest (2 Fragmente) und die 4 Patch-Seiten. Sie füllen sich beim Empfang und
+        bekommen einen Haken, sobald ihr Hash stimmt.</p>
+      <ul>
+        <li>Der Testaufbau hatte 10 % Budget und SF7. Im Mesh (0,3 %, SF8) dauert jeder Schritt rund 89-mal so lange <span class="m calc">berechnet</span>.</li>
+        <li>Im echten Netz hört C den Seed A nicht. Im Testaufbau sorgt ein Filter dafür.</li>
+        <li>Wir haben den Lauf aufgezeichnet, bevor eine Anfrage genau einen Anbieter nannte. In dieser Kette hat jeder Knoten ohnehin nur einen.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <h3>A measured run to replay</h3>
+      <p>The replay plays back the logs of all 3 nodes from the chain test. Each colour is a message type.
+        Below each node are the manifest (2 fragments) and the 4 patch pages. They fill as fragments arrive and get a
+        tick once their hash checks out.</p>
+      <ul>
+        <li>The bench had a 10 % budget and SF7. In the mesh (0.3 %, SF8) every step takes about 89 times as long <span class="m calc">calculated</span>.</li>
+        <li>In a real network C cannot hear the seed A. On the bench a filter enforces that.</li>
+        <li>We recorded the run before a request named exactly one provider. In this chain every node has only one anyway.</li>
+      </ul>
+    </div>
+    <div class="chain" id="chainBox" tabindex="0" aria-label="Wiedergabe: Pfeiltasten springen ein Ereignis / replay: arrow keys step one event">
+      <div class="canvas-wide"><canvas id="chainCv" aria-label="Replay of the measured chain run"></canvas></div>
+      <div class="chain-ctl">
+        <button type="button" class="stepbtn" id="cprev"><span lang="de">◂ zurück</span><span lang="en">◂ back</span></button>
+        <button type="button" class="play" id="cplay"><span lang="de">Abspielen</span><span lang="en">Play</span></button>
+        <button type="button" class="stepbtn" id="cnext"><span lang="de">vor ▸</span><span lang="en">next ▸</span></button>
+        <input type="range" id="ct" min="0" max="1000" value="0" aria-label="time">
+        <output id="ctout">0:00</output>
+        <label for="cspeed"><span lang="de">Tempo</span><span lang="en">speed</span></label>
+        <select id="cspeed"><option value="2">2×</option><option value="5" selected>5×</option><option value="10">10×</option><option value="30">30×</option></select>
+      </div>
+      <div class="legend">
+        <span><i class="pk" style="background:var(--pk-offer)"></i><span lang="de">Angebot</span><span lang="en">offer</span></span>
+        <span><i class="pk" style="background:var(--pk-req)"></i><span lang="de">Anfrage</span><span lang="en">request</span></span>
+        <span><i class="pk" style="background:var(--pk-data)"></i><span lang="de">Daten (1 Fragment)</span><span lang="en">data (1 fragment)</span></span>
+        <span><i class="pk" style="background:var(--pk-rt)"></i><span lang="de">Retract (in diesem Lauf nicht)</span><span lang="en">retract (not in this run)</span></span>
+        <span><i class="pk" style="background:var(--pk-ok)"></i><span lang="de">Seite geprüft</span><span lang="en">page checked</span></span>
+      </div>
+      <div class="evlog" id="clog"></div>
+    </div>
+  </section>
+
+  <section id="weiter">
+    <div lang="de" class="prose">
+      <h2>Wer was weitergibt und was nie</h2>
+      <p><b>FUOTA selbst leitet kein Paket weiter.</b> „Weitergeben“ heißt bei FUOTA: Ein Knoten empfängt, prüft,
+        speichert im eigenen Flash und sendet später neu. Das Senden zahlt das eigene Airtime-Budget. Ein Knoten sendet nur
+        Geprüftes erneut.
+        Weiter leitet nur der normale MeshCore-Code: Pakete mit Pfad und geflutete Angebote.</p>
+      <p>Lücken entstehen hinter Repeatern ohne FUOTA. Dort flutet ein Knoten mit einer ganzen Kampagne sein Angebot.
+        Das passiert höchstens einmal am Tag je Kampagne und Region <span class="m code">im Code geprüft</span>. Das
+        Angebot geht als Gruppen-Nachricht in seiner Standard-Region. Region heißt in MeshCore der Flood-Scope, auf dem eine Nachricht
+        reist. Wer das Angebot nur über die Flut hört, fragt über den Pfad der Flut an. Anfrage und Daten leitet
+        MeshCore entlang des Pfads weiter wie jedes Direct-Paket.</p>
+      <p>Der Anbieter rechnet jede Kopie entlang des Pfads in sein Budget. Bei k Repeatern sind das k + 1 Sendungen
+        je Fragment. Was ein Angreifer über fremde Repeater schickt, zählt in kein Budget, siehe
+        <a href="sicherheit.html#angriff">Angriffe im Detail</a>.</p>
+      <p>In der Tabelle steht „Modell“ für die Ziel-ID im Ticket.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Who passes on what, and what never</h2>
+      <p><b>FUOTA itself forwards no packet.</b> In FUOTA, “passing on” means: a node receives, checks, stores in its own
+        flash and resends later. The resend costs its own airtime budget. A node resends only checked data. Only the normal MeshCore code
+        forwards: packets with a path and flooded offers.</p>
+      <p>Gaps arise behind repeaters without FUOTA. There, a node with a whole campaign floods its offer. It does so
+        at most once a day per campaign and region <span class="m code">checked in the code</span>. The offer travels as a group
+        message in its default region. In MeshCore, a region is the flood scope a message travels on. A node that hears
+        the offer only via the flood asks along that flood's path. MeshCore forwards request and data along
+        the path like any direct packet.</p>
+      <p>The provider counts every copy along the path in its budget. With k repeaters, that is k + 1 transmissions per
+        fragment. What an attacker sends through foreign repeaters counts in no budget, see
+        <a href="sicherheit.html#angriff">Attacks in detail</a>.</p>
+      <p>In the table, “model” stands for the target ID in the ticket.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Was kommt an</th><th>Repeater mit FUOTA, gleiches Modell</th><th>Repeater mit FUOTA, anderes Modell</th><th>Repeater ohne FUOTA, Companion (Knoten mit App-Anbindung)</th></tr>
+        <tr><td>Angebot</td><td>Prüft, ob es passt. Holt dann den Patch oder zählt es als Bestätigung.</td><td>Ignoriert (Vorschlag: hält ein Fenster, siehe unten)</td><td>Verwirft. Ein geflutetes leitet er weiter wie jede Gruppen-Nachricht.</td></tr>
+        <tr><td>Angebot eines höheren Builds, während er eine Kampagne hält</td><td>Holt nur dessen Manifest in den RAM und wechselt erst, wenn es geprüft ist. Bis dahin bedient er die alte Kampagne weiter <span class="m meas">gemessen</span>.</td><td>Ignoriert</td><td>Wie Angebot</td></tr>
+        <tr><td>Anfrage</td><td>Bedient aus eigenen geprüften Seiten, wenn die Anfrage ihn nennt (oder 0xFFFF). Er sendet reihum ab dem zuletzt gesendeten Fragment <span class="m meas">gemessen</span>.</td><td>Ignoriert</td><td>Verwirft. Mit Pfad leitet er sie weiter wie jedes Direct-Paket.</td></tr>
+        <tr><td>Daten</td><td>Speichert, was fehlt, nur nach geprüftem Manifest. Er streicht aus der eigenen Sendeliste, was ein anderer gerade gesendet hat.</td><td>Ignoriert</td><td>Verwirft. Mit Pfad leitet er sie weiter wie jedes Direct-Paket.</td></tr>
+        <tr><td>Retract, gültig</td><td>Stoppt, speichert, sendet ihn 3-mal und als Antwort.</td><td>Verwirft (andere Ziel-ID)</td><td>Verwirft</td></tr>
+        <tr><td>Angebot mit gefälschtem Ticket</td><td>Verwirft es, bevor er etwas anfragt. Er gibt nichts davon weiter <span class="m meas">gemessen</span>.</td><td>Ignoriert</td><td>Verwirft. Ein geflutetes leitet er weiter wie jede Gruppen-Nachricht.</td></tr>
+        <tr><td>Seite mit falschem Hash</td><td>Löscht sie, holt sie neu und gibt sie nie weiter.</td><td>Holt gar nicht</td><td>Verwirft</td></tr>
+        <tr><td>Angebot eines zurückgezogenen Builds</td><td>Holt nicht. Er antwortet höchstens alle 30 s mit dem Retract.</td><td>Ignoriert</td><td>Verwirft</td></tr>
+        <tr><td>Normale MeshCore-Pakete</td><td colspan="3">Unverändert: FUOTA ändert die Weiterleitung von MeshCore nicht. Es kommt nur ein Fall dazu: Typ 0x0E ohne Pfad. FUOTA-Pakete stehen in der Sendewarteschlange hinter allen fälligen Mesh-Paketen.</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>What arrives</th><th>Repeater with FUOTA, same model</th><th>Repeater with FUOTA, other model</th><th>Repeater without FUOTA, companion (node connected to an app)</th></tr>
+        <tr><td>Offer</td><td>Checks whether it fits. Then pulls the patch or counts it as a confirmation.</td><td>Ignores (proposal: holds a window, see below)</td><td>Drops. A flooded one it forwards like any group message.</td></tr>
+        <tr><td>Offer of a higher build while it holds a campaign</td><td>Pulls only its manifest into RAM and switches once that is checked. Until then it keeps serving the old campaign <span class="m meas">measured</span>.</td><td>Ignores</td><td>As offer</td></tr>
+        <tr><td>Request</td><td>Serves from its own checked pages if the request names this node (or 0xFFFF). It sends in turn, from the fragment sent last <span class="m meas">measured</span>.</td><td>Ignores</td><td>Drops. With a path it forwards it like any direct packet.</td></tr>
+        <tr><td>Data</td><td>Stores what is missing, only after a checked manifest. It strikes from its own send list what another node has just sent.</td><td>Ignores</td><td>Drops. With a path it forwards it like any direct packet.</td></tr>
+        <tr><td>Retract, valid</td><td>Stops, stores, sends it 3 times and as a reply.</td><td>Drops (other target ID)</td><td>Drops</td></tr>
+        <tr><td>Offer with a forged ticket</td><td>Drops it before asking for anything. It passes nothing of it on <span class="m meas">measured</span>.</td><td>Ignores</td><td>Drops. A flooded one it forwards like any group message.</td></tr>
+        <tr><td>Page with wrong hash</td><td>Erases it, pulls it again and never passes it on.</td><td>Does not pull at all</td><td>Drops</td></tr>
+        <tr><td>Offer of a retracted build</td><td>Does not pull. It answers with the retract at most every 30 s.</td><td>Ignores</td><td>Drops</td></tr>
+        <tr><td>Normal MeshCore packets</td><td colspan="3">Unchanged: FUOTA does not change MeshCore forwarding. It adds one case: type 0x0E without a path. FUOTA packets wait in the transmit queue behind every due mesh packet.</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="callout">
+      <b>Fremdes Modell in der Mitte (A und C gleiches Modell, B ein anderes)</b>
+      <p>B leitet Pakete mit Pfad und geflutete Angebote weiter, wie jeder Repeater. C erfährt über ein geflutetes
+        Angebot von A vom Update. C holt es über B per Pfad. Das sind 2 Sendungen je Fragment, beide im Airtime-Budget von A.</p>
+      <p>Am Testaufbau war B ein Repeater ohne FUOTA. Das lief auch mit einem Nachbarn, den C hört, der C aber
+        nicht hört <span class="m meas">gemessen</span>. Ein Repeater mit FUOTA anderen Modells leitet mit demselben
+        MeshCore-Code weiter. Das haben wir nicht eigens gemessen.</p>
+      <p>Vorschlag für weniger Airtime: B hält Kampagnen fremder Modelle. Er prüft Signatur und Seiten-Hashes und
+        wendet sie nie an. Er hält nur das Manifest und 2 geprüfte Seiten und gibt sie weiter. Noch nicht gebaut
+        <span class="m open">offen</span>.</p>
+    </div>
+    <div lang="en" class="callout">
+      <b>Foreign model in the middle (A and C same model, B a different one)</b>
+      <p>B forwards packets with a path and flooded offers, like any repeater. C learns about the update from a flooded
+        offer of A. C pulls it via B along the path. That is 2 transmissions per fragment, both in A's airtime budget.</p>
+      <p>On the bench, B was a repeater without FUOTA. That also worked with a neighbour that C hears but that does not
+        hear C <span class="m meas">measured</span>. A repeater with FUOTA of another model forwards with the same MeshCore code. We
+        have not measured that separately.</p>
+      <p>Proposal for less airtime: B holds campaigns of foreign models. It verifies signature and page hashes and never
+        applies them. It holds only the manifest and 2 checked pages, and passes them on. Not built yet
+        <span class="m open">open</span>.</p>
+    </div>
+  </section>
+
+  <section id="zeiten">
+    <div lang="de" class="prose">
+      <h2>Zeiten und Zeitgeber</h2>
+      <p>Der Abstand ist die Pause, die das Airtime-Budget nach jeder eigenen Sendung erzwingt. Er beträgt Airtime × 1000 /
+        Budget-Promille. Bei 0,3 % (Standard) und SF8 folgt ein Datenpaket alle 574 s. Bei 1 % sind es alle 172 s. Im
+        Testaufbau (10 %, SF7) sind es 6,43 s <span class="m calc">berechnet</span>.</p>
+      <p>Die Werte der Tabelle sind Konstanten der Firmware <span class="m code">im Code geprüft</span>. Nur die Zeit zum Anwenden ist gemessen.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Times and timers</h2>
+      <p>The gap is the pause the airtime budget enforces after each own transmission. It equals airtime × 1000 / budget in
+        permille. At 0.3 % (default) and SF8, one data packet follows every 574 s. At 1 %, it is every 172 s. On the bench
+        (10 %, SF7) it is every 6.43 s <span class="m calc">calculated</span>.</p>
+      <p>The values in the table are firmware constants <span class="m code">checked in the code</span>. Only the time to apply is measured.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Wann</th><th>Wert</th><th>Wozu</th></tr>
+        <tr><td>Angebot</td><td class="n">10 s, verdoppelt bis 2 Tage</td><td>Trickle (RFC 6206): selten ansagen. Der Zeitpunkt ist zufällig in der zweiten Hälfte des Intervalls, vorher hört der Knoten zu.</td></tr>
+        <tr><td>Angebot unterdrücken</td><td class="n">1 gleiches Angebot gehört, nur bei Intervall unter 1 h</td><td>Last je Nachbarschaft statt je Knoten. In langen Intervallen bietet jeder an, damit niemand ohne Angebot bleibt.</td></tr>
+        <tr><td>Intervall zurück auf 10 s</td><td>Eigenes Manifest geprüft, Patch vollständig, Pull fortgesetzt oder Anbieten gestartet (etwa nach einem Neustart)</td><td>Nachbarn erfahren den eigenen Fortschritt sofort. Ein Angebot eines Nachbarn mit weniger Seiten setzt das Intervall nicht mehr zurück. Er holt schon.</td></tr>
+        <tr><td>Sofort-Angebot</td><td class="n">0,2 bis 1 s</td><td>Der Knoten hat eine neue Seite geprüft, und jemand wartete darauf. Das ist Pipelining: Seiten gehen weiter, während der Rest noch kommt.</td></tr>
+        <tr><td>Erste Anfrage, nächster Block</td><td class="n">0,5 s bis 1 Abstand (höchstens 30 s)</td><td>Zufällig, damit Nachbarn, die sich nicht hören, nicht im Gleichschritt fragen.</td></tr>
+        <tr><td>Warten auf das erste Fragment</td><td class="n">2 Abstände + 5 s, dazu bis 1 Abstand Zufall</td><td>Jedes Fragment verlängert die Wartezeit auf den Rest des Blocks. Ohne Antwort fragt der Knoten den nächsten Anbieter oder 0xFFFF. Nach 12 Anfragen ohne Daten pausiert er.</td></tr>
+        <tr><td>Genannter Anbieter sendet Daten an andere</td><td class="n">Wartezeit verlängert</td><td>Er ist beschäftigt, nicht verloren: kein Fehlversuch.</td></tr>
+        <tr><td>Nachbar fragt denselben Block</td><td class="n">3 s still</td><td>Die Antwort an ihn kommt hier auch an.</td></tr>
+        <tr><td>Nachfrage, wenn niemand Daten anbietet</td><td class="n">max(30 s, 4 Abstände)</td><td>Meldet den Bedarf, solange noch niemand mehr hat. Der Nachbar bietet nach der nächsten geprüften Seite sofort an.</td></tr>
+        <tr><td>Bedienen starten</td><td class="n">50 bis 1000 ms</td><td>Bei einer Anfrage an alle (0xFFFF) beginnt einer zuerst.</td></tr>
+        <tr><td>Kanal belegt</td><td class="n">20 ms, dann erneut</td><td>Erst hören, was der Nachbar sendet, dann ein eigenes Fragment wählen.</td></tr>
+        <tr><td>Pull pausiert</td><td class="n">100 Abstände ohne Angebot oder Daten, mindestens 20 min (bei 0,3 %: 16 h)</td><td>Niemand hat es mehr. Beim nächsten Angebot geht es weiter.</td></tr>
+        <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>Keine Dauersperre wegen einer schlechten Verbindung.</td></tr>
+        <tr><td>Retract</td><td class="n">3× nach 10, 20, 40 s; Antwort ≤ 1 je 30 s</td><td>Verbreiten, ohne zu fluten.</td></tr>
+        <tr><td>Anwenden</td><td class="n">~12 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>. Der Knoten ist dabei rund 1 min offline.</td></tr>
+        <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung nach 60 s</td><td>Nach 3 Fehlstarts folgt der Rückfall auf die alte Firmware.</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>When</th><th>Value</th><th>Purpose</th></tr>
+        <tr><td>Offer</td><td class="n">10 s, doubling up to 2 days</td><td>Trickle (RFC 6206): announce rarely. The time is random in the second half of the interval. The node listens first.</td></tr>
+        <tr><td>Suppress offer</td><td class="n">1 equal offer heard, only at intervals below 1 h</td><td>Load per neighbourhood instead of per node. In long intervals every node offers, so nobody is left without an offer.</td></tr>
+        <tr><td>Interval back to 10 s</td><td>Own manifest checked, patch complete, pull resumed, or offering started (for instance after a reboot)</td><td>Neighbours learn about the own progress at once. An offer from a neighbour with fewer pages no longer resets the interval. That neighbour is pulling already.</td></tr>
+        <tr><td>Immediate offer</td><td class="n">0.2 to 1 s</td><td>The node has checked a new page, and someone was waiting for it. This is pipelining: pages pass on while the rest still arrives.</td></tr>
+        <tr><td>First request, next block</td><td class="n">0.5 s to 1 gap (at most 30 s)</td><td>Random, so that neighbours that cannot hear each other do not ask in step.</td></tr>
+        <tr><td>Waiting for the first fragment</td><td class="n">2 gaps + 5 s, plus up to 1 gap at random</td><td>Every fragment extends the wait to the rest of the block. Without an answer the node asks the next provider or 0xFFFF. After 12 requests without data it pauses.</td></tr>
+        <tr><td>Named provider sends data to others</td><td class="n">Wait extended</td><td>It is busy, not lost: no failed attempt.</td></tr>
+        <tr><td>Neighbour requests the same block</td><td class="n">3 s silent</td><td>The answer to it arrives here as well.</td></tr>
+        <tr><td>Request while nobody offers data</td><td class="n">max(30 s, 4 gaps)</td><td>Reports demand while nobody has more yet. The neighbour offers at once after its next checked page.</td></tr>
+        <tr><td>Start serving</td><td class="n">50 to 1000 ms</td><td>For a request to everybody (0xFFFF), one node starts first.</td></tr>
+        <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>First hear what the neighbour sends, then pick an own fragment.</td></tr>
+        <tr><td>Pull paused</td><td class="n">100 gaps without offer or data, at least 20 min (at 0.3 %: 16 h)</td><td>Nobody has it any more. It resumes at the next offer.</td></tr>
+        <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
+        <tr><td>Retract</td><td class="n">3× after 10, 20, 40 s; reply ≤ 1 per 30 s</td><td>Spread it without flooding.</td></tr>
+        <tr><td>Apply</td><td class="n">~12 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>. The node is offline for about 1 min meanwhile.</td></tr>
+        <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation after 60 s</td><td>After 3 failed boots the node reverts to the old firmware.</td></tr>
+      </table>
+    </div>
+  </section>
+  </main>
+  <p class="next"><a href="flash.html"><span lang="de">Weiter: Flash</span><span lang="en">Next: Flash</span> →</a></p>
+  <footer>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Wir signieren nur mit dem Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. We sign only with the test key, no release key exists yet. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
+    <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
+    <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
+    <span lang="en">Text and figures on this page: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded: it is not licensed under CC BY 4.0.</span>
+  </footer>
+</div>
+<div class="react" hidden role="toolbar"><button type="button" data-a="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg><span></span></button><button type="button" data-a="issue"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H7l-3 2.5V11h-.5a1 1 0 0 1-1-1z"/></svg><span></span></button></div>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="assets/site.js"></script>
+<script src="assets/react.js"></script>
+<script src="assets/chain.js"></script>
+</body>
+</html>
