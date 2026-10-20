@@ -286,7 +286,7 @@
         <tr><td><b>Teilnehmender Repeater</b></td><td>Normale MeshCore-Repeater-Firmware mit FUOTA-Modul: hört Angebote, holt, prüft, gibt weiter, wendet an.</td><td>Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
         <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB)</td><td>Läuft nur beim Booten: führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Kein Funk, keine Signaturprüfung (vertraut dem Auftrag der App, siehe Lücken).</td></tr>
         <tr><td><b>Repeater ohne FUOTA</b>, Companions</td><td>Verwerfen Typ 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, bewusst nicht geroutet).</td><td>Ein Update weitertragen.</td></tr>
-        <tr><td><b>Betreiber</b></td><td>Entscheidet, ob er mitmacht. Ab Werk wendet ein Knoten ein fertiges Update selbst an; der Betreiber kann das abschalten (<code>fuota auto off</code>) und ein fertiges Update selbst starten (<code>fuota apply</code>), auch über die Fern-CLI per LoRa. <code>fuota info</code> zeigt den Stand. Am Testaufbau getestet; der Weg über LoRa vom Admin-Login an ist noch offen.</td><td>Andere Knoten beeinflussen.</td></tr>
+        <tr><td><b>Betreiber</b></td><td>Entscheidet, ob er mitmacht. Ab Werk wendet ein Knoten ein fertiges Update selbst an; der Betreiber kann das abschalten (<code>fuota auto off</code>) und ein fertiges Update selbst starten (<code>fuota apply</code>), auch über die Fern-CLI per LoRa. <code>fuota info</code> zeigt den Stand. Am Testaufbau getestet, auch über LoRa.</td><td>Andere Knoten beeinflussen.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -298,7 +298,7 @@
         <tr><td><b>Participating repeater</b></td><td>Normal MeshCore repeater firmware with a FUOTA module: hears offers, pulls, checks, passes on, applies.</td><td>Exceed its airtime budget, pass on unchecked data, update foreign nodes.</td></tr>
         <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB)</td><td>Runs only at boot: executes a swap job, with journal, test boot and revert.</td><td>No radio, no signature check (trusts the job from the app, see gaps).</td></tr>
         <tr><td><b>Repeater without FUOTA</b>, companions</td><td>Drop type 0x0E (MeshCore 1.18.0 <code>src/Mesh.cpp:326-329</code>, deliberately not routed).</td><td>Carry an update further.</td></tr>
-        <tr><td><b>Operator</b></td><td>Decides whether to take part. By default a node applies a complete update on its own; the operator can turn that off (<code>fuota auto off</code>) and start a complete update (<code>fuota apply</code>), also over LoRa via the remote CLI. <code>fuota info</code> shows the state. Tested on the bench; the path over LoRa from the admin login on is still open.</td><td>Influence other nodes.</td></tr>
+        <tr><td><b>Operator</b></td><td>Decides whether to take part. By default a node applies a complete update on its own; the operator can turn that off (<code>fuota auto off</code>) and start a complete update (<code>fuota apply</code>), also over LoRa via the remote CLI. <code>fuota info</code> shows the state. Tested on the bench, over LoRa as well.</td><td>Influence other nodes.</td></tr>
       </table>
     </div>
   </section>
@@ -522,8 +522,12 @@
         <span class="m meas">gemessen</span>: Warten mit <code>auto off</code> übersteht Neustart, <code>fuota apply</code> startet ein
         Update (99 s bis zur Bestätigung, überlappend 128 s), <code>auto off</code> bricht ein laufendes Fenster ab,
         <code>auto on</code> wendet danach von selbst an; Funkeinstellungen und Schlüssel blieben über fünf Image-Wechsel gleich.
-        Geprüft per USB und über eine Testhilfe, die einen Befehl wie aus dem Mesh ausführt; der Weg über LoRa vom
-        Admin-Login an ist noch offen. <span class="m open">offen</span></p>
+        Über LoRa Ende zu Ende <span class="m meas">gemessen</span>: ein Companion loggt sich als Admin ein (direkt, ohne
+        Hop), <code>fuota info</code>, <code>fuota auto</code> und die Ablehnung eines USB-Befehls kommen über Funk zurück,
+        <code>fuota apply</code> antwortet vor dem Neustart und der Repeater bestätigt den neuen Build nach 113 s,
+        <code>fuota auto on</code> meldet „applies after its window“ und wendet nach 275 s an. Kennt der Repeater den Pfad zum
+        Companion noch nicht, antwortet er per Flut: ohne Default-Scope ohne Region (gemessen, Stock-Verhalten), mit
+        Default-Scope in dessen Region (laut Code); auf dem Testaufbau darum vorher den Default-Scope setzen.</p>
       <p>Der Release-Build nutzt die Stock-Vorgaben für Frequenz, Bandbreite und Spreizfaktor, sendet beim Start ein
         Advert und lässt gespeicherte Einstellungen und Schlüssel unverändert (FUOTA schreibt nur seine eigene Datei). Ein Stock-Repeater ist er trotzdem nicht.
         Unterschiede zum Stock-Env des FakeTec (<code>ProMicro_repeater</code>), laut Build-Konfiguration und Code: kein BLE in der App (<code>start ota</code> startet den BLE-DFU
@@ -563,9 +567,13 @@
         complete update after 5 s. All other <code>fuota</code> commands are USB only. <span class="m meas">measured</span> on the bench:
         waiting with <code>auto off</code> survives a reboot, <code>fuota apply</code> starts an update (99 s until confirmed,
         overlapping 128 s), <code>auto off</code> cancels a running window, <code>auto on</code> then applies on its own; radio
-        settings and keys stayed the same across five image changes. Checked over USB and with a test helper that runs a
-        command as if it came from the mesh; the path over LoRa from the admin login on is still open.
-        <span class="m open">open</span></p>
+        settings and keys stayed the same across five image changes. <span class="m meas">measured</span> over LoRa end to
+        end: a companion logs in as admin (direct, no hop), <code>fuota info</code>, <code>fuota auto</code> and the refusal of
+        a USB command come back over the radio, <code>fuota apply</code> answers before the reboot and the repeater confirms
+        the new build after 113 s, <code>fuota auto on</code> reports “applies after its window” and applies after 275 s. If the
+        repeater does not know the path to the companion yet, it answers with a flood: without a default scope without a
+        region (measured, stock behaviour), with a default scope in that region (according to the code); on the bench the
+        default scope is therefore set first.</p>
       <p>The release build uses the stock defaults for frequency, bandwidth and spreading factor, sends an advert at
         boot and leaves saved settings and keys unchanged (FUOTA writes only its own file). It is still not a stock repeater. Differences from the stock env of the FakeTec
         (<code>ProMicro_repeater</code>) according to the build configuration and the code: no BLE in the app (<code>start ota</code> starts the BLE DFU of the bootloader), no
