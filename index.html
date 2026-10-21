@@ -68,8 +68,7 @@
       <h1>Firmware updates over LoRa, without straining the mesh</h1>
       <p class="sub">Many repeaters sit on roofs, masts and mountains. You reach them by ladder, hike or a climb that
         seemed fine at the time. Today an update means going there. With FUOTA the repeaters pass new firmware to each
-        other over LoRa. A small release takes 60 data packets to one neighbour <span class="m calc">calculated</span>,
-        and update data never floods.</p>
+        other over LoRa. A small release takes 60 data packets to one neighbour <span class="m calc">calculated</span>. Update data never floods.</p>
     </div>
     <div class="hero-anim"></div>
     <div lang="de">
@@ -88,8 +87,7 @@
           <li><b>Ein Betreiber installiert es</b><span>Ein Betreiber installiert das neueste signierte Release-Paket
             per USB oder BLE-OTA auf seinen Repeater. Dieser Repeater ist dann der Seed: Er bietet das Update seinen
             direkten Nachbarn an.</span></li>
-          <li><b>Nachbarn geben es weiter</b><span>Ein Nachbar holt nur den Patch, Seite für Seite über LoRa, und
-            bietet ihn danach selbst an. Jeder Repeater sendet dafür höchstens 0,3 % der Zeit, rund 11 s je Stunde
+          <li><b>Nachbarn geben es weiter</b><span>Ein Nachbar holt nur den Patch, Seite für Seite über LoRa. Danach bietet er ihn selbst an. Jeder Repeater sendet dafür höchstens 0,3 % der Zeit, rund 11 s je Stunde
             <span class="m calc">berechnet</span>. Fällige Mesh-Pakete gehen in der Sendewarteschlange vor.</span></li>
           <li><b>Jeder Repeater prüft und installiert</b><span>Jede 4-KB-Seite wird gegen das signierte Manifest
             geprüft, bevor sie weitergeht. Ab Werk wendet ein Repeater das Update nach 7 Tagen an
@@ -98,18 +96,14 @@
         </ol>
         <div class="ask"><h3>Such die Fehler</h3>
           <p>Das ist ein Entwurf, nichts davon ist in MeshCore. Wir legen ihn offen, damit du Denkfehler findest,
-            bevor jemand darauf baut. Am meisten hilft dein Hinweis so: welche Stelle, warum es dort bricht, und wenn
-            möglich ein Szenario oder eine Zahl.</p>
+            bevor jemand darauf baut. Am meisten hilft: welche Stelle, und warum es dort bricht. Wenn möglich, mit einem Szenario oder einer Zahl.</p>
           <ul>
-            <li>Gibt es Topologien oder Zustände, in denen ein Update dauerhaft hängen bleibt, obwohl Teilnehmer
-              verbunden sind?</li>
+            <li>Gibt es Topologien oder Zustände, in denen ein Update trotz Verbindung dauerhaft hängen bleibt?</li>
             <li>Kann ein Angreifer ohne Release-Schlüssel mehr als verlangsamen? Wo sind wir zu optimistisch?</li>
-            <li>Reicht „Hauptschleife läuft 60 s“ als Gesundheitsprüfung, oder was sollte eine neue Firmware vor der
-              Bestätigung beweisen?</li>
+            <li>Reicht „Hauptschleife läuft 60 s“ als Gesundheitsprüfung? Was sollte eine neue Firmware sonst vor der Bestätigung beweisen?</li>
           </ul>
           <p class="ask-how">Alle Fragen stehen unter <a href="fragen.html#pruef">Worum wir dich bitten</a>. So
-            antwortest du: Markiere eine Stelle auf einer Seite. Dann kopierst du sie mit Link, etwa für Discord, oder
-            öffnest gleich ein GitHub-Issue mit dem Zitat. Oder geh direkt zu den
+            antwortest du: Markiere eine Stelle auf einer Seite. Dann kopierst du sie mit Link, etwa für Discord. Oder du öffnest gleich ein GitHub-Issue mit dem Zitat. Oder geh direkt zu den
             <a href="https://github.com/marcelverdult/meshcore_fuota/issues">Issues im Repository</a>.</p>
         </div>
       </div>
@@ -137,32 +131,23 @@
           <li><b>A release is signed</b><span>The release key signs every release offline. Without that signature no
             repeater installs anything. Today the test key signs, no release key exists yet
             <span class="m open">open</span>.</span></li>
-          <li><b>One operator installs it</b><span>An operator installs the latest signed release package on their
-            repeater by USB or BLE OTA. That repeater is then the seed: it offers the update to its direct
+          <li><b>One operator installs it</b><span>An operator installs the latest signed release package by USB or BLE OTA. That repeater is then the seed: it offers the update to its direct
             neighbours.</span></li>
-          <li><b>Neighbours pass it on</b><span>A neighbour pulls only the patch, page by page over LoRa, and then
-            offers it on. Each repeater sends at most 0.3 % of the time for this, about 11 s per hour
-            <span class="m calc">calculated</span>. Due mesh packets go first in the transmit queue.</span></li>
+          <li><b>Neighbours pass it on</b><span>A neighbour pulls only the patch, page by page over LoRa. Then it offers it on. Each repeater sends at most 0.3 % of the time for this. That is about 11 s per hour <span class="m calc">calculated</span>. Due mesh packets go first in the transmit queue.</span></li>
           <li><b>Each repeater checks and installs</b><span>Every 4 KB page is checked against the signed manifest
             before it travels on. By default a repeater applies the update after 7 days
-            <span class="m code">checked in the code</span>. If the new firmware does not start, the old one runs
-            again after 3 failed boots <span class="m meas">measured</span>.</span></li>
+            <span class="m code">checked in the code</span>. If the new firmware does not start, the old one returns after 3 failed boots <span class="m meas">measured</span>.</span></li>
         </ol>
         <div class="ask"><h3>Find the flaws</h3>
-          <p>This is a draft, none of it is in MeshCore. We lay it open so that you find the design errors before
-            anyone builds on it. Your note helps most in this form: which passage, why it breaks there, and where
-            possible a scenario or a number.</p>
+          <p>This is a draft, none of it is in MeshCore. We lay it open so you find the design errors before anyone builds on it. Your note helps most like this: which passage, and why it breaks there. Where possible, add a scenario or a number.</p>
           <ul>
-            <li>Are there topologies or states in which an update gets stuck for good although participants are
-              connected?</li>
+            <li>Are there topologies or states in which an update stays stuck despite a connection?</li>
             <li>Can an attacker without the release key do more than slow things down? Where are we too
               optimistic?</li>
-            <li>Is "main loop runs for 60 s" enough as a health check, or what should a new firmware prove before
-              confirming?</li>
+            <li>Is "main loop runs for 60 s" enough as a health check? What else should a new firmware prove before confirming?</li>
           </ul>
           <p class="ask-how">All questions are under <a href="fragen.html#pruef">What we ask of you</a>. To respond:
-            select a passage on any page. Then copy it with a link, for Discord for instance, or open a GitHub issue
-            with the quote. Or go straight to the
+            select a passage on any page. Then copy it with a link, for Discord for instance. Or open a GitHub issue with the quote. Or go straight to the
             <a href="https://github.com/marcelverdult/meshcore_fuota/issues">issues in the repository</a>.</p>
         </div>
       </div>
