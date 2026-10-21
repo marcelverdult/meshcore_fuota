@@ -20,7 +20,7 @@
 (function () {
   // before the first paint: forward old section links of the single page, then pick the language
   // (#de / #en, saved choice, else the browser language) so the other language never flashes
-  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "weiter": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html"}, h = location.hash.slice(1);
+  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "weiter": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html"}, h = location.hash.slice(1);
   if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
   var l = (h === "de" || h === "en") ? h : null;
   if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
@@ -47,6 +47,7 @@
       <li><a href="index.html" aria-current="page"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
       <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
       <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
+      <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
       <li><a href="sicherheit.html"><span lang="de">Sicherheit</span><span lang="en">Safety</span></a></li>
       <li><a href="funk.html"><span lang="de">Funk</span><span lang="en">On air</span></a></li>
       <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
@@ -179,6 +180,7 @@
     <nav class="tiles" aria-label="Seiten / pages">
       <a class="tile" href="ablauf.html"><b><span lang="de">Ablauf</span><span lang="en">How it runs</span></b><span lang="de">Ablauf, Rollen, Seed werden</span><span lang="en">Steps, roles, becoming the seed</span></a>
       <a class="tile" href="kosten.html"><b><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></b><span lang="de">Airtime, Hamburg, Patches</span><span lang="en">Airtime, Hamburg, patches</span></a>
+      <a class="tile" href="nebenslot.html"><b><span lang="de">Nebenslot</span><span lang="en">Side slot</span></b><span lang="de">Bursts auf einem freien Slot</span><span lang="en">Bursts on a free slot</span></a>
       <a class="tile" href="sicherheit.html"><b><span lang="de">Sicherheit</span><span lang="en">Safety</span></b><span lang="de">Signatur, Rückfall, Angriffe</span><span lang="en">Signature, revert, attacks</span></a>
       <a class="tile" href="funk.html"><b><span lang="de">Funk</span><span lang="en">On air</span></b><span lang="de">Nachrichten, Weitergabe, Zeiten</span><span lang="en">Messages, forwarding, timers</span></a>
       <a class="tile" href="flash.html"><b><span lang="de">Flash</span><span lang="en">Flash</span></b><span lang="de">Wo was im Flash liegt</span><span lang="en">What lives where in flash</span></a>
