@@ -455,9 +455,8 @@
           enthält dafür 1 s Reserve (<code>src/helpers/fuota/FuotaNRF52.cpp:1226</code>) <span class="m code">im Code geprüft</span>.</li>
         <li>Auf leerem Slot meldete die Kanalprüfung (CAD) in 2 bis 4 von 1.000 Fällen fälschlich belegt
           <span class="m meas">gemessen</span>. Darum gilt ein Slot erst nach 2 Treffern hintereinander als belegt.</li>
-        <li>Am Endstand der Tests kostet der Nebenslot 6.368 B Flash und 832 B RAM. Ein Image ohne Testbefehle hat damit
-          68 von höchstens 96 Seiten <span class="m meas">gemessen</span>. Das Warten bei belegtem Slot kam danach dazu,
-          neu gemessen ist das nicht <span class="m open">offen</span>.</li>
+        <li>Der Nebenslot kostet 6.512 B Flash und 832 B RAM. Gemessen ist ein Image ohne Testbefehle vor dem Nebenslot
+          (270.192 B) und mit ihm (276.704 B). Es hat damit 68 von höchstens 96 Seiten <span class="m meas">gemessen</span>.</li>
         <li>Nach 1 Stunde Dauerbetrieb zählte der Knoten 1,2 % weniger Airtime als der Funkchip <span class="m meas">gemessen</span>.</li>
         <li>Eine frühere Firmware prüfte die 9 % nur beim Burst, nicht auf dem Mesh-Kanal. Die jetzige prüft sie vor
           jeder FUOTA-Sendung <span class="m meas">gemessen</span>.</li>
@@ -498,9 +497,8 @@
           reserve for that (<code>src/helpers/fuota/FuotaNRF52.cpp:1226</code>) <span class="m code">checked in the code</span>.</li>
         <li>On an empty slot the channel check (CAD) falsely reported busy in 2 to 4 of 1,000 cases <span class="m meas">measured</span>. So a slot
           only counts as busy after 2 hits in a row.</li>
-        <li>At the final test state the side slot costs 6,368 B of flash and 832 B of RAM. With it an image without test
-          commands has 68 of at most 96 pages <span class="m meas">measured</span>. The wait on a busy slot came in after
-          that and is not remeasured <span class="m open">open</span>.</li>
+        <li>The side slot costs 6,512 B of flash and 832 B of RAM. We measured an image without test commands before the
+          side slot (270,192 B) and with it (276,704 B). It then has 68 of at most 96 pages <span class="m meas">measured</span>.</li>
         <li>After 1 hour of continuous operation the node counted 1.2 % less airtime than the radio <span class="m meas">measured</span>.</li>
         <li>An earlier firmware checked the 9 % only for the burst, not on the mesh channel. The current one checks it
           before every FUOTA transmission <span class="m meas">measured</span>.</li>
