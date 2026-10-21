@@ -286,7 +286,7 @@
         Knoten auf dem Mesh-Kanal:</p>
       <ul>
         <li>Von Slot 3 dekodierte er 5 von 48 Datenpaketen <span class="m meas">gemessen</span>.</li>
-        <li>In einem zweiten Lauf kamen dort 24 von 48 Datenpaketen fehlerhaft an <span class="m meas">gemessen</span>.</li>
+        <li>In einem zweiten Lauf auf Slot 3 kamen 24 von 48 Datenpaketen fehlerhaft an <span class="m meas">gemessen</span>.</li>
         <li>Von Slot 2 dekodierte er keines <span class="m meas">gemessen</span>.</li>
         <li>Mesh-Pakete gingen dabei nicht messbar verloren <span class="m meas">gemessen</span>.</li>
       </ul>
@@ -326,7 +326,7 @@
         the bench a node listened on the mesh channel:</p>
       <ul>
         <li>From slot 3 it decoded 5 of 48 data packets <span class="m meas">measured</span>.</li>
-        <li>In a second run 24 of 48 data packets arrived faulty <span class="m meas">measured</span>.</li>
+        <li>In a second run on slot 3, 24 of 48 data packets arrived faulty <span class="m meas">measured</span>.</li>
         <li>From slot 2 it decoded none <span class="m meas">measured</span>.</li>
         <li>No measurable mesh packets were lost <span class="m meas">measured</span>.</li>
       </ul>
@@ -475,8 +475,8 @@
             <li>Er setzt die neuen Werte.</li>
             <li>Er startet den Empfang neu.</li>
           </ul></li>
-        <li>Eingestellt waren Abstände von 0, 20 und 50 ms zwischen den Datenpaketen <span class="m meas">gemessen</span>. Dabei ging kein Datenpaket
-          verloren, 0 von 300 <span class="m meas">gemessen</span>. Tatsächlich lagen die Abstände bei 10 bis 61 ms <span class="m meas">gemessen</span>.</li>
+        <li>Mit eingestellten 0, 20 und 50 ms Abstand ging kein Datenpaket verloren, 0 von 300
+          <span class="m meas">gemessen</span>. Tatsächlich lagen die Abstände bei 10 bis 61 ms <span class="m meas">gemessen</span>.</li>
         <li>Ein Schreibzugriff auf das Dateisystem hält einen Knoten bis 0,8 s auf <span class="m meas">gemessen</span>. Die angesagte Dauer
           enthält dafür 1 s Reserve (<code>src/helpers/fuota/FuotaNRF52.cpp:1226</code>) <span class="m code">im Code geprüft</span>.</li>
         <li>Auf leerem Slot meldete die Kanalprüfung (CAD) fälschlich belegt
@@ -540,7 +540,7 @@
             <li>It sets the new values.</li>
             <li>It restarts the receiver.</li>
           </ul></li>
-        <li>We set spacings of 0, 20 and 50 ms between data packets <span class="m meas">measured</span>. None was lost, 0 of 300 <span class="m meas">measured</span>. The real spacings were
+        <li>With spacings set to 0, 20 and 50 ms, no data packet was lost, 0 of 300 <span class="m meas">measured</span>. The real spacings were
           10 to 61 ms <span class="m meas">measured</span>.</li>
         <li>A file system write holds a node up for up to 0.8 s <span class="m meas">measured</span>. The announced duration includes 1 s of
           reserve for that (<code>src/helpers/fuota/FuotaNRF52.cpp:1226</code>) <span class="m code">checked in the code</span>.</li>
