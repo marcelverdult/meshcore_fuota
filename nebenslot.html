@@ -139,11 +139,14 @@
         <li><strong>Belegter Slot.</strong> Sendet ein Nachbar gerade auf dem Mesh-Kanal, misst der Anbieter auch auf
           Slot 2 einen Pegel. Am Testaufbau waren es −71 bis −75 dBm <span class="m meas">gemessen</span>. Dann wartet er bis zur Airtime
           eines Datenpakets und prüft danach noch einmal. Findet er den Slot so 2-mal hintereinander frei, sendet er
-          (<code>src/helpers/fuota/FuotaNRF52.cpp:1550-1572</code>) <span class="m code">im Code geprüft</span>. Am Testaufbau startete der Burst so nach 251, 613 und 651 ms <span class="m meas">gemessen</span>.
+          (<code>src/helpers/fuota/FuotaNRF52.cpp:1565-1587</code>) <span class="m code">im Code geprüft</span>. Am Testaufbau startete der Burst so nach 251, 613 und 651 ms <span class="m meas">gemessen</span>.
           Der Mitwechsler bekam alle Datenpakete <span class="m meas">gemessen</span>. Bleibt der Slot belegt, bricht der Anbieter ab <span class="m meas">gemessen</span>.
           Er beantwortet die Anfrage auf dem Mesh-Kanal <span class="m meas">gemessen</span>.</li>
         <li><strong>Zurück.</strong> Zum angesagten Ende sind alle wieder auf dem Mesh-Kanal. Fehlendes fragen sie wie
-          heute an. Am Testaufbau hörte der Anbieter danach die nächsten Anfragen wieder auf dem Mesh-Kanal
+          heute an. Danach wartet jeder noch zufällig bis zu 2 Datenpaket-Zeiten, bevor er wartende Mesh-Pakete sendet
+          (<code>src/helpers/fuota/FuotaNRF52.cpp:1314-1319</code>, <code>src/helpers/fuota/FuotaNRF52.cpp:1519</code>) <span class="m code">im Code geprüft</span>. Der Mitwechsler wartet
+          zusätzlich, bis der Anbieter zurück ist. Am Testaufbau stießen ohne diese Wartezeit nach 6 von 6 Bursts zwei
+          Adverts zusammen <span class="m meas">gemessen</span>. Mit ihr hörten alle 3 Knoten beide Adverts, in 6 von 6 Bursts <span class="m meas">gemessen</span>. Am Testaufbau hörte der Anbieter danach die nächsten Anfragen wieder auf dem Mesh-Kanal
           <span class="m meas">gemessen</span>.</li>
       </ol>
       <p>Mesh-Pakete, die während eines Bursts fällig werden, warten und gehen danach auf dem Mesh-Kanal raus. Ein
@@ -170,11 +173,14 @@
         <li><strong>Busy slot.</strong> While a neighbour sends on the mesh channel, the provider also measures a level
           on slot 2. On the bench it was −71 to −75 dBm <span class="m meas">measured</span>. It then waits up to the airtime of one data
           packet and checks once more. If the slot is free twice in a row, it sends
-          (<code>src/helpers/fuota/FuotaNRF52.cpp:1550-1572</code>) <span class="m code">checked in the code</span>. On the bench the burst started after 251, 613 and 651 ms <span class="m meas">measured</span>.
+          (<code>src/helpers/fuota/FuotaNRF52.cpp:1565-1587</code>) <span class="m code">checked in the code</span>. On the bench the burst started after 251, 613 and 651 ms <span class="m meas">measured</span>.
           The follower got all data packets <span class="m meas">measured</span>. If the slot stays busy, the provider stops <span class="m meas">measured</span>.
           It answers the request on the mesh channel <span class="m meas">measured</span>.</li>
         <li><strong>Back.</strong> At the announced end everyone is back on the mesh channel. They request what is
-          missing, as today. On the bench the provider heard the next requests on the mesh channel again
+          missing, as today. Then each node waits a random time of up to 2 data packet times before it sends queued
+          mesh packets (<code>src/helpers/fuota/FuotaNRF52.cpp:1314-1319</code>, <code>src/helpers/fuota/FuotaNRF52.cpp:1519</code>) <span class="m code">checked in the code</span>. The follower also
+          waits until the provider is back. Without this wait, two adverts collided after 6 of 6 bursts on the bench
+          <span class="m meas">measured</span>. With it, all 3 nodes heard both adverts in 6 of 6 bursts <span class="m meas">measured</span>. On the bench the provider heard the next requests on the mesh channel again
           <span class="m meas">measured</span>.</li>
       </ol>
       <p>Mesh packets due during a burst wait. They go out on the mesh channel afterwards. A third node listened on
@@ -207,7 +213,7 @@
         <li>Auf <a href="kosten.html#aufwand">Last im Mesh</a> rechnen wir vorsichtiger mit CR 4/8. Dann dauert alles
           1,5-mal so lang, die Verhältnisse bleiben gleich <span class="m calc">berechnet</span>.</li>
         <li>Nach jedem Burst pausiert der Anbieter. Die Pause beträgt die Airtime des Bursts geteilt durch
-          sein Airtime-Budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1307-1311</code>) <span class="m code">im Code geprüft</span>. Nach einem vollen Block mit SF8 sind das
+          sein Airtime-Budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1320-1325</code>) <span class="m code">im Code geprüft</span>. Nach einem vollen Block mit SF8 sind das
           6,3 min bei 5 % <span class="m calc">berechnet</span>. Bei 2 % sind es 15,8 min <span class="m calc">berechnet</span>. Am Testaufbau sendete der
           Anbieter bei 5 % 1.519 ms Airtime <span class="m meas">gemessen</span>. Danach pausierte er 30.380 ms <span class="m meas">gemessen</span>.</li>
         <li>Mehr als 5 % brächte wenig. Bei 9 % wären es 1,6 bis 1,7 h <span class="m calc">berechnet</span>. Aber 40 % der Datenpakete
@@ -239,7 +245,7 @@
         <li>On <a href="kosten.html#aufwand">Load on the mesh</a> we calculate more cautiously with CR 4/8. Then
           everything takes 1.5 times as long, and the ratios stay the same <span class="m calc">calculated</span>.</li>
         <li>After each burst the provider pauses. The pause equals the airtime of the burst divided by its
-          airtime budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1307-1311</code>) <span class="m code">checked in the code</span>. After a full block at SF8 that is
+          airtime budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1320-1325</code>) <span class="m code">checked in the code</span>. After a full block at SF8 that is
           6.3 min at 5 % <span class="m calc">calculated</span>. At 2 % it is 15.8 min <span class="m calc">calculated</span>. On the bench at 5 % the provider
           sent 1,519 ms of airtime <span class="m meas">measured</span>. Then it paused for 30,380 ms <span class="m meas">measured</span>.</li>
         <li>More than 5 % would bring little. At 9 % it would take 1.6 to 1.7 h <span class="m calc">calculated</span>. But 40 % of the data
@@ -259,11 +265,11 @@
         Mesh höchstens 9 % (<code>src/helpers/fuota/FuotaNRF52.cpp:1177-1181</code>, Release-Wächter <code>src/helpers/fuota/FuotaNRF52.cpp:1203-1218</code>) <span class="m code">im Code geprüft</span>. Zum Start im
         Feld sind es 2 % (<code>variants/fuota_common/platformio.ini:130</code>) <span class="m code">im Code geprüft</span>. In der ersten Stunde nach einem
         Neustart sendet ein Knoten keinen Burst <span class="m code">im Code geprüft</span>.</p>
-      <p>Ein Knoten prüft die 9 % vor jeder FUOTA-Sendung, auch auf dem Mesh-Kanal (<code>src/helpers/fuota/FuotaNRF52.cpp:1337</code>,
-        <code>src/helpers/fuota/FuotaNRF52.cpp:1962-1967</code>) <span class="m code">im Code geprüft</span>. Für den Test haben wir die Grenze am Testaufbau auf 1 % gesenkt.
+      <p>Ein Knoten prüft die 9 % vor jeder FUOTA-Sendung, auch auf dem Mesh-Kanal (<code>src/helpers/fuota/FuotaNRF52.cpp:1351</code>,
+        <code>src/helpers/fuota/FuotaNRF52.cpp:1978-1983</code>) <span class="m code">im Code geprüft</span>. Für den Test haben wir die Grenze am Testaufbau auf 1 % gesenkt.
         Ein Anbieter hielt bei 35,6 s Airtime je Stunde an und sendete später weiter <span class="m meas">gemessen</span>. Dabei ging kein
         Datenpaket verloren <span class="m meas">gemessen</span>.</p>
-      <p>Die Slots folgen aus dem eingestellten Mesh-Kanal (<code>src/helpers/fuota/FuotaNRF52.cpp:1283-1287</code>) <span class="m code">im Code geprüft</span>:</p>
+      <p>Die Slots folgen aus dem eingestellten Mesh-Kanal (<code>src/helpers/fuota/FuotaNRF52.cpp:1285-1289</code>) <span class="m code">im Code geprüft</span>:</p>
       <ul>
         <li>Gleiche Bandbreite.</li>
         <li>Je eine Bandbreite Abstand.</li>
@@ -300,10 +306,10 @@
         (<code>src/helpers/fuota/FuotaNRF52.cpp:1177-1181</code>, release guards <code>src/helpers/fuota/FuotaNRF52.cpp:1203-1218</code>) <span class="m code">checked in the code</span>. The field start uses 2 %
         (<code>variants/fuota_common/platformio.ini:130</code>) <span class="m code">checked in the code</span>. In the first hour after a reboot a node sends no
         burst <span class="m code">checked in the code</span>.</p>
-      <p>A node checks the 9 % before every FUOTA transmission, on the mesh channel too (<code>src/helpers/fuota/FuotaNRF52.cpp:1337</code>,
-        <code>src/helpers/fuota/FuotaNRF52.cpp:1962-1967</code>) <span class="m code">checked in the code</span>. For the bench test we lowered the limit to 1 %. A provider stopped at
+      <p>A node checks the 9 % before every FUOTA transmission, on the mesh channel too (<code>src/helpers/fuota/FuotaNRF52.cpp:1351</code>,
+        <code>src/helpers/fuota/FuotaNRF52.cpp:1978-1983</code>) <span class="m code">checked in the code</span>. For the bench test we lowered the limit to 1 %. A provider stopped at
         35.6 s of airtime per hour and sent on later <span class="m meas">measured</span>. No data packet was lost <span class="m meas">measured</span>.</p>
-      <p>The slots follow from the configured mesh channel (<code>src/helpers/fuota/FuotaNRF52.cpp:1283-1287</code>) <span class="m code">checked in the code</span>:</p>
+      <p>The slots follow from the configured mesh channel (<code>src/helpers/fuota/FuotaNRF52.cpp:1285-1289</code>) <span class="m code">checked in the code</span>:</p>
       <ul>
         <li>Same bandwidth.</li>
         <li>One bandwidth apart.</li>
@@ -426,7 +432,7 @@
           letzten Datenpaket <span class="m meas">gemessen</span>. Die Grenze lag bei 1.526 ms <span class="m meas">gemessen</span>. Bei einem einzelnen verlorenen Datenpaket blieb er
           <span class="m meas">gemessen</span>.</li>
         <li>Ein Knoten wechselt je Stunde höchstens 3-mal so lange mit, wie sein Budget erlaubt
-          (<code>src/helpers/fuota/FuotaNRF52.cpp:1343-1345</code>) <span class="m code">im Code geprüft</span>. Ist die Grenze erreicht, holt er auf dem Mesh-Kanal <span class="m meas">gemessen</span>. Mit 5 % sind das
+          (<code>src/helpers/fuota/FuotaNRF52.cpp:1357-1359</code>) <span class="m code">im Code geprüft</span>. Ist die Grenze erreicht, holt er auf dem Mesh-Kanal <span class="m meas">gemessen</span>. Mit 5 % sind das
           9 min je Stunde <span class="m calc">berechnet</span>. Zum Start mit 2 % sind es 3,6 min <span class="m calc">berechnet</span>.</li>
         <li>Eine Anfrage an „wer es hat" löst keinen Burst aus <span class="m meas">gemessen</span>.</li>
       </ul>
@@ -448,7 +454,7 @@
           replayed old one <span class="m meas">measured</span>.</li>
         <li>If nothing arrives for 2 data packets, the node returns. On the bench it did so 1,524 ms after the last
           data packet <span class="m meas">measured</span>. The limit was 1,526 ms <span class="m meas">measured</span>. With a single lost data packet it stayed <span class="m meas">measured</span>.</li>
-        <li>Per hour a node follows bursts for at most 3 times what its budget allows (<code>src/helpers/fuota/FuotaNRF52.cpp:1343-1345</code>)
+        <li>Per hour a node follows bursts for at most 3 times what its budget allows (<code>src/helpers/fuota/FuotaNRF52.cpp:1357-1359</code>)
           <span class="m code">checked in the code</span>. Once the limit is reached, it pulls on the mesh channel <span class="m meas">measured</span>. At 5 % that is 9 min per hour <span class="m calc">calculated</span>. At the
           2 % field start it is 3.6 min <span class="m calc">calculated</span>.</li>
         <li>A request to "whoever has it" starts no burst <span class="m meas">measured</span>.</li>
@@ -481,18 +487,18 @@
           enthält dafür 1 s Reserve (<code>src/helpers/fuota/FuotaNRF52.cpp:1226</code>) <span class="m code">im Code geprüft</span>.</li>
         <li>Auf leerem Slot meldete die Kanalprüfung (CAD) fälschlich belegt
           <span class="m meas">gemessen</span>. Das geschah in 2 bis 4 von 1.000 Fällen <span class="m meas">gemessen</span>. Darum gilt ein Slot erst nach 2 Treffern hintereinander als belegt.</li>
-        <li>Der Nebenslot kostet 6.512 B Flash und 832 B RAM. Gemessen ist ein Image ohne Testbefehle:
+        <li>Der Nebenslot kostet 6.608 B Flash und 840 B RAM. Gemessen ist ein Image ohne Testbefehle:
           <ul>
             <li>vor dem Nebenslot: 270.192 B <span class="m meas">gemessen</span></li>
-            <li>mit dem Nebenslot: 276.704 B, das sind 68 von höchstens 96 Seiten <span class="m meas">gemessen</span></li>
+            <li>mit dem Nebenslot: 276.800 B, das sind 68 von höchstens 96 Seiten <span class="m meas">gemessen</span></li>
           </ul></li>
-        <li>Die letzte Firmware lief 1 Stunde im Dauerbetrieb <span class="m meas">gemessen</span>. Der Anbieter sendete 311 s, das sind 8,6 % <span class="m meas">gemessen</span>. Er
+        <li>In 1 Stunde Dauerbetrieb sendete der Anbieter 311 s, das sind 8,6 % <span class="m meas">gemessen</span>. Er
           zählte dabei 0,7 % weniger Airtime als der Funkchip <span class="m meas">gemessen</span>.</li>
         <li>Eine frühere Firmware prüfte die 9 % nur beim Burst, nicht auf dem Mesh-Kanal. Die jetzige prüft sie vor
           jeder FUOTA-Sendung <span class="m meas">gemessen</span>.</li>
         <li>Ältere FUOTA-Versionen: Ein Knoten ohne Nebenslot beantwortete Anfragen von Knoten mit Nebenslot, auch
           ihre längeren. Er holte selbst ein Update von einem Anbieter mit Nebenslot, auf dem Mesh-Kanal <span class="m meas">gemessen</span>.</li>
-        <li>Auf der letzten Firmware liefen die Tests noch einmal, außer Umschalten und Nachbarkanal <span class="m meas">gemessen</span>.
+        <li>Mit Pause und 9-%-Grenze liefen alle Tests noch einmal, außer Umschalten und Nachbarkanal <span class="m meas">gemessen</span>.
           Dazu gehören:
           <ul>
             <li>ein Burst für mehrere Nachbarn</li>
@@ -510,15 +516,22 @@
           </ul></li>
         <li>Der Rückfall auf die alte Firmware klappte
           <span class="m meas">gemessen</span>.</li>
+        <li>Mit der Wartezeit nach der Rückkehr liefen danach alle Tests erneut, die durch die Rückkehr gehen
+          <span class="m meas">gemessen</span>.</li>
+        <li>Fremde Funkarten: Sendungen mit SF12 und SF11 bei 125 kHz meldet die Slot-Prüfung als belegt <span class="m meas">gemessen</span>.
+          Sie erkennt sie über den Pegel, kaum über CAD <span class="m meas">gemessen</span>.</li>
+        <li>Im Stromsparbetrieb lief der Burst wie ohne <span class="m meas">gemessen</span>. Der Mitwechsler war 16 und 17 ms nach der
+          Ansage auf dem Slot <span class="m meas">gemessen</span>.</li>
+        <li>Die Testgeräte liegen in der Frequenz höchstens rund 0,5 kHz auseinander <span class="m meas">gemessen</span>. Empfangen wird
+          bis rund 15 kHz Abweichung <span class="m meas">gemessen</span>.</li>
+        <li>Ein Knoten auf Slot 2 dekodierte bei 50 cm auch 1 von 23 Paketen vom Mesh-Kanal <span class="m meas">gemessen</span>. Für einen
+          Mitwechsler ist das harmlos, er nimmt nur angesagte Datenpakete.</li>
       </ul>
       <h2>Was noch nicht gemessen ist</h2>
       <ul>
-        <li>Nach einem Burst hörte der Mitwechsler den Advert des Anbieters zweimal nicht. Beim zweiten Mal war es auch
-          umgekehrt. Ob sich beide Adverts überschnitten, ist ungeklärt <span class="m open">offen</span>.</li>
-        <li>Ein Knoten, der auf dem Slot lauschte, zählte einmal 19 FUOTA-Pakete, der Anbieter sendete 18. Woher das
-          19. kam, ist ungeklärt <span class="m open">offen</span>.</li>
-        <li>Die Kanalprüfung gegen andere Funkarten, der Stromsparbetrieb und Frequenzabweichungen der Geräte
-          <span class="m open">offen</span>.</li>
+        <li>Sendungen mit 250 kHz Bandbreite, etwa Meshtastic auf 869,525 MHz. Am Testaufbau senden wir sie
+          nicht, weil sie den Mesh-Kanal überdecken <span class="m open">offen</span>.</li>
+        <li>Die Frequenzabweichung fremder Geräte und die absolute Frequenz <span class="m open">offen</span>.</li>
         <li>Die Belegung der Slots an anderen Orten in Hamburg, gemessen nur durch Zuhören <span class="m open">offen</span>.</li>
       </ul>
       <p>Die Rechnungen machen <code>fuota/tools/nebenslot_airtime.py</code>, <code>nebenslot_rollout.py</code>,
@@ -546,18 +559,18 @@
           reserve for that (<code>src/helpers/fuota/FuotaNRF52.cpp:1226</code>) <span class="m code">checked in the code</span>.</li>
         <li>On an empty slot the channel check (CAD) falsely reported busy <span class="m meas">measured</span>. That happened in 2 to 4 of 1,000 cases <span class="m meas">measured</span>. So a slot
           only counts as busy after 2 hits in a row.</li>
-        <li>The side slot costs 6,512 B of flash and 832 B of RAM. We measured an image without test commands:
+        <li>The side slot costs 6,608 B of flash and 840 B of RAM. We measured an image without test commands:
           <ul>
             <li>before the side slot: 270,192 B <span class="m meas">measured</span></li>
-            <li>with the side slot: 276,704 B, so 68 of at most 96 pages <span class="m meas">measured</span></li>
+            <li>with the side slot: 276,800 B, so 68 of at most 96 pages <span class="m meas">measured</span></li>
           </ul></li>
-        <li>The latest firmware ran for 1 hour continuously <span class="m meas">measured</span>. The provider sent 311 s, that is 8.6 % <span class="m meas">measured</span>.
+        <li>In 1 hour of continuous operation the provider sent 311 s, that is 8.6 % <span class="m meas">measured</span>.
           Its own count was 0.7 % below the radio's <span class="m meas">measured</span>.</li>
         <li>Earlier firmware checked the 9 % only for the burst, not on the mesh channel. The current one checks it
           before every FUOTA transmission <span class="m meas">measured</span>.</li>
         <li>Older FUOTA versions: a node without the side slot answered requests from nodes with it. It answered their longer
           ones too. It pulled an update itself from a provider with the side slot, on the mesh channel <span class="m meas">measured</span>.</li>
-        <li>On the latest firmware the tests ran again, except switching and the adjacent channel <span class="m meas">measured</span>. They
+        <li>With pause and 9 % limit, all tests ran again except switching and adjacent channel <span class="m meas">measured</span>. They
           include:
           <ul>
             <li>a burst for several neighbours</li>
@@ -574,15 +587,21 @@
             <li>a path through a relay <span class="m meas">measured</span></li>
           </ul></li>
         <li>The revert to the old firmware worked <span class="m meas">measured</span>.</li>
+        <li>With the wait after the return, all tests that pass through the return ran again <span class="m meas">measured</span>.</li>
+        <li>Other kinds of radio: the slot check reports SF12 and SF11 at 125 kHz as busy <span class="m meas">measured</span>. It sees them
+          by their level, hardly by CAD <span class="m meas">measured</span>.</li>
+        <li>In power saving the burst ran as without it <span class="m meas">measured</span>. The follower was on the slot 16 and 17 ms after
+          the announcement <span class="m meas">measured</span>.</li>
+        <li>The test devices are at most about 0.5 kHz apart in frequency <span class="m meas">measured</span>. Reception works up to about
+          15 kHz offset <span class="m meas">measured</span>.</li>
+        <li>At 50 cm a node on slot 2 also decoded 1 of 23 packets from the mesh channel <span class="m meas">measured</span>. That does no
+          harm to a follower, which only takes announced data packets.</li>
       </ul>
       <h2>What is not measured yet</h2>
       <ul>
-        <li>Twice after a burst the follower did not hear the provider's advert. The second time it was the other way
-          round too. Whether both adverts overlapped is unclear <span class="m open">open</span>.</li>
-        <li>A node listening on the slot once counted 19 FUOTA packets. The provider sent 18. Where the 19th
-          came from is unclear <span class="m open">open</span>.</li>
-        <li>The channel check against other radio systems, power saving and device frequency offsets
-          <span class="m open">open</span>.</li>
+        <li>Transmissions with 250 kHz bandwidth, such as Meshtastic on 869.525 MHz. We do not send them on the
+          bench, because they cover the mesh channel <span class="m open">open</span>.</li>
+        <li>The frequency offset of other devices and the absolute frequency <span class="m open">open</span>.</li>
         <li>How busy the slots are elsewhere in Hamburg, measured by listening only <span class="m open">open</span>.</li>
       </ul>
       <p>The calculations come from <code>fuota/tools/nebenslot_airtime.py</code>, <code>nebenslot_rollout.py</code>,
