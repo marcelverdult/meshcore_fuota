@@ -500,7 +500,7 @@
         <tr><td>Kanal belegt</td><td class="n">20 ms, dann erneut</td><td>Erst hören, was der Nachbar sendet, dann ein eigenes Fragment wählen.</td></tr>
         <tr><td>Pull pausiert</td><td class="n">100 Abstände ohne Angebot oder Daten, mindestens 20 min (bei 0,3 %: 16 h)</td><td>Niemand hat es mehr. Beim nächsten Angebot geht es weiter.</td></tr>
         <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>Keine Dauersperre wegen einer schlechten Verbindung.</td></tr>
-        <tr><td>Retract</td><td class="n">3× nach 10, 20, 40 s; Antwort ≤ 1 je 30 s</td><td>Verbreiten, ohne zu fluten.</td></tr>
+        <tr><td>Retract</td><td class="n">bis zu 3×: nach 0,3 bis 2 s, nach weiteren 10 bis 20 s, nach weiteren 20 bis 40 s; Antwort ≤ 1 je 30 s</td><td>Nur an direkte Nachbarn, ohne zu fluten. Hört der Knoten einen Nachbarn denselben Retract senden, lässt er eine Sendung aus.</td></tr>
         <tr><td>Anwenden</td><td class="n">~12 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>. Der Knoten ist dabei rund 1 min offline.</td></tr>
         <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung nach 60 s</td><td>Nach 3 Fehlstarts folgt der Rückfall auf die alte Firmware.</td></tr>
       </table>
@@ -521,7 +521,7 @@
         <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>First hear what the neighbour sends, then pick an own fragment.</td></tr>
         <tr><td>Pull paused</td><td class="n">100 gaps without offer or data, at least 20 min (at 0.3 %: 16 h)</td><td>Nobody has it any more. It resumes at the next offer.</td></tr>
         <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
-        <tr><td>Retract</td><td class="n">3× after 10, 20, 40 s; reply ≤ 1 per 30 s</td><td>Spread it without flooding.</td></tr>
+        <tr><td>Retract</td><td class="n">up to 3×: after 0.3 to 2 s, after a further 10 to 20 s, after a further 20 to 40 s; reply ≤ 1 per 30 s</td><td>Only to direct neighbours, without flooding. If the node hears a neighbour send the same retract, it skips one send.</td></tr>
         <tr><td>Apply</td><td class="n">~12 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>. The node is offline for about 1 min meanwhile.</td></tr>
         <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation after 60 s</td><td>After 3 failed boots the node reverts to the old firmware.</td></tr>
       </table>
