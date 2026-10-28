@@ -58,15 +58,15 @@
   <main>
 <header class="hero">
     <div lang="de">
-      <h1>Nur signierte Firmware, und bei einem Fehlstart die alte</h1>
+      <h1>Nur signierte Firmware, und bei Startproblemen die alte</h1>
       <p class="lede">Dein Repeater installiert nur, was der Release-Schlüssel signiert hat. Startet die neue Firmware
-        nicht, läuft nach bis zu 3 Probestarts (Startversuchen) wieder die alte <span class="m meas">gemessen</span>. Im Proof of Concept
+        nicht, läuft nach 3 Probestarts (Startversuchen) ohne Bestätigung wieder die alte <span class="m meas">gemessen</span>. Im Proof of Concept
         signiert der Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
       <h1>Only signed firmware, and the old one after a failed start</h1>
       <p class="lede">Your repeater installs only what the release key has signed. When the new firmware fails
-        to start in up to 3 test boots, the old one runs again <span class="m meas">measured</span>. In the proof of concept the
+        to start, the old one runs again after 3 test boots without confirmation <span class="m meas">measured</span>. In the proof of concept the
         test key signs. There is no release key yet <span class="m open">open</span>.</p>
     </div>
   </header>
@@ -200,9 +200,9 @@
         <li>Nur Stage-0 ersetzt die laufende Firmware, Seite für Seite, mit Journal. Das Journal ist ein Protokoll der
           Tauschschritte im Flash.</li>
         <li>Nach einem Stromausfall setzt Stage-0 genau dort fort.</li>
-        <li>Startet die neue Firmware in 3 Probestarts nicht sauber, tauscht Stage-0 zurück (Rückfall)
-          <span class="m meas">gemessen</span>. Endet ein Probestart mit Absturz oder Watchdog-Neustart, ist das ein Fehlstart. Das Image ist dann gesperrt <span class="m code">im Code geprüft</span>.</li>
-        <li>Fiel in den Probestarts nur der Strom aus, hält der Knoten den automatischen Start zurück, bis er einen Tag ohne Neustart lief (<code>fuota apply</code> wartet nicht). Erst der 3. solche Rückfall sperrt das Image <span class="m code">im Code geprüft</span>. Ein
+        <li>Nach 3 Probestarts ohne Bestätigung tauscht Stage-0 zurück (Rückfall)
+          <span class="m meas">gemessen</span>. Gesperrt wird das Image erst nach dem Rückfall, und nur wenn mindestens ein Probestart mit einem Fehler-Neustart endete: Reset-Taste, Watchdog, Absturz, Lockup, Debugger oder NFC-Wecken. Ein Probestart ohne erfasstes Ende zählt auch so <span class="m code">im Code geprüft</span>.</li>
+        <li>Endeten alle Probestarts nur durch Stromausfall, hält der Knoten den automatischen Start zurück, bis er einen Tag ohne Neustart lief (<code>fuota apply</code> wartet nicht). Erst der 3. solche Rückfall sperrt das Image <span class="m code">im Code geprüft</span>. Ein
           Probestart ist jeder Start der neuen Firmware, bevor sie bestätigt ist. Am Testaufbau ist dieser Fall noch nicht gemessen <span class="m open">offen</span>.</li>
         <li>Von selbst wendet ein Knoten ein Update höchstens 3-mal je 24 h Laufzeit an <span class="m code">im Code geprüft</span>. So endet eine
           Schleife aus Anwenden und Neustart. Am Testaufbau galten 600 s statt 24 h. Den 4. Start hielt der Knoten an
@@ -239,7 +239,7 @@
         <li><b>„Gesund“ heißt:</b>
           <ul>
             <li>Die Hauptschleife lief im Probestart 60 s. Dazu hat die neue Firmware ein gültiges Paket empfangen und eines gesendet <span class="m code">im Code geprüft</span>.</li>
-            <li>Fehlt dieses Lebenszeichen, startet sie neu. Nach 3 solchen Starts tauscht Stage-0 zurück <span class="m code">im Code geprüft</span>. Das Image bleibt erlaubt. Der automatische Start folgt frühestens nach 1 Tag, mit wachsendem Abstand (1, 2, 4, 8, 16, dann 30 Tage) <span class="m code">im Code geprüft</span>. <code>fuota apply</code> wartet nicht.</li>
+            <li>Fehlt dieses Lebenszeichen, startet sie neu. Nach 3 Probestarts ohne Lebenszeichen tauscht Stage-0 zurück <span class="m code">im Code geprüft</span>. Das Image bleibt erlaubt. Der automatische Start folgt frühestens nach 1 Tag, mit wachsendem Abstand (1, 2, 4, 8, 16, dann 30 Tage) <span class="m code">im Code geprüft</span>. <code>fuota apply</code> wartet nicht.</li>
             <li>Am Testaufbau bestätigte ein Knoten so ein Update <span class="m meas">gemessen</span>. Am Testaufbau fiel ein Knoten ohne Lebenszeichen nach 3 Probestarts zurück. Das Image blieb erlaubt, dieselbe Kampagne ließ sich neu laden <span class="m meas">gemessen</span>. Offen ist der Rückfall bei einer echten Funklücke im Feld <span class="m open">offen</span>.</li>
           </ul></li>
         <li><b>Stromausfall beim überlappenden Anwenden:</b> Hat danach kein Nachbar den Patch, bleibt der Knoten auf
@@ -261,7 +261,7 @@
           <ul>
             <li>Meldet die Firmware einen Fehler an Funk oder Board, startet sie nach 1, 2, 5 und 15 Minuten neu, danach stündlich. Ein Watchdog läuft immer
           <span class="m code">im Code geprüft</span>.</li>
-            <li>Das heilt nicht alles. Abstürze im Abstand von 5 bis 60 Minuten zählen nicht als Fehlstart. Hat Slot A keinen gültigen Start, hilft nur der Bootloader per USB.</li>
+            <li>Das heilt nicht alles. Abstürze im Abstand von 5 bis 60 Minuten lösen diesen Rückfall nicht aus. Hat Slot A keinen gültigen Start, hilft nur der Bootloader per USB.</li>
             <li>Ein Doppel-Reset (zwei Neustarts kurz nacheinander) öffnet den UF2-Modus ohne Zeitlimit. In diesem Modus nimmt der Knoten per USB ein Image an. Ein volles Journal stoppt den Knoten. Im Simulator trat das nie auf. Stage-0 lässt sich über Funk nicht ändern <span class="m code">im Code geprüft</span>.</li>
             <li>Am Testaufbau sind diese Fixes noch nicht gemessen <span class="m open">offen</span>.</li>
           </ul></li>
@@ -347,9 +347,9 @@
         <li>Only Stage-0 replaces the running firmware, page by page, with a journal. The journal is a log of the swap
           steps in flash.</li>
         <li>After a power loss Stage-0 resumes exactly where it stopped.</li>
-        <li>If the new firmware does not start cleanly, Stage-0 reverts after 3 failed test boots
-          <span class="m meas">measured</span>. A test boot that ends in a crash or watchdog restart is a failed boot. The image is then blocked <span class="m code">checked in the code</span>.</li>
-        <li>If only power failed in the test boots, the node holds back the automatic start. It waits for a day without a restart (<code>fuota apply</code> does not wait). Only the 3rd such revert bans the image <span class="m code">checked in the code</span>. A test boot
+        <li>After 3 test boots without confirmation Stage-0 reverts
+          <span class="m meas">measured</span>. The image is blocked only after the revert, and only if at least one test boot ended in a fault restart: reset button, watchdog, crash, lockup, debugger or NFC wake-up. A test boot with no recorded end counts the same <span class="m code">checked in the code</span>.</li>
+        <li>If all test boots ended only through a power failure, the node holds back the automatic start. It waits for a day without a restart (<code>fuota apply</code> does not wait). Only the 3rd such revert bans the image <span class="m code">checked in the code</span>. A test boot
           is every start of the new firmware before it is confirmed. This case is not measured on the bench yet <span class="m open">open</span>.</li>
         <li>On its own, a node applies an update at most 3 times per 24 h of running time <span class="m code">checked in the code</span>. So a loop of
           applying and restarting ends. On the bench we used 600 s instead of 24 h. The node stopped the 4th start
@@ -387,7 +387,7 @@
         <li><b>“Healthy” means:</b>
           <ul>
             <li>the main loop ran for 60 s in the test boot. The new firmware also received a valid packet and sent one <span class="m code">checked in the code</span>.</li>
-            <li>Without this sign of life it restarts. After 3 such starts Stage-0 swaps back <span class="m code">checked in the code</span>. The image stays allowed. The automatic start waits at least 1 day. The gap then grows: 1, 2, 4, 8, 16, then 30 days <span class="m code">checked in the code</span>. <code>fuota apply</code> does not wait.</li>
+            <li>Without this sign of life it restarts. After 3 test boots without a sign of life Stage-0 swaps back <span class="m code">checked in the code</span>. The image stays allowed. The automatic start waits at least 1 day. The gap then grows: 1, 2, 4, 8, 16, then 30 days <span class="m code">checked in the code</span>. <code>fuota apply</code> does not wait.</li>
             <li>On the bench a node confirmed an update this way <span class="m meas">measured</span>. On the bench a node reverted after 3 test boots without a sign of life. The image stayed allowed, and the same campaign loaded again <span class="m meas">measured</span>. Open: the revert in a real radio gap in the field <span class="m open">open</span>.</li>
           </ul></li>
         <li><b>Power loss during overlapping apply:</b> if no neighbour has the patch afterwards, the node stays on the
@@ -408,7 +408,7 @@
           <ul>
             <li>If the firmware reports a fault of the radio or board, it restarts after 1, 2, 5 and 15 minutes, then hourly. A watchdog always runs
           <span class="m code">checked in the code</span>.</li>
-            <li>This does not cure everything. Crashes 5 to 60 minutes apart do not count as a failed start. If slot A has no valid start, only the bootloader over USB helps.</li>
+            <li>This does not cure everything. Crashes 5 to 60 minutes apart do not trigger this swap-back. If slot A has no valid start, only the bootloader over USB helps.</li>
             <li>A double reset (two restarts in quick succession) opens the UF2 mode without a time limit. In this mode the node accepts an image over USB. A full journal stops the node. It never happened in the simulator. Stage-0 cannot be changed over the air <span class="m code">checked in the code</span>.</li>
             <li>These fixes are not measured on the bench yet <span class="m open">open</span>.</li>
           </ul></li>

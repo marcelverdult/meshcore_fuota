@@ -95,7 +95,7 @@
               weiter als einen Hop (Funksprung).</li>
             <li>Dein Repeater wendet im A/B-Verfahren an. Slot A hält das laufende Image, Slot B das neue. Der Loader
               Stage-0 tauscht die Slots beim Start.</li>
-            <li>Startet die neue Firmware nicht, läuft nach bis zu 3 Probestarts wieder die alte
+            <li>Startet die neue Firmware nicht, läuft nach 3 Probestarts ohne Bestätigung wieder die alte
               <span class="m meas">gemessen</span>.</li>
           </ul></li>
       </ol>
@@ -136,7 +136,7 @@
               travels further than one hop (one radio link).</li>
             <li>Applying uses the A/B method. Slot A holds the running image, slot B the new one. The loader Stage-0
               swaps the slots at boot.</li>
-            <li>If the new firmware does not start, the old one runs again after up to 3 test boots
+            <li>If the new firmware does not start, the old one runs again after 3 test boots without confirmation
               <span class="m meas">measured</span>.</li>
           </ul></li>
       </ol>
@@ -218,10 +218,10 @@
         <span>Vor dem Tausch prüft Stage-0 Slot B (neu) und Slot A (alt) gegen den Auftrag. Dabei prüft es Vektortabelle und SHA-256.</span>
         <span>Dann tauscht es seitenweise, jeder Schritt steht im Journal (30 bis 39 s <span class="m meas">gemessen</span>). Danach prüft es Slot A erneut gegen den Soll-Hash.</span>
         <span>Der Probestart läuft mit Watchdog (30 s <span class="m code">im Code geprüft</span>).</span>
-        <span>Lehnt Stage-0 einen Auftrag ab, etwa wegen eines unbekannten Auftragsformats, startet die alte Firmware. Das Image ist dann gesperrt wie nach einem Rückfall mit Fehlstarts <span class="m meas">gemessen</span>.</span></div></div>
+        <span>Lehnt Stage-0 einen Auftrag ab, etwa wegen eines unbekannten Auftragsformats, startet die alte Firmware. Das Image ist dann gesperrt wie nach einem Rückfall mit Fehler-Neustart <span class="m meas">gemessen</span>.</span></div></div>
       <div class="step"><div><span class="who">Neue Firmware</span><b>Bestätigen oder zurück</b>
         <span>60 s gesunde Hauptschleife und ein Funk-Lebenszeichen (ein Paket empfangen, eines gesendet) bestätigen die neue Firmware <span class="m code">im Code geprüft</span>. Nach 3 Probestarts ohne Bestätigung tauscht Stage-0 zurück (Rückfall) <span class="m meas">gemessen</span>.</span>
-        <span>Ist ein Probestart ein Fehlstart, ist nur dieses eine Image gesperrt. Ein Fehlstart endet mit Absturz oder Watchdog-Neustart. Der Knoten installiert das Image nie wieder und bietet es nicht an. Fehlte nur das Lebenszeichen oder fiel nur der Strom aus, bleibt es erlaubt und wird später neu versucht. Erst der 3. Stromausfall-Rückfall sperrt es.</span>
+        <span>Gesperrt wird nur dieses eine Image, und erst nach dem Rückfall: wenn mindestens ein Probestart mit einem Fehler-Neustart endete (Reset-Taste, Watchdog, Absturz, Lockup, Debugger oder NFC-Wecken). Ein Probestart ohne erfasstes Ende zählt auch so. Der Knoten installiert das Image nicht wieder und bietet es nicht an, solange er es unter den letzten 4 gescheiterten Images hat. Fehlte nur das Lebenszeichen oder fiel nur der Strom aus, bleibt es erlaubt und wird später neu versucht. Erst der 3. Stromausfall-Rückfall sperrt es.</span>
         <span><b>Du merkst:</b> Dein Knoten bleibt nicht alt. Jedes spätere Release mit einem Patch von seinem Stand installiert er normal.</span></div></div>
       <div class="step"><div><span class="who">Derselbe Knoten</span><b>Weiter anbieten</b>
         <span>Lag der Patch hinter dem neuen Image, liegt er nach dem Tausch noch da. Der Knoten prüft ihn beim Start erneut und bietet weiter an.</span>
@@ -275,10 +275,10 @@
         <span>Before the swap, Stage-0 checks slot B (new) and slot A (old) against the job. It checks the vector table and the SHA-256.</span>
         <span>Then it swaps page by page and journals every step (30 to 39 s <span class="m meas">measured</span>). Afterwards it checks slot A again against the target hash.</span>
         <span>The test boot runs with a watchdog (30 s <span class="m code">checked in the code</span>).</span>
-        <span>If Stage-0 refuses a job, for example an unknown job format, the old firmware starts. The image is then blocked as after a revert with failed boots <span class="m meas">measured</span>.</span></div></div>
+        <span>If Stage-0 refuses a job, for example an unknown job format, the old firmware starts. The image is then blocked as after a revert with a fault restart <span class="m meas">measured</span>.</span></div></div>
       <div class="step"><div><span class="who">New firmware</span><b>Confirm or revert</b>
         <span>60 s of a healthy main loop and a radio sign of life (one packet received, one sent) confirm the new firmware <span class="m code">checked in the code</span>. After 3 test boots without confirmation Stage-0 swaps back (revert) <span class="m meas">measured</span>.</span>
-        <span>If a test boot is a failed boot, only this one image is blocked. A failed boot ends with a crash or a watchdog restart. The node never installs the image again and does not offer it. If only the sign of life was missing or only the power failed, the image stays allowed and is tried again later. Only the 3rd power-loss revert blocks it.</span>
+        <span>Only this one image is blocked, and only after the revert: if at least one test boot ended in a fault restart (reset button, watchdog, crash, lockup, debugger or NFC wake-up). A test boot with no recorded end counts the same. The node does not install the image again and does not offer it while it is among the last 4 failed images it remembers. If only the sign of life was missing or only the power failed, the image stays allowed and is tried again later. Only the 3rd power-loss revert blocks it.</span>
         <span><b>You notice:</b> your node does not stay old. It installs any later release that has a patch from its current version as usual.</span></div></div>
       <div class="step"><div><span class="who">Same node</span><b>Keep offering</b>
         <span>If the patch sat behind the new image, it is still there after the swap. The node checks it again at boot and keeps offering.</span>

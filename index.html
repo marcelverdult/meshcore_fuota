@@ -91,7 +91,7 @@
             <span class="m calc">berechnet</span>. Fällige Mesh-Pakete gehen in der Sendewarteschlange vor.</span></li>
           <li><b>Jeder Repeater prüft und installiert</b><span>Jede 4-KB-Seite wird gegen das signierte Manifest
             geprüft, bevor sie weitergeht. Ab Werk wendet ein Repeater das Update nach 7 Tagen an
-            <span class="m code">im Code geprüft</span>. Startet die neue Firmware nicht, läuft nach 3 Fehlstarts
+            <span class="m code">im Code geprüft</span>. Startet die neue Firmware nicht, läuft nach 3 Probestarts ohne Bestätigung
             wieder die alte <span class="m meas">gemessen</span>.</span></li>
         </ol>
         <div class="ask"><h3>Such die Fehler</h3>
@@ -136,7 +136,7 @@
           <li><b>Neighbours pass it on</b><span>A neighbour pulls only the patch, page by page over LoRa. Then it offers it on. Each repeater sends at most 0.3 % of the time for this. That is about 11 s per hour <span class="m calc">calculated</span>. Due mesh packets go first in the transmit queue.</span></li>
           <li><b>Each repeater checks and installs</b><span>Every 4 KB page is checked against the signed manifest
             before it travels on. By default a repeater applies the update after 7 days
-            <span class="m code">checked in the code</span>. If the new firmware does not start, the old one returns after 3 failed boots <span class="m meas">measured</span>.</span></li>
+            <span class="m code">checked in the code</span>. If the new firmware does not start, the old one returns after 3 test boots without confirmation <span class="m meas">measured</span>.</span></li>
         </ol>
         <div class="ask"><h3>Find the flaws</h3>
           <p>This is a draft, none of it is in MeshCore. We lay it open so you find the design errors before anyone builds on it. Your note helps most like this: which passage, and why it breaks there. Where possible, add a scenario or a number.</p>
