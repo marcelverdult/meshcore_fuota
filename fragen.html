@@ -298,7 +298,7 @@
             <li>Calculation says the WisBlock GPS fits too <span class="m calc">calculated</span>. The earlier probe took 30,244 B more <span class="m meas">measured</span>.</li>
             <li>BSEC is a binary by Bosch under its own licence. New boards need a table entry and a board ID.</li>
           </ul></li>
-        <li><b>Release key.</b> A root key and a backup root are in the image; the release key carries a certificate and can be locked out by a revocation <span class="m code">checked in the code</span>.
+        <li><b>Release key.</b> A root key and a backup root are in the image; the release key carries a certificate and can be blocked by a revocation <span class="m code">checked in the code</span>.
           <ul>
             <li>This is not measured on the bench yet <span class="m open">open</span>. Until the revocation, a stolen release key allows any build, including one that removes FUOTA. How we keep the roots is not decided <span class="m open">open</span>.</li>
             <li>The private key never belongs in the build environment or a CI, we sign offline. A release build compiles only with its own release key.</li>
