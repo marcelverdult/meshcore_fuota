@@ -220,7 +220,7 @@
         <span>Der Probestart läuft mit Watchdog (30 s <span class="m code">im Code geprüft</span>).</span>
         <span>Lehnt Stage-0 einen Auftrag ab, etwa wegen eines unbekannten Auftragsformats, startet die alte Firmware. Das Image ist dann gesperrt wie nach einem Rückfall <span class="m meas">gemessen</span>.</span></div></div>
       <div class="step"><div><span class="who">Neue Firmware</span><b>Bestätigen oder zurück</b>
-        <span>60 s gesunde Hauptschleife bestätigen die neue Firmware <span class="m code">im Code geprüft</span>. Nach 3 Fehlstarts tauscht Stage-0 zurück (Rückfall) <span class="m meas">gemessen</span>.</span>
+        <span>60 s gesunde Hauptschleife und ein Funk-Lebenszeichen (ein Paket empfangen, eines gesendet) bestätigen die neue Firmware <span class="m code">im Code geprüft</span>. Nach 3 Fehlstarts tauscht Stage-0 zurück (Rückfall) <span class="m meas">gemessen</span>.</span>
         <span>Gesperrt ist nur dieses eine Image. Der Knoten installiert es nie wieder und bietet es nicht an.</span>
         <span><b>Du merkst:</b> Dein Knoten bleibt nicht alt. Jedes spätere Release mit einem Patch von seinem Stand installiert er normal.</span></div></div>
       <div class="step"><div><span class="who">Derselbe Knoten</span><b>Weiter anbieten</b>
@@ -277,7 +277,7 @@
         <span>The test boot runs with a watchdog (30 s <span class="m code">checked in the code</span>).</span>
         <span>If Stage-0 refuses a job, for example an unknown job format, the old firmware starts. The image is then blocked as after a revert <span class="m meas">measured</span>.</span></div></div>
       <div class="step"><div><span class="who">New firmware</span><b>Confirm or revert</b>
-        <span>60 s of a healthy main loop confirm the new firmware <span class="m code">checked in the code</span>. After 3 failed boots Stage-0 swaps back (revert) <span class="m meas">measured</span>.</span>
+        <span>60 s of a healthy main loop and a radio sign of life (one packet received, one sent) confirm the new firmware <span class="m code">checked in the code</span>. After 3 failed boots Stage-0 swaps back (revert) <span class="m meas">measured</span>.</span>
         <span>Only this one image is blocked. The node never installs it again and does not offer it.</span>
         <span><b>You notice:</b> your node does not stay old. It installs any later release that has a patch from its current version as usual.</span></div></div>
       <div class="step"><div><span class="who">Same node</span><b>Keep offering</b>
@@ -336,20 +336,22 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Befehl</th><th>Wirkung</th><th>Weg</th></tr>
+        <tr><td><code>password &lt;neu&gt;</code></td><td>Setzt das Admin-Passwort. Ein Release-Image hat keins, du setzt es beim ersten Mal per USB <span class="m code">im Code geprüft</span>. Ein leeres Passwort lehnt der Knoten ab.</td><td>USB, danach auch LoRa</td></tr>
         <tr><td><code>fuota info</code></td><td>Zeigt Build, Auto-Apply und den Stand des Updates.</td><td>USB und LoRa</td></tr>
         <tr><td><code>fuota auto now|delay|off</code></td><td>Legt fest, wann ein fertiges Update angewendet wird. <code>now</code>: sofort. <code>delay</code>: nach 7 Tagen, ab Werk. <code>off</code>: nur auf Befehl. Der Repeater speichert die Einstellung. <code>on</code> gilt weiter als <code>now</code>.</td><td>USB und LoRa</td></tr>
         <tr><td><code>fuota apply &lt;build&gt;</code></td><td>Startet das fertige Update mit dieser Build-Nummer nach 5 s <span class="m code">im Code geprüft</span>. Die Nummer nennt <code>fuota info</code>. Über LoRa ist sie Pflicht.</td><td>USB und LoRa</td></tr>
-        <tr><td><code>fuota cmdtime</code></td><td>Zeigt und setzt den Zeitstempel des letzten ändernden Fern-Befehls.</td><td>nur USB</td></tr>
+        <tr><td><code>fuota cmdtime</code></td><td>Zeigt und setzt den Zeitstempel des letzten ändernden Fern-Befehls. Über LoRa nimmt er keinen Wert. Er setzt den Zähler dann auf den Zeitstempel dieses Befehls, auch zurück <span class="m code">im Code geprüft</span>.</td><td>USB, ohne Wert auch LoRa</td></tr>
         <tr><td>alle anderen <code>fuota</code>-Befehle</td><td>Über LoRa lehnt der Repeater sie ab.</td><td>nur USB</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Command</th><th>Effect</th><th>Route</th></tr>
+        <tr><td><code>password &lt;new&gt;</code></td><td>Sets the admin password. A release image has none; you set it the first time over USB <span class="m code">checked in the code</span>. The node refuses an empty password.</td><td>USB, then also LoRa</td></tr>
         <tr><td><code>fuota info</code></td><td>Shows build, auto apply and the state of the update.</td><td>USB and LoRa</td></tr>
         <tr><td><code>fuota auto now|delay|off</code></td><td>Sets when a complete update applies. <code>now</code>: at once. <code>delay</code>: after 7 days, the default. <code>off</code>: only on command. The repeater saves the setting. <code>on</code> still means <code>now</code>.</td><td>USB and LoRa</td></tr>
         <tr><td><code>fuota apply &lt;build&gt;</code></td><td>Starts the complete update with that build number after 5 s <span class="m code">checked in the code</span>. Find the number with <code>fuota info</code>. Over LoRa it is required.</td><td>USB and LoRa</td></tr>
-        <tr><td><code>fuota cmdtime</code></td><td>Shows and sets the timestamp of the last remote command that changed something.</td><td>USB only</td></tr>
+        <tr><td><code>fuota cmdtime</code></td><td>Shows and sets the timestamp of the last remote command that changed something. Over LoRa it takes no value. It then sets the counter to the timestamp of this command, also lower <span class="m code">checked in the code</span>.</td><td>USB, without a value also LoRa</td></tr>
         <tr><td>all other <code>fuota</code> commands</td><td>Over LoRa the repeater refuses them.</td><td>USB only</td></tr>
       </table>
     </div>
@@ -357,16 +359,15 @@
       <h3>Schutz gegen Wiederholung</h3>
       <p>Ein mitgeschnittener alter Befehl gilt nach einem Neustart nicht wieder. Der Repeater hält den Zeitstempel eines
         Admins nur im RAM (Stock, also MeshCore unverändert). Darum speichert FUOTA den Zeitstempel des letzten ändernden
-        Fern-Befehls (<code>auto</code>, <code>apply</code>). Gleiche und ältere Zeitstempel lehnt es ab. Stock-Befehle wie
-        <code>reboot</code> schützt das nicht.</p>
+        Fern-Befehls. Das gilt für <code>auto</code>, <code>apply</code>, <code>reboot</code>, <code>clkreboot</code>,
+        <code>poweroff</code>, <code>shutdown</code> und <code>start ota</code>. Gleiche und ältere Zeitstempel lehnt es ab.</p>
       <h3>Am Testaufbau gemessen</h3>
     </div>
     <div lang="en" class="prose">
       <h3>Protection against replay</h3>
       <p>A recorded old command does not count again after a reboot. A repeater keeps an admin's timestamp only in RAM
-        (stock, that is MeshCore unchanged). So FUOTA saves the timestamp of the last remote command that changes something
-        (<code>auto</code>, <code>apply</code>). It refuses equal and older ones. Stock commands such as
-        <code>reboot</code> are not covered.</p>
+        (stock, that is MeshCore unchanged). So FUOTA saves the timestamp of the last remote command that changes something. That covers <code>auto</code>, <code>apply</code>, <code>reboot</code>, <code>clkreboot</code>, <code>poweroff</code>,
+        <code>shutdown</code> and <code>start ota</code>. It refuses equal and older ones.</p>
       <h3>Measured on the bench</h3>
     </div>
     <div lang="de" class="tscroll">
