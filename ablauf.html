@@ -104,8 +104,8 @@
         <li>FUOTA steht für Firmware Update Over the Air. Seine Pakete gehen an direkte Nachbarn, in einem eigenen Pakettyp (0x0E).</li>
         <li>Kein Knoten leitet ein solches Paket ohne Pfad weiter, auch kein normaler Repeater (ohne FUOTA). MeshCore
           verwirft unbekannte Typen.</li>
-        <li>Nur hinter normalen Repeatern (ohne FUOTA) laufen Anfrage und Daten auf einem festen Pfad. Ein Angebot
-          flutet dort höchstens einmal am Tag als Gruppen-Nachricht <span class="m code">im Code geprüft</span>. Mehr dazu:
+        <li>Nur hinter normalen Repeatern (ohne FUOTA) laufen Anfrage und Daten auf einem festen Pfad. Ein Anbieter
+          flutet dort sein Angebot als Gruppen-Nachricht. In der ersten Woche, nachdem er die ganze Kampagne hat, tut er das höchstens einmal am Tag. Dasselbe gilt eine Woche lang nach jeder Anfrage, die er hört. Sonst flutet er höchstens einmal je Woche <span class="m code">im Code geprüft</span>. Auch ein Retract geht einmal als Flut raus. Mehr dazu:
           <a href="funk.html#weiter">Wer was weitergibt</a> (früher Abschnitt 6).</li>
         <li>Update-Daten fluten nie.</li>
         <li>Jeder Knoten sendet Update-Pakete nur im harten Airtime-Budget (Sendezeit). Ab Werk sind das 0,3 %
@@ -145,8 +145,8 @@
         <li>FUOTA stands for Firmware Update Over the Air. Its packets go to direct neighbours, in a packet type of their own (0x0E).</li>
         <li>No node forwards such a packet without a path. That includes a normal repeater (without FUOTA). MeshCore
           drops unknown types.</li>
-        <li>Only behind normal repeaters (without FUOTA) do request and data travel along a fixed path. An offer floods
-          there at most once a day as a group message <span class="m code">checked in the code</span>. More: <a href="funk.html#weiter">Who passes on what</a>
+        <li>Only behind normal repeaters (without FUOTA) do request and data travel along a fixed path. A provider floods
+          its offer there as a group message. In the first week after it holds the whole campaign it does so at most once a day. The same holds for a week after each request it hears. Otherwise it floods at most once a week <span class="m code">checked in the code</span>. A retract also goes out once as a flood. More: <a href="funk.html#weiter">Who passes on what</a>
           (formerly section 6).</li>
         <li>Update data never floods.</li>
         <li>Every node sends update packets only within a hard airtime budget (time on air). By default that is 0.3 %
@@ -228,7 +228,7 @@
         <span>Nach einem überlappenden Anwenden ist der Patch weg. Der Knoten bietet ihn nicht mehr an.</span></div></div>
       <div class="step"><div><span class="who">Release-Schlüssel, jederzeit</span><b>Zurückziehen</b>
         <span>Ein Retract (80 B <span class="m code">im Code geprüft</span>) gilt für ein Ziel und einen Build. Jeder Knoten, der ihn prüft, stoppt Holen und Anbieten und speichert ihn.</span>
-        <span>Er sendet ihn bis zu 3-mal <span class="m code">im Code geprüft</span>. Auf ein Angebot dieses Builds antwortet er mit dem Retract, höchstens alle 30 s.</span></div></div>
+        <span>Er sendet ihn bis zu 3-mal <span class="m code">im Code geprüft</span>. Außerdem flutet er ihn einmal. Vorher wartet er 2 bis 30 min <span class="m code">im Code geprüft</span>. Auf ein Angebot dieses Builds antwortet er mit dem Retract, höchstens alle 30 s <span class="m code">im Code geprüft</span>. Kam das Angebot als Flut, antwortet er mit einer Flut: nach einer Wartezeit von bis zu 30 min, höchstens einmal am Tag je Retract <span class="m code">im Code geprüft</span>.</span></div></div>
     </div>
     <div class="steps" lang="en">
       <div class="step"><div><span class="who">Release build, signed offline</span><b>Build patch and manifest</b>
@@ -285,7 +285,7 @@
         <span>After an overlapping apply the patch is gone. The node no longer offers it.</span></div></div>
       <div class="step"><div><span class="who">Release key, any time</span><b>Retract</b>
         <span>A retract (80 B <span class="m code">checked in the code</span>) applies to one target and one build. Every node that verifies it stops pulling and offering, and stores it.</span>
-        <span>It sends it up to 3 times <span class="m code">checked in the code</span>. It answers an offer of this build with the retract, at most every 30 s.</span></div></div>
+        <span>It sends it up to 3 times <span class="m code">checked in the code</span>. It also floods it once. It waits 2 to 30 min first <span class="m code">checked in the code</span>. It answers an offer of this build with the retract, at most every 30 s <span class="m code">checked in the code</span>. If the offer came as a flood, it answers with a flood: after a wait of up to 30 min, at most once a day per retract <span class="m code">checked in the code</span>.</span></div></div>
     </div>
   </section>
 
@@ -304,8 +304,8 @@
         <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Installiert das neueste Release-Paket per USB oder BLE-OTA und bietet die enthaltene Kampagne an.</td><td>Eigene Kampagnen erzeugen. Unsigniertes lehnt der Knoten schon beim Laden ab.</td></tr>
         <tr><td><b>Repeater mit FUOTA</b></td><td>Läuft mit normaler MeshCore-Repeater-Firmware und dem FUOTA-Modul. Er hört Angebote, holt, prüft, gibt weiter und wendet an.</td><td>Sein Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
         <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB <span class="m meas">gemessen</span>)</td><td>Läuft nur beim Start. Führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Funken und Signaturen prüfen. Es vertraut dem Auftrag der App (siehe <a href="fragen.html#luecken">Was noch offen ist</a>).</td></tr>
-        <tr><td><b>Normaler Repeater (ohne FUOTA)</b>, Companions (Knoten, die eine App steuert)</td><td>Sie verwerfen Typ 0x0E ohne Pfad. Das ist in MeshCore 1.18.0 Absicht (<code>src/Mesh.cpp:326-329</code>), der Typ wird nicht geroutet <span class="m code">im Code geprüft</span>. Ein Paket mit Pfad leiten sie weiter wie jedes Direct-Paket (<code>src/Mesh.cpp:78-106</code>). Ein geflutetes Angebot behandeln sie wie jede Gruppen-Nachricht. So tragen sie Anfragen und Daten über Lücken (siehe <a href="funk.html#weiter">Wer was weitergibt</a>).</td><td>Ein Update prüfen, halten oder selbst anbieten.</td></tr>
-        <tr><td><b>Betreiber</b> (du)</td><td>Du entscheidest, ob du mitmachst. Ab Werk gibt dein Knoten ein fertiges Update 7 Tage weiter, bevor er es anwendet. Kommt in diesen 7 Tagen ein Retract, wendet er es nicht an. Du kannst sofort anwenden lassen, nur auf Befehl anwenden oder selbst starten. Das geht auch per LoRa über die Fern-Befehlszeile (CLI, siehe <a href="#betreiber">Befehle</a>). Das läuft am Testaufbau, auch über LoRa <span class="m meas">gemessen</span>.</td><td>Andere Knoten beeinflussen.</td></tr>
+        <tr><td><b>Normaler Repeater (ohne FUOTA)</b>, Companions (Knoten, die eine App steuert)</td><td>Sie verwerfen Typ 0x0E ohne Pfad. Das ist in MeshCore 1.18.0 Absicht (<code>src/Mesh.cpp:326-329</code>), der Typ wird nicht geroutet <span class="m code">im Code geprüft</span>. Ein Paket mit Pfad leiten sie weiter wie jedes Direct-Paket (<code>src/Mesh.cpp:78-106</code>). Ein geflutetes Angebot oder einen gefluteten Retract behandeln sie wie jede Gruppen-Nachricht. So tragen sie Anfragen und Daten über Lücken (siehe <a href="funk.html#weiter">Wer was weitergibt</a>).</td><td>Ein Update prüfen, halten oder selbst anbieten.</td></tr>
+        <tr><td><b>Betreiber</b> (du)</td><td>Du entscheidest, ob du mitmachst. Ab Werk gibt dein Knoten ein fertiges Update 7 Tage weiter, bevor er es anwendet. Kommt in diesen 7 Tagen ein Retract, wendet er es nicht an. Du kannst sofort anwenden lassen, nur auf Befehl anwenden oder selbst starten. Das geht auch per LoRa über die Fern-Befehlszeile (CLI, siehe <a href="#betreiber">Befehle</a>). Das läuft am Testaufbau, auch über LoRa <span class="m meas">gemessen</span>. Mit <code>set repeat off</code> schaltest du den Knoten als Repeater ab. Dann bietet er auch mit FUOTA nichts an, gibt keine Daten weiter und flutet nichts. Retracts und Schlüssel-Widerrufe sendet er nur an direkte Nachbarn <span class="m code">im Code geprüft</span>.</td><td>Andere Knoten beeinflussen.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -316,8 +316,8 @@
         <tr><td><b>Seed</b> (any participant)</td><td>Installs the latest release package by USB or BLE OTA and offers its campaign.</td><td>Create its own campaigns. The node rejects unsigned material already at load time.</td></tr>
         <tr><td><b>Repeater with FUOTA</b></td><td>Runs normal MeshCore repeater firmware plus the FUOTA module. It hears offers, pulls, checks, passes on and applies.</td><td>Exceed its budget, pass on unchecked data, update foreign nodes.</td></tr>
         <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB <span class="m meas">measured</span>)</td><td>Runs only at boot. Executes a swap job, with journal, test boot and revert.</td><td>Use radio or check signatures. It trusts the job from the app (see <a href="fragen.html#luecken">What is still open</a>).</td></tr>
-        <tr><td><b>Normal repeater (without FUOTA)</b>, companions (nodes that an app controls)</td><td>They drop type 0x0E without a path. MeshCore 1.18.0 does this deliberately (<code>src/Mesh.cpp:326-329</code>) <span class="m code">checked in the code</span>. They forward a packet with a path like any direct packet (<code>src/Mesh.cpp:78-106</code>). They treat a flooded offer like any group message. This is how they carry requests and data across gaps (see <a href="funk.html#weiter">Who passes on what</a>).</td><td>Check, hold or offer an update themselves.</td></tr>
-        <tr><td><b>Operator</b> (you)</td><td>You decide whether to take part. By default your node passes on a complete update for 7 days before it applies. If a retract arrives within those 7 days, it does not apply. You can have it apply at once, apply only on command, or start it yourself. That also works over LoRa via the remote command line (CLI, see <a href="#betreiber">commands</a>). This runs on the bench, over LoRa as well <span class="m meas">measured</span>.</td><td>Influence other nodes.</td></tr>
+        <tr><td><b>Normal repeater (without FUOTA)</b>, companions (nodes that an app controls)</td><td>They drop type 0x0E without a path. MeshCore 1.18.0 does this deliberately (<code>src/Mesh.cpp:326-329</code>) <span class="m code">checked in the code</span>. They forward a packet with a path like any direct packet (<code>src/Mesh.cpp:78-106</code>). They treat a flooded offer or a flooded retract like any group message. This is how they carry requests and data across gaps (see <a href="funk.html#weiter">Who passes on what</a>).</td><td>Check, hold or offer an update themselves.</td></tr>
+        <tr><td><b>Operator</b> (you)</td><td>You decide whether to take part. By default your node passes on a complete update for 7 days before it applies. A retract in that time stops the update. You can have it apply at once, only on command, or start it yourself. That also works over LoRa via the remote command line (CLI, see <a href="#betreiber">commands</a>). This runs on the bench, over LoRa as well <span class="m meas">measured</span>. <code>set repeat off</code> switches the node off as a repeater. Then, even with FUOTA, it offers nothing, passes on no data and floods nothing. It sends retracts and key revocations to direct neighbours only <span class="m code">checked in the code</span>.</td><td>Influence other nodes.</td></tr>
       </table>
     </div>
   </section>
@@ -341,6 +341,9 @@
         <tr><td><code>fuota auto now|delay|off</code></td><td>Legt fest, wann ein fertiges Update angewendet wird. <code>now</code>: sofort. <code>delay</code>: nach 7 Tagen, ab Werk. <code>off</code>: nur auf Befehl. Der Repeater speichert die Einstellung. <code>on</code> gilt weiter als <code>now</code>.</td><td>USB und LoRa</td></tr>
         <tr><td><code>fuota apply &lt;build&gt;</code></td><td>Startet das fertige Update mit dieser Build-Nummer nach 5 s <span class="m code">im Code geprüft</span>. Die Nummer nennt <code>fuota info</code>. Über LoRa ist sie Pflicht.</td><td>USB und LoRa</td></tr>
         <tr><td><code>fuota cmdtime</code></td><td>Zeigt und setzt den Zeitstempel des letzten ändernden Fern-Befehls. Über LoRa nimmt er keinen Wert. Er setzt den Zähler dann auf den Zeitstempel dieses Befehls, auch zurück <span class="m code">im Code geprüft</span>.</td><td>USB, ohne Wert auch LoRa</td></tr>
+        <tr><td><code>fuota relay on|off</code></td><td>Mit <code>off</code> gibt der Knoten Nachbarn nichts mehr: kein Angebot, keine Flut des Angebots, keine Daten. Er holt weiter für sich selbst. Retracts, Schlüssel-Widerrufe und Antworten auf Angebote zurückgezogener Builds flutet er weiter. Der Repeater speichert die Einstellung <span class="m code">im Code geprüft</span>.</td><td>USB und LoRa</td></tr>
+        <tr><td><code>set repeat off</code></td><td>MeshCore-Befehl: schaltet den Knoten als Repeater ab. FUOTA bietet dann nichts an, gibt keine Daten weiter und flutet nichts. Retracts, Schlüssel-Widerrufe und Antworten auf Angebote zurückgezogener Builds gehen nur an direkte Nachbarn, ohne Flut <span class="m code">im Code geprüft</span>.</td><td>USB und LoRa</td></tr>
+        <tr><td><code>fuota retract</code></td><td>Zeigt die Retracts, die der Knoten kennt, und drei Zähler für Fluten: gesendete, gehörte und eigene, die eine gehörte ersetzt hat. Mit einem signierten Retract als Hex-Text übernimmt der Knoten ihn und flutet ihn nach 1 bis 5 s. Mit <code>set repeat off</code> sendet er ihn nur an direkte Nachbarn <span class="m code">im Code geprüft</span>.</td><td>nur USB</td></tr>
         <tr><td>alle anderen <code>fuota</code>-Befehle</td><td>Über LoRa lehnt der Repeater sie ab.</td><td>nur USB</td></tr>
       </table>
     </div>
@@ -352,6 +355,9 @@
         <tr><td><code>fuota auto now|delay|off</code></td><td>Sets when a complete update applies. <code>now</code>: at once. <code>delay</code>: after 7 days, the default. <code>off</code>: only on command. The repeater saves the setting. <code>on</code> still means <code>now</code>.</td><td>USB and LoRa</td></tr>
         <tr><td><code>fuota apply &lt;build&gt;</code></td><td>Starts the complete update with that build number after 5 s <span class="m code">checked in the code</span>. Find the number with <code>fuota info</code>. Over LoRa it is required.</td><td>USB and LoRa</td></tr>
         <tr><td><code>fuota cmdtime</code></td><td>Shows and sets the timestamp of the last remote command that changed something. Over LoRa it takes no value. It then sets the counter to the timestamp of this command, also lower <span class="m code">checked in the code</span>.</td><td>USB, without a value also LoRa</td></tr>
+        <tr><td><code>fuota relay on|off</code></td><td>With <code>off</code> the node gives its neighbours nothing. It sends no offer, no flood of the offer and no data. It still pulls for itself. It keeps flooding retracts, key revocations and answers to offers of retracted builds. The repeater saves the setting <span class="m code">checked in the code</span>.</td><td>USB and LoRa</td></tr>
+        <tr><td><code>set repeat off</code></td><td>MeshCore command: switches the node off as a repeater. FUOTA then offers nothing, passes on no data and floods nothing. Retracts, key revocations and answers to offers of retracted builds go only to direct neighbours, without a flood <span class="m code">checked in the code</span>.</td><td>USB and LoRa</td></tr>
+        <tr><td><code>fuota retract</code></td><td>Shows the retracts the node knows and three counters for floods: sent, heard, and own ones that a heard one replaced. Given a signed retract as hex text, the node takes it over and floods it after 1 to 5 s. With <code>set repeat off</code> it sends it only to direct neighbours <span class="m code">checked in the code</span>.</td><td>USB only</td></tr>
         <tr><td>all other <code>fuota</code> commands</td><td>Over LoRa the repeater refuses them.</td><td>USB only</td></tr>
       </table>
     </div>
@@ -426,7 +432,7 @@
         <li>Board und Pins kommen zur Laufzeit aus dem Deskriptor.</li>
         <li>Gebaut mit <code>-Os</code> statt <code>-Ofast</code>.</li>
         <li>Zusätzlich die Sensor-Treiber für SHTC3, SHT4x, LPS22HB, INA260 und BME680.</li>
-        <li>Ein Update-Angebot flutet er höchstens einmal am Tag, in seiner Standard-Region (siehe <a href="sicherheit.html#warum">Sicherheit</a>).</li>
+        <li>Ein Update-Angebot flutet er in seiner Standard-Region, der Region, in der er flutet. Wie oft, steht unter <a href="sicherheit.html#warum">Sicherheit</a>.</li>
       </ul>
       <p>Das stammt aus Build-Konfiguration und Code <span class="m code">im Code geprüft</span>. Was bei anderen Boards
         gegenüber Stock fehlt, steht unter <a href="fragen.html#luecken">Was noch offen ist</a>. Die Größen stehen
@@ -467,7 +473,7 @@
         <li>Board and pins come from the descriptor at run time.</li>
         <li>Built with <code>-Os</code> instead of <code>-Ofast</code>.</li>
         <li>Plus the sensor drivers for SHTC3, SHT4x, LPS22HB, INA260 and BME680.</li>
-        <li>It floods an update offer at most once a day, in its default region (see <a href="sicherheit.html#warum">Safety</a>).</li>
+        <li>It floods an update offer in its default region, the region in which it floods. How often is under <a href="sicherheit.html#warum">Safety</a>.</li>
       </ul>
       <p>This comes from the build configuration and the code <span class="m code">checked in the code</span>. What other
         boards lack compared with stock is listed under <a href="fragen.html#luecken">What is still open</a>. Sizes are

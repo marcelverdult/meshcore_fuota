@@ -77,8 +77,8 @@
     <div lang="de" class="prose">
       <h2>Aufbau der Nachrichten</h2>
       <p>Jede Nachricht ist ein MeshCore-Paket vom Typ 0x0E mit Route Direct. Zwischen direkten Nachbarn läuft sie ohne
-        Pfad (Zero-Hop). Hinter Repeatern ohne FUOTA läuft sie mit Pfad, siehe <a href="#weiter">Wer was weitergibt</a>.
-        Byte 1 und 2 jeder Nachricht sind die Kennung des Absenders. Das sind die ersten 2 Byte seines
+        Pfad (Zero-Hop). Hinter Repeatern ohne FUOTA läuft sie mit Pfad, siehe <a href="#weiter">Wer was weitergibt</a>. Nur Angebot, Retract und Schlüssel-Widerruf gehen zusätzlich als Flut raus. Die Flut ist ein anderes Paket: eine Gruppen-Nachricht vom MeshCore-Typ 0x06.</p>
+      <p>Byte 1 und 2 jeder Nachricht sind die Kennung des Absenders. Das sind die ersten 2 Byte seines
         öffentlichen Schlüssels. Die Kennung ist nicht signiert. Knoten wählen damit den Anbieter und erkennen einen
         beschäftigten Anbieter. Logs und der Testfilter nutzen sie auch.</p>
       <p>Das Angebot trägt ein Ticket. Es hängt am Manifest, der signierten Liste dessen, was zu einem Update gehört.
@@ -92,7 +92,8 @@
       <h2>Layout of the messages</h2>
       <p>Every message is a MeshCore packet of type 0x0E with route direct. Between direct neighbours it travels
         without a path (zero hop). Behind repeaters without FUOTA it travels with a path, see
-        <a href="#weiter">Who passes on what</a>. Bytes 1 and 2 of every message are the sender ID. They are the first 2 bytes of
+        <a href="#weiter">Who passes on what</a>. Only the offer, the retract and the key revocation also go out as a flood. A flood is a different packet: a group message of MeshCore type 0x06.</p>
+      <p>Bytes 1 and 2 of every message are the sender ID. They are the first 2 bytes of
         its public key. The ID is unsigned. Nodes use it to pick a provider and to spot a busy provider. Logs and the
         test filter use it too.</p>
       <p>The offer carries a ticket. It hangs on the manifest, the signed list of what belongs to an update. The
@@ -107,7 +108,7 @@
         <tr><td><b>Angebot</b></td><td class="fmt">[1][snd 2][Seiten][nonce][Ticket 104]</td><td class="n">109</td><td>Jeder Knoten mit geprüftem Manifest, im Trickle-Takt (siehe <a href="#zeiten">Zeiten und Zeitgeber</a>)</td><td>Nachbarn, für die es passt. Nachbarn mit derselben Kampagne zählen es als Bestätigung.</td></tr>
         <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd 2][id 4][Block 2][Maske 2][Ziel 2][nonce]</td><td class="n">14</td><td>Der Knoten, der den Patch holt</td><td>Nur der genannte Anbieter (Ziel = seine Kennung). Bei 0xFFFF jeder, der die Fragmente geprüft hat.</td></tr>
         <tr><td><b>Daten</b></td><td class="fmt">[3][snd 2][id, erste 3 B][Fragment 2][bis 176 B]</td><td class="n">184</td><td>Wer die Seite geprüft hat und angefragt wurde</td><td>Alle Nachbarn, die dieselbe Kampagne holen. Ein Paket bedient alle.</td></tr>
-        <tr><td><b>Retract</b> (signierter Rückruf)</td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td>Wer ihn geprüft hat: 3-mal, und als Antwort auf ein Angebot dieses Builds</td><td>Alle Nachbarn mit FUOTA</td></tr>
+        <tr><td><b>Retract</b> (signierter Rückruf)</td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td>Wer ihn geprüft hat, sendet ihn bis zu 3-mal an Nachbarn, einmal als Flut und als Antwort auf ein Angebot dieses Builds</td><td>Alle Nachbarn mit FUOTA. Die Flut hat 84 B, weil ein nonce hinter der Kennung steht <span class="m code">im Code geprüft</span>.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -116,7 +117,7 @@
         <tr><td><b>Offer</b></td><td class="fmt">[1][snd 2][pages][nonce][ticket 104]</td><td class="n">109</td><td>Every node with a checked manifest, on a Trickle schedule (see <a href="#zeiten">Times and timers</a>)</td><td>Neighbours it fits. Neighbours with the same campaign count it as a confirmation.</td></tr>
         <tr><td><b>Request</b></td><td class="fmt">[2][snd 2][id 4][block 2][mask 2][target 2][nonce]</td><td class="n">14</td><td>The node that pulls the patch</td><td>Only the named provider (target = its ID). With 0xFFFF everyone who has checked the fragments.</td></tr>
         <tr><td><b>Data</b></td><td class="fmt">[3][snd 2][id, first 3 B][fragment 2][up to 176 B]</td><td class="n">184</td><td>Whoever has checked the page and was asked</td><td>All neighbours pulling the same campaign. One packet serves all.</td></tr>
-        <tr><td><b>Retract</b> (signed recall)</td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td>Whoever verified it: 3 times, and in reply to an offer of that build</td><td>All neighbours with FUOTA</td></tr>
+        <tr><td><b>Retract</b> (signed recall)</td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td>Whoever verified it sends it up to 3 times to neighbours, once as a flood, and in reply to an offer of that build</td><td>All neighbours with FUOTA. The flood has 84 B, because a nonce follows the ID <span class="m code">checked in the code</span>.</td></tr>
       </table>
     </div>
     <div lang="de" class="prose">
@@ -390,30 +391,48 @@
       <h2>Wer was weitergibt und was nie</h2>
       <p><b>FUOTA selbst leitet kein Paket weiter.</b> „Weitergeben“ heißt bei FUOTA: Ein Knoten empfängt, prüft,
         speichert im eigenen Flash und sendet später neu. Das Senden zahlt das eigene Airtime-Budget. Ein Knoten sendet nur
-        Geprüftes erneut.
-        Weiter leitet nur der normale MeshCore-Code: Pakete mit Pfad und geflutete Angebote.</p>
-      <p>Lücken entstehen hinter Repeatern ohne FUOTA. Dort flutet ein Knoten mit einer ganzen Kampagne sein Angebot.
-        Das passiert höchstens einmal am Tag je Kampagne und Region <span class="m code">im Code geprüft</span>. Das
-        Angebot geht als Gruppen-Nachricht in seiner Standard-Region. Region heißt in MeshCore der Flood-Scope, auf dem eine Nachricht
-        reist. Wer das Angebot nur über die Flut hört, fragt über den Pfad der Flut an. Anfrage und Daten leitet
+        Geprüftes erneut.</p>
+      <p>Weiter leitet nur der normale MeshCore-Code: Pakete mit Pfad sowie geflutete Angebote, Retracts und Schlüssel-Widerrufe.</p>
+      <p>Lücken entstehen hinter Repeatern ohne FUOTA. Dort flutet ein Anbieter sein Angebot, sobald er die ganze Kampagne hat.
+        In der ersten Woche flutet er höchstens einmal am Tag. Dasselbe gilt eine Woche nach jeder Anfrage, die er hört.
+        Sonst flutet er höchstens einmal je Woche, auch ohne Anfrage <span class="m code">im Code geprüft</span>.</p>
+      <p>Hört ein Anbieter nach der ersten Woche eine Flut derselben Kampagne, flutet er nicht selbst, höchstens zweimal
+        hintereinander. Spätestens 3 Wochen nach seiner letzten Flut flutet er wieder <span class="m code">im Code geprüft</span>.</p>
+      <p>Eine Flut reist auf einer Region. Region heißt in MeshCore der Flood-Scope. Der Knoten flutet in seiner
+        Standard-Region. Hat er keine, flutet er nicht <span class="m code">im Code geprüft</span>. Wer das Angebot nur über die Flut hört, fragt über den Pfad der Flut an. Anfrage und Daten leitet
         MeshCore entlang des Pfads weiter wie jedes Direct-Paket.</p>
+      <p>Auch ein Retract geht einmal als Flut raus. Der Knoten wartet vorher 2 bis 30 min <span class="m code">im Code geprüft</span>. Auf ein geflutetes Angebot
+        eines zurückgezogenen Builds antwortet er mit einer Flut. Vorher wartet er bis zu 30 min. Das tut er höchstens
+        einmal am Tag je Retract <span class="m code">im Code geprüft</span>. Auch ein Schlüssel-Widerruf geht als Flut raus, siehe
+        <a href="sicherheit.html#warum">Warum es funktioniert</a>.
+        Am Testaufbau ist keine dieser Fluten getestet <span class="m open">offen</span>. Ob normale Repeater jede Flut weitergeben, ist nicht geprüft <span class="m open">offen</span>.</p>
       <p>Der Anbieter rechnet jede Kopie entlang des Pfads in sein Budget. Bei k Repeatern sind das k + 1 Sendungen
-        je Fragment. Was ein Angreifer über fremde Repeater schickt, zählt in kein Budget, siehe
+        je Fragment. Wartet ein Nachbar auf ein Datenpaket, gibt der Anbieter einem Pfad höchstens die Hälfte seiner Airtime <span class="m code">im Code geprüft</span>. Was ein Angreifer über fremde Repeater schickt, zählt in kein Budget, siehe
         <a href="sicherheit.html#angriff">Angriffe im Detail</a>.</p>
       <p>In der Tabelle steht „Modell“ für die Ziel-ID im Ticket.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Who passes on what, and what never</h2>
       <p><b>FUOTA itself forwards no packet.</b> In FUOTA, “passing on” means: a node receives, checks, stores in its own
-        flash and resends later. The resend costs its own airtime budget. A node resends only checked data. Only the normal MeshCore code
-        forwards: packets with a path and flooded offers.</p>
-      <p>Gaps arise behind repeaters without FUOTA. There, a node with a whole campaign floods its offer. It does so
-        at most once a day per campaign and region <span class="m code">checked in the code</span>. The offer travels as a group
-        message in its default region. In MeshCore, a region is the flood scope a message travels on. A node that hears
+        flash and resends later. The resend costs its own airtime budget. A node resends only checked data.</p>
+      <p>Only the normal MeshCore code
+        forwards: packets with a path, and flooded offers, retracts and key revocations.</p>
+      <p>Gaps arise behind repeaters without FUOTA. There, a provider floods its offer once it has the whole campaign.
+        In the first week it floods at most once a day. The same holds for a week after each request it hears.
+        Otherwise it floods at most once a week, even without a request <span class="m code">checked in the code</span>.</p>
+      <p>After the first week, a provider that hears a flood of the same campaign does not flood itself, at most twice in
+        a row. It floods again 3 weeks after its last flood at the latest <span class="m code">checked in the code</span>.</p>
+      <p>A flood travels on a region. In MeshCore, a region is the flood scope. The node floods in its default
+        region. If it has none, it does not flood <span class="m code">checked in the code</span>. A node that hears
         the offer only via the flood asks along that flood's path. MeshCore forwards request and data along
         the path like any direct packet.</p>
+      <p>A retract also goes out once as a flood. The node waits 2 to 30 min first <span class="m code">checked in the code</span>. It answers a flooded offer of a retracted
+        build with a flood. It waits up to 30 min first. It does so at most once a day per retract <span class="m code">checked in the code</span>. A key
+        revocation also goes out as a flood, see <a href="sicherheit.html#warum">Why it works</a>.
+        None of these floods is tested on the bench <span class="m open">open</span>. It is not
+        checked if normal repeaters pass on every flood <span class="m open">open</span>.</p>
       <p>The provider counts every copy along the path in its budget. With k repeaters, that is k + 1 transmissions per
-        fragment. What an attacker sends through foreign repeaters counts in no budget, see
+        fragment. While a neighbour waits for a data packet, the provider gives a path at most half of its airtime <span class="m code">checked in the code</span>. What an attacker sends through foreign repeaters counts in no budget, see
         <a href="sicherheit.html#angriff">Attacks in detail</a>.</p>
       <p>In the table, “model” stands for the target ID in the ticket.</p>
     </div>
@@ -424,10 +443,10 @@
         <tr><td>Angebot eines höheren Builds, während er eine Kampagne hält</td><td>Holt nur dessen Manifest in den RAM und wechselt erst, wenn es geprüft ist. Bis dahin bedient er die alte Kampagne weiter <span class="m meas">gemessen</span>.</td><td>Ignoriert</td><td>Wie Angebot</td></tr>
         <tr><td>Anfrage</td><td>Bedient aus eigenen geprüften Seiten, wenn die Anfrage ihn nennt (oder 0xFFFF). Er sendet reihum ab dem zuletzt gesendeten Fragment <span class="m meas">gemessen</span>.</td><td>Ignoriert</td><td>Verwirft. Mit Pfad leitet er sie weiter wie jedes Direct-Paket.</td></tr>
         <tr><td>Daten</td><td>Speichert, was fehlt, nur nach geprüftem Manifest. Er streicht aus der eigenen Sendeliste, was ein anderer gerade gesendet hat.</td><td>Ignoriert</td><td>Verwirft. Mit Pfad leitet er sie weiter wie jedes Direct-Paket.</td></tr>
-        <tr><td>Retract, gültig</td><td>Stoppt, speichert, sendet ihn 3-mal und als Antwort.</td><td>Verwirft (andere Ziel-ID)</td><td>Verwirft</td></tr>
+        <tr><td>Retract, gültig</td><td>Stoppt, speichert, sendet ihn bis zu 3-mal, flutet ihn einmal und antwortet damit.</td><td>Verwirft (andere Ziel-ID)</td><td>Verwirft. Einen gefluteten leitet er weiter wie jede Gruppen-Nachricht.</td></tr>
         <tr><td>Angebot mit gefälschtem Ticket</td><td>Verwirft es, bevor er etwas anfragt. Er gibt nichts davon weiter <span class="m meas">gemessen</span>.</td><td>Ignoriert</td><td>Verwirft. Ein geflutetes leitet er weiter wie jede Gruppen-Nachricht.</td></tr>
         <tr><td>Seite mit falschem Hash</td><td>Löscht sie, holt sie neu und gibt sie nie weiter.</td><td>Holt gar nicht</td><td>Verwirft</td></tr>
-        <tr><td>Angebot eines zurückgezogenen Builds</td><td>Holt nicht. Er antwortet höchstens alle 30 s mit dem Retract.</td><td>Ignoriert</td><td>Verwirft</td></tr>
+        <tr><td>Angebot eines zurückgezogenen Builds</td><td>Holt nicht. Er antwortet höchstens alle 30 s mit dem Retract. Kam das Angebot als Flut, antwortet er nach bis zu 30 min mit einer Flut. Das tut er höchstens einmal am Tag je Retract <span class="m code">im Code geprüft</span>.</td><td>Ignoriert</td><td>Verwirft. Ein geflutetes leitet er weiter wie jede Gruppen-Nachricht.</td></tr>
         <tr><td>Normale MeshCore-Pakete</td><td colspan="3">Unverändert: FUOTA ändert die Weiterleitung von MeshCore nicht. Es kommt nur ein Fall dazu: Typ 0x0E ohne Pfad. FUOTA-Pakete stehen in der Sendewarteschlange hinter allen fälligen Mesh-Paketen.</td></tr>
       </table>
     </div>
@@ -438,10 +457,10 @@
         <tr><td>Offer of a higher build while it holds a campaign</td><td>Pulls only its manifest into RAM and switches once that is checked. Until then it keeps serving the old campaign <span class="m meas">measured</span>.</td><td>Ignores</td><td>As offer</td></tr>
         <tr><td>Request</td><td>Serves from its own checked pages if the request names this node (or 0xFFFF). It sends in turn, from the fragment sent last <span class="m meas">measured</span>.</td><td>Ignores</td><td>Drops. With a path it forwards it like any direct packet.</td></tr>
         <tr><td>Data</td><td>Stores what is missing, only after a checked manifest. It strikes from its own send list what another node has just sent.</td><td>Ignores</td><td>Drops. With a path it forwards it like any direct packet.</td></tr>
-        <tr><td>Retract, valid</td><td>Stops, stores, sends it 3 times and as a reply.</td><td>Drops (other target ID)</td><td>Drops</td></tr>
+        <tr><td>Retract, valid</td><td>Stops, stores, sends it up to 3 times, floods it once and replies with it.</td><td>Drops (other target ID)</td><td>Drops. A flooded one it forwards like any group message.</td></tr>
         <tr><td>Offer with a forged ticket</td><td>Drops it before asking for anything. It passes nothing of it on <span class="m meas">measured</span>.</td><td>Ignores</td><td>Drops. A flooded one it forwards like any group message.</td></tr>
         <tr><td>Page with wrong hash</td><td>Erases it, pulls it again and never passes it on.</td><td>Does not pull at all</td><td>Drops</td></tr>
-        <tr><td>Offer of a retracted build</td><td>Does not pull. It answers with the retract at most every 30 s.</td><td>Ignores</td><td>Drops</td></tr>
+        <tr><td>Offer of a retracted build</td><td>Does not pull. It answers with the retract at most every 30 s. If the offer came as a flood, it answers with a flood after up to 30 min. It does so at most once a day per retract <span class="m code">checked in the code</span>.</td><td>Ignores</td><td>Drops. A flooded one it forwards like any group message.</td></tr>
         <tr><td>Normal MeshCore packets</td><td colspan="3">Unchanged: FUOTA does not change MeshCore forwarding. It adds one case: type 0x0E without a path. FUOTA packets wait in the transmit queue behind every due mesh packet.</td></tr>
       </table>
     </div>
@@ -500,7 +519,7 @@
         <tr><td>Kanal belegt</td><td class="n">20 ms, dann erneut</td><td>Erst hören, was der Nachbar sendet, dann ein eigenes Fragment wählen.</td></tr>
         <tr><td>Pull pausiert</td><td class="n">100 Abstände ohne Angebot oder Daten, mindestens 20 min (bei 0,3 %: 16 h)</td><td>Niemand hat es mehr. Beim nächsten Angebot geht es weiter.</td></tr>
         <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>Keine Dauersperre wegen einer schlechten Verbindung.</td></tr>
-        <tr><td>Retract</td><td class="n">bis zu 3×; Antwort ≤ 1 je 30 s</td><td>Nur an direkte Nachbarn, ohne zu fluten. Den Takt erklärt der Absatz unter der Tabelle.</td></tr>
+        <tr><td>Retract</td><td class="n">bis zu 3×; Flut 1× nach 2 bis 30 min; Antwort ≤ 1 je 30 s; Antwort-Flut nach bis zu 30 min, ≤ 1 am Tag</td><td>An direkte Nachbarn, dazu einmal als Flut. Den Takt der Sendungen an Nachbarn erklärt der Absatz unter der Tabelle.</td></tr>
         <tr><td>Anwenden</td><td class="n">~12 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>. Der Knoten ist dabei rund 1 min offline.</td></tr>
         <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet)</td><td>Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware.</td></tr>
       </table>
@@ -521,7 +540,7 @@
         <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>First hear what the neighbour sends, then pick an own fragment.</td></tr>
         <tr><td>Pull paused</td><td class="n">100 gaps without offer or data, at least 20 min (at 0.3 %: 16 h)</td><td>Nobody has it any more. It resumes at the next offer.</td></tr>
         <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
-        <tr><td>Retract</td><td class="n">up to 3×; reply ≤ 1 per 30 s</td><td>Only to direct neighbours, without flooding. The paragraph below the table explains the timing.</td></tr>
+        <tr><td>Retract</td><td class="n">up to 3×; flood 1× after 2 to 30 min; reply ≤ 1 per 30 s; answer flood after up to 30 min, ≤ 1 a day</td><td>To direct neighbours, and once as a flood. The paragraph below the table explains the sends to neighbours.</td></tr>
         <tr><td>Apply</td><td class="n">~12 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>. The node is offline for about 1 min meanwhile.</td></tr>
         <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation after 60 s and a radio sign of life (one packet received, one sent)</td><td>After 3 test boots without confirmation the node reverts to the old firmware.</td></tr>
       </table>
@@ -532,6 +551,8 @@
         Nachbarn denselben Retract senden, lässt er eine Sendung aus. Jede Sendung wartet außerdem auf das Airtime-Budget.
         Bei 0,3 % und SF8 wartet er nach einem Retract 211 bis 301 s <span class="m calc">berechnet</span>. Im Testaufbau hatte er gerade ein Datenpaket
         gesendet. Die erste Sendung kam darum erst nach 6,0 s <span class="m meas">gemessen</span>.</p>
+      <p>Die Flut ist eine eigene Sendung. Der Knoten wartet vorher zufällig 2 bis 30 min. Hört er in der Zeit dieselbe Flut
+        aus seiner Region mit höchstens 8 Hops, sendet er keine <span class="m code">im Code geprüft</span>.</p>
     </div>
     <div lang="en" class="prose">
       <p>A node sends a retract at the earliest 0.3 to 2 s after it has verified it. The second send comes at the
@@ -539,6 +560,8 @@
         neighbour send the same retract, it skips one send. Each send also waits for the airtime budget. At 0.3 % and
         SF8 it waits 211 to 301 s after a retract <span class="m calc">calculated</span>. On the bench it had just sent a data packet. So the first send
         came only after 6.0 s <span class="m meas">measured</span>.</p>
+      <p>The flood is a send of its own. The node first waits 2 to 30 min at random. If it hears the same flood from its
+        own region with at most 8 hops in that time, it sends none <span class="m code">checked in the code</span>.</p>
     </div>
   </section>
   </main>

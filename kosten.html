@@ -191,7 +191,7 @@
         <tr><td>Compilerwechsel</td><td class="n">16.900 bis 22.200 <span class="m calc">berechnet</span></td></tr>
         <tr><td>Compilerwechsel, geflutet wie über einen Kanal (nur zum Vergleich)</td><td class="n">rund 170.000 <span class="m calc">berechnet</span></td></tr>
       </table></div>
-      <p>Geflutet heißt: Jeder Repeater sendet jedes Datenpaket einmal weiter. Bei FUOTA flutet nichts. Update-Daten gehen nur an direkte Nachbarn oder auf einem festen Pfad.</p>
+      <p>Geflutet heißt: Jeder Repeater sendet jedes Datenpaket einmal weiter. Update-Daten fluten bei FUOTA nie. Sie gehen nur an direkte Nachbarn oder auf einem festen Pfad. Geflutet werden nur kleine Nachrichten: Angebot, Retract (signierter Rückruf) und Schlüssel-Widerruf. Wann und wie oft, steht unter <a href="sicherheit.html#warum">Warum es funktioniert</a>.</p>
       <h3>Animation</h3>
       <p>Die Animation rechnet die Verteilung selbst, mit dem Ablauf von oben. Sie geht Hop für Hop und Seite für Seite vor.
         Jede Seite kommt von dem Nachbarn, der sie am frühesten liefern kann.</p>
@@ -215,7 +215,7 @@
         <tr><td>compiler change</td><td class="n">16,900 to 22,200 <span class="m calc">calculated</span></td></tr>
         <tr><td>compiler change, flooded as through a channel (for comparison only)</td><td class="n">about 170,000 <span class="m calc">calculated</span></td></tr>
       </table></div>
-      <p>Flooded means that every repeater re-sends every data packet once. With FUOTA nothing floods. Update data only goes to direct neighbours or along a fixed path.</p>
+      <p>Flooded means that every repeater re-sends every data packet once. With FUOTA, update data never floods. It only goes to direct neighbours or along a fixed path. Only small messages are flooded: the offer, the retract (signed recall) and a key revocation. When and how often is explained under <a href="sicherheit.html#warum">Why it works</a>.</p>
       <h3>Animation</h3>
       <p>The animation computes the spread itself, using the sequence from above. It works hop by hop and page by page.
         Each page comes from the neighbour that can deliver it earliest.</p>
@@ -374,7 +374,7 @@
       </table></div>
       <p>Heute kommen dazu:</p>
       <ul>
-        <li>Code, der Lücken bei normalen Repeatern überbrückt (Flut-Angebote höchstens einmal am Tag, Daten per Pfad)</li>
+        <li>Code, der Lücken bei normalen Repeatern überbrückt (Flut-Angebote und Retracts, Daten per Pfad)</li>
         <li>die Betreiber-Befehle über LoRa</li>
         <li>das Release-Paket</li>
         <li>die Härtung nach dem externen Review</li>
@@ -478,7 +478,7 @@
       </table></div>
       <p>Today it also carries:</p>
       <ul>
-        <li>code that bridges gaps of normal repeaters (flooded offers at most once a day, data along paths)</li>
+        <li>code that bridges gaps of normal repeaters (flooded offers and retracts, data along paths)</li>
         <li>the operator commands over LoRa</li>
         <li>the release package</li>
         <li>the hardening after the external review</li>
