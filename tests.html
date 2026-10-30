@@ -114,7 +114,7 @@
         <tr><td>Tausch ohne Funk, Reset mitten im Tausch</td><td><ul>
           <li>Der Tausch dauert 30 bis 39 s.</li>
           <li>Nach 82 zufälligen Watchdog-Resets mitten im Tausch ist das Ergebnis jedes Mal bitgenau. Ein echter Kabelzug ist nur teilweise getestet <span class="m open">offen</span>.</li>
-          <li>Nach 3 Probestarts läuft wieder die alte Firmware (Rückfall) <span class="m meas">gemessen</span>.</li>
+          <li>Nach 3 Probestarts ohne Bestätigung läuft wieder die alte Firmware (Rückfall) <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Delta-Patch auf dem Gerät</td><td><ul>
           <li>Patches von 6 bis 22 KB ergeben in rund 12 s das neue Image.</li>
@@ -182,7 +182,7 @@
           <li>Eine Kampagne v1→v2 (43 Fragmente) holen FakeTec und P1 in 270 s und 289 s.</li>
           <li>Beide bestätigen, die Slot-Hashes sind gleich.</li>
           <li>Auch v2→v4 überlappend läuft auf beiden, und auf dem P1 klappt der Rückfall.</li>
-          <li>Ein FakeTec ohne Deskriptor hat keinen Funk und fällt nach 3 Probestarts zurück <span class="m meas">gemessen</span>.</li>
+          <li>Ein FakeTec ohne Deskriptor hat keinen Funk und fällt nach 3 Probestarts ohne Bestätigung zurück <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Überlappend anwenden, Fenster</td><td><ul>
           <li>Ein Patch mit 4 Seiten passt nicht hinter ein Image mit 94 Seiten.</li>
@@ -197,7 +197,7 @@
           <li>Der P1 holt 72 Fragmente von einem FakeTec, der die P1-Kampagne nur weitergibt.</li>
           <li>Er wendet überlappend an. Der Lese-Abstand ist 8.139 B, gleich der Prüfung am Rechner.</li>
           <li>Er bestätigt.</li>
-          <li>Auch auf dem P1 folgt nach 3 Probestarts der Rückfall <span class="m meas">gemessen</span>.</li>
+          <li>Auch auf dem P1 folgt nach 3 Probestarts ohne Bestätigung der Rückfall <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Größenwächter</td><td><ul>
           <li>Ein Image über 96 Seiten bricht den Build ab (FakeTec und P1) <span class="m meas">gemessen</span>.</li>
@@ -256,7 +256,7 @@
         <tr><td>Swap without radio, reset mid-swap</td><td><ul>
           <li>The swap takes 30 to 39 s.</li>
           <li>After 82 random watchdog resets mid-swap, the result is bit-exact every time. A real cable pull is only partly tested <span class="m open">open</span>.</li>
-          <li>After 3 test boots the old firmware runs again (revert) <span class="m meas">measured</span>.</li>
+          <li>After 3 test boots without confirmation the old firmware runs again (revert) <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Delta patch on the device</td><td><ul>
           <li>Patches of 6 to 22 KB become the new image in about 12 s.</li>
@@ -324,7 +324,7 @@
           <li>FakeTec and P1 pull a campaign v1→v2 (43 fragments) in 270 s and 289 s.</li>
           <li>Both confirm, and the slot hashes are the same.</li>
           <li>Overlapping v2→v4 also runs on both, and the revert works on the P1.</li>
-          <li>A FakeTec without descriptor has no radio and reverts after 3 test boots <span class="m meas">measured</span>.</li>
+          <li>A FakeTec without descriptor has no radio and reverts after 3 test boots without confirmation <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Overlapping apply, window</td><td><ul>
           <li>A patch of 4 pages does not fit behind an image of 94 pages.</li>
@@ -339,7 +339,7 @@
           <li>The P1 pulls 72 fragments from a FakeTec, which only passes the P1 campaign on.</li>
           <li>It applies overlapping. The read margin is 8,139 B, as in the check on the computer.</li>
           <li>It confirms.</li>
-          <li>On the P1, too, the revert follows after 3 test boots <span class="m meas">measured</span>.</li>
+          <li>On the P1, too, the revert follows after 3 test boots without confirmation <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Size guard</td><td><ul>
           <li>An image above 96 pages stops the build (FakeTec and P1) <span class="m meas">measured</span>.</li>

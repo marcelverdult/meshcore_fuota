@@ -60,16 +60,18 @@
     <div lang="de">
       <span class="kicker">Früher Abschnitt 5 der Einzelseite</span>
       <h1>Die Nachrichten auf Funk</h1>
-      <p class="lede">FUOTA sendet 4 Nachrichten: Angebot, Anfrage, Daten und Retract. Alle sind MeshCore-Pakete vom
-        eigenen Typ 0x0E, zwischen direkten Nachbarn oder auf einem festen Pfad. Hier stehen ihr Aufbau, wer was
-        weitergibt und welche Zeitgeber laufen.</p>
+      <p class="lede">FUOTA sendet 4 Nachrichten: Angebot, Anfrage, Daten und Retract. Dazu kommen der Schlüssel-Widerruf und die
+        Ansage des Nebenslots. Alle sind MeshCore-Pakete vom eigenen Typ 0x0E, zwischen direkten Nachbarn oder auf
+        einem festen Pfad. Angebot, Retract und Schlüssel-Widerruf gehen zusätzlich als Flut raus. Hier stehen ihr
+        Aufbau, wer was weitergibt und welche Zeitgeber laufen.</p>
     </div>
     <div lang="en">
       <span class="kicker">Formerly section 5 of the single page</span>
       <h1>The messages on air</h1>
-      <p class="lede">FUOTA sends 4 messages: offer, request, data and retract. All are MeshCore packets of their own
-        type 0x0E. They travel between direct neighbours or along a fixed path. This page shows their layout, who
-        passes on what, and which timers run.</p>
+      <p class="lede">FUOTA sends 4 messages: offer, request, data and retract. Two more are the key revocation and the
+        announcement of the side slot. All are MeshCore packets of their own type 0x0E. They travel between direct
+        neighbours or along a fixed path. Offer, retract and key revocation also go out as a flood. This page shows
+        their layout, who passes on what, and which timers run.</p>
     </div>
   </header>
 
@@ -108,7 +110,7 @@
         <tr><td><b>Angebot</b></td><td class="fmt">[1][snd 2][Seiten][nonce][Ticket 104]</td><td class="n">109</td><td>Jeder Knoten mit geprüftem Manifest, im Trickle-Takt (siehe <a href="#zeiten">Zeiten und Zeitgeber</a>)</td><td>Nachbarn, für die es passt. Nachbarn mit derselben Kampagne zählen es als Bestätigung.</td></tr>
         <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd 2][id 4][Block 2][Maske 2][Ziel 2][nonce]</td><td class="n">14</td><td>Der Knoten, der den Patch holt</td><td>Nur der genannte Anbieter (Ziel = seine Kennung). Bei 0xFFFF jeder, der die Fragmente geprüft hat.</td></tr>
         <tr><td><b>Daten</b></td><td class="fmt">[3][snd 2][id, erste 3 B][Fragment 2][bis 176 B]</td><td class="n">184</td><td>Wer die Seite geprüft hat und angefragt wurde</td><td>Alle Nachbarn, die dieselbe Kampagne holen. Ein Paket bedient alle.</td></tr>
-        <tr><td><b>Retract</b> (signierter Rückruf)</td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td>Wer ihn geprüft hat, sendet ihn bis zu 3-mal an Nachbarn, einmal als Flut und als Antwort auf ein Angebot dieses Builds</td><td>Alle Nachbarn mit FUOTA. Die Flut hat 84 B, weil ein nonce hinter der Kennung steht <span class="m code">im Code geprüft</span>.</td></tr>
+        <tr><td><b>Retract</b> (signierter Rückruf)</td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td>Wer ihn geprüft hat, sendet ihn bis zu 3-mal an Nachbarn. Einmal geht er als Flut raus, dazu als Antwort auf ein Angebot dieses Builds</td><td>Alle Nachbarn mit FUOTA. Die Flut hat 84 B, weil ein nonce hinter der Kennung steht <span class="m code">im Code geprüft</span>.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -117,7 +119,7 @@
         <tr><td><b>Offer</b></td><td class="fmt">[1][snd 2][pages][nonce][ticket 104]</td><td class="n">109</td><td>Every node with a checked manifest, on a Trickle schedule (see <a href="#zeiten">Times and timers</a>)</td><td>Neighbours it fits. Neighbours with the same campaign count it as a confirmation.</td></tr>
         <tr><td><b>Request</b></td><td class="fmt">[2][snd 2][id 4][block 2][mask 2][target 2][nonce]</td><td class="n">14</td><td>The node that pulls the patch</td><td>Only the named provider (target = its ID). With 0xFFFF everyone who has checked the fragments.</td></tr>
         <tr><td><b>Data</b></td><td class="fmt">[3][snd 2][id, first 3 B][fragment 2][up to 176 B]</td><td class="n">184</td><td>Whoever has checked the page and was asked</td><td>All neighbours pulling the same campaign. One packet serves all.</td></tr>
-        <tr><td><b>Retract</b> (signed recall)</td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td>Whoever verified it sends it up to 3 times to neighbours, once as a flood, and in reply to an offer of that build</td><td>All neighbours with FUOTA. The flood has 84 B, because a nonce follows the ID <span class="m code">checked in the code</span>.</td></tr>
+        <tr><td><b>Retract</b> (signed recall)</td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td>Whoever verified it sends it up to 3 times to neighbours. It goes out once as a flood, and in reply to an offer of that build</td><td>All neighbours with FUOTA. The flood has 84 B, because a nonce follows the ID <span class="m code">checked in the code</span>.</td></tr>
       </table>
     </div>
     <div lang="de" class="prose">
@@ -394,10 +396,12 @@
         Geprüftes erneut.</p>
       <p>Weiter leitet nur der normale MeshCore-Code: Pakete mit Pfad sowie geflutete Angebote, Retracts und Schlüssel-Widerrufe.</p>
       <p>Lücken entstehen hinter Repeatern ohne FUOTA. Dort flutet ein Anbieter sein Angebot, sobald er die ganze Kampagne hat.
-        In der ersten Woche flutet er höchstens einmal am Tag. Dasselbe gilt eine Woche nach jeder Anfrage, die er hört.
+        Die Wochen zählen seine Laufzeit, nicht den Kalender. In der ersten Woche flutet er höchstens einmal am Tag. Dasselbe gilt eine Woche nach jeder Anfrage, die er hört.
         Sonst flutet er höchstens einmal je Woche, auch ohne Anfrage <span class="m code">im Code geprüft</span>.</p>
-      <p>Hört ein Anbieter nach der ersten Woche eine Flut derselben Kampagne, flutet er nicht selbst, höchstens zweimal
-        hintereinander. Spätestens 3 Wochen nach seiner letzten Flut flutet er wieder <span class="m code">im Code geprüft</span>.</p>
+      <p>Hört ein Anbieter nach der ersten Woche eine Flut derselben Kampagne, flutet er nicht selbst. Er hält sich so
+        höchstens 2-mal hintereinander zurück. Eine gehörte Anfrage der letzten 7 Tage hebt diese Grenze auf. Eine
+        täglich wiederholte Flut hält ihn dann zurück, solange er Anfragen hört. Ohne gehörte Anfrage flutet er
+        spätestens 3 Wochen nach seiner letzten Flut wieder <span class="m code">im Code geprüft</span>.</p>
       <p>Eine Flut reist auf einer Region. Region heißt in MeshCore der Flood-Scope. Der Knoten flutet in seiner
         Standard-Region. Hat er keine, flutet er nicht <span class="m code">im Code geprüft</span>. Wer das Angebot nur über die Flut hört, fragt über den Pfad der Flut an. Anfrage und Daten leitet
         MeshCore entlang des Pfads weiter wie jedes Direct-Paket.</p>
@@ -418,10 +422,12 @@
       <p>Only the normal MeshCore code
         forwards: packets with a path, and flooded offers, retracts and key revocations.</p>
       <p>Gaps arise behind repeaters without FUOTA. There, a provider floods its offer once it has the whole campaign.
-        In the first week it floods at most once a day. The same holds for a week after each request it hears.
+        The weeks count its running time, not the calendar. In the first week it floods at most once a day. The same holds for a week after each request it hears.
         Otherwise it floods at most once a week, even without a request <span class="m code">checked in the code</span>.</p>
-      <p>After the first week, a provider that hears a flood of the same campaign does not flood itself, at most twice in
-        a row. It floods again 3 weeks after its last flood at the latest <span class="m code">checked in the code</span>.</p>
+      <p>After the first week, a provider that hears a flood of its campaign holds back. It does this at most 2 times
+        in a row. A request heard in the last 7 days lifts this limit. A flood replayed daily then holds the provider
+        back as long as it hears requests. Without a heard request, it floods again 3 weeks after its last flood at
+        the latest <span class="m code">checked in the code</span>.</p>
       <p>A flood travels on a region. In MeshCore, a region is the flood scope. The node floods in its default
         region. If it has none, it does not flood <span class="m code">checked in the code</span>. A node that hears
         the offer only via the flood asks along that flood's path. MeshCore forwards request and data along
@@ -519,6 +525,7 @@
         <tr><td>Kanal belegt</td><td class="n">20 ms, dann erneut</td><td>Erst hören, was der Nachbar sendet, dann ein eigenes Fragment wählen.</td></tr>
         <tr><td>Pull pausiert</td><td class="n">100 Abstände ohne Angebot oder Daten, mindestens 20 min (bei 0,3 %: 16 h)</td><td>Niemand hat es mehr. Beim nächsten Angebot geht es weiter.</td></tr>
         <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>Keine Dauersperre wegen einer schlechten Verbindung.</td></tr>
+        <tr><td>Angebots-Flut</td><td class="n">In der ersten Woche und 1 Woche nach gehörter Anfrage höchstens 1 am Tag. Danach höchstens 1 je Woche. Nach gehörter Flut spätestens nach 3 Wochen wieder.</td><td>Ein Anbieter flutet sein Angebot, sobald er die ganze Kampagne hat. Die Wochen zählen seine Laufzeit. Nach der ersten Woche hält ihn eine gehörte Flut derselben Kampagne zurück. Ohne gehörte Anfrage geschieht das höchstens 2-mal hintereinander. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Retract</td><td class="n">bis zu 3×; Flut 1× nach 2 bis 30 min; Antwort ≤ 1 je 30 s; Antwort-Flut nach bis zu 30 min, ≤ 1 am Tag</td><td>An direkte Nachbarn, dazu einmal als Flut. Den Takt der Sendungen an Nachbarn erklärt der Absatz unter der Tabelle.</td></tr>
         <tr><td>Anwenden</td><td class="n">~12 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>. Der Knoten ist dabei rund 1 min offline.</td></tr>
         <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet)</td><td>Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware.</td></tr>
@@ -540,6 +547,7 @@
         <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>First hear what the neighbour sends, then pick an own fragment.</td></tr>
         <tr><td>Pull paused</td><td class="n">100 gaps without offer or data, at least 20 min (at 0.3 %: 16 h)</td><td>Nobody has it any more. It resumes at the next offer.</td></tr>
         <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
+        <tr><td>Offer flood</td><td class="n">In the first week and 1 week after a heard request, at most 1 a day. After that, at most 1 a week. After a heard flood, again after 3 weeks at the latest.</td><td>A provider floods its offer once it has the whole campaign. The weeks count its running time. After the first week, a heard flood of the same campaign holds it back. Without a heard request, that happens at most 2 times in a row. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Retract</td><td class="n">up to 3×; flood 1× after 2 to 30 min; reply ≤ 1 per 30 s; answer flood after up to 30 min, ≤ 1 a day</td><td>To direct neighbours, and once as a flood. The paragraph below the table explains the sends to neighbours.</td></tr>
         <tr><td>Apply</td><td class="n">~12 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>. The node is offline for about 1 min meanwhile.</td></tr>
         <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation after 60 s and a radio sign of life (one packet received, one sent)</td><td>After 3 test boots without confirmation the node reverts to the old firmware.</td></tr>
@@ -548,7 +556,8 @@
     <div lang="de" class="prose">
       <p>Ein Knoten sendet einen Retract frühestens 0,3 bis 2 s, nachdem er ihn geprüft hat. Die zweite Sendung kommt
         frühestens 10 bis 20 s danach. Die dritte kommt frühestens 20 bis 40 s nach der zweiten <span class="m code">im Code geprüft</span>. Hört er einen
-        Nachbarn denselben Retract senden, lässt er eine Sendung aus. Jede Sendung wartet außerdem auf das Airtime-Budget.
+        Nachbarn denselben Retract senden, lässt er eine Sendung aus.</p>
+      <p>Jede Sendung wartet außerdem auf das Airtime-Budget.
         Bei 0,3 % und SF8 wartet er nach einem Retract 211 bis 301 s <span class="m calc">berechnet</span>. Im Testaufbau hatte er gerade ein Datenpaket
         gesendet. Die erste Sendung kam darum erst nach 6,0 s <span class="m meas">gemessen</span>.</p>
       <p>Die Flut ist eine eigene Sendung. Der Knoten wartet vorher zufällig 2 bis 30 min. Hört er in der Zeit dieselbe Flut
@@ -557,7 +566,8 @@
     <div lang="en" class="prose">
       <p>A node sends a retract at the earliest 0.3 to 2 s after it has verified it. The second send comes at the
         earliest 10 to 20 s later. The third comes at the earliest 20 to 40 s after the second <span class="m code">checked in the code</span>. If it hears a
-        neighbour send the same retract, it skips one send. Each send also waits for the airtime budget. At 0.3 % and
+        neighbour send the same retract, it skips one send.</p>
+      <p>Each send also waits for the airtime budget. At 0.3 % and
         SF8 it waits 211 to 301 s after a retract <span class="m calc">calculated</span>. On the bench it had just sent a data packet. So the first send
         came only after 6.0 s <span class="m meas">measured</span>.</p>
       <p>The flood is a send of its own. The node first waits 2 to 30 min at random. If it hears the same flood from its
