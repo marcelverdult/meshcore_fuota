@@ -175,7 +175,7 @@
           <li>FakeTec (6.1.1) und P1 (7.3.0) laufen im selben Layout, die App ab 0x29000.</li>
           <li>Das P1-Image, nur mit den 6.1.1-Headern gebaut, ist byte-gleich zum laufenden <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
-        <tr><td>Ein Image für FakeTec und P1 (RAK4631 nur gebaut)</td><td><ul>
+        <tr><td>Ein Image für FakeTec und P1</td><td><ul>
           <li>Dasselbe Image läuft auf 2 FakeTecs und 1 P1.</li>
           <li>Es enthält GPS, ist ohne Testfüllung 374.412 B groß und belegt 92 von 96 Seiten.</li>
           <li>Jeder Knoten liest sein Board aus dem Deskriptor in der Stage-0-Seite.</li>
@@ -183,6 +183,14 @@
           <li>Beide bestätigen, die Slot-Hashes sind gleich.</li>
           <li>Auch v2→v4 überlappend läuft auf beiden, und auf dem P1 klappt der Rückfall.</li>
           <li>Ein FakeTec ohne Deskriptor hat keinen Funk und fällt nach 3 Probestarts ohne Bestätigung zurück <span class="m meas">gemessen</span>.</li>
+        </ul></td></tr>
+        <tr><td>RAK4631 am Brett (8. November 2026)</td><td><ul>
+          <li>Das gemeinsame Image kam über das UF2-Laufwerk des Bootloaders auf das RAK4631. Der Bootloader meldet S140 6.1.1 und die Board-ID WisBlock-RAK4631-Board.</li>
+          <li>Identität (Public Key, Name, Rolle) blieb nach dem Flash unverändert <span class="m meas">gemessen</span>.</li>
+          <li>Fortsetzen nach einem Neustart mitten im Pull: bestanden in 355 s. Nach dem Neustart holte das RAK4631 20 von 47 Fragmenten.</li>
+          <li>Update über Funk, sofort anwenden: bestanden in 641 s. Das RAK4631 holte 47 Fragmente in 315 s, ohne Duplikate und ohne falsche Fragmente, und bestätigte Build 2 <span class="m meas">gemessen</span>.</li>
+          <li>Anbieter war ein FakeTec. Test-Schlüssel, SF7, 1 dBm, nur Zero-Hop.</li>
+          <li>Nicht gefahren: der serielle DFU-Weg. Der Nachweislauf 1.17.1 nach 1.18.0 mit dem RAK4631 als Empfänger ist noch nicht abgeschlossen <span class="m open">offen</span>.</li>
         </ul></td></tr>
         <tr><td>Überlappend anwenden, Fenster</td><td><ul>
           <li>Ein Patch mit 4 Seiten passt nicht hinter ein Image mit 94 Seiten.</li>
@@ -317,7 +325,7 @@
           <li>FakeTec (6.1.1) and P1 (7.3.0) run in the same layout, with the app from 0x29000.</li>
           <li>The P1 image, built only with the 6.1.1 headers, is byte-identical to the running one <span class="m meas">measured</span>.</li>
         </ul></td></tr>
-        <tr><td>One image for FakeTec and P1 (RAK4631 built only)</td><td><ul>
+        <tr><td>One image for FakeTec and P1</td><td><ul>
           <li>The same image runs on 2 FakeTecs and 1 P1.</li>
           <li>It includes GPS, is 374,412 B without test filler and fills 92 of 96 pages.</li>
           <li>Every node reads its board from the descriptor in the Stage-0 page.</li>
@@ -325,6 +333,14 @@
           <li>Both confirm, and the slot hashes are the same.</li>
           <li>Overlapping v2→v4 also runs on both, and the revert works on the P1.</li>
           <li>A FakeTec without descriptor has no radio and reverts after 3 test boots without confirmation <span class="m meas">measured</span>.</li>
+        </ul></td></tr>
+        <tr><td>RAK4631 on the bench (8 November 2026)</td><td><ul>
+          <li>The shared image went onto the RAK4631 through the UF2 drive of the bootloader. The bootloader reports S140 6.1.1 and the board ID WisBlock-RAK4631-Board.</li>
+          <li>Identity (public key, name, role) stayed unchanged after the flash <span class="m meas">measured</span>.</li>
+          <li>Resume after a restart in the middle of a pull: passed in 355 s. After the restart the RAK4631 pulled 20 of 47 fragments.</li>
+          <li>Update over the air, apply at once: passed in 641 s. The RAK4631 pulled 47 fragments in 315 s, with 0 duplicates and 0 bad fragments, and confirmed build 2 <span class="m meas">measured</span>.</li>
+          <li>The provider was a FakeTec. Test key, SF7, 1 dBm, zero hop only.</li>
+          <li>Not run: the serial DFU route. The proof run 1.17.1 to 1.18.0 with the RAK4631 as receiver is not finished yet <span class="m open">open</span>.</li>
         </ul></td></tr>
         <tr><td>Overlapping apply, window</td><td><ul>
           <li>A patch of 4 pages does not fit behind an image of 94 pages.</li>

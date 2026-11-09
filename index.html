@@ -86,7 +86,8 @@
             es noch nicht <span class="m open">offen</span>.</span></li>
           <li><b>Ein Betreiber installiert es</b><span>Ein Betreiber installiert das neueste signierte Release-Paket
             per USB oder BLE-OTA auf seinen Repeater. Dieser Repeater ist dann der Seed: Er bietet das Update seinen
-            direkten Nachbarn an.</span></li>
+            direkten Nachbarn an. Das erste Image bekommt ein Knoten per USB (Basispaket 1.17.1), spätere Updates per Funk (auf 1.18.0).
+            Die Release-Struktur steht unter <a href="ablauf.html#release-linien">Ablauf</a>.</span></li>
           <li><b>Nachbarn geben es weiter</b><span>Ein Nachbar holt nur den Patch, Seite für Seite über LoRa. Danach bietet er ihn selbst an. Jeder Repeater sendet dafür höchstens 0,3 % der Zeit, rund 11 s je Stunde
             <span class="m calc">berechnet</span>. Fällige Mesh-Pakete gehen in der Sendewarteschlange vor.</span></li>
           <li><b>Jeder Repeater prüft und installiert</b><span>Jede 4-KB-Seite wird gegen das signierte Manifest
@@ -132,7 +133,8 @@
             repeater installs anything. Today the test key signs, no release key exists yet
             <span class="m open">open</span>.</span></li>
           <li><b>One operator installs it</b><span>An operator installs the latest signed release package by USB or BLE OTA. That repeater is then the seed: it offers the update to its direct
-            neighbours.</span></li>
+            neighbours. A node gets its first image by USB (base package 1.17.1) and later updates over the air (to 1.18.0).
+            The release structure is described under <a href="ablauf.html#release-linien">How it runs</a>.</span></li>
           <li><b>Neighbours pass it on</b><span>A neighbour pulls only the patch, page by page over LoRa. Then it offers it on. Each repeater sends at most 0.3 % of the time for this. That is about 11 s per hour <span class="m calc">calculated</span>. Due mesh packets go first in the transmit queue.</span></li>
           <li><b>Each repeater checks and installs</b><span>Every 4 KB page is checked against the signed manifest
             before it travels on. By default a repeater applies the update after 7 days

@@ -59,11 +59,11 @@
 <header class="hero">
     <div lang="de">
       <h1>Wo was im Flash liegt</h1>
-      <p class="lede">FakeTec und SenseCAP P1 nutzen ein Flash-Layout. Stage-0 liegt direkt hinter dem SoftDevice, danach folgen Status-Seite, Slot A und Slot B. Das Release-Image mit FUOTA belegte am 20. Oktober 2026 270.080 B, also 66 Seiten <span class="m meas">gemessen</span>.</p>
+      <p class="lede">FakeTec, SenseCAP P1 und RAK4631 nutzen ein Flash-Layout. Stage-0 liegt direkt hinter dem SoftDevice, danach folgen Status-Seite, Slot A und Slot B. Das Release-Image mit FUOTA belegte am 20. Oktober 2026 270.080 B, also 66 Seiten <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en">
       <h1>What lives where in flash</h1>
-      <p class="lede">FakeTec and SenseCAP P1 share one flash layout. Stage-0 sits behind the SoftDevice, then come the status page, slot A and slot B. On 20 October 2026 the release image with FUOTA took 270,080 B, which is 66 pages <span class="m meas">measured</span>.</p>
+      <p class="lede">FakeTec, SenseCAP P1 and RAK4631 share one flash layout. Stage-0 sits behind the SoftDevice, then come the status page, slot A and slot B. On 20 October 2026 the release image with FUOTA took 270,080 B, which is 66 pages <span class="m meas">measured</span>.</p>
     </div>
   </header>
 
@@ -314,9 +314,10 @@
       <h2>Ein Image für mehrere Boards</h2>
       <p>Ein Repeater-Image wählt das Board beim Start. Es läuft auf diesen Boards, alle nRF52840 mit SX1262:</p>
       <ul>
-        <li>auf Hardware getestet: FakeTec, SenseCAP P1, Heltec T114 <span class="m meas">gemessen</span></li>
-        <li>gebaut, nicht auf Hardware getestet: RAK4631, Seeed Xiao nRF52840, Heltec T096</li>
+        <li>auf Hardware getestet: FakeTec, SenseCAP P1, Heltec T114, RAK4631 <span class="m meas">gemessen</span></li>
+        <li>gebaut, nicht auf Hardware getestet: Seeed Xiao nRF52840, Heltec T096</li>
       </ul>
+      <p>Die Release-Pakete sind für drei Boards gebaut: FakeTec (SoftDevice S140 6.1.1), SenseCAP P1 (S140 7.3.0) und RAK4631 (S140 6.1.1).</p>
       <p>Eine Tabelle im Image enthält, was sich je Board unterscheidet:</p>
       <ul>
         <li>Pins für Funkchip, SPI, I2C, GPS, LEDs, Taste und Batteriemessung</li>
@@ -336,15 +337,16 @@
         <li>Die App fasst keinen Pin an, sendet nicht und läuft nur im USB-Notbetrieb.</li>
         <li>Die App bestätigt ein neues Image dann nie. Stage-0 tauscht nach 3 Probestarts ohne Bestätigung zurück.</li>
       </ul>
-      <p>Die App bestätigt ein neues Image außerdem nur, wenn der Funkchip geantwortet hat. Eine signierte Kampagne (eine Ziel-ID, ein Patch) aktualisiert so FakeTec, SenseCAP P1 und Heltec T114 <span class="m meas">gemessen</span>.</p>
+      <p>Die App bestätigt ein neues Image außerdem nur, wenn der Funkchip geantwortet hat. Eine signierte Kampagne (eine Ziel-ID, ein Patch) aktualisiert so FakeTec, SenseCAP P1, Heltec T114 und RAK4631 <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>One image for several boards</h2>
       <p>One repeater image picks the board at start. It runs on these boards, all nRF52840 with SX1262:</p>
       <ul>
-        <li>tested on hardware: FakeTec, SenseCAP P1, Heltec T114 <span class="m meas">measured</span></li>
-        <li>built, not tested on hardware: RAK4631, Seeed Xiao nRF52840, Heltec T096</li>
+        <li>tested on hardware: FakeTec, SenseCAP P1, Heltec T114, RAK4631 <span class="m meas">measured</span></li>
+        <li>built, not tested on hardware: Seeed Xiao nRF52840, Heltec T096</li>
       </ul>
+      <p>The release packages are built for three boards: FakeTec (SoftDevice S140 6.1.1), SenseCAP P1 (S140 7.3.0) and RAK4631 (S140 6.1.1).</p>
       <p>A table inside the image contains what differs per board:</p>
       <ul>
         <li>pins of radio chip, SPI, I2C, GPS, LEDs, button and battery measurement</li>
@@ -364,7 +366,7 @@
         <li>The app touches no pin and does not transmit. It runs only in a USB fallback mode.</li>
         <li>The app then never confirms a new image. Stage-0 reverts after 3 test boots without confirmation.</li>
       </ul>
-      <p>The app also confirms a new image only if the radio chip answered. One signed campaign (one target ID, one patch) thus updates FakeTec, SenseCAP P1 and Heltec T114 <span class="m meas">measured</span>.</p>
+      <p>The app also confirms a new image only if the radio chip answered. One signed campaign (one target ID, one patch) thus updates FakeTec, SenseCAP P1, Heltec T114 and RAK4631 <span class="m meas">measured</span>.</p>
     </div>
   </section>
   </main>

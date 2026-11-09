@@ -420,6 +420,29 @@
     </div>
   </section>
 
+  <section id="release-linien">
+    <div lang="de" class="prose">
+      <h2>Release-Struktur: zwei Linien</h2>
+      <p>Ein Release besteht aus zwei Linien. Die Linie 1.17.1 liefert das Basispaket, die Linie 1.18.0 das Update darauf.</p>
+      <ol>
+        <li><b>Basispaket 1.17.1 (Build 1).</b> Das erste Image bekommt ein Knoten per USB. Das Paket ist eine UF2-Datei für das USB-Laufwerk des Bootloaders, eine Datei je Board und SoftDevice: FakeTec S140 6.1.1, SenseCAP P1 S140 7.3.0, RAK4631 S140 6.1.1. Es bringt Stage-0 mit, den Lader, den FUOTA nie schreibt (siehe <a href="flash.html">Flash</a>). Die Linie 1.17.1 hat keine Kampagne, sie ist die erste Auslieferung.</li>
+        <li><b>Update auf 1.18.0 (Build 2).</b> Spätere Updates kommen per Funk. Ein Knoten mit dem Basispaket 1.17.1 holt eine signierte Kampagne von 1.17.1 nach 1.18.0 über LoRa. Die Patch-Datei ist 23.749 B groß, das Manifest 400 B. Das neue Image hat 299.284 B, das alte 296.900 B.</li>
+      </ol>
+      <p>Für 1.18.0 gibt es außerdem Seed-Pakete (UF2, per USB) für dieselben drei Boards. Ein Seed trägt das Update und bietet es seinen Nachbarn an. Wie ein Knoten die Signatur prüft, steht unter <a href="sicherheit.html">Sicherheit</a>.</p>
+      <p><b>Stand 9. November 2026:</b> Die Dateien beider Linien sind gebaut. Freigegeben ist nichts. Am Prüfbrett läuft der Nachweislauf von 1.17.1 nach 1.18.0 mit dem RAK4631 als einem der Empfänger. Ob und wann Tester die Dateien bekommen, steht nicht fest, einen Termin oder Download gibt es nicht <span class="m open">offen</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Release structure: two lines</h2>
+      <p>A release has two lines. Line 1.17.1 delivers the base package, line 1.18.0 delivers the update on top of it.</p>
+      <ol>
+        <li><b>Base package 1.17.1 (build 1).</b> A node gets its first image by USB. The package is a UF2 file for the USB drive of the bootloader, one file per board and SoftDevice: FakeTec S140 6.1.1, SenseCAP P1 S140 7.3.0, RAK4631 S140 6.1.1. It brings Stage-0 along, the loader that FUOTA never writes (see <a href="flash.html">Flash</a>). Line 1.17.1 has no campaign, it is the first delivery.</li>
+        <li><b>Update to 1.18.0 (build 2).</b> Later updates come over the air. A node with base package 1.17.1 pulls a signed campaign from 1.17.1 to 1.18.0 over LoRa. The patch file is 23,749 B, the manifest 400 B. The new image is 299,284 B, the old one 296,900 B.</li>
+      </ol>
+      <p>For 1.18.0 there are also seed packages (UF2, by USB) for the same three boards. A seed carries the update and offers it to its neighbours. How a node checks the signature is described under <a href="sicherheit.html">Safety</a>.</p>
+      <p><b>Status as of 9 November 2026:</b> The files of both lines are built. Nothing is released. The proof run from 1.17.1 to 1.18.0 is running on the test bench, with the RAK4631 as one of the receivers. Whether and when testers get the files is not settled, and there is no date or download <span class="m open">open</span>.</p>
+    </div>
+  </section>
+
   <section id="release-build">
     <div lang="de" class="prose">
       <h2>Der Release-Build</h2>
