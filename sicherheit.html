@@ -61,13 +61,13 @@
       <h1>Nur signierte Firmware, und bei Startproblemen die alte</h1>
       <p class="lede">Dein Repeater installiert nur, was der Release-Schlüssel signiert hat. Startet die neue Firmware
         nicht, läuft nach 3 Probestarts (Startversuchen) ohne Bestätigung wieder die alte <span class="m meas">gemessen</span>. Im Proof of Concept
-        signiert der Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht <span class="m open">offen</span>.</p>
+        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
       <h1>Only signed firmware, and the old one after a failed start</h1>
       <p class="lede">Your repeater installs only what the release key has signed. When the new firmware fails
         to start, the old one runs again after 3 test boots without confirmation <span class="m meas">measured</span>. In the proof of concept the
-        test key signs. There is no release key yet <span class="m open">open</span>.</p>
+        tests ran with the test key. The release key was generated on 8 November 2026, and no release is approved <span class="m open">open</span>.</p>
     </div>
   </header>
 
@@ -96,7 +96,7 @@
 
     <figure class="cfig" lang="de" aria-label="Prüfkette">
       <div class="cf-top">
-        <div class="cf-box"><b>Release-Schlüssel</b><span>trägt ein Zertifikat der Wurzel</span><span>heute der Test-Schlüssel</span></div>
+        <div class="cf-box"><b>Release-Schlüssel</b><span>trägt ein Zertifikat der Wurzel</span><span>in den Tests der Test-Schlüssel</span></div>
         <div class="cf-sign" aria-hidden="true">signiert</div>
         <div class="cf-box"><b>Manifest</b><span>SHA-256 von Quell-Image, neuem Image und Patch</span><span>8-Byte-Hash je 4-KB-Seite</span></div>
       </div>
@@ -111,7 +111,7 @@
     </figure>
     <figure class="cfig" lang="en" aria-label="Chain of checks">
       <div class="cf-top">
-        <div class="cf-box"><b>Release key</b><span>carries a certificate of the root</span><span>today the test key</span></div>
+        <div class="cf-box"><b>Release key</b><span>carries a certificate of the root</span><span>in the tests the test key</span></div>
         <div class="cf-sign" aria-hidden="true">signs</div>
         <div class="cf-box"><b>Manifest</b><span>SHA-256 of source image, new image and patch</span><span>8-byte hash per 4 KB page</span></div>
       </div>
@@ -237,7 +237,7 @@
           und ein Wurzelwechsel durch die Ersatz-Wurzel sind gebaut <span class="m code">im Code geprüft</span>. Alles lief nur am Rechner. Am Testaufbau ist es noch nicht gemessen
           <span class="m open">offen</span>. Ein Dieb der Wurzel kann Schlüssel mit neuen Nummern ausstellen, bis die Ersatz-Wurzel gewechselt hat.</li>
             <li>Dauerfunk
-          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und einen echten Release-Schlüssel gibt es noch nicht <span class="m open">offen</span>.</li>
+          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Ein Release ist nicht freigegeben <span class="m open">offen</span>.</li>
           </ul></li>
         <li><b>Die Build-Umgebung.</b> Vor dem Signieren bauen wir zweimal unabhängig und vergleichen das Ergebnis.
           <ul>
@@ -398,7 +398,7 @@
           built <span class="m code">checked in the code</span>. All of it ran only on a computer. It is not measured on the bench yet <span class="m open">open</span>.</li>
             <li>A thief of the root can issue keys with new
           numbers until the backup root has switched. Constant radio traffic can delay the revocation. If both roots are lost, you reach nodes only over USB. This follows from the key chain in the code; there is no test of its own.</li>
-            <li>A signed build can also be bad. There is no real root and no real release key yet <span class="m open">open</span>.</li>
+            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026 (fingerprint of the main root fb9fe83d1f675980, of the backup root 64a946dcb1c4a1bf, signing key 1 valid up to build 20) <span class="m code">checked in the code</span>. No release is approved <span class="m open">open</span>.</li>
           </ul></li>
         <li><b>The build environment.</b> Before signing, we build twice independently and compare the result.
           <ul>
@@ -590,8 +590,8 @@
   </main>
   <p class="next"><a href="funk.html"><span lang="de">Weiter: Funk</span><span lang="en">Next: On air</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Wir signieren nur mit dem Test-Schlüssel, einen Release-Schlüssel gibt es noch nicht. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. We sign only with the test key, no release key exists yet. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key. The release key was generated on 8 November 2026, and no release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
