@@ -59,11 +59,11 @@
 <header class="hero">
     <div lang="de">
       <h1>Wo was im Flash liegt</h1>
-      <p class="lede">FakeTec, SenseCAP P1 und RAK4631 nutzen ein Flash-Layout. Stage-0 liegt direkt hinter dem SoftDevice, danach folgen Status-Seite, Slot A und Slot B. Das Release-Image mit FUOTA belegte am 20. Oktober 2026 270.080 B, also 66 Seiten <span class="m meas">gemessen</span>.</p>
+      <p class="lede">FakeTec, SenseCAP P1 und RAK4631 nutzen ein Flash-Layout. Stage-0 liegt direkt hinter dem SoftDevice, danach folgen Status-Seite, Slot A und Slot B. Das Release-Image mit FUOTA belegt 299.284 B, also 74 Seiten, gemessen am 8. November 2026 <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en">
       <h1>What lives where in flash</h1>
-      <p class="lede">FakeTec, SenseCAP P1 and RAK4631 share one flash layout. Stage-0 sits behind the SoftDevice, then come the status page, slot A and slot B. On 20 October 2026 the release image with FUOTA took 270,080 B, which is 66 pages <span class="m meas">measured</span>.</p>
+      <p class="lede">FakeTec, SenseCAP P1 and RAK4631 share one flash layout. Stage-0 sits behind the SoftDevice, then come the status page, slot A and slot B. The release image with FUOTA takes 299,284 B, which is 74 pages, measured on 8 November 2026 <span class="m meas">measured</span>.</p>
     </div>
   </header>
 
@@ -182,7 +182,7 @@
       <table>
         <tr><th>Bereich</th><th>Adresse bei S140 6.1.1</th><th>Adresse bei S140 7.3.0</th><th>Größe</th><th>Wer schreibt</th></tr>
         <tr><td>SoftDevice</td><td class="n">0x00000 bis 0x26000</td><td class="n">0x00000 bis 0x27000</td><td>bis zum Sprungziel des Bootloaders</td><td>FUOTA nie</td></tr>
-        <tr><td>Stage-0</td><td class="n">0x26000 bis 0x27000</td><td class="n">0x27000 bis 0x28000</td><td>1 Seite, belegt 2.748 B <span class="m meas">gemessen</span></td><td>per USB (UF2 oder serielles DFU) oder BLE-DFU, einmal je Board. FUOTA nie</td></tr>
+        <tr><td>Stage-0</td><td class="n">0x26000 bis 0x27000</td><td class="n">0x27000 bis 0x28000</td><td>1 Seite, belegt 3.032 B, am RAK4631 2.984 B <span class="m meas">gemessen</span></td><td>per USB (UF2 oder serielles DFU) oder BLE-DFU, einmal je Board. FUOTA nie</td></tr>
         <tr><td>frei, bleibt gelöscht</td><td class="n">0x27000 bis 0x28000</td><td>entfällt</td><td>1 Seite</td><td>niemand</td></tr>
         <tr><td>Status-Seite</td><td class="n">0x28000 bis 0x29000</td><td class="n">0x28000 bis 0x29000</td><td>1 Seite</td><td>App: Tausch-Auftrag. Stage-0: Journal</td></tr>
         <tr><td>Slot A</td><td class="n">0x29000 bis 0x8B000</td><td class="n">0x29000 bis 0x8B000</td><td>98 Seiten</td><td>per USB oder BLE-DFU bei der ersten Installation, danach Stage-0 beim Tausch</td></tr>
@@ -194,7 +194,7 @@
       <table>
         <tr><th>Area</th><th>Address with S140 6.1.1</th><th>Address with S140 7.3.0</th><th>Size</th><th>Who writes</th></tr>
         <tr><td>SoftDevice</td><td class="n">0x00000 to 0x26000</td><td class="n">0x00000 to 0x27000</td><td>up to the jump target of the bootloader</td><td>FUOTA never</td></tr>
-        <tr><td>Stage-0</td><td class="n">0x26000 to 0x27000</td><td class="n">0x27000 to 0x28000</td><td>1 page, 2,748 B used <span class="m meas">measured</span></td><td>by USB (UF2 or serial DFU) or BLE DFU, once per board. FUOTA never</td></tr>
+        <tr><td>Stage-0</td><td class="n">0x26000 to 0x27000</td><td class="n">0x27000 to 0x28000</td><td>1 page, 3,032 B used, 2,984 B on the RAK4631 <span class="m meas">measured</span></td><td>by USB (UF2 or serial DFU) or BLE DFU, once per board. FUOTA never</td></tr>
         <tr><td>free, stays erased</td><td class="n">0x27000 to 0x28000</td><td>not present</td><td>1 page</td><td>nobody</td></tr>
         <tr><td>Status page</td><td class="n">0x28000 to 0x29000</td><td class="n">0x28000 to 0x29000</td><td>1 page</td><td>App: swap job. Stage-0: journal</td></tr>
         <tr><td>Slot A</td><td class="n">0x29000 to 0x8B000</td><td class="n">0x29000 to 0x8B000</td><td>98 pages</td><td>by USB or BLE DFU at the first install, then Stage-0 during the swap</td></tr>
@@ -240,10 +240,10 @@
       <h2>Flash und RAM</h2>
       <ul>
         <li><b>Release-Image mit FUOTA</b> für alle Boards: 299.284 B Flash, gemessen am 8. November 2026 beim ersten Bau des Release-Env <span class="m meas">gemessen</span>. Das sind 74 von höchstens 96 Seiten <span class="m calc">gerechnet</span>. Am 20. Oktober 2026 waren es 270.080 B und 66 Seiten, seitdem kamen 29.204 B dazu.</li>
-        <li><b>RAM</b>: 37.036 B belegt <span class="m meas">gemessen</span>.</li>
+        <li><b>RAM</b>: 43.580 B belegt, gemessen am 8. November 2026 <span class="m meas">gemessen</span>.</li>
         <li><b>Stock-P1</b> (MeshCore unverändert) mit BLE-OTA zum Vergleich: 365.292 B <span class="m meas">gemessen</span>.</li>
-        <li><b>FUOTA selbst</b>: 31.584 B Code und Daten im Release-Image (Linker-Map), Stand vor dem Abbruch durch Stage-0 <span class="m meas">gemessen</span>.</li>
-        <li><b>Stage-0</b> belegt 2.748 B in einer Seite <span class="m meas">gemessen</span>.</li>
+        <li><b>FUOTA selbst</b>: 31.584 B Code und Daten im Release-Image (Linker-Map vom 20. Oktober 2026), Stand vor dem Abbruch durch Stage-0 <span class="m meas">gemessen</span>.</li>
+        <li><b>Stage-0</b> belegt 3.032 B in einer Seite, am RAK4631 2.984 B. Am ausgelieferten Paket gemessen <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Jeder Schalter für sich, auf den Stock-P1 angewendet:</p>
       <ul>
@@ -256,10 +256,10 @@
       <h2>Flash and RAM</h2>
       <ul>
         <li><b>Release image with FUOTA</b> for all boards: 299,284 B of flash, measured on 8 November 2026 at the first build of the release env <span class="m meas">measured</span>. That is 74 of at most 96 pages <span class="m calc">calculated</span>. On 20 October 2026 it was 270,080 B and 66 pages, so the image has grown by 29,204 B.</li>
-        <li><b>RAM</b>: 37,036 B used <span class="m meas">measured</span>.</li>
+        <li><b>RAM</b>: 43,580 B used, measured on 8 November 2026 <span class="m meas">measured</span>.</li>
         <li><b>Stock P1</b> (MeshCore as published, unchanged) with BLE OTA for comparison: 365,292 B <span class="m meas">measured</span>.</li>
-        <li><b>FUOTA itself</b>: 31,584 B of code and data in the release image (linker map), before the Stage-0 abort <span class="m meas">measured</span>.</li>
-        <li><b>Stage-0</b> takes 2,748 B in one page <span class="m meas">measured</span>.</li>
+        <li><b>FUOTA itself</b>: 31,584 B of code and data in the release image (linker map of 20 October 2026), before the Stage-0 abort <span class="m meas">measured</span>.</li>
+        <li><b>Stage-0</b> takes 3,032 B in one page, 2,984 B on the RAK4631. Measured on the delivered package <span class="m meas">measured</span>.</li>
       </ul>
       <p>Each switch on its own, applied to the stock P1:</p>
       <ul>

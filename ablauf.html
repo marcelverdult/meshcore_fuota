@@ -474,11 +474,11 @@
       <p>Release und Test haben verschiedene Ziel-IDs. Jedes Anwenden prüft die Ziel-ID des Manifests. Eine Kampagne für
         den Testaufbau passt darum nie auf einen Release-Knoten.</p>
       <p>Auch die Schlüssel sind getrennt. Ein Release-Build kompiliert nur mit einem eigenen Release-Schlüssel. Den
-        Test-Schlüssel nimmt er nie <span class="m code">im Code geprüft</span>. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, und die Images beider Linien tragen seinen Schlüsselblock <span class="m code">im Code geprüft</span>. Die Messung am Release-Build stammt von vor der Trennung, mit Test-Schlüssel.
+        Test-Schlüssel nimmt er nie <span class="m code">im Code geprüft</span>. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, und die Images beider Linien tragen seinen Schlüsselblock <span class="m code">im Code geprüft</span>. Die Größe von 299.284 B stammt aus dem ersten Bau mit dem Release-Schlüssel. Die übrigen Prüfungen unten sind älter und liefen mit dem Test-Schlüssel.
         Mehr dazu: <a href="fragen.html#luecken">Was noch offen ist</a>.</p>
-      <h3>Am Release-Build gemessen (Stand 20. Oktober 2026)</h3>
+      <h3>Am Release-Build gemessen (Prüfungen vom 20. Oktober 2026)</h3>
       <ul>
-        <li>270.080 B, das sind 66 von 96 Seiten, mit signierten Angeboten <span class="m meas">gemessen</span></li>
+        <li>299.284 B, das sind 74 von 96 Seiten, mit signierten Angeboten. Am 8. November 2026 gemessen, beim ersten Bau des Release-Env <span class="m meas">gemessen</span></li>
         <li>kein BLE-Symbol im Image <span class="m meas">gemessen</span></li>
         <li>Die Build-Sperre greift bei allen 14 geprüften Schaltern <span class="m meas">gemessen</span>. Dazu gehören
           die 7 Tage von <code>delay</code>, <code>delay</code> als Vorgabe und die Grenzen der Flut-Angebote.</li>
@@ -515,11 +515,11 @@
         the bench never fits a release node.</p>
       <p>The keys are separate too. A release build compiles only with its own release key. It never uses the test key
         <span class="m code">checked in the code</span>. The release key was generated on 8 November 2026, and the images of both lines carry its key block <span class="m code">checked in the code</span>. The
-        measurement of the release build predates the separation and used the test key. More:
+        size of 299,284 B comes from the first build with the release key. The other checks below are older and used the test key. More:
         <a href="fragen.html#luecken">What is still open</a>.</p>
-      <h3>Measured on the release build (as of 20 October 2026)</h3>
+      <h3>Measured on the release build (checks of 20 October 2026)</h3>
       <ul>
-        <li>270,080 B, that is 66 of 96 pages, with signed offers <span class="m meas">measured</span></li>
+        <li>299,284 B, that is 74 of 96 pages, with signed offers. Measured on 8 November 2026 at the first build of the release env <span class="m meas">measured</span></li>
         <li>no BLE symbol in the image <span class="m meas">measured</span></li>
         <li>The guard fires for all 14 switches tested <span class="m meas">measured</span>. Among them: the 7 days of
           <code>delay</code>, <code>delay</code> as default, and the limits of flooded offers.</li>
