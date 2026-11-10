@@ -135,6 +135,7 @@
         <li>Vor dem Tausch: beide Slots, durch Stage-0</li>
         <li>Nach dem Tausch: Slot A noch einmal</li>
       </ol>
+      <p>Dass der Knoten einen manipulierten Patch oder ein Image mit falschem Hash abweist, ist durch keinen Negativtest belegt <span class="m open">offen</span>. Am Brett abgewiesen wurden bisher verfälschte Fragmente.</p>
       <p>Stage-0 ist der Lader, der beim Start die Images tauscht. Slot A hält die laufende Firmware. Slot B ist das
         Zwischenlager für das neue Image. Das Layout steht unter <a href="flash.html">Wo was im Flash liegt</a>.</p>
       <p>Um anderes zu installieren, müsste ein Angreifer Ed25519 fälschen. Oder er müsste eine zweite Eingabe mit
@@ -295,6 +296,7 @@
         <li>Before the swap: both slots, by Stage-0</li>
         <li>After the swap: slot A once more</li>
       </ol>
+      <p>That the node rejects a tampered patch or an image with a wrong hash is not backed by any negative test <span class="m open">open</span>. What the bench has rejected so far are corrupted fragments.</p>
       <p>Stage-0 is the loader that swaps the images at boot. Slot A holds the running firmware. Slot B is the
         intermediate store for the new image. The layout is described under
         <a href="flash.html">Where everything sits in flash</a>.</p>
