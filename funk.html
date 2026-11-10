@@ -459,7 +459,7 @@
         eines zurückgezogenen Builds antwortet er mit einer Flut. Vorher wartet er bis zu 30 min. Das tut er höchstens
         einmal am Tag je Retract <span class="m code">im Code geprüft</span>. Auch ein Schlüssel-Widerruf geht als Flut raus, siehe
         <a href="sicherheit.html#warum">Warum es funktioniert</a>.</p>
-      <p>Am Testaufbau ist keine dieser Fluten getestet <span class="m open">offen</span>. Die Grenze von 3 Tagen lief mit der heutigen Firmware nicht am Testaufbau <span class="m open">offen</span>. Ob normale Repeater jede Flut weitergeben, ist nicht geprüft <span class="m open">offen</span>.</p>
+      <p>Am Testaufbau ist die Flut von Retract getestet: ein Anbieter sendete sie, ein zweiter empfing sie, prüfte sie und unterdrückte darauf seine eigene <span class="m meas">gemessen</span>. Die Flut ohne Anfrage, die von Widerruf und die als Antwort sind dort nicht getestet <span class="m open">offen</span>. Die Grenze von 3 Tagen lief mit der heutigen Firmware nicht am Testaufbau <span class="m open">offen</span>. Ob normale Repeater jede Flut weitergeben, ist nicht geprüft <span class="m open">offen</span>.</p>
       <p>Der Anbieter rechnet jede Kopie entlang des Pfads in sein Budget. Bei k Repeatern sind das k + 1 Sendungen
         je Fragment. Wartet ein Nachbar auf ein Datenpaket, gibt der Anbieter einem Pfad höchstens die Hälfte seiner Airtime <span class="m code">im Code geprüft</span>. Was ein Angreifer über fremde Repeater schickt, zählt in kein Budget, siehe
         <a href="sicherheit.html#angriff">Angriffe im Detail</a>.</p>
@@ -493,7 +493,7 @@
       <p>A retract also goes out once as a flood. The node waits 2 to 30 min first <span class="m code">checked in the code</span>. It answers a flooded offer of a retracted
         build with a flood. It waits up to 30 min first. It does so at most once a day per retract <span class="m code">checked in the code</span>. A key
         revocation also goes out as a flood, see <a href="sicherheit.html#warum">Why it works</a>.</p>
-      <p>None of these floods is tested on the bench <span class="m open">open</span>. The limit of 3 days has not run on the bench with today's firmware <span class="m open">open</span>. It is not
+      <p>The flood of the retract is tested on the bench: one provider sent it, a second received it, checked it and then held back its own <span class="m meas">measured</span>. The flood without a request, the one of the revocation and the one as an answer are not tested there <span class="m open">open</span>. The limit of 3 days has not run on the bench with today's firmware <span class="m open">open</span>. It is not
         checked if normal repeaters pass on every flood <span class="m open">open</span>.</p>
       <p>The provider counts every copy along the path in its budget. With k repeaters, that is k + 1 transmissions per
         fragment. While a neighbour waits for a data packet, the provider gives a path at most half of its airtime <span class="m code">checked in the code</span>. What an attacker sends through foreign repeaters counts in no budget, see
