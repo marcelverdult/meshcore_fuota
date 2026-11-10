@@ -59,16 +59,16 @@
   <header class="hero">
     <div lang="de">
       <h1>Was ein Update das Mesh kostet</h1>
-      <p class="lede">Über Funk geht nur der Patch, beim kleinen Release 10.076 B <span class="m meas">gemessen</span>. Das sind 60
+      <p class="lede">Über Funk geht nur der Patch, beim kleinen Release 10.076 B <span class="m meas">gemessen</span>. Das sind 63
         Datenpakete an einen Nachbarn <span class="m calc">berechnet</span>, und jeder Knoten sendet höchstens 0,3 % Airtime
-        <span class="m code">im Code geprüft</span>. Für 152 verbundene Repeater um Hamburg sind es 1.300 bis 1.700 Datenpakete
+        <span class="m code">im Code geprüft</span>. Für 152 verbundene Repeater um Hamburg sind es 1.400 bis 1.800 Datenpakete
         <span class="m calc">berechnet</span>.</p>
     </div>
     <div lang="en">
       <h1>What an update costs the mesh</h1>
-      <p class="lede">Only the patch travels over the air, 10,076 B for the small release <span class="m meas">measured</span>. That is 60
+      <p class="lede">Only the patch travels over the air, 10,076 B for the small release <span class="m meas">measured</span>. That is 63
         data packets to one neighbour <span class="m calc">calculated</span>, and every node sends at most 0.3 % airtime
-        <span class="m code">checked in the code</span>. For 152 connected repeaters around Hamburg it takes 1,300 to 1,700 data
+        <span class="m code">checked in the code</span>. For 152 connected repeaters around Hamburg it takes 1,400 to 1,800 data
         packets <span class="m calc">calculated</span>.</p>
     </div>
   </header>
@@ -82,9 +82,9 @@
         unverändert) mit <code>-Os</code>, also auf Größe übersetzt <span class="m meas">gemessen</span>. Daraus folgt, was ein
         Knoten sendet, der einen Nachbarn versorgt <span class="m calc">berechnet</span>:</p>
     </div>
-    <div lang="de"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Datenpakete</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10.076 B</td><td class="n">60</td><td class="n">103 s</td><td class="n">69 s</td></tr><tr><td>Release ohne Compilerwechsel (1.17.1 mit GCC 14 nach 1.18.0)</td><td class="n">22.680 B</td><td class="n">131</td><td class="n">225 s</td><td class="n">150 s</td></tr><tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34.179 B</td><td class="n">198</td><td class="n">341 s</td><td class="n">227 s</td></tr></table></div></div>
+    <div lang="de"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Datenpakete</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10.076 B</td><td class="n">63</td><td class="n">108 s</td><td class="n">72 s</td></tr><tr><td>Release ohne Compilerwechsel (1.17.1 mit GCC 14 nach 1.18.0)</td><td class="n">22.680 B</td><td class="n">138</td><td class="n">237 s</td><td class="n">158 s</td></tr><tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34.179 B</td><td class="n">207</td><td class="n">356 s</td><td class="n">237 s</td></tr></table></div></div>
     <div lang="de" class="prose">
-      <p>Die Airtime-Spalten zeigen die Sendezeit für ein Release. Sie gilt für alle Datenpakete, einmal an einen Nachbarn gesendet.</p>
+      <p>Die Airtime-Spalten zeigen die Sendezeit für ein Release. Sie gilt für alle Datenpakete, einmal an einen Nachbarn gesendet. Datenpakete sind alle Fragmente einer Kampagne: das Manifest (beim kleinen Release 2), die Prüftabelle mit einem Prüfwert je Patch-Fragment (3) und der Patch selbst (58), zusammen 63 <span class="m calc">berechnet</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Patch, data packets and airtime per release</h2>
@@ -93,9 +93,9 @@
         unchanged) with <code>-Os</code>, that is for size <span class="m meas">measured</span>. From them follows what a node
         sends that supplies one neighbour <span class="m calc">calculated</span>:</p>
     </div>
-    <div lang="en"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Data packets</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10,076 B</td><td class="n">60</td><td class="n">103 s</td><td class="n">69 s</td></tr><tr><td>release without compiler change (1.17.1 with GCC 14 to 1.18.0)</td><td class="n">22,680 B</td><td class="n">131</td><td class="n">225 s</td><td class="n">150 s</td></tr><tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34,179 B</td><td class="n">198</td><td class="n">341 s</td><td class="n">227 s</td></tr></table></div></div>
+    <div lang="en"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Data packets</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10,076 B</td><td class="n">63</td><td class="n">108 s</td><td class="n">72 s</td></tr><tr><td>release without compiler change (1.17.1 with GCC 14 to 1.18.0)</td><td class="n">22,680 B</td><td class="n">138</td><td class="n">237 s</td><td class="n">158 s</td></tr><tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34,179 B</td><td class="n">207</td><td class="n">356 s</td><td class="n">237 s</td></tr></table></div></div>
     <div lang="en" class="prose">
-      <p>The airtime columns show the transmit time for one release. It covers all data packets, sent once to one neighbour.</p>
+      <p>The airtime columns show the transmit time for one release. It covers all data packets, sent once to one neighbour. Data packets are all fragments of a campaign: the manifest (2 for the small release), the check table with one check value per patch fragment (3) and the patch itself (58), 63 in total <span class="m calc">calculated</span>.</p>
     </div>
     </div>
 
@@ -130,7 +130,7 @@
       <p>Ein Hop ist der Weg eines Updates von einem Knoten zu seinem direkten Nachbarn. Die Rechnung nimmt SF8, CR 4/5, 1.144 ms je
         Datenpaket und 4-KB-Seiten <span class="m calc">berechnet</span>.</p>
       <ul>
-        <li>Hop 1 braucht alle Datenpakete des Patches.</li>
+        <li>Hop 1 braucht alle Datenpakete der Kampagne.</li>
         <li>Jeder weitere Hop braucht nur eine Seite mehr, weil geprüfte Seiten sofort weitergehen.</li>
         <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 2,5 h
           <span class="m calc">berechnet</span>.</li>
@@ -145,7 +145,7 @@
       <p>A hop is an update's way from one node to its direct neighbour. The calculation uses SF8, CR 4/5, 1,144 ms per data packet
         and 4 KB pages <span class="m calc">calculated</span>.</p>
       <ul>
-        <li>Hop 1 needs all data packets of the patch.</li>
+        <li>Hop 1 needs all data packets of the campaign.</li>
         <li>Each further hop needs only one page more, because checked pages move on at once.</li>
         <li>A page is 23.3 data packets. At 0.3 % each further hop takes about 2.5 h
           <span class="m calc">calculated</span>.</li>
@@ -158,19 +158,19 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Update</th><th>Patch mit -Os (mit -Ofast)</th><th>Seiten</th><th>Datenpakete</th><th>Hop 1 bei 0,3 / 1 %</th><th>5 Hops bei 0,3 / 1 / 2 %</th><th>Anwenden</th></tr>
-        <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">60</td><td class="n">6,4 / 1,9 h</td><td class="n">16,2 / 4,9 / 2,4 h</td><td>hinter dem Image</td></tr>
-        <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">131</td><td class="n">13,9 / 4,2 h</td><td class="n">23,7 / 7,1 / 3,6 h</td><td>hinter dem Image</td></tr>
-        <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">198</td><td class="n">21,0 / 6,3 h</td><td class="n">30,8 / 9,3 / 4,6 h</td><td>hinter dem Image</td></tr>
-        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3,4 Tage / 24,5 h</td><td class="n">3,8 Tage / 27,5 / 13,7 h</td><td>überlappend (33 Seiten, hinter das Image mit 74 Seiten passen 23)</td></tr>
+        <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">63</td><td class="n">6,7 / 2,0 h</td><td class="n">16,5 / 5,0 / 2,5 h</td><td>hinter dem Image</td></tr>
+        <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">138</td><td class="n">14,6 / 4,4 h</td><td class="n">24,5 / 7,3 / 3,7 h</td><td>hinter dem Image</td></tr>
+        <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">207</td><td class="n">21,9 / 6,6 h</td><td class="n">31,8 / 9,5 / 4,8 h</td><td>hinter dem Image</td></tr>
+        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">807</td><td class="n">3,6 Tage / 25,6 h</td><td class="n">4,0 Tage / 28,6 / 14,3 h</td><td>überlappend (33 Seiten, hinter das Image mit 74 Seiten passen 23)</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Update</th><th>Patch with -Os (with -Ofast)</th><th>Pages</th><th>Data packets</th><th>Hop 1 at 0.3 / 1 %</th><th>5 hops at 0.3 / 1 / 2 %</th><th>Applied</th></tr>
-        <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">60</td><td class="n">6.4 / 1.9 h</td><td class="n">16.2 / 4.9 / 2.4 h</td><td>behind the image</td></tr>
-        <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">131</td><td class="n">13.9 / 4.2 h</td><td class="n">23.7 / 7.1 / 3.6 h</td><td>behind the image</td></tr>
-        <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">198</td><td class="n">21.0 / 6.3 h</td><td class="n">30.8 / 9.3 / 4.6 h</td><td>behind the image</td></tr>
-        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3.4 days / 24.5 h</td><td class="n">3.8 days / 27.5 / 13.7 h</td><td>overlapping (33 pages; 23 fit behind the 74-page image)</td></tr>
+        <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">63</td><td class="n">6.7 / 2.0 h</td><td class="n">16.5 / 5.0 / 2.5 h</td><td>behind the image</td></tr>
+        <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">138</td><td class="n">14.6 / 4.4 h</td><td class="n">24.5 / 7.3 / 3.7 h</td><td>behind the image</td></tr>
+        <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">207</td><td class="n">21.9 / 6.6 h</td><td class="n">31.8 / 9.5 / 4.8 h</td><td>behind the image</td></tr>
+        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">807</td><td class="n">3.6 days / 25.6 h</td><td class="n">4.0 days / 28.6 / 14.3 h</td><td>overlapping (33 pages; 23 fit behind the 74-page image)</td></tr>
       </table>
     </div>
   </section>
@@ -183,12 +183,12 @@
         Positionen sind auf 0,5 km gerundet, ohne Namen.</p>
       <h3>Sendungen je Kampagne</h3>
       <p>Senden müssen nur Knoten, die Nachbarn versorgen. Das sind mindestens etwa 22 von 152, die kleinste verbundene
-        Sendermenge <span class="m calc">berechnet</span>. Die Animation unten kommt auf 28, weil dort jede Seite vom
-        schnellsten Nachbarn kommt <span class="m calc">berechnet</span>. Daraus folgen die Datenpakete im ganzen Gebiet:</p>
+        Sendermenge <span class="m calc">berechnet</span>. Die Animation unten kommt auf 28 (Seed in der Mitte, am Rand sind es 36), weil dort jede Seite vom
+        schnellsten Nachbarn kommt <span class="m calc">berechnet</span>. Daraus folgen die Datenpakete im ganzen Gebiet, gerechnet als 22 bis 28 Sender mal die Pakete je Sender (kleines Release 63, Compilerwechsel 807):</p>
       <div class="tscroll"><table>
         <tr><th>Update</th><th>Datenpakete im ganzen Gebiet</th></tr>
-        <tr><td>kleines Release</td><td class="n">1.300 bis 1.700 <span class="m calc">berechnet</span></td></tr>
-        <tr><td>Compilerwechsel</td><td class="n">16.900 bis 22.200 <span class="m calc">berechnet</span></td></tr>
+        <tr><td>kleines Release</td><td class="n">1.400 bis 1.800 <span class="m calc">berechnet</span></td></tr>
+        <tr><td>Compilerwechsel</td><td class="n">17.800 bis 22.600 <span class="m calc">berechnet</span></td></tr>
         <tr><td>Compilerwechsel, geflutet wie über einen Kanal (nur zum Vergleich)</td><td class="n">rund 170.000 <span class="m calc">berechnet</span></td></tr>
       </table></div>
       <p>Geflutet heißt: Jeder Repeater sendet jedes Datenpaket einmal weiter. Update-Daten fluten bei FUOTA nie. Sie gehen nur an direkte Nachbarn oder auf einem festen Pfad. Geflutet werden nur kleine Nachrichten: Angebot, Retract (signierter Rückruf) und Schlüssel-Widerruf. Wann und wie oft, steht unter <a href="sicherheit.html#warum">Warum es funktioniert</a>.</p>
@@ -206,13 +206,13 @@
         to 0.5 km, without names.</p>
       <h3>Transmissions per campaign</h3>
       <p>Only nodes that supply neighbours have to send. That is at least about 22 of 152, the smallest connected set of
-        senders <span class="m calc">calculated</span>. The animation below uses 28, because every page comes from the
+        senders <span class="m calc">calculated</span>. The animation below uses 28 (seed in the centre, 36 at the edge), because every page comes from the
         fastest neighbour there <span class="m calc">calculated</span>. From this follow the data packets for the whole
-        area:</p>
+        area, calculated as 22 to 28 senders times the packets per sender (small release 63, compiler change 807):</p>
       <div class="tscroll"><table>
         <tr><th>Update</th><th>Data packets in the whole area</th></tr>
-        <tr><td>small release</td><td class="n">1,300 to 1,700 <span class="m calc">calculated</span></td></tr>
-        <tr><td>compiler change</td><td class="n">16,900 to 22,200 <span class="m calc">calculated</span></td></tr>
+        <tr><td>small release</td><td class="n">1,400 to 1,800 <span class="m calc">calculated</span></td></tr>
+        <tr><td>compiler change</td><td class="n">17,800 to 22,600 <span class="m calc">calculated</span></td></tr>
         <tr><td>compiler change, flooded as through a channel (for comparison only)</td><td class="n">about 170,000 <span class="m calc">calculated</span></td></tr>
       </table></div>
       <p>Flooded means that every repeater re-sends every data packet once. With FUOTA, update data never floods. It only goes to direct neighbours or along a fixed path. Only small messages are flooded: the offer, the retract (signed recall) and a key revocation. When and how often is explained under <a href="sicherheit.html#warum">Why it works</a>.</p>
