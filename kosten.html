@@ -269,8 +269,8 @@
       <ul>
         <li>Es rechnet keine Kollisionen ein, auch keine durch versteckte Knoten (die einander nicht hören).</li>
         <li>Es rechnet keinen normalen Verkehr und keine Paketverluste ein.</li>
-        <li>Es nimmt einen Anbieter je Seite. Mehrere würden schneller liefern: im Testaufbau doppelt so schnell
-          <span class="m meas">gemessen</span>.</li>
+        <li>Es nimmt einen Anbieter je Seite. Mehrere würden schneller liefern. Am 18. Oktober 2026 waren es im Testaufbau mit der alten Regel, nach der zwei Anbieter sich abwechselten, 235 s statt 464 s, also doppelt so schnell
+          <span class="m meas">gemessen</span>. Heute nennt jede Anfrage genau einen Anbieter. Am 3. November 2026 sendete in beiden Läufen mit zwei Anbietern nur einer <span class="m meas">gemessen</span>.</li>
         <li>Ein Anbieter, der mehrere Nachbarn mit verschiedenem Stand versorgt, teilt sein Budget. Das rechnet das Modell
           nicht ein.</li>
         <li>Nachbardaten gibt es nur von Repeatern, deren Nachbarn jemand abgerufen hat.</li>
@@ -285,8 +285,8 @@
       <ul>
         <li>It does not model collisions, also none from hidden nodes (that cannot hear each other).</li>
         <li>It does not model normal traffic or packet loss.</li>
-        <li>It assumes one provider per page. Several would deliver faster: on the bench twice as fast
-          <span class="m meas">measured</span>.</li>
+        <li>It assumes one provider per page. Several would deliver faster. On 18 October 2026 on the bench, with the old rule under which two providers took turns, it was 235 s instead of 464 s, so twice as fast
+          <span class="m meas">measured</span>. Today each request names exactly one provider. On 3 November 2026 only one of the two providers sent in both runs <span class="m meas">measured</span>.</li>
         <li>A provider that serves several neighbours with different states shares its budget. The model does not account
           for that.</li>
         <li>Neighbour data exists only for repeaters whose neighbours somebody has fetched.</li>
