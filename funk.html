@@ -392,6 +392,38 @@
     </div>
   </section>
 
+  <section id="analyzer">
+    <div lang="de" class="prose">
+      <h2>Was im echten Netz davon zu sehen ist</h2>
+      <p>Der <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">FUOTA-Bericht im MeshCore-Analyzer</a> wertet aus,
+        was Beobachter im echten Netz von FUOTA hören: Kampagnen mit ihrer Kennung, beteiligte Knoten, Pakete je Art
+        (Angebot, Anfrage, Daten), Bytes und Airtime, dazu jeder Beobachter mit seinem Signalabstand.</p>
+      <p>Viel kann dort nicht stehen. FUOTA sendet Zero-Hop, also hört ein Beobachter nur, was in seiner eigenen
+        Reichweite liegt; alles hinter einem Repeater bleibt unsichtbar. Und senden tun nur Knoten mit der Testfirmware.</p>
+      <p>Am 10. November 2026 stand dort für 30 Tage eine einzige Kampagne: <code>4c0180ac</code>, gehört am
+        8. November 2026 um 00:02 in Vilnius, ein Datenpaket mit 142 B und 1,4 s Airtime, ein beteiligter Knoten mit der
+        Kennung <code>8f</code>, kein Angebot, Signalabstand 12,0 dB <span class="m meas">gemessen</span>. Von unserem
+        Testaufbau stammt das nicht: Der läuft in Hamburg mit 1 dBm über rund 50 cm, und unsere Knoten tragen andere
+        Kennungen.</p>
+      <p>Ob es überhaupt ein FUOTA-Paket war, ist offen <span class="m open">offen</span>. Der Decoder des Analyzers
+        prüft Datenpakete nur locker und rechnet noch mit dem Paketlayout vom 18. Oktober 2026.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>What of this is visible in the real network</h2>
+      <p>The <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">FUOTA report in the MeshCore analyzer</a> evaluates
+        what observers in the real network hear of FUOTA: campaigns with their id, participating nodes, packets by type
+        (offer, request, data), bytes and airtime, plus every observer with its signal margin.</p>
+      <p>There cannot be much in it. FUOTA sends zero hop, so an observer hears only what is in its own range, and
+        anything behind a repeater stays invisible. Only nodes with the test firmware send at all.</p>
+      <p>On 10 November 2026 the report held a single campaign for 30 days: <code>4c0180ac</code>, heard on
+        8 November 2026 at 00:02 in Vilnius, one data packet of 142 B and 1.4 s of airtime, one participating node with
+        the id <code>8f</code>, no offer, signal margin 12.0 dB <span class="m meas">measured</span>. It does not come
+        from our bench: that one runs in Hamburg at 1 dBm over about 50 cm, and our nodes carry different ids.</p>
+      <p>Whether it was a FUOTA packet at all is open <span class="m open">open</span>. The analyzer's decoder checks
+        data packets only loosely and still assumes the packet layout of 18 October 2026.</p>
+    </div>
+  </section>
+
   <section id="weiter">
     <div lang="de" class="prose">
       <h2>Wer was weitergibt und was nie</h2>
