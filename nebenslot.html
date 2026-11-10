@@ -295,12 +295,12 @@
     <div lang="de" class="prose">
       <p>Das Band ist geteilt. <a href="https://github.com/meshtastic/firmware/blob/develop/src/mesh/RadioInterface.cpp">Meshtastic in der Standard-Einstellung</a> und
         <a href="https://lora-alliance.org/wp-content/uploads/2021/05/RP002-1.0.3-FINAL-1.pdf">LoRaWAN-Downlinks (RX2)</a> senden auf 869,525 MHz. Diese Frequenz liegt über Slot 2 und 3. Am Testaufbau lauschte ein
-        Knoten auf dem Mesh-Kanal:</p>
+        Knoten auf dem Mesh-Kanal (erster Lauf, 20. bis 21. Oktober 2026):</p>
       <ul>
         <li>Von Slot 3 dekodierte er 5 von 48 Datenpaketen <span class="m meas">gemessen</span>.</li>
         <li>In einem zweiten Lauf auf Slot 3 kamen 24 von 48 Datenpaketen fehlerhaft an <span class="m meas">gemessen</span>.</li>
         <li>Von Slot 2 dekodierte er keines <span class="m meas">gemessen</span>.</li>
-        <li>Mesh-Pakete gingen dabei nicht messbar verloren <span class="m meas">gemessen</span>.</li>
+        <li>Mesh-Pakete gingen bei Slot 2 nicht verloren: Während ein zweiter Knoten dort sendete, kamen 40 von 40 Proben auf dem Mesh-Kanal an <span class="m meas">gemessen</span>. Bei Slot 3 war das nur im ersten Lauf so (39 bis 40 von 40). Am 27. Oktober 2026 kamen mit einem Sender auf Slot 3 nur 5 von 40 Proben an <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Am Ort des Testaufbaus war Slot 2 bei 8
         bis 31 von 2.000 Prüfungen belegt <span class="m meas">gemessen</span>. Die Belegung an anderen Orten in Hamburg ist offen <span class="m open">offen</span>.</p>
@@ -335,12 +335,12 @@
     <div lang="en" class="prose">
       <p>The band is shared. <a href="https://github.com/meshtastic/firmware/blob/develop/src/mesh/RadioInterface.cpp">Meshtastic in its default setting</a> and
         <a href="https://lora-alliance.org/wp-content/uploads/2021/05/RP002-1.0.3-FINAL-1.pdf">LoRaWAN downlinks (RX2)</a> transmit on 869.525 MHz. That frequency lies across slots 2 and 3. On
-        the bench a node listened on the mesh channel:</p>
+        the bench a node listened on the mesh channel (first run, 20 to 21 October 2026):</p>
       <ul>
         <li>From slot 3 it decoded 5 of 48 data packets <span class="m meas">measured</span>.</li>
         <li>In a second run on slot 3, 24 of 48 data packets arrived faulty <span class="m meas">measured</span>.</li>
         <li>From slot 2 it decoded none <span class="m meas">measured</span>.</li>
-        <li>No measurable mesh packets were lost <span class="m meas">measured</span>.</li>
+        <li>Mesh packets were not lost on slot 2: while a second node transmitted there, 40 of 40 probes arrived on the mesh channel <span class="m meas">measured</span>. On slot 3 that held only in the first run (39 to 40 of 40). On 27 October 2026, with a sender on slot 3, only 5 of 40 probes arrived <span class="m meas">measured</span>.</li>
       </ul>
       <p>At the bench site slot 2 was busy in 8 to 31 of 2,000
         checks <span class="m meas">measured</span>. How busy it is elsewhere in Hamburg is open <span class="m open">open</span>.</p>
@@ -541,11 +541,11 @@
         <li>Der Nebenslot braucht 8.912 B Flash und 2.880 B RAM. Das schließt Vertrauensliste und Format 4 ein. Gemessen ist ein
           Image ohne Testbefehle:
           <ul>
-            <li>vor dem Nebenslot: 270.192 B <span class="m meas">gemessen</span></li>
-            <li>mit Vertrauensliste und Format 4: 279.104 B, das sind 69 von höchstens 96 Seiten <span class="m meas">gemessen</span></li>
+            <li>vor dem Nebenslot (Stand 20. Oktober 2026): 270.192 B <span class="m meas">gemessen</span></li>
+            <li>mit Vertrauensliste und Format 4 (Stand 22. Oktober 2026): 279.104 B, das sind 69 von höchstens 96 Seiten <span class="m meas">gemessen</span></li>
           </ul></li>
         <li>Danach kamen das Meiden von Anbietern und Korrekturen dazu. Das Release-Image wuchs dadurch von
-          279.008 auf 279.488 B <span class="m meas">gemessen</span>. Das sind weiter 69 von höchstens 96 Seiten <span class="m calc">berechnet</span>.</li>
+          279.008 B (22. Oktober 2026) auf 279.488 B (26. Oktober 2026) <span class="m meas">gemessen</span>. Das waren weiter 69 von höchstens 96 Seiten <span class="m calc">berechnet</span>. Das Release-Image vom 8. November 2026 ist größer: 299.284 B und 74 Seiten (<a href="flash.html#speicher">Flash und RAM</a>).</li>
         <li>In 1 Stunde Dauerbetrieb sendete der Anbieter 308 s, das sind 8,6 % <span class="m meas">gemessen</span>. Er
           zählte dabei 0,5 % weniger Airtime als der Funkchip <span class="m meas">gemessen</span>.</li>
         <li>Eine frühere Firmware prüfte die 9 % nur beim Burst, nicht auf dem Mesh-Kanal. Die jetzige prüft sie vor
@@ -623,11 +623,11 @@
         <li>The side slot needs 8,912 B of flash and 2,880 B of RAM. That includes the trust list and format 4. We
           measured an image without test commands:
           <ul>
-            <li>before the side slot: 270,192 B <span class="m meas">measured</span></li>
-            <li>with trust list and format 4: 279,104 B, so 69 of at most 96 pages <span class="m meas">measured</span></li>
+            <li>before the side slot (as of 20 October 2026): 270,192 B <span class="m meas">measured</span></li>
+            <li>with trust list and format 4 (as of 22 October 2026): 279,104 B, so 69 of at most 96 pages <span class="m meas">measured</span></li>
           </ul></li>
-        <li>Avoiding providers and fixes came after that. They grew the release image from 279,008 to
-          279,488 B <span class="m meas">measured</span>. That is still 69 of at most 96 pages <span class="m calc">calculated</span>.</li>
+        <li>Avoiding providers and fixes came after that. They grew the release image from 279,008 B (22 October 2026) to
+          279,488 B (26 October 2026) <span class="m meas">measured</span>. That was still 69 of at most 96 pages <span class="m calc">calculated</span>. The release image of 8 November 2026 is larger: 299,284 B and 74 pages (<a href="flash.html#speicher">Flash and RAM</a>).</li>
         <li>In 1 hour of continuous operation the provider sent 308 s, that is 8.6 % <span class="m meas">measured</span>.
           Its own count was 0.5 % below the radio's <span class="m meas">measured</span>.</li>
         <li>Earlier firmware checked the 9 % only for the burst, not on the mesh channel. The current one checks it

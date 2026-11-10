@@ -60,7 +60,7 @@
     transfers.forEach(function (t) { senders[t.m] = 1; var key = t.m + ":" + t.k;
       if (!sendPairs[key]) { sendPairs[key] = 1; packets += t.k < 0 ? mfFr : Math.ceil(Math.min(PAGE, patch - t.k * PAGE) / FRAG); } });
     return { seed: seed, part: part, tm: tm, tp: tp, pages: pages, total: total, reached: reached, parts: parts, patch: patch, mfFr: mfFr,
-             transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 31 };
+             transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 23 };
   }
 
   var cv = document.getElementById("map"), ctx = cv.getContext("2d"), S = null, t = 0, playing = false, last = 0;
@@ -204,12 +204,12 @@
       ["eben", justNow(true)], ["fertig", done + " von " + S.parts], ["holt gerade", pulling], ["senden gerade", Object.keys(senders).length],
       ["alle Erreichbaren fertig nach", fmt(S.total)], ["nie erreicht", unreached + (S.part.length - S.parts ? " (+" + (S.part.length - S.parts) + " ohne FUOTA)" : "")],
       ["Knoten, die je Daten senden", S.senders], ["Datenpakete gesamt, ca.", S.packets.toLocaleString("de-DE")],
-      ["Patch passt hinter das Image (66 Seiten)", S.fits ? "ja, " + S.pages + " von höchstens 31 Seiten" : "nein: " + S.pages + " Seiten, frei sind 31; überlappend nach dem Fenster"]
+      ["Patch passt hinter das Image (74 Seiten)", S.fits ? "ja, " + S.pages + " von höchstens 23 Seiten" : "nein: " + S.pages + " Seiten, frei sind 23; überlappend nach dem Fenster"]
     ] : [
       ["just now", justNow(false)], ["done", done + " of " + S.parts], ["pulling now", pulling], ["sending now", Object.keys(senders).length],
       ["all reachable done after", fmt(S.total)], ["never reached", unreached + (S.part.length - S.parts ? " (+" + (S.part.length - S.parts) + " without FUOTA)" : "")],
       ["nodes that ever send data", S.senders], ["data packets in total, approx.", S.packets.toLocaleString("en-GB")],
-      ["patch fits behind the image (66 pages)", S.fits ? "yes, " + S.pages + " of at most 31 pages" : "no: " + S.pages + " pages, 31 are free; overlapping after the window"]
+      ["patch fits behind the image (74 pages)", S.fits ? "yes, " + S.pages + " of at most 23 pages" : "no: " + S.pages + " pages, 23 are free; overlapping after the window"]
     ];
     el("stats").innerHTML = rows.map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("");
     if (hfocus >= 0) {   // the focused action on top of everything

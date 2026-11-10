@@ -135,8 +135,8 @@
         <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 2,5 h
           <span class="m calc">berechnet</span>.</li>
         <li>Bei 1 % sind es rund 0,7 h <span class="m calc">berechnet</span>.</li>
-        <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 464 s <span class="m meas">gemessen</span>, gerechnet
-          waren es 469 s. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
+        <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 484,5 s <span class="m meas">gemessen</span>, gerechnet
+          waren es 486 bis 490 s <span class="m calc">berechnet</span>. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Aus den gemessenen Patches folgt die Dauer <span class="m calc">berechnet</span>:</p>
     </div>
@@ -150,8 +150,8 @@
         <li>A page is 23.3 data packets. At 0.3 % each further hop takes about 2.5 h
           <span class="m calc">calculated</span>.</li>
         <li>At 1 % it is about 0.7 h <span class="m calc">calculated</span>.</li>
-        <li>On the bench the calculation holds. Hop 1 took 464 s at 10 % <span class="m meas">measured</span>. The calculation
-          gave 469 s. Hop 2 was one page behind <span class="m meas">measured</span>.</li>
+        <li>On the bench the calculation holds. Hop 1 took 484.5 s at 10 % <span class="m meas">measured</span>. The calculation
+          gave 486 to 490 s <span class="m calc">calculated</span>. Hop 2 was one page behind <span class="m meas">measured</span>.</li>
       </ul>
       <p>From the measured patches follows the duration <span class="m calc">calculated</span>:</p>
     </div>
@@ -161,7 +161,7 @@
         <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">60</td><td class="n">6,4 / 1,9 h</td><td class="n">16,2 / 4,9 / 2,4 h</td><td>hinter dem Image</td></tr>
         <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">131</td><td class="n">13,9 / 4,2 h</td><td class="n">23,7 / 7,1 / 3,6 h</td><td>hinter dem Image</td></tr>
         <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">198</td><td class="n">21,0 / 6,3 h</td><td class="n">30,8 / 9,3 / 4,6 h</td><td>hinter dem Image</td></tr>
-        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3,4 Tage / 24,5 h</td><td class="n">3,8 Tage / 27,5 / 13,7 h</td><td>überlappend (33 Seiten, hinter das Image mit 66 Seiten passen 31)</td></tr>
+        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3,4 Tage / 24,5 h</td><td class="n">3,8 Tage / 27,5 / 13,7 h</td><td>überlappend (33 Seiten, hinter das Image mit 74 Seiten passen 23)</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -170,7 +170,7 @@
         <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">60</td><td class="n">6.4 / 1.9 h</td><td class="n">16.2 / 4.9 / 2.4 h</td><td>behind the image</td></tr>
         <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">131</td><td class="n">13.9 / 4.2 h</td><td class="n">23.7 / 7.1 / 3.6 h</td><td>behind the image</td></tr>
         <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">198</td><td class="n">21.0 / 6.3 h</td><td class="n">30.8 / 9.3 / 4.6 h</td><td>behind the image</td></tr>
-        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3.4 days / 24.5 h</td><td class="n">3.8 days / 27.5 / 13.7 h</td><td>overlapping (33 pages; 31 fit behind the 66-page image)</td></tr>
+        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3.4 days / 24.5 h</td><td class="n">3.8 days / 27.5 / 13.7 h</td><td>overlapping (33 pages; 23 fit behind the 74-page image)</td></tr>
       </table>
     </div>
   </section>
@@ -275,7 +275,7 @@
           nicht ein.</li>
         <li>Nachbardaten gibt es nur von Repeatern, deren Nachbarn jemand abgerufen hat.</li>
         <li>Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags.</li>
-        <li>Mit 33 Seiten passt der Compilerwechsel nicht hinter das Image (66 Seiten, 31 frei). Ein Knoten wendet
+        <li>Mit 33 Seiten passt der Compilerwechsel nicht hinter das Image (74 Seiten, 23 frei). Ein Knoten wendet
           ihn überlappend an, erst nach dem Fenster, in dem er weitergibt. Diese Wartezeit rechnet das Modell nicht ein.</li>
         <li>Real dauert es eher länger: Kollisionen, Paketverluste und normaler Verkehr kommen dazu.</li>
       </ul>
@@ -291,7 +291,7 @@
           for that.</li>
         <li>Neighbour data exists only for repeaters whose neighbours somebody has fetched.</li>
         <li>The patch sizes come from the stock FakeTec with <code>-Os</code> from the release tags.</li>
-        <li>At 33 pages the compiler change does not fit behind the 66-page image (31 free). A node applies it
+        <li>At 33 pages the compiler change does not fit behind the 74-page image (23 free). A node applies it
           overlapping, only after the window in which it passes it on. The model does not include that wait.</li>
         <li>Real runs tend to take longer: collisions, packet loss and normal traffic add to it.</li>
       </ul>
@@ -387,7 +387,7 @@
         Wir haben die Release-Tags am Stock-FakeTec gebaut, einmal mit <code>-Ofast</code>, einmal mit <code>-Os</code>.
         Jeder Patch hat eine Rundreise bestanden: anwenden, dann das neue Image prüfen. Beide Werte
         stehen in der <a href="#aufwand">Tabelle oben</a>.</p>
-      <p>Hinter ein Image mit 66 Seiten passen Patches bis 31 Seiten. Größere wendet der Knoten überlappend an.</p>
+      <p>Hinter ein Image mit 74 Seiten passen Patches bis 23 Seiten. Größere wendet der Knoten überlappend an.</p>
       <p>Das kleinere Image kostet etwas Rechenzeit. Auf einem FakeTec <span class="m meas">gemessen</span>:</p>
       <div class="tscroll"><table>
         <tr><th>Vorgang</th><th>mit -Os</th><th>mit -Ofast</th></tr>
@@ -491,7 +491,7 @@
         the release tags on the stock FakeTec, once with <code>-Ofast</code>, once with <code>-Os</code>. Every patch passed a
         round trip: apply it, then check the new image. Both values are in the
         <a href="#aufwand">table above</a>.</p>
-      <p>Patches of up to 31 pages fit behind an image of 66 pages. A node applies larger ones overlapping.</p>
+      <p>Patches of up to 23 pages fit behind an image of 74 pages. A node applies larger ones overlapping.</p>
       <p>The smaller image costs some compute time. On a FakeTec <span class="m meas">measured</span>:</p>
       <div class="tscroll"><table>
         <tr><th>Step</th><th>with -Os</th><th>with -Ofast</th></tr>
@@ -517,7 +517,8 @@
       <h2>Downtime and waiting</h2>
     </div>
     <div class="grid2" lang="de">
-      <div class="kv"><h3>Ausfallzeit beim Anwenden</h3><p>Das Anwenden dauert rund 1 min. Es sind 12 s bauen, 30 bis 39 s tauschen, dazu der Start. Bei
+      <div class="kv"><h3>Ausfallzeit beim Anwenden</h3><p>Das Anwenden dauerte am Test-Image rund 1 min: 12 s bauen, 30 bis 39 s tauschen, dazu der Start.
+        Am Release-Image dauert das Bauen 10,2 s <span class="m meas">gemessen</span>, die Gesamtzeit ist dort nicht gemessen. Bei
         sofortigem Anwenden fehlt der Knoten so lange als Anbieter. Im Testaufbau kostete das den nächsten Hop 56 s
         <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Wartezeit auf ein Angebot</h3><p>Das Angebots-Intervall springt auf 10 s zurück <span class="m code">im Code geprüft</span>. Das passiert, wenn das Manifest geprüft
@@ -527,7 +528,8 @@
         <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p></div>
     </div>
     <div class="grid2" lang="en">
-      <div class="kv"><h3>Downtime while applying</h3><p>Applying takes about 1 min. That is 12 s build, 30 to 39 s swap, plus the start. With immediate
+      <div class="kv"><h3>Downtime while applying</h3><p>Applying took about 1 min on the test image: 12 s build, 30 to 39 s swap, plus the start.
+        On the release image the build takes 10.2 s <span class="m meas">measured</span>, the total has not been measured there. With immediate
         apply the node is missing as a provider for that long. On the bench this cost the next hop 56 s
         <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Waiting for an offer</h3><p>The offer interval jumps back to 10 s <span class="m code">checked in the code</span>. This happens when the manifest is checked or the
