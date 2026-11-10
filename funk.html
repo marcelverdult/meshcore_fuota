@@ -400,11 +400,14 @@
         (Angebot, Anfrage, Daten), Bytes und Airtime, dazu jeder Beobachter mit seinem Signalabstand.</p>
       <p>Viel kann dort nicht stehen. FUOTA sendet Zero-Hop, also hört ein Beobachter nur, was in seiner eigenen
         Reichweite liegt; alles hinter einem Repeater bleibt unsichtbar. Und senden tun nur Knoten mit der Testfirmware.</p>
-      <p>Am 10. November 2026 stand dort für 30 Tage eine einzige Kampagne: <code>4c0180ac</code>, gehört am
-        8. November 2026 um 00:02 in Vilnius, ein Datenpaket mit 142 B und 1,4 s Airtime, ein beteiligter Knoten mit der
-        Kennung <code>8f</code>, kein Angebot, Signalabstand 12,0 dB <span class="m meas">gemessen</span>. Von unserem
-        Testaufbau stammt das nicht: Der läuft in Hamburg mit 1 dBm über rund 50 cm, und unsere Knoten tragen andere
-        Kennungen.</p>
+      <p>Am 10. November 2026 stand dort im Zeitraum 30 Tage (die längste Auswahl im Bericht) eine einzige Kampagne:
+        <code>4c0180ac</code>, gehört am 7. November 2026 um 23:02 UTC von einem Beobachter mit dem Flughafenkürzel VNO
+        (Vilnius), ein Datenpaket mit 142 B und 1,4 s Airtime, ein beteiligter Knoten mit der Kennung <code>8f</code>,
+        kein Angebot, Signalabstand 12,0 dB <span class="m meas">gemessen</span>. Der Bericht zeigt die Zeit in der
+        Ortszeit des Betrachters: In Hamburg steht dort der 8. November, 00:02, in Vilnius wäre es 01:02. Eine Abfrage
+        über 90 Tage, so weit reicht die Schnittstelle, liefert dieselbe eine Kampagne <span class="m meas">gemessen</span>.
+        Von unserem Testaufbau stammt das nicht: Der läuft in Hamburg mit 1 dBm über rund 50 cm, und unsere Knoten tragen
+        andere Kennungen.</p>
       <p>Ob es überhaupt ein FUOTA-Paket war, wissen wir nicht <span class="m open">offen</span>. Der Decoder des Analyzers
         prüft Datenpakete nur locker und rechnet noch mit dem Paketlayout vom 18. Oktober 2026.</p>
     </div>
@@ -415,10 +418,13 @@
         (offer, request, data), bytes and airtime, plus every observer with its signal margin.</p>
       <p>There cannot be much in it. FUOTA sends zero hop, so an observer hears only what is in its own range, and
         anything behind a repeater stays invisible. Only nodes with the test firmware send at all.</p>
-      <p>On 10 November 2026 the report held a single campaign for 30 days: <code>4c0180ac</code>, heard on
-        8 November 2026 at 00:02 in Vilnius, one data packet of 142 B and 1.4 s of airtime, one participating node with
-        the id <code>8f</code>, no offer, signal margin 12.0 dB <span class="m meas">measured</span>. It does not come
-        from our bench: that one runs in Hamburg at 1 dBm over about 50 cm, and our nodes carry different ids.</p>
+      <p>On 10 November 2026 the report held a single campaign for the 30-day window (the longest choice in the report):
+        <code>4c0180ac</code>, heard on 7 November 2026 at 23:02 UTC by an observer with the airport code VNO
+        (Vilnius), one data packet of 142 B and 1.4 s of airtime, one participating node with the id <code>8f</code>,
+        no offer, signal margin 12.0 dB <span class="m meas">measured</span>. The report shows time in the viewer's
+        local time: in Hamburg it reads 8 November, 00:02; in Vilnius it would be 01:02. A query over 90 days, as far
+        back as the interface goes, returns the same single campaign <span class="m meas">measured</span>. It does not
+        come from our bench: that one runs in Hamburg at 1 dBm over about 50 cm, and our nodes carry different ids.</p>
       <p>Whether it was a FUOTA packet at all, we do not know <span class="m open">open</span>. The analyzer's decoder checks
         data packets only loosely and still assumes the packet layout of 18 October 2026.</p>
     </div>
@@ -580,7 +586,7 @@
         <tr><td>Angebots-Flut</td><td class="n">höchstens 1 am Tag, dann 1 je Woche</td><td>Ein Anbieter flutet sein Angebot, sobald er die ganze Kampagne hat. Die Tagesgrenze gilt in der ersten Woche und 1 Woche nach gehörter Anfrage. Danach gilt die Wochengrenze: höchstens einmal je Woche. Die Wochen zählen seine Laufzeit. In der Wochenphase hält ihn eine gehörte Flut derselben Kampagne höchstens 2-mal hintereinander zurück. Dann flutet er spätestens 3 Wochen nach seiner letzten Flut wieder. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Zurückhalten der Angebots-Flut</td><td class="n">höchstens 3 Tage</td><td>In der ersten Woche und 1 Woche nach gehörter Anfrage hält ihn eine gehörte Flut derselben Kampagne höchstens 3 Tage zurück. Die 3 Tage zählen ab seiner letzten Flut oder der letzten zurückgehaltenen Wochenperiode. Danach flutet er trotz gehörter Flut, sobald sein nächster Termin kommt. Nur eine Flut aus seiner Region mit höchstens 8 Hops hält ihn zurück. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Retract</td><td class="n">bis zu 3-mal, dazu 1 Flut</td><td>Ein Knoten sendet den Retract bis zu 3-mal an direkte Nachbarn. Dazu flutet er ihn einmal. Er wartet vorher 2 bis 30 min. Auf ein Angebot des zurückgezogenen Builds antwortet er höchstens alle 30 s mit dem Retract. Kam das Angebot als Flut, antwortet er nach bis zu 30 min mit einer Flut. Das tut er höchstens einmal am Tag je Retract. Den Takt der Sendungen an Nachbarn erklärt der Absatz unter der Tabelle.</td></tr>
-        <tr><td>Anwenden</td><td class="n">~12 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>. Der Knoten ist dabei rund 1 min offline.</td></tr>
+        <tr><td>Anwenden</td><td class="n">~10 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>: Bauen am Release-Image (9. November 2026), Tauschen am Test-Image (18. Oktober 2026). Der Knoten ist dabei rund 1 min offline, gemessen am Test-Image, am Release-Image nicht.</td></tr>
         <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung 60 s</td><td>Die Bestätigung kommt nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet). Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware.</td></tr>
       </table>
     </div>
@@ -603,7 +609,7 @@
         <tr><td>Offer flood</td><td class="n">at most 1 a day, then 1 a week</td><td>A provider floods its offer once it has the whole campaign. The daily limit holds in the first week and 1 week after a heard request. After that, the weekly limit holds: at most once a week. The weeks count its running time. In the weekly phase, a heard flood of the same campaign holds it back at most 2 times in a row. Then it floods again 3 weeks after its last flood at the latest. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Holding back the offer flood</td><td class="n">up to 3 days</td><td>In the first week and 1 week after a heard request, a heard flood of the same campaign holds it back up to 3 days. The 3 days count from its last flood or the last weekly period it held back. After that it floods despite a heard flood, at its next planned time. Only a flood from its region with at most 8 hops holds it back. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Retract</td><td class="n">up to 3 times, plus 1 flood</td><td>A node sends the retract up to 3 times to direct neighbours. It also floods it once, after waiting 2 to 30 min. It answers offers of the retracted build with the retract at most every 30 s. If an offer was flooded, it answers with a flood after up to 30 min. It does so at most once a day per retract. The paragraph below the table explains the sends to neighbours.</td></tr>
-        <tr><td>Apply</td><td class="n">~12 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>. The node is offline for about 1 min meanwhile.</td></tr>
+        <tr><td>Apply</td><td class="n">~10 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>: build on the release image (9 November 2026), swap on the test image (18 October 2026). The node is offline for about 1 min meanwhile, measured on the test image, not on the release image.</td></tr>
         <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation 60 s</td><td>Confirmation needs 60 s and a radio sign of life (one packet received, one sent). After 3 test boots without confirmation the node reverts to the old firmware.</td></tr>
       </table>
     </div>

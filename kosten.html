@@ -135,8 +135,8 @@
         <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 2,5 h
           <span class="m calc">berechnet</span>.</li>
         <li>Bei 1 % sind es rund 0,7 h <span class="m calc">berechnet</span>.</li>
-        <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 464 s <span class="m meas">gemessen</span>, gerechnet
-          waren es 469 s. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
+        <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 484,5 s <span class="m meas">gemessen</span>, gerechnet
+          waren es 486 bis 490 s <span class="m calc">berechnet</span>. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Aus den gemessenen Patches folgt die Dauer <span class="m calc">berechnet</span>:</p>
     </div>
@@ -150,8 +150,8 @@
         <li>A page is 23.3 data packets. At 0.3 % each further hop takes about 2.5 h
           <span class="m calc">calculated</span>.</li>
         <li>At 1 % it is about 0.7 h <span class="m calc">calculated</span>.</li>
-        <li>On the bench the calculation holds. Hop 1 took 464 s at 10 % <span class="m meas">measured</span>. The calculation
-          gave 469 s. Hop 2 was one page behind <span class="m meas">measured</span>.</li>
+        <li>On the bench the calculation holds. Hop 1 took 484.5 s at 10 % <span class="m meas">measured</span>. The calculation
+          gave 486 to 490 s <span class="m calc">calculated</span>. Hop 2 was one page behind <span class="m meas">measured</span>.</li>
       </ul>
       <p>From the measured patches follows the duration <span class="m calc">calculated</span>:</p>
     </div>
@@ -517,7 +517,8 @@
       <h2>Downtime and waiting</h2>
     </div>
     <div class="grid2" lang="de">
-      <div class="kv"><h3>Ausfallzeit beim Anwenden</h3><p>Das Anwenden dauert rund 1 min. Es sind 12 s bauen, 30 bis 39 s tauschen, dazu der Start. Bei
+      <div class="kv"><h3>Ausfallzeit beim Anwenden</h3><p>Das Anwenden dauerte am Test-Image rund 1 min: 12 s bauen, 30 bis 39 s tauschen, dazu der Start.
+        Am Release-Image dauert das Bauen 10,2 s <span class="m meas">gemessen</span>, die Gesamtzeit ist dort nicht gemessen. Bei
         sofortigem Anwenden fehlt der Knoten so lange als Anbieter. Im Testaufbau kostete das den nächsten Hop 56 s
         <span class="m meas">gemessen</span>.</p></div>
       <div class="kv"><h3>Wartezeit auf ein Angebot</h3><p>Das Angebots-Intervall springt auf 10 s zurück <span class="m code">im Code geprüft</span>. Das passiert, wenn das Manifest geprüft
@@ -527,7 +528,8 @@
         <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p></div>
     </div>
     <div class="grid2" lang="en">
-      <div class="kv"><h3>Downtime while applying</h3><p>Applying takes about 1 min. That is 12 s build, 30 to 39 s swap, plus the start. With immediate
+      <div class="kv"><h3>Downtime while applying</h3><p>Applying took about 1 min on the test image: 12 s build, 30 to 39 s swap, plus the start.
+        On the release image the build takes 10.2 s <span class="m meas">measured</span>, the total has not been measured there. With immediate
         apply the node is missing as a provider for that long. On the bench this cost the next hop 56 s
         <span class="m meas">measured</span>.</p></div>
       <div class="kv"><h3>Waiting for an offer</h3><p>The offer interval jumps back to 10 s <span class="m code">checked in the code</span>. This happens when the manifest is checked or the

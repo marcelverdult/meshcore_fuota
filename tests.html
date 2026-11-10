@@ -117,7 +117,7 @@
           <li>Nach 3 Probestarts ohne Bestätigung läuft wieder die alte Firmware (Rückfall) <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Delta-Patch auf dem Gerät</td><td><ul>
-          <li>Patches von 6 bis 22 KB ergeben in rund 12 s das neue Image.</li>
+          <li>Patches von 6 bis 22 KB ergeben in rund 12 s das neue Image (Ziel-Images von 359 bis 365 KB, 18. Oktober 2026). Beim Release-Image von 299 KB sind es 10,2 s <span class="m meas">gemessen</span>.</li>
           <li>Der Hash des neuen Images stimmt exakt <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Signatur und Manifest</td><td><ul>
@@ -127,7 +127,7 @@
           <li>Ein verfälschtes Fragment kostet eine Seite: Der Knoten holt sie neu <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Kette A-B-C</td><td><ul>
-          <li>Hop 1 ist nach 464 s fertig <span class="m meas">gemessen</span>. Die Rechnung ergab 469 s <span class="m calc">berechnet</span>.</li>
+          <li>Hop 1 ist nach 484,5 s fertig <span class="m meas">gemessen</span>, vor der Regel „Anfrage an einen Anbieter“ waren es 464 s. Die Rechnung ergibt 486 bis 490 s <span class="m calc">berechnet</span>.</li>
           <li>Hop 2 liegt eine Seite hinter Hop 1.</li>
           <li>Alle Pakete laufen nur über B, mit 0 Duplikaten <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
@@ -156,7 +156,7 @@
         </ul></td></tr>
         <tr><td>Verlorene Anfrage</td><td><ul>
           <li>Wir haben eine Anfrage absichtlich verworfen.</li>
-          <li>Die neue Anfrage kam nach 17,9 s, vorher nach 108 s.</li>
+          <li>Die neue Anfrage kam nach 17,9 bis 25,4 s, vorher nach 108 s <span class="m meas">gemessen</span>. Seit dem 18. Oktober 2026 kommt ein Zufallsanteil von bis zu 6,4 s dazu, erwartet sind 17,9 bis 24,3 s.</li>
           <li>Es gab keine zusätzlichen Anfragen und 0 Duplikate <span class="m meas">gemessen</span>.</li>
         </ul></td></tr>
         <tr><td>Rückfall und gescheitertes Image</td><td><ul>
@@ -269,7 +269,7 @@
           <li>After 3 test boots without confirmation the old firmware runs again (revert) <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Delta patch on the device</td><td><ul>
-          <li>Patches of 6 to 22 KB become the new image in about 12 s.</li>
+          <li>Patches of 6 to 22 KB become the new image in about 12 s (target images of 359 to 365 KB, 18 October 2026). For the release image of 299 KB it is 10.2 s <span class="m meas">measured</span>.</li>
           <li>The hash of the new image matches exactly <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Signature and manifest</td><td><ul>
@@ -279,7 +279,7 @@
           <li>A corrupted fragment costs one page: the node pulls it again <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Chain A-B-C</td><td><ul>
-          <li>Hop 1 is done after 464 s <span class="m meas">measured</span>. The calculation gave 469 s <span class="m calc">calculated</span>.</li>
+          <li>Hop 1 is done after 484.5 s <span class="m meas">measured</span>; before the rule "request to one provider" it was 464 s. The calculation gives 486 to 490 s <span class="m calc">calculated</span>.</li>
           <li>Hop 2 is one page behind hop 1.</li>
           <li>All packets go only through B, with 0 duplicates <span class="m meas">measured</span>.</li>
         </ul></td></tr>
@@ -308,7 +308,7 @@
         </ul></td></tr>
         <tr><td>Lost request</td><td><ul>
           <li>We dropped a request on purpose.</li>
-          <li>The new request came after 17.9 s, where it used to take 108 s.</li>
+          <li>The new request came after 17.9 to 25.4 s, where it used to take 108 s <span class="m meas">measured</span>. Since 18 October 2026 a random share of up to 6.4 s is added, so 17.9 to 24.3 s is expected.</li>
           <li>There were no extra requests and 0 duplicates <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Revert and failed image</td><td><ul>

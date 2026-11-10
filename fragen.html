@@ -98,7 +98,7 @@
           </table></div>
           <p>Eine Messung in einem echten, ausgelasteten Mesh mit versteckten Sendern fehlt. Das Modell auf <a href="kosten.html#hh">Last im Mesh</a> lässt Kollisionen weg <span class="m open">offen</span>. Beleg: <a href="kosten.html#kosten">Last im Mesh: Kanallast</a>, <a href="funk.html#funk">Funk: Nachrichten</a>.</p></div>
         <div class="qa"><h3>Wie lange dauert ein Update?</h3>
-          <p>Bewusst lange: bei 0,3 % rund 2,5 h je weiterem Hop (Funksprung zum nächsten Knoten) <span class="m calc">berechnet</span>. Der Patch ist nur der Unterschied zwischen 2 Images. Der erste Hop braucht alle Datenpakete des Patches, jeder weitere nur eine Seite mehr. Geprüfte Seiten gehen sofort weiter. Am Testaufbau dauerte der erste Hop 464 s <span class="m meas">gemessen</span>. Die Rechnung ergab 469 s <span class="m calc">berechnet</span>, beide bei 10 %. Ganz Hamburg rechnet die Animation. Beleg: <a href="kosten.html#hh">Last im Mesh: Hamburg</a>, <a href="tests.html#tests">Messungen</a>.</p></div>
+          <p>Bewusst lange: bei 0,3 % rund 2,5 h je weiterem Hop (Funksprung zum nächsten Knoten) <span class="m calc">berechnet</span>. Der Patch ist nur der Unterschied zwischen 2 Images. Der erste Hop braucht alle Datenpakete des Patches, jeder weitere nur eine Seite mehr. Geprüfte Seiten gehen sofort weiter. Am Testaufbau dauerte der erste Hop 484,5 s <span class="m meas">gemessen</span>. Die Rechnung ergibt 486 bis 490 s <span class="m calc">berechnet</span>, beide bei 10 %. Ganz Hamburg rechnet die Animation. Beleg: <a href="kosten.html#hh">Last im Mesh: Hamburg</a>, <a href="tests.html#tests">Messungen</a>.</p></div>
         <div class="qa"><h3>Stimmen die Zeiten für Hamburg?</h3>
           <p>Ja, unter einer Annahme. Die Dauern auf der Website nehmen CR 4/5 an. Das ist die Einstellung der großen Repeater in Hamburg laut ihren Betreibern. Gemessen ist das an keinem Hamburger Repeater <span class="m open">offen</span>. Mit CR 4/8 (App-Preset) wären die Zeiten rund 1,5-mal so lang: das Datenpaket rund 50 % länger, die Anfrage rund 22 % <span class="m calc">berechnet</span>. Beleg: <a href="kosten.html#hh">Last im Mesh: Hamburg</a>.</p></div>
         <div class="qa"><h3>Kann jemand ein falsches Update einspielen?</h3>
@@ -159,7 +159,7 @@
           </table></div>
           <p>A measurement in a real, busy mesh with hidden terminals is missing. The model on <a href="kosten.html#hh">Load on the mesh</a> leaves collisions out <span class="m open">open</span>. Evidence: <a href="kosten.html#kosten">Load on the mesh: channel load</a>, <a href="funk.html#funk">On air: messages</a>.</p></div>
         <div class="qa"><h3>How long does an update take?</h3>
-          <p>Deliberately long: at 0.3 % about 2.5 h per further hop (radio step to the next node) <span class="m calc">calculated</span>. The patch is only the difference between 2 images. The first hop needs all data packets of the patch, every further hop only one page more. Checked pages are passed on at once. On the bench the first hop took 464 s <span class="m meas">measured</span>. The calculation gave 469 s <span class="m calc">calculated</span>, both at 10 %. The animation computes all of Hamburg. Evidence: <a href="kosten.html#hh">Load on the mesh: Hamburg</a>, <a href="tests.html#tests">Measurements</a>.</p></div>
+          <p>Deliberately long: at 0.3 % about 2.5 h per further hop (radio step to the next node) <span class="m calc">calculated</span>. The patch is only the difference between 2 images. The first hop needs all data packets of the patch, every further hop only one page more. Checked pages are passed on at once. On the bench the first hop took 484.5 s <span class="m meas">measured</span>. The calculation gives 486 to 490 s <span class="m calc">calculated</span>, both at 10 %. The animation computes all of Hamburg. Evidence: <a href="kosten.html#hh">Load on the mesh: Hamburg</a>, <a href="tests.html#tests">Measurements</a>.</p></div>
         <div class="qa"><h3>Are the times right for Hamburg?</h3>
           <p>Yes, under one assumption. The durations on the website assume CR 4/5. That is the setting of the large Hamburg repeaters according to their operators. It has not been measured at any Hamburg repeater <span class="m open">open</span>. At CR 4/8 (app preset) the times would be about 1.5 times as long: the data packet about 50 % longer, the request about 22 % <span class="m calc">calculated</span>. Evidence: <a href="kosten.html#hh">Load on the mesh: Hamburg</a>.</p></div>
         <div class="qa"><h3>Can someone install a wrong update?</h3>
@@ -307,7 +307,7 @@
         <li><b>Verlorene Anfrage.</b> Im Lauf mit 1 % Budget ging eine einzelne Anfrage verloren.
           Die Regel „fehlende Datenpakete × Abstand“ ergab hier 15 min Wartezeit bis zur neuen Anfrage.
           Jetzt fragt der Knoten nach 2 Abständen plus 5 s neu. Jedes ankommende Datenpaket verlängert das Warten auf den Rest des Blocks.
-          Bei absichtlich verlorener Anfrage kam die neue nach 17,9 s statt 108 s.
+          Bei absichtlich verlorener Anfrage kam die neue nach 17,9 bis 25,4 s statt 108 s. Seit dem 18. Oktober 2026 kommt ein Zufallsanteil von bis zu 6,4 s dazu.
           Es gab keine zusätzlichen Anfragen und 0 Duplikate <span class="m meas">gemessen</span>.</li>
       </ul>
     </div>
@@ -425,7 +425,7 @@
         <li><b>Lost request.</b> In the run with a 1 % budget a single request was lost.
           The rule “missing data packets × gap” made the node wait 15 min here before it asked again.
           Now it asks again after 2 gaps plus 5 s. Every data packet that arrives extends the wait to the rest of the block.
-          With a request dropped on purpose, the new one came after 17.9 s instead of 108 s.
+          With a request dropped on purpose, the new one came after 17.9 to 25.4 s instead of 108 s. Since 18 October 2026 a random share of up to 6.4 s is added.
           There were no extra requests and 0 duplicates <span class="m meas">measured</span>.</li>
       </ul>
     </div>

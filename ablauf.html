@@ -212,7 +212,7 @@
         <span>Die Werte für das Feld sind ein Vorschlag <span class="m open">offen</span>. Am Testaufbau sind es 120 s und 180 s <span class="m code">im Code geprüft</span>.</span>
         <span><b>Du merkst:</b> <code>fuota info</code> zeigt Build, Auto-Apply und den Stand des Updates.</span></div></div>
       <div class="step"><div><span class="who">Derselbe Knoten</span><b>Neues Image in Slot B bauen</b>
-        <span>Der Knoten prüft die SHA-256 über den ganzen Patch. Dann baut er das neue Image in Slot B (12 s <span class="m meas">gemessen</span>). Er prüft die SHA-256 des Ergebnisses gegen das Manifest.</span>
+        <span>Der Knoten prüft die SHA-256 über den ganzen Patch. Dann baut er das neue Image in Slot B (10,2 s beim Release-Image <span class="m meas">gemessen</span>). Er prüft die SHA-256 des Ergebnisses gegen das Manifest.</span>
         <span>Danach schreibt er den Tausch-Auftrag in die Status-Seite und startet neu.</span></div></div>
       <div class="step"><div><span class="who">Stage-0</span><b>Prüfen, tauschen, Probestart</b>
         <span>Vor dem Tausch prüft Stage-0 Slot B (neu) und Slot A (alt) gegen den Auftrag. Dabei prüft es Vektortabelle und SHA-256.</span>
@@ -270,7 +270,7 @@
         <span>The values for the field are a proposal <span class="m open">open</span>. On the bench they are 120 s and 180 s <span class="m code">checked in the code</span>.</span>
         <span><b>You notice:</b> <code>fuota info</code> shows build, auto apply and the state of the update.</span></div></div>
       <div class="step"><div><span class="who">Same node</span><b>Build the new image in slot B</b>
-        <span>The node checks the SHA-256 over the whole patch. Then it builds the new image in slot B (12 s <span class="m meas">measured</span>). It checks the SHA-256 of the result against the manifest.</span>
+        <span>The node checks the SHA-256 over the whole patch. Then it builds the new image in slot B (10.2 s on the release image <span class="m meas">measured</span>). It checks the SHA-256 of the result against the manifest.</span>
         <span>After that it writes the swap job into the status page and reboots.</span></div></div>
       <div class="step"><div><span class="who">Stage-0</span><b>Check, swap, test boot</b>
         <span>Before the swap, Stage-0 checks slot B (new) and slot A (old) against the job. It checks the vector table and the SHA-256.</span>
@@ -305,7 +305,7 @@
         <tr><td><b>Release-Schlüssel</b> (offline)</td><td>Signiert Manifeste und Retracts, getrennt vom Build. So zieht er auch einen Build zurück (Retract).</td><td>Nichts schränkt ihn ein: Wer den Schlüssel hat, bestimmt, was installiert werden darf.</td></tr>
         <tr><td><b>Seed</b> (irgendein Teilnehmer)</td><td>Installiert das neueste Release-Paket per USB oder BLE-OTA und bietet die enthaltene Kampagne an.</td><td>Eigene Kampagnen erzeugen. Unsigniertes lehnt der Knoten schon beim Laden ab.</td></tr>
         <tr><td><b>Repeater mit FUOTA</b></td><td>Läuft mit normaler MeshCore-Repeater-Firmware und dem FUOTA-Modul. Er hört Angebote, holt, prüft, gibt weiter und wendet an.</td><td>Sein Budget überschreiten, Ungeprüftes weitergeben, fremde Knoten updaten.</td></tr>
-        <tr><td><b>Stage-0</b> (Loader im Flash, 2,7 KB <span class="m meas">gemessen</span>)</td><td>Läuft nur beim Start. Führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Funken und Signaturen prüfen. Es vertraut dem Auftrag der App (siehe <a href="fragen.html#luecken">Was noch offen ist</a>).</td></tr>
+        <tr><td><b>Stage-0</b> (Loader im Flash, 3.032 B <span class="m meas">gemessen</span>)</td><td>Läuft nur beim Start. Führt einen Tausch-Auftrag aus, mit Journal, Probestart und Rückfall.</td><td>Funken und Signaturen prüfen. Es vertraut dem Auftrag der App (siehe <a href="fragen.html#luecken">Was noch offen ist</a>).</td></tr>
         <tr><td><b>Normaler Repeater (ohne FUOTA)</b>, Companions (Knoten, die eine App steuert)</td><td>Sie verwerfen Typ 0x0E ohne Pfad. Das ist in MeshCore 1.18.0 Absicht (<code>src/Mesh.cpp:326-329</code>), der Typ wird nicht geroutet <span class="m code">im Code geprüft</span>. Ein Paket mit Pfad leiten sie weiter wie jedes Direct-Paket (<code>src/Mesh.cpp:78-106</code>). Ein geflutetes Angebot oder einen gefluteten Retract behandeln sie wie jede Gruppen-Nachricht. So tragen sie Anfragen und Daten über Lücken (siehe <a href="funk.html#weiter">Wer was weitergibt</a>).</td><td>Ein Update prüfen, halten oder selbst anbieten.</td></tr>
         <tr><td><b>Betreiber</b> (du)</td><td><p>Du entscheidest, ob du mitmachst. Ab Werk gibt dein Knoten ein fertiges Update 7 Tage weiter, bevor er es anwendet. Kommt in diesen 7 Tagen ein Retract, wendet er es nicht an. Du kannst sofort anwenden lassen, nur auf Befehl anwenden oder selbst starten. Das geht auch per LoRa über die Fern-Befehlszeile (CLI, siehe <a href="#betreiber">Befehle</a>). Das läuft am Testaufbau, auch über LoRa <span class="m meas">gemessen</span>.</p><p>Mit <code>set repeat off</code> schaltest du den Knoten als Repeater ab. Dann bietet er auch mit FUOTA nichts an, gibt keine Daten weiter und flutet nichts. Retracts und Schlüssel-Widerrufe sendet er nur an direkte Nachbarn <span class="m code">im Code geprüft</span>.</p></td><td>Andere Knoten beeinflussen.</td></tr>
       </table>
@@ -317,7 +317,7 @@
         <tr><td><b>Release key</b> (offline)</td><td>Signs manifests and retracts, separate from the build. This is also how it retracts a build.</td><td>Nothing limits it: whoever holds the key decides what may be installed.</td></tr>
         <tr><td><b>Seed</b> (any participant)</td><td>Installs the latest release package by USB or BLE OTA and offers its campaign.</td><td>Create its own campaigns. The node rejects unsigned material already at load time.</td></tr>
         <tr><td><b>Repeater with FUOTA</b></td><td>Runs normal MeshCore repeater firmware plus the FUOTA module. It hears offers, pulls, checks, passes on and applies.</td><td>Exceed its budget, pass on unchecked data, update foreign nodes.</td></tr>
-        <tr><td><b>Stage-0</b> (loader in flash, 2.7 KB <span class="m meas">measured</span>)</td><td>Runs only at boot. Executes a swap job, with journal, test boot and revert.</td><td>Use radio or check signatures. It trusts the job from the app (see <a href="fragen.html#luecken">What is still open</a>).</td></tr>
+        <tr><td><b>Stage-0</b> (loader in flash, 3,032 B <span class="m meas">measured</span>)</td><td>Runs only at boot. Executes a swap job, with journal, test boot and revert.</td><td>Use radio or check signatures. It trusts the job from the app (see <a href="fragen.html#luecken">What is still open</a>).</td></tr>
         <tr><td><b>Normal repeater (without FUOTA)</b>, companions (nodes that an app controls)</td><td>They drop type 0x0E without a path. MeshCore 1.18.0 does this deliberately (<code>src/Mesh.cpp:326-329</code>) <span class="m code">checked in the code</span>. They forward a packet with a path like any direct packet (<code>src/Mesh.cpp:78-106</code>). They treat a flooded offer or a flooded retract like any group message. This is how they carry requests and data across gaps (see <a href="funk.html#weiter">Who passes on what</a>).</td><td>Check, hold or offer an update themselves.</td></tr>
         <tr><td><b>Operator</b> (you)</td><td><p>You decide whether to take part. By default your node passes on a complete update for 7 days before it applies. A retract in that time stops the update. You can have it apply at once, only on command, or start it yourself. That also works over LoRa via the remote command line (CLI, see <a href="#betreiber">commands</a>). This runs on the bench, over LoRa as well <span class="m meas">measured</span>.</p><p><code>set repeat off</code> switches the node off as a repeater. Then, even with FUOTA, it offers nothing, passes on no data and floods nothing. It sends retracts and key revocations to direct neighbours only <span class="m code">checked in the code</span>.</p></td><td>Influence other nodes.</td></tr>
       </table>
@@ -480,7 +480,7 @@
       <ul>
         <li>299.284 B, das sind 74 von 96 Seiten, mit signierten Angeboten. Am 8. November 2026 gemessen, beim ersten Bau des Release-Env <span class="m meas">gemessen</span></li>
         <li>kein BLE-Symbol im Image <span class="m meas">gemessen</span></li>
-        <li>Die Build-Sperre greift bei allen 14 geprüften Schaltern <span class="m meas">gemessen</span>. Dazu gehören
+        <li>Die Build-Sperre greift bei allen 22 geprüften Schaltern <span class="m meas">gemessen</span>. Dazu gehören
           die 7 Tage von <code>delay</code>, <code>delay</code> als Vorgabe und die Grenzen der Flut-Angebote.</li>
       </ul>
     </div>
@@ -521,7 +521,7 @@
       <ul>
         <li>299,284 B, that is 74 of 96 pages, with signed offers. Measured on 8 November 2026 at the first build of the release env <span class="m meas">measured</span></li>
         <li>no BLE symbol in the image <span class="m meas">measured</span></li>
-        <li>The guard fires for all 14 switches tested <span class="m meas">measured</span>. Among them: the 7 days of
+        <li>The guard fires for all 22 switches tested <span class="m meas">measured</span>. Among them: the 7 days of
           <code>delay</code>, <code>delay</code> as default, and the limits of flooded offers.</li>
       </ul>
     </div>
