@@ -205,7 +205,7 @@
         <tr><td>Hop 1, nur aus Airtime und Airtime-Budget</td><td class="n">21,9 h</td><td class="n">3,3 h</td><td class="n">79 min</td></tr>
         <tr><td>152 verbundene Repeater um Hamburg</td><td class="n">26,9 h</td><td class="n">4,9 bis 6,8 h</td><td class="n">1,6 bis 2,7 h</td></tr>
         <tr><td>Update-Daten auf dem Mesh-Kanal, dichtestes Zehntel</td><td class="n">23,7 min</td><td class="n">49 s Ansagen</td><td class="n">49 s Ansagen</td></tr>
-        <tr><td>Zeit, in der ein Knoten den Mesh-Kanal nicht hört</td><td class="n">0</td><td class="n">4 bis 7 min</td><td class="n">4 bis 7 min</td></tr>
+        <tr><td>Zeit, in der ein Knoten den Mesh-Kanal nicht hört</td><td class="n">0</td><td class="n">5 bis 7 min</td><td class="n">5 bis 7 min</td></tr>
       </table>
     </div>
     <div lang="de" class="prose">
@@ -222,8 +222,8 @@
           sein Airtime-Budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1415-1420</code>) <span class="m code">im Code geprüft</span>. Nach einem vollen Block mit SF8 sind das
           6,3 min bei 5 % <span class="m calc">berechnet</span>. Bei 2 % sind es 15,8 min <span class="m calc">berechnet</span>. Am Testaufbau sendete der
           Anbieter bei 5 % 1.519 ms Airtime <span class="m meas">gemessen</span>. Danach pausierte er 30.380 ms (21. Oktober 2026; die Wiederholungen vom 27. Oktober und 3. November 2026 maßen 1.601 und 1.622 ms Airtime mit 32.020 und 32.440 ms Pause, immer das 20-Fache) <span class="m meas">gemessen</span>.</li>
-        <li>Mehr als 5 % brächte wenig. Bei 9 % wären es 1,4 bis 1,7 h <span class="m calc">berechnet</span>. Aber 40 % der Datenpakete
-          gingen auf dem Slot verloren (Lauf mit 198 Datenpaketen und den Nachbardaten vom 20. Oktober 2026, nicht neu gerechnet) <span class="m calc">berechnet</span>.</li>
+        <li>Mehr als 5 % brächte wenig. Bei 9 % wären es 1,4 bis 1,7 h <span class="m calc">berechnet</span>. Aber 18 % der Datenpakete
+          gingen auf dem Slot verloren (Mittel aus 12 Läufen mit 207 Datenpaketen und den Nachbardaten vom 18. Oktober 2026, je Empfänger gezählt, darin 2 % Grundverlust) <span class="m calc">berechnet</span>.</li>
         <li>Am Testaufbau war eine Kampagne mit 41 Datenpaketen nach 49 s vollständig <span class="m meas">gemessen</span>. Dieser Lauf hatte
           noch keine Pause nach dem Burst.</li>
       </ul>
@@ -241,7 +241,7 @@
         <tr><td>Hop 1, from airtime and airtime budget only</td><td class="n">21.9 h</td><td class="n">3.3 h</td><td class="n">79 min</td></tr>
         <tr><td>152 connected repeaters around Hamburg</td><td class="n">26.9 h</td><td class="n">4.9 to 6.8 h</td><td class="n">1.6 to 2.7 h</td></tr>
         <tr><td>Update data on the mesh channel, densest tenth</td><td class="n">23.7 min</td><td class="n">49 s of announcements</td><td class="n">49 s of announcements</td></tr>
-        <tr><td>Time a node cannot hear the mesh channel</td><td class="n">0</td><td class="n">4 to 7 min</td><td class="n">4 to 7 min</td></tr>
+        <tr><td>Time a node cannot hear the mesh channel</td><td class="n">0</td><td class="n">5 to 7 min</td><td class="n">5 to 7 min</td></tr>
       </table>
     </div>
     <div lang="en" class="prose">
@@ -258,8 +258,8 @@
           airtime budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1415-1420</code>) <span class="m code">checked in the code</span>. After a full block at SF8 that is
           6.3 min at 5 % <span class="m calc">calculated</span>. At 2 % it is 15.8 min <span class="m calc">calculated</span>. On the bench at 5 % the provider
           sent 1,519 ms of airtime <span class="m meas">measured</span>. Then it paused for 30,380 ms (21 October 2026; the repeats of 27 October and 3 November 2026 measured 1,601 and 1,622 ms of airtime with pauses of 32,020 and 32,440 ms, always 20 times the airtime) <span class="m meas">measured</span>.</li>
-        <li>More than 5 % would bring little. At 9 % it would take 1.4 to 1.7 h <span class="m calc">calculated</span>. But 40 % of the data
-          packets on the slot would be lost (run with 198 data packets and the neighbour data of 20 October 2026, not recalculated) <span class="m calc">calculated</span>.</li>
+        <li>More than 5 % would bring little. At 9 % it would take 1.4 to 1.7 h <span class="m calc">calculated</span>. But 18 % of the data
+          packets on the slot would be lost (mean of 12 runs with 207 data packets and the neighbour data of 18 October 2026, counted per receiver, including 2 % base loss) <span class="m calc">calculated</span>.</li>
         <li>On the bench a campaign of 41 data packets was complete after 49 s <span class="m meas">measured</span>. That run had no pause
           after the burst yet.</li>
       </ul>
@@ -358,14 +358,14 @@
         mitwechseln. Normale Repeater und Companions merken es nur, wenn ihr Weg
         gerade über so einen Knoten führt. Companions sind die Funkgeräte zu den Apps.</p>
       <ul>
-        <li>Je mittlerem Release hört ein Knoten 4 bis 7 min nichts <span class="m calc">berechnet</span>. Nach jedem Burst pausiert der Anbieter.
+        <li>Je mittlerem Release hört ein Knoten 5 bis 7 min nichts <span class="m calc">berechnet</span>. Nach jedem Burst pausiert der Anbieter.
           Ein Nachbar ist darum je Anbieter höchstens 21 s am Stück taub <span class="m calc">berechnet</span>. Sind mehrere Anbieter in
           Reichweite, greift die Grenze je Stunde. Sie deckelt die Zeit auf dem Slot insgesamt <span class="m code">im Code geprüft</span>.</li>
         <li>Fluten finden fast immer einen anderen Weg. Bei 5 % bleiben 97,5 % der Knotenpaare verbunden, die gerade
           hören <span class="m calc">berechnet</span>.</li>
-        <li>Eine Direktnachricht über 2 Repeater kommt ohne Wiederholung in 89,2 % der Fälle durch
+        <li>Eine Direktnachricht über 2 Repeater kommt ohne Wiederholung in 90,0 % der Fälle durch
           <span class="m calc">berechnet</span>. Ohne Nebenslot stören Update-Daten auf dem Mesh-Kanal etwa genauso oft. Ein
-          anderes grobes Modell ergibt 86,4 % <span class="m calc">berechnet</span>.</li>
+          anderes grobes Modell ergibt 87,1 % <span class="m calc">berechnet</span>.</li>
         <li>Der Unterschied: Ohne Nebenslot verteilt sich die Störung über einen Tag. Mit Nebenslot liegt sie in der
           viel kürzeren Zeit des Updates.</li>
       </ul>
@@ -376,14 +376,14 @@
         burst. Normal repeaters and companions notice only when their path
         runs through such a node at that moment. Companions are the radios behind the apps.</p>
       <ul>
-        <li>Per medium release a node hears nothing for 4 to 7 min <span class="m calc">calculated</span>. After each burst the provider pauses. So a
+        <li>Per medium release a node hears nothing for 5 to 7 min <span class="m calc">calculated</span>. After each burst the provider pauses. So a
           neighbour is deaf for at most 21 s at a stretch per provider <span class="m calc">calculated</span>. With several providers in range
           the limit per hour applies. It caps the total time on the slot <span class="m code">checked in the code</span>.</li>
         <li>Floods almost always find another way. At 5 %, 97.5 % of the pairs of listening nodes stay connected
           <span class="m calc">calculated</span>.</li>
-        <li>A direct message over 2 repeaters gets through without a retry in 89.2 % of cases
+        <li>A direct message over 2 repeaters gets through without a retry in 90.0 % of cases
           <span class="m calc">calculated</span>. Without the side slot, update data on the mesh channel disturbs about as often. A
-          different rough model gives 86.4 % <span class="m calc">calculated</span>.</li>
+          different rough model gives 87.1 % <span class="m calc">calculated</span>.</li>
         <li>The difference: without the side slot the disturbance spreads over a day. With it, it falls into the much
           shorter time of the update.</li>
       </ul>
@@ -401,7 +401,7 @@
           <span class="m calc">berechnet</span>. Ohne Nebenslot sind es 2,5 bis 2,7 Tage <span class="m calc">berechnet</span>.</li>
         <li>Fangen die bestverbundenen Repeater an, reicht schon ein Zehntel. Dann sind es 1,4 h mit 5 % und 3,4 h
           mit 2 % <span class="m calc">berechnet</span>. Ohne Nebenslot sind es 22 h <span class="m calc">berechnet</span>.</li>
-        <li>Ein fester eigener Slot je Anbieter bräuchte in Hamburg 9 Slots <span class="m calc">berechnet</span>.
+        <li>Ein fester eigener Slot je Anbieter bräuchte in Hamburg 7 Slots <span class="m calc">berechnet</span>.
           Für 869,618 MHz gibt es 2 Slots neben dem Mesh-Kanal. Der Burst nutzt nur Slot 2. Darum prüft jeder
           Anbieter vor jedem Burst, ob der Slot frei ist.</li>
         <li>Später könnte ein Anbieter für nahe Nachbarn ein kleineres SF nehmen. Mit SF5 wäre ein Burst 5,3-mal so
@@ -418,7 +418,7 @@
           takes 2.5 to 2.7 days <span class="m calc">calculated</span>.</li>
         <li>If the best connected repeaters start, a tenth is enough. Then it takes 1.4 h at 5 % and 3.4 h at 2 %
           <span class="m calc">calculated</span>. Without the side slot it takes 22 h <span class="m calc">calculated</span>.</li>
-        <li>A fixed slot of its own for each provider would need 9 slots in Hamburg
+        <li>A fixed slot of its own for each provider would need 7 slots in Hamburg
           <span class="m calc">calculated</span>. For 869.618 MHz there are 2 slots beside the mesh channel. Bursts use only slot
           2. So each provider checks before every burst that the slot is free.</li>
         <li>Later a provider could use a lower SF for close neighbours. At SF5 a burst would be 5.3 times as fast as at
