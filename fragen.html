@@ -290,7 +290,7 @@
         <li><b>Signatur der Angebote.</b> Seit dem 20. Oktober 2026 trägt jedes Angebot ein vom Release-Schlüssel signiertes Ticket <span class="m meas">gemessen</span>.
           Kennungen haben 2 Byte <span class="m meas">gemessen</span>. Unsigniert bleiben Absender, Seitenzahl, Anfragen und Daten.
           Die Daten schützen die Seiten-Hashes. Ein mitgeschnittenes echtes Angebot mit falschen Seiten kann Anfragen ins Leere lenken, wie vorher.
-          Das geht nur für eine laufende echte Kampagne. Das Angebot kostet dafür 775 statt 366 ms bei CR 4/5 <span class="m calc">berechnet</span>.</li>
+          Das geht nur für eine laufende echte Kampagne. Das Angebot kostet dafür 796 statt 366 ms bei SF8 und CR 4/5 <span class="m calc">berechnet</span>.</li>
         <li><b>Sperrliste mit 8 Plätzen</b> <span class="m code">im Code geprüft</span>. Darin stehen nur echte Kampagnen, die nicht passen oder zurückgezogen sind. Eine neunte verdrängt die älteste. Folge ist nur ein erneuter Manifest-Abruf. Gefälschte IDs kommen nie hinein.</li>
         <li><b>Testaufbau und Mesh.</b> Am Testaufbau hört jeder jeden, denn der Testfilter wirkt nur in Software.
           Versteckte Endgeräte gibt es dort nicht. Messwerte sind darum eher zu gut.</li>
@@ -409,7 +409,7 @@
         <li><b>Signature of offers.</b> Since 20 October 2026 every offer carries a ticket signed by the release key <span class="m meas">measured</span>.
           IDs have 2 bytes <span class="m meas">measured</span>. Sender, page count, requests and data stay unsigned.
           Page hashes protect the data. A recorded genuine offer with wrong pages can send requests nowhere, as before.
-          That works only for a running genuine campaign. The offer costs 775 instead of 366 ms at CR 4/5 for it <span class="m calc">calculated</span>.</li>
+          That works only for a running genuine campaign. The offer costs 796 instead of 366 ms at SF8 and CR 4/5 for it <span class="m calc">calculated</span>.</li>
         <li><b>Ban list with 8 slots</b> <span class="m code">checked in the code</span>. It holds only genuine campaigns that do not fit or were retracted. A ninth one pushes out the oldest. The only consequence is another manifest fetch. Forged IDs never get in.</li>
         <li><b>Bench and mesh.</b> On the bench everyone hears everyone, because the test filter works in software only.
           There are no hidden terminals there. Measured values therefore tend to be too good.</li>
