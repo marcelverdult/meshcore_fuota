@@ -190,7 +190,9 @@
           <li>Fortsetzen nach einem Neustart mitten im Pull: bestanden in 355 s. Nach dem Neustart holte das RAK4631 20 von 47 Fragmenten.</li>
           <li>Update über Funk, sofort anwenden: bestanden in 641 s. Das RAK4631 holte 47 Fragmente in 315 s, ohne Duplikate und ohne falsche Fragmente, und bestätigte Build 2 <span class="m meas">gemessen</span>.</li>
           <li>Anbieter war ein FakeTec. Test-Schlüssel, SF7, 1 dBm, nur Zero-Hop.</li>
-          <li>Nicht gefahren: der serielle DFU-Weg. Der Nachweislauf 1.17.1 nach 1.18.0 mit dem RAK4631 als Empfänger ist noch nicht abgeschlossen <span class="m open">offen</span>.</li>
+          <li>Nicht gefahren: der serielle DFU-Weg <span class="m open">offen</span>.</li>
+          <li>Nachweislauf 1.17.1 nach 1.18.0 am 9. November: bestanden. Die Kampagne hatte 145 Fragmente, das RAK4631 war nach 9 h 21 min vollständig, wandte den Patch (299.284 B) in 10.241 ms an und bestätigte seinen Testboot selbst. Der zweite Empfänger, ein FakeTec, war nach 9 h 35 min fertig. Null abgelehnte Pakete, null Signaturfehler, kein Paket ging als Flut hinaus <span class="m meas">gemessen</span>.</li>
+          <li>Befund dabei: ein Testboot muss in seiner Frist ein Paket gehört <em>und</em> selbst gesendet haben, sonst startet er neu. Am stillen Brett hörte der FakeTec nach seinem Neustart 18 Minuten nichts und hätte seinen Testboot nicht von allein bestätigt, deshalb kam die Bestätigung von Hand. Ob das in einem Netz mit normalem Verkehr überhaupt auftritt, ist nicht geprüft; dort zählt jedes akzeptierte Paket, auch die Adverts der Nachbarn <span class="m open">offen</span>.</li>
         </ul></td></tr>
         <tr><td>Überlappend anwenden, Fenster</td><td><ul>
           <li>Ein Patch mit 4 Seiten passt nicht hinter ein Image mit 94 Seiten.</li>
@@ -340,7 +342,9 @@
           <li>Resume after a restart in the middle of a pull: passed in 355 s. After the restart the RAK4631 pulled 20 of 47 fragments.</li>
           <li>Update over the air, apply at once: passed in 641 s. The RAK4631 pulled 47 fragments in 315 s, with 0 duplicates and 0 bad fragments, and confirmed build 2 <span class="m meas">measured</span>.</li>
           <li>The provider was a FakeTec. Test key, SF7, 1 dBm, zero hop only.</li>
-          <li>Not run: the serial DFU route. The proof run 1.17.1 to 1.18.0 with the RAK4631 as receiver is not finished yet <span class="m open">open</span>.</li>
+          <li>Not run: the serial DFU route <span class="m open">open</span>.</li>
+          <li>Proof run 1.17.1 to 1.18.0 on 9 November: passed. The campaign had 145 fragments, the RAK4631 was complete after 9 h 21 min, applied the patch (299,284 B) in 10,241 ms and confirmed its test boot by itself. The second receiver, a FakeTec, finished after 9 h 35 min. Zero rejected packets, zero signature errors, and no packet went out as a flood <span class="m meas">measured</span>.</li>
+          <li>Finding along the way: within its deadline a test boot has to have heard a packet <em>and</em> completed a send of its own, otherwise it restarts. On the quiet bench the FakeTec heard nothing for 18 minutes after its restart and would not have confirmed its test boot on its own, so the confirmation came by hand. Whether this happens at all in a network with normal traffic is untested; there every accepted packet counts, including the neighbours' adverts <span class="m open">open</span>.</li>
         </ul></td></tr>
         <tr><td>Overlapping apply, window</td><td><ul>
           <li>A patch of 4 pages does not fit behind an image of 94 pages.</li>
@@ -412,8 +416,8 @@
   </main>
   <p class="next"><a href="fragen.html"><span lang="de">Weiter: Fragen</span><span lang="en">Next: Questions</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key. The release key was generated on 8 November 2026, and no release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. No release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
