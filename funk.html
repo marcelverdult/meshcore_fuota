@@ -232,8 +232,9 @@
       <ul>
         <li>MeshCore EU narrow: 869,618 MHz, BW 62,5 kHz, SF8, CR 4/8 (App-Preset „EU/UK (Narrow)“). Das ist der langsamere Fall <span class="m calc">berechnet</span>.</li>
         <li>Die großen Repeater in Hamburg laufen laut ihren Betreibern mit CR 4/5. Das Datenpaket braucht dort nur das 0,66-fache der Zeit <span class="m calc">berechnet</span>.</li>
-        <li>Alle gerechneten Zeiten dieser Website nehmen CR 4/5 an. Das ist die Einstellung in Hamburg laut Betreibern, an keinem Hamburger Repeater gemessen. Mit CR 4/8 wären die Zeiten rund 1,5-mal so lang <span class="m calc">berechnet</span>.</li>
+        <li>Alle gerechneten Zeiten dieser Website nehmen CR 4/5 an. Das ist die Einstellung in Hamburg laut Betreibern, an keinem Hamburger Repeater gemessen. Mit CR 4/8 dauert ein Datenpaket das 1,5-fache. Kürzere Pakete verlieren weniger: ein Retract das 1,43-fache, eine Anfrage das 1,22-fache <span class="m calc">berechnet</span>.</li>
         <li>Der Testaufbau läuft mit SF7 und CR 4/5 <span class="m meas">gemessen</span>.</li>
+        <li>Alle gerechneten Sendezeiten nehmen 32 Preamble-Symbole an, dazu expliziten Header und CRC. Die Firmware setzt bei SF8 und darunter 32 Symbole, darüber 16 (<code>src/helpers/radiolib/RadioLibWrappers.h:56</code>) <span class="m code">im Code geprüft</span>.</li>
         <li>Die Firmware rechnet ihr Airtime-Budget mit der Airtime ihrer aktuellen Einstellungen.</li>
       </ul>
     </div>
@@ -241,8 +242,9 @@
       <ul>
         <li>MeshCore EU narrow: 869.618 MHz, BW 62.5 kHz, SF8, CR 4/8 (app preset “EU/UK (Narrow)”). This is the slower case <span class="m calc">calculated</span>.</li>
         <li>According to their operators, the large repeaters in Hamburg run CR 4/5. A data packet takes only 0.66 times as long there <span class="m calc">calculated</span>.</li>
-        <li>All calculated times on this website assume CR 4/5. That is the Hamburg setting according to the operators, not measured at any Hamburg repeater. At CR 4/8 the times would be about 1.5 times as long <span class="m calc">calculated</span>.</li>
+        <li>All calculated times on this website assume CR 4/5. That is the Hamburg setting according to the operators, not measured at any Hamburg repeater. At CR 4/8 a data packet takes 1.5 times as long. Shorter packets lose less: a retract 1.43 times, a request 1.22 times <span class="m calc">calculated</span>.</li>
         <li>The bench runs SF7 and CR 4/5 <span class="m meas">measured</span>.</li>
+        <li>All calculated airtimes assume 32 preamble symbols, plus explicit header and CRC. The firmware sets 32 symbols at SF8 and below, 16 above (<code>src/helpers/radiolib/RadioLibWrappers.h:56</code>) <span class="m code">checked in the code</span>.</li>
         <li>The firmware computes its airtime budget from the airtime of its current settings.</li>
       </ul>
     </div>
