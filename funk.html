@@ -232,6 +232,7 @@
       <ul>
         <li>MeshCore EU narrow: 869,618 MHz, BW 62,5 kHz, SF8, CR 4/8 (App-Preset „EU/UK (Narrow)“). Das ist der langsamere Fall <span class="m calc">berechnet</span>.</li>
         <li>Die großen Repeater in Hamburg laufen laut ihren Betreibern mit CR 4/5. Das Datenpaket braucht dort nur das 0,66-fache der Zeit <span class="m calc">berechnet</span>.</li>
+        <li>Alle gerechneten Zeiten dieser Website nehmen CR 4/5 an. Das ist die Einstellung in Hamburg laut Betreibern, an keinem Hamburger Repeater gemessen. Mit CR 4/8 wären die Zeiten rund 1,5-mal so lang <span class="m calc">berechnet</span>.</li>
         <li>Der Testaufbau läuft mit SF7 und CR 4/5 <span class="m meas">gemessen</span>.</li>
         <li>Die Firmware rechnet ihr Airtime-Budget mit der Airtime ihrer aktuellen Einstellungen.</li>
       </ul>
@@ -240,6 +241,7 @@
       <ul>
         <li>MeshCore EU narrow: 869.618 MHz, BW 62.5 kHz, SF8, CR 4/8 (app preset “EU/UK (Narrow)”). This is the slower case <span class="m calc">calculated</span>.</li>
         <li>According to their operators, the large repeaters in Hamburg run CR 4/5. A data packet takes only 0.66 times as long there <span class="m calc">calculated</span>.</li>
+        <li>All calculated times on this website assume CR 4/5. That is the Hamburg setting according to the operators, not measured at any Hamburg repeater. At CR 4/8 the times would be about 1.5 times as long <span class="m calc">calculated</span>.</li>
         <li>The bench runs SF7 and CR 4/5 <span class="m meas">measured</span>.</li>
         <li>The firmware computes its airtime budget from the airtime of its current settings.</li>
       </ul>
@@ -350,7 +352,7 @@
         Unter jedem Knoten stehen das Manifest (2 Fragmente) und die 4 Patch-Seiten. Sie füllen sich beim Empfang und
         bekommen einen Haken, sobald ihr Hash stimmt.</p>
       <ul>
-        <li>Der Testaufbau hatte 10 % Budget und SF7. Im Mesh (0,3 %, SF8) dauert jeder Schritt rund 89-mal so lange <span class="m calc">berechnet</span>.</li>
+        <li>Der Testaufbau hatte 10 % Budget und SF7. Im Mesh (0,3 %, SF8) dauert jeder Schritt rund 59-mal so lange <span class="m calc">berechnet</span>.</li>
         <li>Im echten Netz hört C den Seed A nicht. Im Testaufbau sorgt ein Filter dafür.</li>
         <li>Wir haben den Lauf aufgezeichnet, bevor eine Anfrage genau einen Anbieter nannte. In dieser Kette hat jeder Knoten ohnehin nur einen.</li>
       </ul>
@@ -361,7 +363,7 @@
         Below each node are the manifest (2 fragments) and the 4 patch pages. They fill as fragments arrive and get a
         tick once their hash checks out.</p>
       <ul>
-        <li>The bench had a 10 % budget and SF7. In the mesh (0.3 %, SF8) every step takes about 89 times as long <span class="m calc">calculated</span>.</li>
+        <li>The bench had a 10 % budget and SF7. In the mesh (0.3 %, SF8) every step takes about 59 times as long <span class="m calc">calculated</span>.</li>
         <li>In a real network C cannot hear the seed A. On the bench a filter enforces that.</li>
         <li>We recorded the run before a request named exactly one provider. In this chain every node has only one anyway.</li>
       </ul>
@@ -514,14 +516,14 @@
     <div lang="de" class="prose">
       <h2>Zeiten und Zeitgeber</h2>
       <p>Der Abstand ist die Pause, die das Airtime-Budget nach jeder eigenen Sendung erzwingt. Er beträgt Airtime × 1000 /
-        Budget-Promille. Bei 0,3 % (Standard) und SF8 folgt ein Datenpaket alle 574 s. Bei 1 % sind es alle 172 s. Im
+        Budget-Promille. Bei 0,3 % (Standard) und SF8 folgt ein Datenpaket alle 381 s. Bei 1 % sind es alle 114 s. Im
         Testaufbau (10 %, SF7) sind es 6,43 s <span class="m calc">berechnet</span>.</p>
       <p>Die Werte der Tabelle sind Konstanten der Firmware <span class="m code">im Code geprüft</span>. Nur die Zeit zum Anwenden ist gemessen.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Times and timers</h2>
       <p>The gap is the pause the airtime budget enforces after each own transmission. It equals airtime × 1000 / budget in
-        permille. At 0.3 % (default) and SF8, one data packet follows every 574 s. At 1 %, it is every 172 s. On the bench
+        permille. At 0.3 % (default) and SF8, one data packet follows every 381 s. At 1 %, it is every 114 s. On the bench
         (10 %, SF7) it is every 6.43 s <span class="m calc">calculated</span>.</p>
       <p>The values in the table are firmware constants <span class="m code">checked in the code</span>. Only the time to apply is measured.</p>
     </div>
@@ -539,7 +541,7 @@
         <tr><td>Nachfrage, wenn niemand Daten anbietet</td><td class="n">max(30 s, 4 Abstände)</td><td>Meldet den Bedarf, solange noch niemand mehr hat. Der Nachbar bietet nach der nächsten geprüften Seite sofort an.</td></tr>
         <tr><td>Bedienen starten</td><td class="n">50 bis 1000 ms</td><td>Bei einer Anfrage an alle (0xFFFF) beginnt einer zuerst.</td></tr>
         <tr><td>Kanal belegt</td><td class="n">20 ms, dann erneut</td><td>Erst hören, was der Nachbar sendet, dann ein eigenes Fragment wählen.</td></tr>
-        <tr><td>Pull pausiert</td><td class="n">100 Abstände, mindestens 20 min</td><td>Der Knoten pausiert, wenn so lange weder Angebot noch Daten kamen. Bei 0,3 % sind das 16 h <span class="m calc">berechnet</span>. Niemand hat die Kampagne mehr. Beim nächsten Angebot setzt der Knoten den Pull fort.</td></tr>
+        <tr><td>Pull pausiert</td><td class="n">100 Abstände, mindestens 20 min</td><td>Der Knoten pausiert, wenn so lange weder Angebot noch Daten kamen. Bei 0,3 % sind das 10,6 h <span class="m calc">berechnet</span>. Niemand hat die Kampagne mehr. Beim nächsten Angebot setzt der Knoten den Pull fort.</td></tr>
         <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>Keine Dauersperre wegen einer schlechten Verbindung.</td></tr>
         <tr><td>Angebots-Flut</td><td class="n">höchstens 1 am Tag, dann 1 je Woche</td><td>Ein Anbieter flutet sein Angebot, sobald er die ganze Kampagne hat. Die Tagesgrenze gilt in der ersten Woche und 1 Woche nach gehörter Anfrage. Danach gilt die Wochengrenze: höchstens einmal je Woche. Die Wochen zählen seine Laufzeit. In der Wochenphase hält ihn eine gehörte Flut derselben Kampagne höchstens 2-mal hintereinander zurück. Dann flutet er spätestens 3 Wochen nach seiner letzten Flut wieder. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Zurückhalten der Angebots-Flut</td><td class="n">höchstens 3 Tage</td><td>In der ersten Woche und 1 Woche nach gehörter Anfrage hält ihn eine gehörte Flut derselben Kampagne höchstens 3 Tage zurück. Die 3 Tage zählen ab seiner letzten Flut oder der letzten zurückgehaltenen Wochenperiode. Danach flutet er trotz gehörter Flut, sobald sein nächster Termin kommt. Nur eine Flut aus seiner Region mit höchstens 8 Hops hält ihn zurück. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
@@ -562,7 +564,7 @@
         <tr><td>Request while nobody offers data</td><td class="n">max(30 s, 4 gaps)</td><td>Reports demand while nobody has more yet. The neighbour offers at once after its next checked page.</td></tr>
         <tr><td>Start serving</td><td class="n">50 to 1000 ms</td><td>For a request to everybody (0xFFFF), one node starts first.</td></tr>
         <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>First hear what the neighbour sends, then pick an own fragment.</td></tr>
-        <tr><td>Pull paused</td><td class="n">100 gaps, at least 20 min</td><td>The node pauses when neither an offer nor data came for that long. At 0.3 %, that is 16 h <span class="m calc">calculated</span>. Nobody has the campaign any more. At the next offer the node resumes the pull.</td></tr>
+        <tr><td>Pull paused</td><td class="n">100 gaps, at least 20 min</td><td>The node pauses when neither an offer nor data came for that long. At 0.3 %, that is 10.6 h <span class="m calc">calculated</span>. Nobody has the campaign any more. At the next offer the node resumes the pull.</td></tr>
         <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
         <tr><td>Offer flood</td><td class="n">at most 1 a day, then 1 a week</td><td>A provider floods its offer once it has the whole campaign. The daily limit holds in the first week and 1 week after a heard request. After that, the weekly limit holds: at most once a week. The weeks count its running time. In the weekly phase, a heard flood of the same campaign holds it back at most 2 times in a row. Then it floods again 3 weeks after its last flood at the latest. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Holding back the offer flood</td><td class="n">up to 3 days</td><td>In the first week and 1 week after a heard request, a heard flood of the same campaign holds it back up to 3 days. The 3 days count from its last flood or the last weekly period it held back. After that it floods despite a heard flood, at its next planned time. Only a flood from its region with at most 8 hops holds it back. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
@@ -576,7 +578,7 @@
         frühestens 10 bis 20 s danach. Die dritte kommt frühestens 20 bis 40 s nach der zweiten <span class="m code">im Code geprüft</span>. Hört er einen
         Nachbarn denselben Retract senden, lässt er eine Sendung aus.</p>
       <p>Jede Sendung wartet außerdem auf das Airtime-Budget.
-        Bei 0,3 % und SF8 wartet er nach einem Retract 211 bis 301 s <span class="m calc">berechnet</span>. Im Testaufbau hatte er gerade ein Datenpaket
+        Bei 0,3 % und SF8 wartet er nach einem Retract 211 s (bei CR 4/8 301 s) <span class="m calc">berechnet</span>. Im Testaufbau hatte er gerade ein Datenpaket
         gesendet. Die erste Sendung kam darum erst nach 6,0 s <span class="m meas">gemessen</span>.</p>
       <p>Die Flut ist eine eigene Sendung. Der Knoten wartet vorher zufällig 2 bis 30 min. Hört er in der Zeit dieselbe Flut
         aus seiner Region mit höchstens 8 Hops, sendet er keine <span class="m code">im Code geprüft</span>.</p>
@@ -586,7 +588,7 @@
         earliest 10 to 20 s later. The third comes at the earliest 20 to 40 s after the second <span class="m code">checked in the code</span>. If it hears a
         neighbour send the same retract, it skips one send.</p>
       <p>Each send also waits for the airtime budget. At 0.3 % and
-        SF8 it waits 211 to 301 s after a retract <span class="m calc">calculated</span>. On the bench it had just sent a data packet. So the first send
+        SF8 it waits 211 s (301 s at CR 4/8) after a retract <span class="m calc">calculated</span>. On the bench it had just sent a data packet. So the first send
         came only after 6.0 s <span class="m meas">measured</span>.</p>
       <p>The flood is a send of its own. The node first waits 2 to 30 min at random. If it hears the same flood from its
         own region with at most 8 hops in that time, it sends none <span class="m code">checked in the code</span>.</p>

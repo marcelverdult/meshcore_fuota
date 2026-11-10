@@ -214,7 +214,7 @@
         <li>Die 26,1 h folgen allein aus Airtime und Airtime-Budget. Die Spannen mit Nebenslot stammen aus einer
           Simulation. Sie rechnet mit Anfragen, Wartezeit, Kollisionen und nur Slot 2. Allein aus Airtime und Airtime-Budget wären es
           dort 4,1 h bei 2 % <span class="m calc">berechnet</span>. Bei 5 % wären es 1,7 h <span class="m calc">berechnet</span>.</li>
-        <li>Auf <a href="kosten.html#aufwand">Last im Mesh</a> rechnen wir vorsichtiger mit CR 4/8. Dann dauert alles
+        <li>Auf <a href="kosten.html#aufwand">Last im Mesh</a> rechnen wir ebenfalls mit CR 4/5. Mit CR 4/8 dauert alles
           1,5-mal so lang, die Verhältnisse bleiben gleich <span class="m calc">berechnet</span>.</li>
         <li>Nach jedem Burst pausiert der Anbieter. Die Pause beträgt die Airtime des Bursts geteilt durch
           sein Airtime-Budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1415-1420</code>) <span class="m code">im Code geprüft</span>. Nach einem vollen Block mit SF8 sind das
@@ -248,7 +248,7 @@
         <li>The 26.1 h follow from airtime and airtime budget alone. The ranges with the side slot come from a
           simulation. It uses requests, waiting, collisions and slot 2 only. Airtime and airtime budget alone would
           give 4.1 h there at 2 % <span class="m calc">calculated</span>. At 5 % it would take 1.7 h <span class="m calc">calculated</span>.</li>
-        <li>On <a href="kosten.html#aufwand">Load on the mesh</a> we calculate more cautiously with CR 4/8. Then
+        <li>On <a href="kosten.html#aufwand">Load on the mesh</a> we calculate with CR 4/5 as well. At CR 4/8
           everything takes 1.5 times as long, and the ratios stay the same <span class="m calc">calculated</span>.</li>
         <li>After each burst the provider pauses. The pause equals the airtime of the burst divided by its
           airtime budget (<code>src/helpers/fuota/FuotaNRF52.cpp:1415-1420</code>) <span class="m code">checked in the code</span>. After a full block at SF8 that is

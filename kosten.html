@@ -127,14 +127,14 @@
 
     <div lang="de" class="prose">
       <h3>Dauer je Hop</h3>
-      <p>Ein Hop ist der Weg eines Updates von einem Knoten zu seinem direkten Nachbarn. Die Rechnung nimmt SF8, 1.721 ms je
+      <p>Ein Hop ist der Weg eines Updates von einem Knoten zu seinem direkten Nachbarn. Die Rechnung nimmt SF8, CR 4/5, 1.144 ms je
         Datenpaket und 4-KB-Seiten <span class="m calc">berechnet</span>.</p>
       <ul>
         <li>Hop 1 braucht alle Datenpakete des Patches.</li>
         <li>Jeder weitere Hop braucht nur eine Seite mehr, weil geprüfte Seiten sofort weitergehen.</li>
-        <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 3,7 h
+        <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 2,5 h
           <span class="m calc">berechnet</span>.</li>
-        <li>Bei 1 % sind es rund 1,1 h <span class="m calc">berechnet</span>.</li>
+        <li>Bei 1 % sind es rund 0,7 h <span class="m calc">berechnet</span>.</li>
         <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 464 s <span class="m meas">gemessen</span>, gerechnet
           waren es 469 s. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
       </ul>
@@ -142,14 +142,14 @@
     </div>
     <div lang="en" class="prose">
       <h3>Duration per hop</h3>
-      <p>A hop is an update's way from one node to its direct neighbour. The calculation uses SF8, 1,721 ms per data packet
+      <p>A hop is an update's way from one node to its direct neighbour. The calculation uses SF8, CR 4/5, 1,144 ms per data packet
         and 4 KB pages <span class="m calc">calculated</span>.</p>
       <ul>
         <li>Hop 1 needs all data packets of the patch.</li>
         <li>Each further hop needs only one page more, because checked pages move on at once.</li>
-        <li>A page is 23.3 data packets. At 0.3 % each further hop takes about 3.7 h
+        <li>A page is 23.3 data packets. At 0.3 % each further hop takes about 2.5 h
           <span class="m calc">calculated</span>.</li>
-        <li>At 1 % it is about 1.1 h <span class="m calc">calculated</span>.</li>
+        <li>At 1 % it is about 0.7 h <span class="m calc">calculated</span>.</li>
         <li>On the bench the calculation holds. Hop 1 took 464 s at 10 % <span class="m meas">measured</span>. The calculation
           gave 469 s. Hop 2 was one page behind <span class="m meas">measured</span>.</li>
       </ul>
@@ -158,19 +158,19 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Update</th><th>Patch mit -Os (mit -Ofast)</th><th>Seiten</th><th>Datenpakete</th><th>Hop 1 bei 0,3 / 1 %</th><th>5 Hops bei 0,3 / 1 / 2 %</th><th>Anwenden</th></tr>
-        <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">60</td><td class="n">9,6 / 2,9 h</td><td class="n">24,4 / 7,3 / 3,7 h</td><td>hinter dem Image</td></tr>
-        <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">131</td><td class="n">20,9 / 6,3 h</td><td class="n">35,7 / 10,7 / 5,4 h</td><td>hinter dem Image</td></tr>
-        <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">198</td><td class="n">31,6 / 9,5 h</td><td class="n">46,4 / 13,9 / 7,0 h</td><td>hinter dem Image</td></tr>
-        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">5,1 Tage / 36,9 h</td><td class="n">5,7 Tage / 41,3 / 20,7 h</td><td>überlappend (33 Seiten, hinter das Image mit 66 Seiten passen 31)</td></tr>
+        <tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10,1 KB (14,3)</td><td class="n">3</td><td class="n">60</td><td class="n">6,4 / 1,9 h</td><td class="n">16,2 / 4,9 / 2,4 h</td><td>hinter dem Image</td></tr>
+        <tr><td>Release ohne Compilerwechsel (1.17.1 nach 1.18.0, beide GCC 14)</td><td class="n">22,7 KB (32,6)</td><td class="n">6</td><td class="n">131</td><td class="n">13,9 / 4,2 h</td><td class="n">23,7 / 7,1 / 3,6 h</td><td>hinter dem Image</td></tr>
+        <tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34,2 KB (41,8)</td><td class="n">9</td><td class="n">198</td><td class="n">21,0 / 6,3 h</td><td class="n">30,8 / 9,3 / 4,6 h</td><td>hinter dem Image</td></tr>
+        <tr><td>Compilerwechsel (1.17.1 nach 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3,4 Tage / 24,5 h</td><td class="n">3,8 Tage / 27,5 / 13,7 h</td><td>überlappend (33 Seiten, hinter das Image mit 66 Seiten passen 31)</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Update</th><th>Patch with -Os (with -Ofast)</th><th>Pages</th><th>Data packets</th><th>Hop 1 at 0.3 / 1 %</th><th>5 hops at 0.3 / 1 / 2 %</th><th>Applied</th></tr>
-        <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">60</td><td class="n">9.6 / 2.9 h</td><td class="n">24.4 / 7.3 / 3.7 h</td><td>behind the image</td></tr>
-        <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">131</td><td class="n">20.9 / 6.3 h</td><td class="n">35.7 / 10.7 / 5.4 h</td><td>behind the image</td></tr>
-        <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">198</td><td class="n">31.6 / 9.5 h</td><td class="n">46.4 / 13.9 / 7.0 h</td><td>behind the image</td></tr>
-        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">5.1 days / 36.9 h</td><td class="n">5.7 days / 41.3 / 20.7 h</td><td>overlapping (33 pages; 31 fit behind the 66-page image)</td></tr>
+        <tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10.1 KB (14.3)</td><td class="n">3</td><td class="n">60</td><td class="n">6.4 / 1.9 h</td><td class="n">16.2 / 4.9 / 2.4 h</td><td>behind the image</td></tr>
+        <tr><td>release without compiler change (1.17.1 to 1.18.0, both GCC 14)</td><td class="n">22.7 KB (32.6)</td><td class="n">6</td><td class="n">131</td><td class="n">13.9 / 4.2 h</td><td class="n">23.7 / 7.1 / 3.6 h</td><td>behind the image</td></tr>
+        <tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34.2 KB (41.8)</td><td class="n">9</td><td class="n">198</td><td class="n">21.0 / 6.3 h</td><td class="n">30.8 / 9.3 / 4.6 h</td><td>behind the image</td></tr>
+        <tr><td>compiler change (1.17.1 to 1.18.0)</td><td class="n">135 KB (219)</td><td class="n">33</td><td class="n">771</td><td class="n">3.4 days / 24.5 h</td><td class="n">3.8 days / 27.5 / 13.7 h</td><td>overlapping (33 pages; 31 fit behind the 66-page image)</td></tr>
       </table>
     </div>
   </section>
