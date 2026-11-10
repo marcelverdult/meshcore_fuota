@@ -107,7 +107,7 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Nachricht</th><th>Aufbau</th><th>Bytes</th><th>Wer sendet</th><th>Wer reagiert</th></tr>
-        <tr><td><b>Angebot</b></td><td class="fmt">[1][snd 2][Seiten][nonce][Ticket 104]</td><td class="n">109</td><td>Jeder Knoten mit geprüftem Manifest, im Trickle-Takt (siehe <a href="#zeiten">Zeiten und Zeitgeber</a>)</td><td>Nachbarn, für die es passt. Nachbarn mit derselben Kampagne zählen es als Bestätigung.</td></tr>
+        <tr><td><b>Angebot</b></td><td class="fmt">[1][snd 2][Seiten][nonce][Ticket 108]</td><td class="n">113</td><td>Jeder Knoten mit geprüftem Manifest, im Trickle-Takt (siehe <a href="#zeiten">Zeiten und Zeitgeber</a>)</td><td>Nachbarn, für die es passt. Nachbarn mit derselben Kampagne zählen es als Bestätigung.</td></tr>
         <tr><td><b>Anfrage</b></td><td class="fmt">[2][snd 2][id 4][Block 2][Maske 2][Ziel 2][nonce]</td><td class="n">14</td><td>Der Knoten, der den Patch holt</td><td>Nur der genannte Anbieter (Ziel = seine Kennung). Bei 0xFFFF jeder, der die Fragmente geprüft hat.</td></tr>
         <tr><td><b>Daten</b></td><td class="fmt">[3][snd 2][id, erste 3 B][Fragment 2][bis 176 B]</td><td class="n">184</td><td>Wer die Seite geprüft hat und angefragt wurde</td><td>Alle Nachbarn, die dieselbe Kampagne holen. Ein Paket bedient alle.</td></tr>
         <tr><td><b>Retract</b> (signierter Rückruf)</td><td class="fmt">[4][snd 2][signierter Retract 80 B]</td><td class="n">83</td><td>Wer ihn geprüft hat, sendet ihn bis zu 3-mal an Nachbarn. Einmal geht er als Flut raus, dazu als Antwort auf ein Angebot dieses Builds</td><td>Alle Nachbarn mit FUOTA. Die Flut hat 84 B, weil ein nonce hinter der Kennung steht <span class="m code">im Code geprüft</span>.</td></tr>
@@ -116,7 +116,7 @@
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Message</th><th>Layout</th><th>Bytes</th><th>Sender</th><th>Reacts</th></tr>
-        <tr><td><b>Offer</b></td><td class="fmt">[1][snd 2][pages][nonce][ticket 104]</td><td class="n">109</td><td>Every node with a checked manifest, on a Trickle schedule (see <a href="#zeiten">Times and timers</a>)</td><td>Neighbours it fits. Neighbours with the same campaign count it as a confirmation.</td></tr>
+        <tr><td><b>Offer</b></td><td class="fmt">[1][snd 2][pages][nonce][ticket 108]</td><td class="n">113</td><td>Every node with a checked manifest, on a Trickle schedule (see <a href="#zeiten">Times and timers</a>)</td><td>Neighbours it fits. Neighbours with the same campaign count it as a confirmation.</td></tr>
         <tr><td><b>Request</b></td><td class="fmt">[2][snd 2][id 4][block 2][mask 2][target 2][nonce]</td><td class="n">14</td><td>The node that pulls the patch</td><td>Only the named provider (target = its ID). With 0xFFFF everyone who has checked the fragments.</td></tr>
         <tr><td><b>Data</b></td><td class="fmt">[3][snd 2][id, first 3 B][fragment 2][up to 176 B]</td><td class="n">184</td><td>Whoever has checked the page and was asked</td><td>All neighbours pulling the same campaign. One packet serves all.</td></tr>
         <tr><td><b>Retract</b> (signed recall)</td><td class="fmt">[4][snd 2][signed retract 80 B]</td><td class="n">83</td><td>Whoever verified it sends it up to 3 times to neighbours. It goes out once as a flood, and in reply to an offer of that build</td><td>All neighbours with FUOTA. The flood has 84 B, because a nonce follows the ID <span class="m code">checked in the code</span>.</td></tr>
@@ -143,11 +143,11 @@
 
     <div lang="de" class="prose">
       <h3>Das Angebots-Ticket</h3>
-      <p>Das Ticket hat 104 B <span class="m code">im Code geprüft</span>. Es muss zum Manifest passen, an dem es hängt.</p>
+      <p>Das Ticket hat 108 B <span class="m code">im Code geprüft</span>. Es muss zum Manifest passen, an dem es hängt.</p>
     </div>
     <div lang="en" class="prose">
       <h3>The offer ticket</h3>
-      <p>The ticket is 104 B <span class="m code">checked in the code</span>. It has to match the manifest it hangs on.</p>
+      <p>The ticket is 108 B <span class="m code">checked in the code</span>. It has to match the manifest it hangs on.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
