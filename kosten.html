@@ -524,8 +524,8 @@
       <div class="kv"><h3>Wartezeit auf ein Angebot</h3><p>Das Angebots-Intervall springt auf 10 s zurück <span class="m code">im Code geprüft</span>. Das passiert, wenn das Manifest geprüft
         oder der Patch vollständig ist. Ebenso, wenn ein Pull weitergeht oder das Anbieten startet, etwa nach einem
         Neustart. Danach verdoppelt es sich bis auf 2 Tage <span class="m code">im Code geprüft</span>. Diesen Zeitgeber nennt man Trickle (mehr dazu auf der Seite <a href="funk.html#zeiten">Funk</a>).</p><p>Das Angebot liegt in der zweiten Hälfte des Intervalls. Wer später dazukommt,
-        hört darum spätestens nach rund 3 Tagen ein Angebot <span class="m code">im Code geprüft</span>. Im Leerlauf lagen im Testaufbau 877 s zwischen zwei Angeboten
-        <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p></div>
+        hört darum spätestens nach rund 3 Tagen ein Angebot <span class="m code">im Code geprüft</span>. Im Leerlauf lagen im Testaufbau kurz nach dem Anwenden 877 s zwischen zwei Angeboten
+        <span class="m meas">gemessen</span>, weil das Intervall erst wächst. Am 9. November 2026 stand es beim Geber im Brettlauf der Release-Kampagne bei einem Neustart des Empfängers schon auf 5,7 Stunden (20.480 s) <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p></div>
     </div>
     <div class="grid2" lang="en">
       <div class="kv"><h3>Downtime while applying</h3><p>Applying took about 1 min on the test image: 12 s build, 30 to 39 s swap, plus the start.
@@ -536,7 +536,7 @@
         patch is complete. It also happens when a pull resumes or offering starts, for instance after a reboot. It then
         doubles up to 2 days <span class="m code">checked in the code</span>. This timer is called Trickle (more on the <a href="funk.html#zeiten">On air</a> page).</p><p>The offer falls in the second half of the interval. A node that joins later
         therefore hears an offer within about 3 days <span class="m code">checked in the code</span>. On
-        the bench 877 s passed between two offers when idle <span class="m meas">measured</span>. This is intended: updates
+        the bench 877 s passed between two offers when idle shortly after applying <span class="m meas">measured</span>, because the interval is still growing. On 9 November 2026, in the bench run of the release campaign, it already stood at 5.7 hours (20,480 s) at the provider when a receiver restarted <span class="m meas">measured</span>. This is intended: updates
         may take days. When idle, a node offers only once per interval.</p></div>
     </div>
   </section>
