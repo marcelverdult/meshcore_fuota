@@ -284,7 +284,8 @@
       <h3>Grenzen, die bleiben</h3>
       <ul>
         <li><b>Ein Knoten hält eine Kampagne.</b> Ein Knoten bietet per USB eine Kampagne an, die er selbst nicht anwenden kann.
-          Er verliert sie, sobald er eine für ihn passende von Nachbarn holt <span class="m meas">gemessen</span>.
+          Er verliert sie nur an ein echtes Angebot eines neueren Builds, das für ihn passt: Er holt das neue Manifest und ersetzt die Kampagne <span class="m meas">gemessen</span>.
+          Ein Angebot mit älterem Build ignoriert er (20. Oktober und 3. November 2026) <span class="m meas">gemessen</span>.
           Das bleibt so. Ein Anbieter soll selbst auf dem Basis-Image seiner Kampagne laufen.</li>
         <li><b>Signatur der Angebote.</b> Seit dem 20. Oktober 2026 trägt jedes Angebot ein vom Release-Schlüssel signiertes Ticket <span class="m meas">gemessen</span>.
           Kennungen haben 2 Byte <span class="m meas">gemessen</span>. Unsigniert bleiben Absender, Seitenzahl, Anfragen und Daten.
@@ -402,7 +403,8 @@
       <h3>Limits that stay</h3>
       <ul>
         <li><b>A node holds one campaign.</b> A node offers a campaign over USB that it cannot apply itself.
-          It loses the campaign as soon as it pulls one that fits it from neighbours <span class="m meas">measured</span>.
+          It loses the campaign only to a genuine offer of a newer build that fits it: it pulls the new manifest and replaces the campaign <span class="m meas">measured</span>.
+          It ignores an offer with an older build (20 October and 3 November 2026) <span class="m meas">measured</span>.
           This stays. An offering node should itself run the base image of its campaign.</li>
         <li><b>Signature of offers.</b> Since 20 October 2026 every offer carries a ticket signed by the release key <span class="m meas">measured</span>.
           IDs have 2 bytes <span class="m meas">measured</span>. Sender, page count, requests and data stay unsigned.
