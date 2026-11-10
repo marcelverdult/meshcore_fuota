@@ -23,6 +23,19 @@
   var dc = bfs(center, all), edge = center;
   for (var k2 = 0; k2 < N; k2++) if (dc[k2] < Infinity && dc[k2] > dc[edge]) edge = k2;
 
+  // Fragment counts as in the firmware (fuota_manifest.h, FuotaNRF52.cpp totalFrags): the patch in fragments of 176 B,
+  // before it the check table (8 B per patch fragment) and the manifest (296 B, 8 B per 4 KB block, 8 B per table fragment).
+  function patchFrags(patch) { return Math.ceil(patch / FRAG); }
+  function tableFrags(patch) { return Math.ceil(patchFrags(patch) * 8 / FRAG); }
+  function prelude(patch) {   // manifest and check table, pulled before the first page
+    var t = tableFrags(patch);
+    return Math.ceil((296 + 8 * Math.ceil(patch / PAGE) + 8 * t) / FRAG) + t;
+  }
+  function pageFrags(patch, k) {   // the patch fragments that complete page k (a fragment is sent once, with the page it ends in)
+    var pages = Math.ceil(patch / PAGE);
+    return (k === pages - 1 ? patchFrags(patch) : Math.ceil((k + 1) * PAGE / FRAG)) - Math.ceil(k * PAGE / FRAG);
+  }
+
   function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
@@ -31,7 +44,7 @@
   function simulate(patch, budget, share, seedMode) {
     var seed = seedMode === "edge" ? edge : center, r = rng(7), part = [];
     for (var i = 0; i < N; i++) part.push(i === seed || r() < share);
-    var T = AIR / budget, pages = Math.ceil(patch / PAGE), mfFr = Math.ceil((184 + 8 * pages) / FRAG);
+    var T = AIR / budget, pages = Math.ceil(patch / PAGE), mfFr = prelude(patch);
     var cost = [], transfers = [];
     for (var p = 0; p < pages; p++) cost.push(Math.min(PAGE, patch - p * PAGE) / FRAG * T);
     function pass(ready, c, mf) {
@@ -58,7 +71,7 @@
     var fin = tp[pages - 1], total = 0, reached = 0, parts = 0, senders = {}, sendPairs = {}, packets = 0;
     for (var n = 0; n < N; n++) { if (!part[n]) continue; parts++; if (fin[n] < Infinity) { reached++; total = Math.max(total, fin[n]); } }
     transfers.forEach(function (t) { senders[t.m] = 1; var key = t.m + ":" + t.k;
-      if (!sendPairs[key]) { sendPairs[key] = 1; packets += t.k < 0 ? mfFr : Math.ceil(Math.min(PAGE, patch - t.k * PAGE) / FRAG); } });
+      if (!sendPairs[key]) { sendPairs[key] = 1; packets += t.k < 0 ? mfFr : pageFrags(patch, t.k); } });
     return { seed: seed, part: part, tm: tm, tp: tp, pages: pages, total: total, reached: reached, parts: parts, patch: patch, mfFr: mfFr,
              transfers: transfers, senders: Object.keys(senders).length, packets: packets, fits: pages <= 23 };
   }
@@ -160,7 +173,7 @@
         ctx.globalAlpha = dim; ctx.fillStyle = c.req;
         ctx.beginPath(); ctx.arc(x1 + (x0 - x1) * g, y1 + (y0 - y1) * g, 2.8, 0, 7); ctx.fill();
       }
-      var nfr = tr.k < 0 ? S.mfFr : Math.ceil(Math.min(4096, S.patch - tr.k * 4096) / 176), step = (tr.e - tr.s) / nfr;
+      var nfr = tr.k < 0 ? S.mfFr : pageFrags(S.patch, tr.k), step = (tr.e - tr.s) / nfr;
       ctx.globalAlpha = dim; ctx.fillStyle = c.data;
       for (var j = 0; j < nfr; j++) {   // one dot per fragment, each paced by the provider's budget
         var dep = tr.s + j * step, fl = (t - dep) / (step * 0.85);
