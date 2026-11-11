@@ -62,15 +62,21 @@
       <h1>Alpha-Test: Repeater, die sich selbst updaten</h1>
       <p class="lede">Du flasht mehrere Testrepeater mit 1.17.1-b2 und einen mit 1.18.0-b3. Dann siehst du zu, ob die anderen
         sich per Funk selbst auf 1.18 bringen. Nimm nur Knoten, die du gut erreichst und für den Test entbehren kannst.</p>
-      <p><strong>Stand:</strong> Die Pakete für 1.17.1-b2 liegen vor. Das Seed-Paket 1.18.0-b3 folgt mit dem Release
-        <span class="m open">offen</span>. Der Test im Feld hat noch nicht stattgefunden <span class="m open">offen</span>.</p>
+      <p><strong>Stand:</strong> Beide Releases liegen vor:
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-1171-b2">alpha-1171-b2</a> mit den
+        Basispaketen 1.17.1-b2 und
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-118-b3">alpha-118-b3</a> mit den
+        Seed-Paketen 1.18.0-b3. Der Test im Feld hat noch nicht stattgefunden <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
       <h1>Alpha test: repeaters that update themselves</h1>
       <p class="lede">You flash several test repeaters with 1.17.1-b2 and one with 1.18.0-b3. Then you watch whether the others
         bring themselves to 1.18 over the air. Use only nodes that you can reach easily and can spare for the test.</p>
-      <p><strong>Status:</strong> the packages for 1.17.1-b2 exist. The seed package 1.18.0-b3 follows with the release
-        <span class="m open">open</span>. The field test has not happened yet <span class="m open">open</span>.</p>
+      <p><strong>Status:</strong> both releases are out:
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-1171-b2">alpha-1171-b2</a> with the
+        base packages 1.17.1-b2 and
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-118-b3">alpha-118-b3</a> with the
+        seed packages 1.18.0-b3. The field test has not happened yet <span class="m open">open</span>.</p>
     </div>
   </header>
 
@@ -200,14 +206,14 @@
         Das SoftDevice im Dateinamen muss zur Zeile <code>SoftDevice:</code> in <code>INFO_UF2.TXT</code> deines Geräts passen.
         Zum Flashen drückst du zweimal Reset und ziehst die Datei auf das Laufwerk.</p>
       <p>Das Seed-Paket heißt wie das Basispaket, mit <code>1.18.0-b3</code> statt <code>1.17.1-b2</code> und <code>seed</code>
-        statt <code>base</code>. Seine Prüfsumme steht in <code>SHA256SUMS</code> von 1.18.0-b3 <span class="m open">offen</span>.</p>
+        statt <code>base</code>. Für 1.18.0-b3 gibt es nur Seed-Pakete, auch für eine spätere Installation von Hand: Sie enthalten dieselbe Firmware und zusätzlich die Kampagne. Die Prüfsummen stehen in <code>SHA256SUMS</code> des Releases alpha-118-b3 und unten in der zweiten Tabelle.</p>
     </div>
     <div lang="en" class="prose">
       <p>Take the file with your board in its name and compare its checksum with <code>SHA256SUMS</code> from the release.
         The SoftDevice in the file name must match the <code>SoftDevice:</code> line in <code>INFO_UF2.TXT</code> of your device.
         To flash, press reset twice and drag the file onto the drive.</p>
       <p>The seed package is named like the base package, with <code>1.18.0-b3</code> instead of <code>1.17.1-b2</code> and
-        <code>seed</code> instead of <code>base</code>. Its checksum is in <code>SHA256SUMS</code> of 1.18.0-b3 <span class="m open">open</span>.</p>
+        <code>seed</code> instead of <code>base</code>. For 1.18.0-b3 there are only seed packages, also for a later manual install: they contain the same firmware plus the campaign. The checksums are in <code>SHA256SUMS</code> of the release alpha-118-b3 and in the second table below.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
@@ -232,6 +238,29 @@
         <tr><td>Nano G2 Ultra</td><td><code>meshcore-fuota-1.17.1-b2-base-nano_g2_ultra-s140-6.1.1.uf2</code></td><td class="n"><code>82af64c909151a6a4ac549581066fffa3d59053ae66bdf3e48306997971f2954</code></td></tr>
       </table>
     </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Board</th><th>Seed-Paket 1.18.0-b3 mit Kampagne</th><th>sha256</th></tr>
+        <tr><td>FakeTec</td><td><code>meshcore-fuota-1.18.0-b3-seed-faketec-s140-6.1.1.uf2</code></td><td class="n"><code>291a28880ed52f39a782dd55530fd07fac9b0240606ca5f70bf019711135eb56</code></td></tr>
+        <tr><td>Seeed SenseCAP Solar P1</td><td><code>meshcore-fuota-1.18.0-b3-seed-p1-s140-7.3.0.uf2</code></td><td class="n"><code>4eb1418a17402a72e45659456a1047f57d2b7520c95d010364e0bd671f8f4980</code></td></tr>
+        <tr><td>RAK4631</td><td><code>meshcore-fuota-1.18.0-b3-seed-rak4631-s140-6.1.1.uf2</code></td><td class="n"><code>46bf8ab8caa9f6d9dd99f93481c58c65461b10b17899171d8d6829993ae1e456</code></td></tr>
+        <tr><td>Heltec T114</td><td><code>meshcore-fuota-1.18.0-b3-seed-t114-s140-6.1.1.uf2</code></td><td class="n"><code>f92d966b2f19cbb194d7ee6c00f11fee10f08b4a81391843c1e574ce1b104d88</code></td></tr>
+        <tr><td>Seeed XIAO nRF52</td><td><code>meshcore-fuota-1.18.0-b3-seed-xiao-s140-7.3.0.uf2</code></td><td class="n"><code>a619a740f36e58c033e959699f709af6417ca08df69f5a0a6c284a144478aa32</code></td></tr>
+        <tr><td>Heltec T096</td><td><code>meshcore-fuota-1.18.0-b3-seed-t096-s140-6.1.1.uf2</code></td><td class="n"><code>d32479f3dcbafbaf8def412d40bb40a9297199378f5c8a6754162811e75f678b</code></td></tr>
+        <tr><td>GAT562 Mesh Tracker Pro</td><td><code>meshcore-fuota-1.18.0-b3-seed-gat562_tracker-s140-6.1.1.uf2</code></td><td class="n"><code>f99c693877239d4842adc472deb1d329816c1af46d8a476b477d310e37fabebb</code></td></tr>
+        <tr><td>GAT562 Mesh EVB Pro</td><td><code>meshcore-fuota-1.18.0-b3-seed-gat562_evb-s140-6.1.1.uf2</code></td><td class="n"><code>715710921926c7d6e0a24ab6266f4892e542c421a918252e45b97c758978e5ee</code></td></tr>
+        <tr><td>GAT562 30S Mesh Kit</td><td><code>meshcore-fuota-1.18.0-b3-seed-gat562_30s-s140-6.1.1.uf2</code></td><td class="n"><code>50559b01bf44b554cb2ddd31dd4a68af1a8bd20a0136f5f83271d3dcc5e9929e</code></td></tr>
+        <tr><td>RAK WisMesh Tag</td><td><code>meshcore-fuota-1.18.0-b3-seed-wismesh_tag-s140-6.1.1.uf2</code></td><td class="n"><code>af2a597ac389f55e131e4d0de1483575a40d8a9bc22e141dfaefb339ad57d9bc</code></td></tr>
+        <tr><td>Elecrow ThinkNode M1</td><td><code>meshcore-fuota-1.18.0-b3-seed-thinknode_m1-s140-6.1.1.uf2</code></td><td class="n"><code>a5d75e3f63a62becc46ec5d2fdf3a7a9d99a0d0f446901dc291ff4ffe42bde39</code></td></tr>
+        <tr><td>Elecrow ThinkNode M6</td><td><code>meshcore-fuota-1.18.0-b3-seed-thinknode_m6-s140-6.1.1.uf2</code></td><td class="n"><code>b2ba54e1b82952879541232dbbb05eaa4f2d6ba350638408bb34d5a2ec111b92</code></td></tr>
+        <tr><td>Keepteen LT1</td><td><code>meshcore-fuota-1.18.0-b3-seed-keepteen_lt1-s140-6.1.1.uf2</code></td><td class="n"><code>df49736c63884cc6b3fc5c0b359801be773048f79cffaa28285579d5ca1f1f5e</code></td></tr>
+        <tr><td>LilyGo T-Echo</td><td><code>meshcore-fuota-1.18.0-b3-seed-lilygo_techo-s140-6.1.1.uf2</code></td><td class="n"><code>6c5938ca4134e9c0554efcbee9c854e5c1013fe4f8fa9c527b929f4b8df32240</code></td></tr>
+        <tr><td>Heltec Mesh Pocket</td><td><code>meshcore-fuota-1.18.0-b3-seed-mesh_pocket-s140-6.1.1.uf2</code></td><td class="n"><code>d56560f48815ad57b13fe425776727ecdc9e966328ac77d170975934a04edd7e</code></td></tr>
+        <tr><td>Seeed Wio Tracker L1</td><td><code>meshcore-fuota-1.18.0-b3-seed-wio_tracker_l1-s140-7.3.0.uf2</code></td><td class="n"><code>2da09ca692fba63ffc4dc1f551737ba382313c5501a9c1ad5246d4de5e59b810</code></td></tr>
+        <tr><td>muzi works R1 Neo</td><td><code>meshcore-fuota-1.18.0-b3-seed-muzi_r1_neo-s140-6.1.1.uf2</code></td><td class="n"><code>0a99d0040e64c757409256b51fcbfa5563782bb87ac79ca4e7f1b5a3ed7c104d</code></td></tr>
+        <tr><td>Nano G2 Ultra</td><td><code>meshcore-fuota-1.18.0-b3-seed-nano_g2_ultra-s140-6.1.1.uf2</code></td><td class="n"><code>12eac31990342014e14bfb482c77b5129e732d2be640bc133e06054b2c7ed9b7</code></td></tr>
+      </table>
+    </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Board</th><th>Base package 1.17.1-b2 for all devices</th><th>sha256</th></tr>
@@ -253,6 +282,29 @@
         <tr><td>Seeed Wio Tracker L1</td><td><code>meshcore-fuota-1.17.1-b2-base-wio_tracker_l1-s140-7.3.0.uf2</code></td><td class="n"><code>8e9c1d694616682be23c7a192c2f4ca92e78a4e9929b42cebc0550f6815db418</code></td></tr>
         <tr><td>muzi works R1 Neo</td><td><code>meshcore-fuota-1.17.1-b2-base-muzi_r1_neo-s140-6.1.1.uf2</code></td><td class="n"><code>beca18b0f8d9eecb2ef1c57bb4203906267d045d59f637305e26bcda27608ce1</code></td></tr>
         <tr><td>Nano G2 Ultra</td><td><code>meshcore-fuota-1.17.1-b2-base-nano_g2_ultra-s140-6.1.1.uf2</code></td><td class="n"><code>82af64c909151a6a4ac549581066fffa3d59053ae66bdf3e48306997971f2954</code></td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Board</th><th>Seed package 1.18.0-b3 with campaign</th><th>sha256</th></tr>
+        <tr><td>FakeTec</td><td><code>meshcore-fuota-1.18.0-b3-seed-faketec-s140-6.1.1.uf2</code></td><td class="n"><code>291a28880ed52f39a782dd55530fd07fac9b0240606ca5f70bf019711135eb56</code></td></tr>
+        <tr><td>Seeed SenseCAP Solar P1</td><td><code>meshcore-fuota-1.18.0-b3-seed-p1-s140-7.3.0.uf2</code></td><td class="n"><code>4eb1418a17402a72e45659456a1047f57d2b7520c95d010364e0bd671f8f4980</code></td></tr>
+        <tr><td>RAK4631</td><td><code>meshcore-fuota-1.18.0-b3-seed-rak4631-s140-6.1.1.uf2</code></td><td class="n"><code>46bf8ab8caa9f6d9dd99f93481c58c65461b10b17899171d8d6829993ae1e456</code></td></tr>
+        <tr><td>Heltec T114</td><td><code>meshcore-fuota-1.18.0-b3-seed-t114-s140-6.1.1.uf2</code></td><td class="n"><code>f92d966b2f19cbb194d7ee6c00f11fee10f08b4a81391843c1e574ce1b104d88</code></td></tr>
+        <tr><td>Seeed XIAO nRF52</td><td><code>meshcore-fuota-1.18.0-b3-seed-xiao-s140-7.3.0.uf2</code></td><td class="n"><code>a619a740f36e58c033e959699f709af6417ca08df69f5a0a6c284a144478aa32</code></td></tr>
+        <tr><td>Heltec T096</td><td><code>meshcore-fuota-1.18.0-b3-seed-t096-s140-6.1.1.uf2</code></td><td class="n"><code>d32479f3dcbafbaf8def412d40bb40a9297199378f5c8a6754162811e75f678b</code></td></tr>
+        <tr><td>GAT562 Mesh Tracker Pro</td><td><code>meshcore-fuota-1.18.0-b3-seed-gat562_tracker-s140-6.1.1.uf2</code></td><td class="n"><code>f99c693877239d4842adc472deb1d329816c1af46d8a476b477d310e37fabebb</code></td></tr>
+        <tr><td>GAT562 Mesh EVB Pro</td><td><code>meshcore-fuota-1.18.0-b3-seed-gat562_evb-s140-6.1.1.uf2</code></td><td class="n"><code>715710921926c7d6e0a24ab6266f4892e542c421a918252e45b97c758978e5ee</code></td></tr>
+        <tr><td>GAT562 30S Mesh Kit</td><td><code>meshcore-fuota-1.18.0-b3-seed-gat562_30s-s140-6.1.1.uf2</code></td><td class="n"><code>50559b01bf44b554cb2ddd31dd4a68af1a8bd20a0136f5f83271d3dcc5e9929e</code></td></tr>
+        <tr><td>RAK WisMesh Tag</td><td><code>meshcore-fuota-1.18.0-b3-seed-wismesh_tag-s140-6.1.1.uf2</code></td><td class="n"><code>af2a597ac389f55e131e4d0de1483575a40d8a9bc22e141dfaefb339ad57d9bc</code></td></tr>
+        <tr><td>Elecrow ThinkNode M1</td><td><code>meshcore-fuota-1.18.0-b3-seed-thinknode_m1-s140-6.1.1.uf2</code></td><td class="n"><code>a5d75e3f63a62becc46ec5d2fdf3a7a9d99a0d0f446901dc291ff4ffe42bde39</code></td></tr>
+        <tr><td>Elecrow ThinkNode M6</td><td><code>meshcore-fuota-1.18.0-b3-seed-thinknode_m6-s140-6.1.1.uf2</code></td><td class="n"><code>b2ba54e1b82952879541232dbbb05eaa4f2d6ba350638408bb34d5a2ec111b92</code></td></tr>
+        <tr><td>Keepteen LT1</td><td><code>meshcore-fuota-1.18.0-b3-seed-keepteen_lt1-s140-6.1.1.uf2</code></td><td class="n"><code>df49736c63884cc6b3fc5c0b359801be773048f79cffaa28285579d5ca1f1f5e</code></td></tr>
+        <tr><td>LilyGo T-Echo</td><td><code>meshcore-fuota-1.18.0-b3-seed-lilygo_techo-s140-6.1.1.uf2</code></td><td class="n"><code>6c5938ca4134e9c0554efcbee9c854e5c1013fe4f8fa9c527b929f4b8df32240</code></td></tr>
+        <tr><td>Heltec Mesh Pocket</td><td><code>meshcore-fuota-1.18.0-b3-seed-mesh_pocket-s140-6.1.1.uf2</code></td><td class="n"><code>d56560f48815ad57b13fe425776727ecdc9e966328ac77d170975934a04edd7e</code></td></tr>
+        <tr><td>Seeed Wio Tracker L1</td><td><code>meshcore-fuota-1.18.0-b3-seed-wio_tracker_l1-s140-7.3.0.uf2</code></td><td class="n"><code>2da09ca692fba63ffc4dc1f551737ba382313c5501a9c1ad5246d4de5e59b810</code></td></tr>
+        <tr><td>muzi works R1 Neo</td><td><code>meshcore-fuota-1.18.0-b3-seed-muzi_r1_neo-s140-6.1.1.uf2</code></td><td class="n"><code>0a99d0040e64c757409256b51fcbfa5563782bb87ac79ca4e7f1b5a3ed7c104d</code></td></tr>
+        <tr><td>Nano G2 Ultra</td><td><code>meshcore-fuota-1.18.0-b3-seed-nano_g2_ultra-s140-6.1.1.uf2</code></td><td class="n"><code>12eac31990342014e14bfb482c77b5129e732d2be640bc133e06054b2c7ed9b7</code></td></tr>
       </table>
     </div>
   </section>
