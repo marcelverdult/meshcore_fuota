@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Alpha-Test · MeshCore FUOTA</title>
+<meta name="description" content="MeshCore FUOTA: firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:title" content="Alpha-Test · MeshCore FUOTA">
+<meta property="og:description" content="Firmware updates over LoRa for MeshCore repeaters, design for review (DE/EN)">
+<meta property="og:image" content="https://marcelverdult.github.io/meshcore_fuota/logo/logo-dark.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="logo/favicon-48.png">
+<link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+(function () {
+  // before the first paint: forward old section links of the single page, then pick the language
+  // (#de / #en, saved choice, else the browser language) so the other language never flashes
+  var moved = window.fuotaMoved = {}, h = location.hash.slice(1);
+  if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
+  var l = (h === "de" || h === "en") ? h : null;
+  if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
+  if (l !== "de" && l !== "en") l = (navigator.language || "de").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+  document.documentElement.setAttribute("data-lang", l);
+  document.documentElement.setAttribute("lang", l);
+})();
+</script>
+</head>
+<body class="has-rail" data-title-de="Alpha-Test · MeshCore FUOTA" data-title-en="Alpha test · MeshCore FUOTA">
+<div class="bar"><div class="bar-in">
+  <a class="mark" href="index.html" aria-label="MeshCore FUOTA"><img src="logo/icon.png" alt="" width="28" height="28"><span>MeshCore <b>FUOTA</b></span></a>
+  <span class="chip-draft"><span lang="de">Entwurf zur Prüfung</span><span lang="en">Draft for review</span></span>
+  <span class="here" aria-hidden="true"></span>
+  <div class="langs" role="group" aria-label="Sprache / language">
+    <button type="button" id="btn-de" data-l="de" aria-pressed="true">DE</button>
+    <button type="button" id="btn-en" data-l="en" aria-pressed="false">EN</button>
+  </div>
+</div><div class="progress"></div></div>
+<nav class="rail" aria-hidden="true"></nav>
+<div class="wrap">
+  <nav class="pages" aria-label="Seiten / pages">
+    <ul>
+      <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
+      <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
+      <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
+      <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
+      <li><a href="sicherheit.html"><span lang="de">Sicherheit</span><span lang="en">Safety</span></a></li>
+      <li><a href="funk.html"><span lang="de">Funk</span><span lang="en">On air</span></a></li>
+      <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
+      <li><a href="tests.html"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
+      <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
+      <li><a href="alpha.html" aria-current="page"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
+    </ul>
+  </nav>
+  <main>
+  <header class="hero">
+    <div lang="de">
+      <h1>Alpha-Test: Repeater, die sich selbst updaten</h1>
+      <p class="lede">Du flasht mehrere Testrepeater mit 1.17.1-b2 und einen mit 1.18.0-b3. Dann siehst du zu, ob die anderen
+        sich per Funk selbst auf 1.18 bringen. Nimm nur Knoten, die du gut erreichst und für den Test entbehren kannst.</p>
+      <p><strong>Stand:</strong> Die Pakete für 1.17.1-b2 liegen vor. Das Seed-Paket 1.18.0-b3 folgt mit dem Release
+        <span class="m open">offen</span>. Der Test im Feld hat noch nicht stattgefunden <span class="m open">offen</span>.</p>
+    </div>
+    <div lang="en">
+      <h1>Alpha test: repeaters that update themselves</h1>
+      <p class="lede">You flash several test repeaters with 1.17.1-b2 and one with 1.18.0-b3. Then you watch whether the others
+        bring themselves to 1.18 over the air. Use only nodes that you can reach easily and can spare for the test.</p>
+      <p><strong>Status:</strong> the packages for 1.17.1-b2 exist. The seed package 1.18.0-b3 follows with the release
+        <span class="m open">open</span>. The field test has not happened yet <span class="m open">open</span>.</p>
+    </div>
+  </header>
+
+  <section id="alpha-ablauf">
+    <div lang="de" class="prose"><h2>So läuft der Test</h2></div>
+    <div lang="en" class="prose"><h2>How the test runs</h2></div>
+    <div lang="de" class="prose">
+      <ol>
+        <li>Such dir ein paar andere Tester und bildet eine Gruppe. Ihr teilt mehrere Testrepeater unter euch auf.
+          Alle Geräte der Gruppe liegen in Funkreichweite zueinander.</li>
+        <li>Alle flashen das Basispaket 1.17.1-b2 per USB (Tabelle unten).</li>
+        <li>Genau einer macht den Seed. Er flasht auf einen der Testrepeater das Seed-Paket 1.18.0-b3.</li>
+        <li>Die anderen holen das Update per Funk, prüfen die Signatur, starten zur Probe und bestätigen. Du tust nichts.</li>
+        <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
+      </ol>
+      <p>Mehrere Gruppen können unabhängig voneinander testen, je mehr, desto besser. Ohne Gruppe geht es auch allein
+        mit zwei Geräten: eines mit 1.17.1-b2 als Empfänger, eines mit dem Seed-Paket.</p>
+    </div>
+    <div lang="en" class="prose">
+      <ol>
+        <li>Find a few other testers and form a group. You split several test repeaters among yourselves.
+          All devices of the group are within radio range of each other.</li>
+        <li>Everyone flashes the base package 1.17.1-b2 over USB (table below).</li>
+        <li>Exactly one person makes the seed. They flash the seed package 1.18.0-b3 onto one of the test repeaters.</li>
+        <li>The others fetch the update over the air, check the signature, start it on trial and confirm. You do nothing.</li>
+        <li>You watch the state and report what happened.</li>
+      </ol>
+      <p>Several groups can test independently of each other, the more the better. Without a group it also works alone
+        with two devices: one with 1.17.1-b2 as the receiver, one with the seed package.</p>
+    </div>
+  </section>
+
+  <section id="alpha-beobachten">
+    <div lang="de" class="prose"><h2>Beobachten</h2></div>
+    <div lang="en" class="prose"><h2>Watching</h2></div>
+    <div lang="de" class="prose">
+      <p>Am Gerät zeigen <code>fuota info</code> und <code>fuota status</code> den Stand in der USB-Konsole. Nach dem Flashen
+        steht bei 1.17.1-b2 <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
+      <p>Von außen siehst du die Kampagne im
+        <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a>. Sie erscheint dort erst, wenn ein
+        Observer (ein Knoten, der mithört und meldet) Angebote oder Daten hört. Steht dort keine Kampagne, gilt die Anzeige am
+        Gerät. Dass der Analyzer unsere Alpha-Kampagne zeigt, ist noch nicht geprüft <span class="m open">offen</span>.</p>
+      <p>Der Weg zwischen Seed und Empfänger darf über normale MeshCore-Repeater (Stock) führen. Die Angebote laufen als
+        gewöhnliche Gruppen-Daten-Flut, die Stock-Repeater nach Region weiterleiten <span class="m code">im Code geprüft</span>.
+        Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>. Im Feld ist
+        das <span class="m open">offen</span>. Melde deshalb, ob Stock-Repeater dazwischen lagen.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>On the device, <code>fuota info</code> and <code>fuota status</code> show the state in the USB console. After
+        flashing, 1.17.1-b2 shows <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
+      <p>From outside you can see the campaign in the
+        <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. It appears there only once an
+        observer (a node that listens and reports) hears offers or data. If no campaign shows, trust the display on the
+        device. Whether the analyzer shows our alpha campaign has not been checked yet <span class="m open">open</span>.</p>
+      <p>The path between seed and receiver may run through normal MeshCore repeaters (stock). The offers travel as
+        ordinary group data floods, which stock repeaters forward by region <span class="m code">checked in the code</span>.
+        On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>. In the field
+        this is <span class="m open">open</span>. So report whether stock repeaters lay in between.</p>
+    </div>
+  </section>
+
+  <section id="alpha-sieben-tage">
+    <div lang="de" class="prose"><h2>Sieben Tage Wartezeit und „sofort“</h2></div>
+    <div lang="en" class="prose"><h2>Seven days of delay and “now”</h2></div>
+    <div lang="de" class="prose">
+      <p>Ein Release-Image installiert ein fertig geholtes Update nicht sofort. Ab Werk steht <code>auto delay</code>: Der Knoten
+        gibt das Update 7 Tage lang nur weiter und installiert es danach. In dieser Woche lässt sich ein Update noch
+        zurückziehen. Der Release-Build lässt sich nicht mit kürzerer Wartezeit bauen <span class="m code">im Code geprüft</span>.</p>
+      <p>Wer nicht warten will, gibt am Knoten in der USB-Konsole <code>fuota auto now</code> ein. Der Knoten installiert dann,
+        sobald das Update vollständig da ist. Wir bitten dich, das am Anfang zu setzen.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>A release image does not install a fetched update at once. The factory setting is <code>auto delay</code>: the node
+        only passes the update on for 7 days and installs it afterwards. During that week an update can still be
+        withdrawn. The release build cannot be built with a shorter delay <span class="m code">checked in the code</span>.</p>
+      <p>If you do not want to wait, type <code>fuota auto now</code> in the USB console of the node. The node then installs
+        as soon as the update is complete. We ask you to set this at the start.</p>
+    </div>
+  </section>
+
+  <section id="alpha-melden">
+    <div lang="de" class="prose"><h2>Was du meldest</h2></div>
+    <div lang="en" class="prose"><h2>What you report</h2></div>
+    <div lang="de" class="prose">
+      <p>Am liebsten als GitHub Issue mit der Vorlage „Alpha-Bericht“:
+        <a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>.
+        Telegram (<a href="https://t.me/meshcorede/37922">Thread</a>) und
+        <a href="https://discord.gg/ZxU66yWVC">Discord</a> gehen auch. Kopiere Ausgaben als Text, keine Screenshots.</p>
+      <ul>
+        <li>Board, Dateiname und ob die Prüfsumme gepasst hat</li>
+        <li>Version vorher und nachher (<code>ver</code>, <code>fuota info</code>)</li>
+        <li>Zeit bis zum Update: wann es fertig war, wann <code>testing</code> und <code>confirmed</code> kamen</li>
+        <li>ob du <code>auto now</code>, <code>fuota apply 3</code> oder <code>auto delay</code> genutzt hast</li>
+        <li>Auszug aus dem Analyzer oder dem Log (<code>fuota radio</code>, <code>fuota status</code>)</li>
+        <li>ob Stock-Repeater zwischen Seed und Empfänger lagen</li>
+        <li>alles Auffällige: Neustart ohne dein Zutun, Rückfall auf 1.17.1, Meldungen mit <code>ERR</code>, Strom weg</li>
+      </ul>
+      <p>Wenn es klappt, lässt du 1.18 auf den Repeatern. Künftige Updates sollen auf demselben Weg per Funk kommen.
+        Sobald MeshCore 1.19 herausgibt, planen wir dafür ein FUOTA-Update. Zurück zur offiziellen MeshCore-Firmware
+        geht jederzeit mit <code>fuota uf2</code>. Sag vorher kurz Bescheid.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>Preferably as a GitHub issue with the template “Alpha-Bericht”:
+        <a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>.
+        Telegram (<a href="https://t.me/meshcorede/37922">thread</a>) and
+        <a href="https://discord.gg/ZxU66yWVC">Discord</a> work too. Copy output as text, not screenshots.</p>
+      <ul>
+        <li>board, file name and whether the checksum matched</li>
+        <li>version before and after (<code>ver</code>, <code>fuota info</code>)</li>
+        <li>time to the update: when it was complete, when <code>testing</code> and <code>confirmed</code> came</li>
+        <li>whether you used <code>auto now</code>, <code>fuota apply 3</code> or <code>auto delay</code></li>
+        <li>an excerpt from the analyzer or the log (<code>fuota radio</code>, <code>fuota status</code>)</li>
+        <li>whether stock repeaters lay between seed and receiver</li>
+        <li>anything unusual: a restart without your doing, a fall back to 1.17.1, messages with <code>ERR</code>, power loss</li>
+      </ul>
+      <p>If it works, you keep 1.18 on the repeaters. Future updates are meant to arrive the same way over the air.
+        Once MeshCore releases 1.19, we plan a FUOTA update for it. You can go back to the official MeshCore firmware
+        at any time with <code>fuota uf2</code>. Tell us briefly beforehand.</p>
+    </div>
+  </section>
+
+  <section id="alpha-pakete">
+    <div lang="de" class="prose"><h2>Pakete für 18 Boards</h2></div>
+    <div lang="en" class="prose"><h2>Packages for 18 boards</h2></div>
+    <div lang="de" class="prose">
+      <p>Nimm die Datei mit deinem Board im Namen und vergleiche die Prüfsumme mit <code>SHA256SUMS</code> aus dem Release.
+        Das SoftDevice im Dateinamen muss zur Zeile <code>SoftDevice:</code> in <code>INFO_UF2.TXT</code> deines Geräts passen.
+        Zum Flashen drückst du zweimal Reset und ziehst die Datei auf das Laufwerk.</p>
+      <p>Das Seed-Paket heißt wie das Basispaket, mit <code>1.18.0-b3</code> statt <code>1.17.1-b2</code> und <code>seed</code>
+        statt <code>base</code>. Seine Prüfsumme steht in <code>SHA256SUMS</code> von 1.18.0-b3 <span class="m open">offen</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>Take the file with your board in its name and compare its checksum with <code>SHA256SUMS</code> from the release.
+        The SoftDevice in the file name must match the <code>SoftDevice:</code> line in <code>INFO_UF2.TXT</code> of your device.
+        To flash, press reset twice and drag the file onto the drive.</p>
+      <p>The seed package is named like the base package, with <code>1.18.0-b3</code> instead of <code>1.17.1-b2</code> and
+        <code>seed</code> instead of <code>base</code>. Its checksum is in <code>SHA256SUMS</code> of 1.18.0-b3 <span class="m open">open</span>.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Board</th><th>Basispaket 1.17.1-b2 für alle Geräte</th><th>sha256</th></tr>
+        <tr><td>FakeTec</td><td><code>meshcore-fuota-1.17.1-b2-base-faketec-s140-6.1.1.uf2</code></td><td class="n"><code>98fa9e392d57bedcadf9cc193dc5763f239ce6d594cefda4be398cb60f51630a</code></td></tr>
+        <tr><td>Seeed SenseCAP Solar P1</td><td><code>meshcore-fuota-1.17.1-b2-base-p1-s140-7.3.0.uf2</code></td><td class="n"><code>26fb2f9c230632b8638f27b4f6b2a40de173d8176ddeffe9e2881449be953d82</code></td></tr>
+        <tr><td>RAK4631</td><td><code>meshcore-fuota-1.17.1-b2-base-rak4631-s140-6.1.1.uf2</code></td><td class="n"><code>ec0477306f17aa1ee944973b767df527f513b36ab7a0c76c825add3e7c735bc9</code></td></tr>
+        <tr><td>Heltec T114</td><td><code>meshcore-fuota-1.17.1-b2-base-t114-s140-6.1.1.uf2</code></td><td class="n"><code>0ea95d55956fe0239e6290c3b57a1bc5bbe7e41dfcb8f937dfa6c0f7342230fb</code></td></tr>
+        <tr><td>Seeed XIAO nRF52</td><td><code>meshcore-fuota-1.17.1-b2-base-xiao-s140-7.3.0.uf2</code></td><td class="n"><code>3471e2a316f66a991e003d6aad4e84adfdedf729fa1d4255a909456f06654dc9</code></td></tr>
+        <tr><td>Heltec T096</td><td><code>meshcore-fuota-1.17.1-b2-base-t096-s140-6.1.1.uf2</code></td><td class="n"><code>77c5dbe2d4a117da558332c54dc2045402d80dba087600ddfcaf99dc384b0649</code></td></tr>
+        <tr><td>GAT562 Mesh Tracker Pro</td><td><code>meshcore-fuota-1.17.1-b2-base-gat562_tracker-s140-6.1.1.uf2</code></td><td class="n"><code>3afff03000ea8d1a09b10d76e8c45c379d6c6e791851cbbc00bfd8140ed6ed04</code></td></tr>
+        <tr><td>GAT562 Mesh EVB Pro</td><td><code>meshcore-fuota-1.17.1-b2-base-gat562_evb-s140-6.1.1.uf2</code></td><td class="n"><code>1e01ab9b413b8291a7678fef5106bdaf20478520d1040733128899c9dbeeceec</code></td></tr>
+        <tr><td>GAT562 30S Mesh Kit</td><td><code>meshcore-fuota-1.17.1-b2-base-gat562_30s-s140-6.1.1.uf2</code></td><td class="n"><code>19f955c11f52713f4956d61eea33ebc7fe2b2316a852d9cd24e6812a92573812</code></td></tr>
+        <tr><td>RAK WisMesh Tag</td><td><code>meshcore-fuota-1.17.1-b2-base-wismesh_tag-s140-6.1.1.uf2</code></td><td class="n"><code>6531e78373bba3ee6004b865091803f3e247fb3ea2a3de1e88b5cbde701029b3</code></td></tr>
+        <tr><td>Elecrow ThinkNode M1</td><td><code>meshcore-fuota-1.17.1-b2-base-thinknode_m1-s140-6.1.1.uf2</code></td><td class="n"><code>e4375facab2645a0bc96e32753e4c1e76756f244c5aa924693205d0f1e4bddd8</code></td></tr>
+        <tr><td>Elecrow ThinkNode M6</td><td><code>meshcore-fuota-1.17.1-b2-base-thinknode_m6-s140-6.1.1.uf2</code></td><td class="n"><code>435adaa769616ff8d3897c5a547220b874ce36cd007b6e940aa44958ef0522de</code></td></tr>
+        <tr><td>Keepteen LT1</td><td><code>meshcore-fuota-1.17.1-b2-base-keepteen_lt1-s140-6.1.1.uf2</code></td><td class="n"><code>64e04628edb7ed56e4c19c23d9d625fb065c486c196f79dbe85c169bd74322e8</code></td></tr>
+        <tr><td>LilyGo T-Echo</td><td><code>meshcore-fuota-1.17.1-b2-base-lilygo_techo-s140-6.1.1.uf2</code></td><td class="n"><code>3f9127b265516a77e90a0a15964db14c94f0e0224b07dfff830b527cc235f98e</code></td></tr>
+        <tr><td>Heltec Mesh Pocket</td><td><code>meshcore-fuota-1.17.1-b2-base-mesh_pocket-s140-6.1.1.uf2</code></td><td class="n"><code>febfa88206a0394ae6038c589dad800d72ea3646bc2650ae7310f415af7145cf</code></td></tr>
+        <tr><td>Seeed Wio Tracker L1</td><td><code>meshcore-fuota-1.17.1-b2-base-wio_tracker_l1-s140-7.3.0.uf2</code></td><td class="n"><code>8e9c1d694616682be23c7a192c2f4ca92e78a4e9929b42cebc0550f6815db418</code></td></tr>
+        <tr><td>muzi works R1 Neo</td><td><code>meshcore-fuota-1.17.1-b2-base-muzi_r1_neo-s140-6.1.1.uf2</code></td><td class="n"><code>beca18b0f8d9eecb2ef1c57bb4203906267d045d59f637305e26bcda27608ce1</code></td></tr>
+        <tr><td>Nano G2 Ultra</td><td><code>meshcore-fuota-1.17.1-b2-base-nano_g2_ultra-s140-6.1.1.uf2</code></td><td class="n"><code>82af64c909151a6a4ac549581066fffa3d59053ae66bdf3e48306997971f2954</code></td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Board</th><th>Base package 1.17.1-b2 for all devices</th><th>sha256</th></tr>
+        <tr><td>FakeTec</td><td><code>meshcore-fuota-1.17.1-b2-base-faketec-s140-6.1.1.uf2</code></td><td class="n"><code>98fa9e392d57bedcadf9cc193dc5763f239ce6d594cefda4be398cb60f51630a</code></td></tr>
+        <tr><td>Seeed SenseCAP Solar P1</td><td><code>meshcore-fuota-1.17.1-b2-base-p1-s140-7.3.0.uf2</code></td><td class="n"><code>26fb2f9c230632b8638f27b4f6b2a40de173d8176ddeffe9e2881449be953d82</code></td></tr>
+        <tr><td>RAK4631</td><td><code>meshcore-fuota-1.17.1-b2-base-rak4631-s140-6.1.1.uf2</code></td><td class="n"><code>ec0477306f17aa1ee944973b767df527f513b36ab7a0c76c825add3e7c735bc9</code></td></tr>
+        <tr><td>Heltec T114</td><td><code>meshcore-fuota-1.17.1-b2-base-t114-s140-6.1.1.uf2</code></td><td class="n"><code>0ea95d55956fe0239e6290c3b57a1bc5bbe7e41dfcb8f937dfa6c0f7342230fb</code></td></tr>
+        <tr><td>Seeed XIAO nRF52</td><td><code>meshcore-fuota-1.17.1-b2-base-xiao-s140-7.3.0.uf2</code></td><td class="n"><code>3471e2a316f66a991e003d6aad4e84adfdedf729fa1d4255a909456f06654dc9</code></td></tr>
+        <tr><td>Heltec T096</td><td><code>meshcore-fuota-1.17.1-b2-base-t096-s140-6.1.1.uf2</code></td><td class="n"><code>77c5dbe2d4a117da558332c54dc2045402d80dba087600ddfcaf99dc384b0649</code></td></tr>
+        <tr><td>GAT562 Mesh Tracker Pro</td><td><code>meshcore-fuota-1.17.1-b2-base-gat562_tracker-s140-6.1.1.uf2</code></td><td class="n"><code>3afff03000ea8d1a09b10d76e8c45c379d6c6e791851cbbc00bfd8140ed6ed04</code></td></tr>
+        <tr><td>GAT562 Mesh EVB Pro</td><td><code>meshcore-fuota-1.17.1-b2-base-gat562_evb-s140-6.1.1.uf2</code></td><td class="n"><code>1e01ab9b413b8291a7678fef5106bdaf20478520d1040733128899c9dbeeceec</code></td></tr>
+        <tr><td>GAT562 30S Mesh Kit</td><td><code>meshcore-fuota-1.17.1-b2-base-gat562_30s-s140-6.1.1.uf2</code></td><td class="n"><code>19f955c11f52713f4956d61eea33ebc7fe2b2316a852d9cd24e6812a92573812</code></td></tr>
+        <tr><td>RAK WisMesh Tag</td><td><code>meshcore-fuota-1.17.1-b2-base-wismesh_tag-s140-6.1.1.uf2</code></td><td class="n"><code>6531e78373bba3ee6004b865091803f3e247fb3ea2a3de1e88b5cbde701029b3</code></td></tr>
+        <tr><td>Elecrow ThinkNode M1</td><td><code>meshcore-fuota-1.17.1-b2-base-thinknode_m1-s140-6.1.1.uf2</code></td><td class="n"><code>e4375facab2645a0bc96e32753e4c1e76756f244c5aa924693205d0f1e4bddd8</code></td></tr>
+        <tr><td>Elecrow ThinkNode M6</td><td><code>meshcore-fuota-1.17.1-b2-base-thinknode_m6-s140-6.1.1.uf2</code></td><td class="n"><code>435adaa769616ff8d3897c5a547220b874ce36cd007b6e940aa44958ef0522de</code></td></tr>
+        <tr><td>Keepteen LT1</td><td><code>meshcore-fuota-1.17.1-b2-base-keepteen_lt1-s140-6.1.1.uf2</code></td><td class="n"><code>64e04628edb7ed56e4c19c23d9d625fb065c486c196f79dbe85c169bd74322e8</code></td></tr>
+        <tr><td>LilyGo T-Echo</td><td><code>meshcore-fuota-1.17.1-b2-base-lilygo_techo-s140-6.1.1.uf2</code></td><td class="n"><code>3f9127b265516a77e90a0a15964db14c94f0e0224b07dfff830b527cc235f98e</code></td></tr>
+        <tr><td>Heltec Mesh Pocket</td><td><code>meshcore-fuota-1.17.1-b2-base-mesh_pocket-s140-6.1.1.uf2</code></td><td class="n"><code>febfa88206a0394ae6038c589dad800d72ea3646bc2650ae7310f415af7145cf</code></td></tr>
+        <tr><td>Seeed Wio Tracker L1</td><td><code>meshcore-fuota-1.17.1-b2-base-wio_tracker_l1-s140-7.3.0.uf2</code></td><td class="n"><code>8e9c1d694616682be23c7a192c2f4ca92e78a4e9929b42cebc0550f6815db418</code></td></tr>
+        <tr><td>muzi works R1 Neo</td><td><code>meshcore-fuota-1.17.1-b2-base-muzi_r1_neo-s140-6.1.1.uf2</code></td><td class="n"><code>beca18b0f8d9eecb2ef1c57bb4203906267d045d59f637305e26bcda27608ce1</code></td></tr>
+        <tr><td>Nano G2 Ultra</td><td><code>meshcore-fuota-1.17.1-b2-base-nano_g2_ultra-s140-6.1.1.uf2</code></td><td class="n"><code>82af64c909151a6a4ac549581066fffa3d59053ae66bdf3e48306997971f2954</code></td></tr>
+      </table>
+    </div>
+  </section>
+  </main>
+  <footer>
+    <span lang="de">Alpha-Test auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht. Der Test läuft im öffentlichen Mesh mit Testrepeatern, die du dafür entbehren kannst. Ein Release ist nicht freigegeben.</span>
+    <span lang="en">Alpha test based on MeshCore 1.18.0, nothing of it submitted upstream. The test runs in the public mesh with test repeaters that you can spare. No release is approved.</span>
+    <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
+    <span lang="en">Text and figures on this page: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded: it is not licensed under CC BY 4.0.</span>
+  </footer>
+</div>
+<div class="react" hidden role="toolbar"><button type="button" data-a="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg><span></span></button><button type="button" data-a="issue"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H7l-3 2.5V11h-.5a1 1 0 0 1-1-1z"/></svg><span></span></button></div>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="assets/site.js"></script>
+<script src="assets/react.js"></script>
+</body>
+</html>

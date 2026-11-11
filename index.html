@@ -20,7 +20,7 @@
 (function () {
   // before the first paint: forward old section links of the single page, then pick the language
   // (#de / #en, saved choice, else the browser language) so the other language never flashes
-  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-linien": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "analyzer": "funk.html", "weiter": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html"}, h = location.hash.slice(1);
+  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-linien": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "analyzer": "funk.html", "weiter": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html", "alpha-ablauf": "alpha.html", "alpha-beobachten": "alpha.html", "alpha-sieben-tage": "alpha.html", "alpha-melden": "alpha.html", "alpha-pakete": "alpha.html"}, h = location.hash.slice(1);
   if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
   var l = (h === "de" || h === "en") ? h : null;
   if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
@@ -53,6 +53,7 @@
       <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
       <li><a href="tests.html"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
       <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
+      <li><a href="alpha.html"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
     </ul>
   </nav>
   <main>
@@ -171,6 +172,7 @@
       <a class="tile" href="flash.html"><b><span lang="de">Flash</span><span lang="en">Flash</span></b><span lang="de">Wo was im Flash liegt</span><span lang="en">What lives where in flash</span></a>
       <a class="tile" href="tests.html"><b><span lang="de">Messungen</span><span lang="en">Measurements</span></b><span lang="de">Am Testaufbau gemessen</span><span lang="en">Measured on the bench</span></a>
       <a class="tile" href="fragen.html"><b><span lang="de">Fragen</span><span lang="en">Questions</span></b><span lang="de">Fragen, Offenes, Mitprüfen</span><span lang="en">Questions, open points, review</span></a>
+      <a class="tile" href="alpha.html"><b><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></b><span lang="de">Selbst testen, Pakete, melden</span><span lang="en">Test it yourself, packages, report</span></a>
     </nav>
   </header>
   </main>
