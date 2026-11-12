@@ -87,7 +87,7 @@
       <ol>
         <li>Such dir ein paar andere Tester und bildet eine Gruppe. Ihr teilt mehrere Testrepeater unter euch auf.
           Alle Geräte der Gruppe liegen in Funkreichweite zueinander.</li>
-        <li>Alle flashen das Basispaket 1.17.1-b2 per USB (Tabelle unten).</li>
+        <li>Alle flashen das Basispaket 1.17.1-b2 per USB (Tabelle unten) und setzen die Region ihres Netzes (Abschnitt Region setzen).</li>
         <li>Genau einer macht den Seed. Er flasht auf einen der Testrepeater das Seed-Paket 1.18.0-b3.</li>
         <li>Die anderen holen das Update per Funk, prüfen die Signatur, starten zur Probe und bestätigen. Du tust nichts.</li>
         <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
@@ -99,13 +99,45 @@
       <ol>
         <li>Find a few other testers and form a group. You split several test repeaters among yourselves.
           All devices of the group are within radio range of each other.</li>
-        <li>Everyone flashes the base package 1.17.1-b2 over USB (table below).</li>
+        <li>Everyone flashes the base package 1.17.1-b2 over USB (table below) and sets the region of their network (section Setting the region).</li>
         <li>Exactly one person makes the seed. They flash the seed package 1.18.0-b3 onto one of the test repeaters.</li>
         <li>The others fetch the update over the air, check the signature, start it on trial and confirm. You do nothing.</li>
         <li>You watch the state and report what happened.</li>
       </ol>
       <p>Several groups can test independently of each other, the more the better. Without a group it also works alone
         with two devices: one with 1.17.1-b2 as the receiver, one with the seed package.</p>
+    </div>
+  </section>
+
+  <section id="alpha-region">
+    <div lang="de" class="prose"><h2>Region setzen</h2></div>
+    <div lang="en" class="prose"><h2>Setting the region</h2></div>
+    <div lang="de" class="prose">
+      <p>Setze auf jedem Testrepeater die Region deines Netzes als Default. Gib in der USB-Konsole
+        <code>region default hansemesh</code> ein. Der Knoten antwortet <code>default scope is now hansemesh</code>.
+        Das Beispiel gilt für HanseMesh. Regionsnamen sind Freitext und je Netz verschieden. Nimm den Namen deines Netzes.
+        Die Region bleibt gespeichert und übersteht ein Firmware-Update per USB <span class="m meas">gemessen</span>.</p>
+      <p>Ohne Default-Region zeigt der Analyzer keinen Repeater mit Statusmeldung. Der Knoten verwirft seine
+        Statusmeldungen (<code>fuota: status E3 not sent, no default region</code>). Seine Update-Angebote gehen nur an
+        direkte Nachbarn (<code>fuota info</code>: <code>no default region: not flooded</code>)
+        <span class="m meas">gemessen</span>.</p>
+      <p>Mit Region sendet der Knoten die Statusmeldungen in die Region <span class="m meas">gemessen</span>. Auch seine
+        Update-Angebote flutet er dann dorthin <span class="m code">im Code geprüft</span>. Statusmeldungen sind
+        gedrosselt, höchstens 8 in 24 Stunden.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>On every test repeater, set the region of your network as the default. In the USB console, enter
+        <code>region default hansemesh</code>. The node answers <code>default scope is now hansemesh</code>.
+        The example is for HanseMesh. Region names are free text and differ from network to network. Use the name of
+        your network. The region stays stored and survives a firmware update over USB
+        <span class="m meas">measured</span>.</p>
+      <p>Without a default region, the analyzer shows no repeater with a status message. The node discards its status
+        messages (<code>fuota: status E3 not sent, no default region</code>). Its update offers only reach direct
+        neighbours (<code>fuota info</code>: <code>no default region: not flooded</code>)
+        <span class="m meas">measured</span>.</p>
+      <p>With a region, the node sends its status messages into the region <span class="m meas">measured</span>. It then
+        floods its update offers there too <span class="m code">checked in the code</span>. Status messages are
+        throttled, at most 8 in 24 hours.</p>
     </div>
   </section>
 
