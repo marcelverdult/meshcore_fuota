@@ -192,7 +192,7 @@
           <li>Update über Funk, sofort anwenden: bestanden in 641 s. Das RAK4631 holte 47 Fragmente in 315 s, ohne Duplikate und ohne falsche Fragmente, und bestätigte Build 2 <span class="m meas">gemessen</span>.</li>
           <li>Anbieter war ein FakeTec. Test-Schlüssel, SF7, 1 dBm, nur Zero-Hop.</li>
           <li>Nicht gefahren: der serielle DFU-Weg <span class="m open">offen</span>.</li>
-          <li>Nachweislauf 1.17.1 nach 1.18.0 am 9. November: bestanden. Die Kampagne hatte 145 Fragmente, das RAK4631 war nach 9 h 21 min vollständig, wandte den Patch (299.284 B) in 10.241 ms an und bestätigte seinen Testboot selbst. Der zweite Empfänger, ein FakeTec, war nach 9 h 35 min fertig. Null abgelehnte Pakete, null Signaturfehler, kein Paket ging als Flut hinaus <span class="m meas">gemessen</span>.</li>
+          <li>Nachweislauf 1.17.1 nach 1.18.0 am 9. November: bestanden. Die Kampagne hatte 145 Fragmente. Das RAK4631 war nach 9 h 21 min vollständig. Es wandte den Patch (299.284 B) in 10.241 ms an und bestätigte seinen Testboot selbst. Der zweite Empfänger, ein FakeTec, war nach 9 h 35 min fertig. Null abgelehnte Pakete, null Signaturfehler, kein Paket ging als Flut hinaus <span class="m meas">gemessen</span>.</li>
           <li>Befund dabei: ein Testboot muss in seiner Frist ein Paket gehört <em>und</em> selbst gesendet haben, sonst startet er neu. Am stillen Brett hörte der FakeTec nach seinem Neustart 18 Minuten nichts und hätte seinen Testboot nicht von allein bestätigt, deshalb kam die Bestätigung von Hand. Ob das in einem Netz mit normalem Verkehr überhaupt auftritt, ist nicht geprüft; dort zählt jedes akzeptierte Paket, auch die Adverts der Nachbarn <span class="m open">offen</span>.</li>
         </ul></td></tr>
         <tr><td>Überlappend anwenden, Fenster</td><td><ul>
@@ -270,7 +270,7 @@
           <li>After 3 test boots without confirmation the old firmware runs again (revert) <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Delta patch on the device</td><td><ul>
-          <li>Patches of 6 to 22 KB become the new image in about 12 s (target images of 359 to 365 KB, 18 October 2026). For the release image of 299 KB it is 10.2 s <span class="m meas">measured</span>.</li>
+          <li>Patches of 6 to 22 KB become the new image in about 12 s. The target images were 359 to 365 KB (18 October 2026). For the release image of 299 KB it is 10.2 s <span class="m meas">measured</span>.</li>
           <li>The hash of the new image matches exactly <span class="m meas">measured</span>.</li>
         </ul></td></tr>
         <tr><td>Signature and manifest</td><td><ul>
@@ -344,8 +344,8 @@
           <li>Update over the air, apply at once: passed in 641 s. The RAK4631 pulled 47 fragments in 315 s, with 0 duplicates and 0 bad fragments, and confirmed build 2 <span class="m meas">measured</span>.</li>
           <li>The provider was a FakeTec. Test key, SF7, 1 dBm, zero hop only.</li>
           <li>Not run: the serial DFU route <span class="m open">open</span>.</li>
-          <li>Proof run 1.17.1 to 1.18.0 on 9 November: passed. The campaign had 145 fragments, the RAK4631 was complete after 9 h 21 min, applied the patch (299,284 B) in 10,241 ms and confirmed its test boot by itself. The second receiver, a FakeTec, finished after 9 h 35 min. Zero rejected packets, zero signature errors, and no packet went out as a flood <span class="m meas">measured</span>.</li>
-          <li>Finding along the way: within its deadline a test boot has to have heard a packet <em>and</em> completed a send of its own, otherwise it restarts. On the quiet bench the FakeTec heard nothing for 18 minutes after its restart and would not have confirmed its test boot on its own, so the confirmation came by hand. Whether this happens at all in a network with normal traffic is untested; there every accepted packet counts, including the neighbours' adverts <span class="m open">open</span>.</li>
+          <li>Proof run 1.17.1 to 1.18.0 on 9 November: passed. The campaign had 145 fragments. The RAK4631 was complete after 9 h 21 min. It applied the patch (299,284 B) in 10,241 ms and confirmed its test boot by itself. The second receiver, a FakeTec, finished after 9 h 35 min. Zero rejected packets, zero signature errors, and no packet went out as a flood <span class="m meas">measured</span>.</li>
+          <li>Finding along the way: a test boot needs two things within its deadline. It must have heard a packet <em>and</em> completed a send of its own. Otherwise it restarts. On the quiet bench the FakeTec heard nothing for 18 minutes after its restart. It would not have confirmed its test boot on its own, so the confirmation came by hand. Whether this happens in a network with normal traffic is untested. There every accepted packet counts, including the neighbours' adverts <span class="m open">open</span>.</li>
         </ul></td></tr>
         <tr><td>Overlapping apply, window</td><td><ul>
           <li>A patch of 4 pages does not fit behind an image of 94 pages.</li>
