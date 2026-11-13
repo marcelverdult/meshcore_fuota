@@ -92,13 +92,32 @@
         <li>Die anderen holen das Update per Funk, prüfen die Signatur, starten zur Probe und bestätigen. Du tust nichts.</li>
         <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
       </ol>
-      <p>Gib jedem Testrepeater einen Namen mit der Version, mit der er startet. Damit siehst du im Analyzer, welcher
-        Repeater welcher ist. Tippe in der USB-Konsole auf den Repeatern mit 1.17.1-b2
-        <code>set name FUOTA-Test 1.17</code> ein. Auf dem Seed tippst du <code>set name FUOTA-Test 1.18</code>. Der Knoten
-        antwortet <code>OK</code> <span class="m code">im Code geprüft</span>. Der Name geht mit dem nächsten Advert
-        raus, <code>advert</code> sendet ihn sofort <span class="m code">im Code geprüft</span>. Der Name bleibt nach
-        einem Update stehen, auch wenn der Repeater dann 1.18 trägt <span class="m code">im Code geprüft</span>. Für ein
-        Update per Funk ist das am Gerät noch nicht gemessen <span class="m open">offen</span>.</p>
+      <p>Richte jeden Testrepeater ein wie jeden anderen Repeater. Tippe die Befehle in der USB-Konsole.</p>
+      <ul>
+        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>. Das Alpha-Paket ist ein Release-Image und hat ab
+          Werk keines. Der Knoten antwortet mit <code>password now:</code> und dem Passwort
+          <span class="m code">im Code geprüft</span>.</li>
+        <li>GPS-Position: <code>set lat &lt;Breite&gt;</code> und <code>set lon &lt;Länge&gt;</code>. Die Antwort ist
+          jeweils <code>OK</code> <span class="m code">im Code geprüft</span>.</li>
+        <li>Name mit der Startversion: <code>set name FUOTA-Test 1.17</code> auf den Repeatern mit 1.17.1-b2,
+          <code>set name FUOTA-Test 1.18</code> auf dem Seed. Die Antwort ist <code>OK</code>. So siehst du im Analyzer,
+          welcher Repeater welcher ist. Der Name geht mit dem nächsten Advert raus, <code>advert</code> sendet ihn
+          sofort <span class="m code">im Code geprüft</span>. Er bleibt nach einem Update stehen, auch wenn der Repeater
+          dann 1.18 trägt <span class="m code">im Code geprüft</span>. Für ein Update per Funk ist das am Gerät noch
+          nicht gemessen <span class="m open">offen</span>.</li>
+        <li>LoRa-Parameter: <code>set radio &lt;MHz&gt;,&lt;Bandbreite&gt;,&lt;SF&gt;,&lt;CR&gt;</code> mit den Werten deines
+          Netzes. Die Antwort ist <code>OK - reboot to apply</code>, danach startest du den Knoten neu
+          <span class="m code">im Code geprüft</span>.</li>
+        <li>Region: siehe Abschnitt Region setzen.</li>
+        <li>Advert-Intervall: <code>set advert.interval 240</code>. Erlaubt sind 0 (aus) und 60 bis 240 Minuten.
+          1.17.1-b2 startet mit einem Intervall unter 60 Minuten und setzt es beim ersten Speichern einer Einstellung auf
+          0. Dann sendet der Knoten keine Adverts mehr und erscheint nicht im Analyzer. Der Seed 1.18.0-b3 startet bei einer
+          Neuinstallation mit 360 Minuten <span class="m code">im Code geprüft</span>.</li>
+        <li>Repeat an lassen: <code>get repeat</code> zeigt <code>&gt; on</code>, ab Werk ist es an. Mit
+          <code>set repeat on</code> schaltest du es wieder ein, die Antwort ist <code>OK - repeat is now ON</code>. Mit
+          <code>set repeat off</code> gibt der Knoten Updates nur an direkte Nachbarn weiter
+          <span class="m code">im Code geprüft</span>.</li>
+      </ul>
       <p>Mehrere Gruppen können unabhängig voneinander testen, je mehr, desto besser. Ohne Gruppe geht es auch allein
         mit zwei Geräten: eines mit 1.17.1-b2 als Empfänger, eines mit dem Seed-Paket.</p>
     </div>
@@ -111,13 +130,32 @@
         <li>The others fetch the update over the air, check the signature, start it on trial and confirm. You do nothing.</li>
         <li>You watch the state and report what happened.</li>
       </ol>
-      <p>Give every test repeater a name with the version it starts with. That way you can tell in the analyzer which
-        repeater is which. In the USB console, enter <code>set name FUOTA-Test 1.17</code> on the repeaters with 1.17.1-b2.
-        On the seed, enter <code>set name FUOTA-Test 1.18</code>. The node answers <code>OK</code>
-        <span class="m code">checked in the code</span>. The name goes out with the next advert, and <code>advert</code>
-        sends it at once <span class="m code">checked in the code</span>. The name stays after an update, even when the
-        repeater then runs 1.18 <span class="m code">checked in the code</span>. For an update over the air, this is not
-        yet measured on a device <span class="m open">open</span>.</p>
+      <p>Set up every test repeater like any other repeater. Type the commands in the USB console.</p>
+      <ul>
+        <li>Admin password: <code>password &lt;password&gt;</code>. The alpha package is a release image and has none
+          from the factory. The node answers with <code>password now:</code> and the password
+          <span class="m code">checked in the code</span>.</li>
+        <li>GPS position: <code>set lat &lt;latitude&gt;</code> and <code>set lon &lt;longitude&gt;</code>. Each answer is
+          <code>OK</code> <span class="m code">checked in the code</span>.</li>
+        <li>Name with the starting version: <code>set name FUOTA-Test 1.17</code> on the repeaters with 1.17.1-b2,
+          <code>set name FUOTA-Test 1.18</code> on the seed. The answer is <code>OK</code>. That way you can tell in the
+          analyzer which repeater is which. The name goes out with the next advert, and <code>advert</code> sends it at
+          once <span class="m code">checked in the code</span>. It stays after an update, even when the repeater then
+          runs 1.18 <span class="m code">checked in the code</span>. For an update over the air, this is not yet measured
+          on a device <span class="m open">open</span>.</li>
+        <li>LoRa parameters: <code>set radio &lt;MHz&gt;,&lt;bandwidth&gt;,&lt;SF&gt;,&lt;CR&gt;</code> with the values of your
+          network. The answer is <code>OK - reboot to apply</code>, then you restart the node
+          <span class="m code">checked in the code</span>.</li>
+        <li>Region: see the section Setting the region.</li>
+        <li>Advert interval: <code>set advert.interval 240</code>. 0 (off) and 60 to 240 minutes are allowed. 1.17.1-b2
+          starts with an interval under 60 minutes and sets it to 0 when you first save a setting. Then the node sends no
+          adverts and does not show up in the analyzer. The seed 1.18.0-b3 starts at 360 minutes on a new install
+          <span class="m code">checked in the code</span>.</li>
+        <li>Keep repeat on: <code>get repeat</code> shows <code>&gt; on</code>, it is on from the factory. With
+          <code>set repeat on</code> you switch it back on, the answer is <code>OK - repeat is now ON</code>. With
+          <code>set repeat off</code> the node passes updates on to direct neighbours only
+          <span class="m code">checked in the code</span>.</li>
+      </ul>
       <p>Several groups can test independently of each other, the more the better. Without a group it also works alone
         with two devices: one with 1.17.1-b2 as the receiver, one with the seed package.</p>
     </div>
