@@ -111,7 +111,7 @@
         <li>Update-Daten fluten nie.</li>
         <li>Jeder Knoten sendet Update-Pakete nur im harten Airtime-Budget (Sendezeit). Ab Werk sind das 0,3 %
           <span class="m code">im Code geprüft</span>.</li>
-        <li>Ein Update darf darum Tage dauern, und der normale Verkehr merkt davon wenig.</li>
+        <li>Ein Update darf darum Tage dauern, und der normale Verkehr merkt davon wenig. Mit dem Release-Takt (0,3 %) brauchte ein Knoten 12,6 h für 174 Fragmente <span class="m meas">gemessen</span>. Das war ein einzelner Lauf am Testaufbau. Im Nachweislauf vom 9. November 2026 war das RAK4631 nach 9 h 21 min fertig. Der FakeTec brauchte 9 h 35 min <span class="m meas">gemessen</span>.</li>
       </ul>
     </div>
     <div lang="en" class="prose">
@@ -152,7 +152,7 @@
         <li>Update data never floods.</li>
         <li>Every node sends update packets only within a hard airtime budget (time on air). By default that is 0.3 %
           <span class="m code">checked in the code</span>.</li>
-        <li>An update may therefore take days, and normal traffic notices little of it.</li>
+        <li>An update may therefore take days, and normal traffic notices little of it. At the release pace (0.3 %), a node needed 12.6 h for 174 fragments <span class="m meas">measured</span>. That was a single run on the bench. In the proof run of 9 November 2026, the RAK4631 took 9 h 21 min. The FakeTec took 9 h 35 min <span class="m meas">measured</span>.</li>
       </ul>
     </div>
     <figure class="anim-fig">
@@ -168,11 +168,11 @@
   <section id="ablauf">
     <div lang="de" class="prose">
       <h2>Ablauf eines Updates</h2>
-      <p>Die gemessenen Zeiten stammen vom Testaufbau (SF7, 10 % Budget). Im Mesh gelten SF8 und 0,3 % Budget (Standard). Diese Zeiten stehen unter <a href="kosten.html">Last im Mesh</a>.</p>
+      <p>Die gemessenen Zeiten stammen vom Testaufbau (SF7, 10 % Budget). Im Mesh gelten SF8 und 0,3 % Budget (Standard). Diese Zeiten stehen unter <a href="kosten.html">Last im Mesh</a>. Die Alpha-Prüfung lief mit den Funkwerten des HanseMesh (SF8, 62,5 kHz, 1 dBm) <span class="m meas">gemessen</span>. Das Budget war das Release-Budget von 0,3 % <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>How an update runs</h2>
-      <p>The measured times come from the bench (SF7, 10 % budget). In the mesh, SF8 and a 0.3 % budget apply (default). Those times are under <a href="kosten.html">Load on the mesh</a>.</p>
+      <p>The measured times come from the bench (SF7, 10 % budget). In the mesh, SF8 and a 0.3 % budget apply (default). Those times are under <a href="kosten.html">Load on the mesh</a>. The alpha check ran with the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm) <span class="m meas">measured</span>. The budget was the release budget of 0.3 % <span class="m meas">measured</span>.</p>
     </div>
     <div class="steps" lang="de">
       <div class="step"><div><span class="who">Release-Build, offline signiert</span><b>Patch und Manifest bauen</b>
@@ -224,7 +224,7 @@
         <span>60 s gesunde Hauptschleife und ein Funk-Lebenszeichen (ein Paket empfangen, eines gesendet) bestätigen die neue Firmware <span class="m code">im Code geprüft</span>. Nach 3 Probestarts ohne Bestätigung tauscht Stage-0 zurück (Rückfall) <span class="m meas">gemessen</span>.</span>
         <span>Gesperrt wird nur dieses eine Image, und erst nach dem Rückfall. Dafür muss mindestens ein Probestart mit einem Fehler-Neustart enden. Der Watchdog zählt <span class="m meas">gemessen</span>. Ebenso zählen Reset-Taste, Software-Reset (auch per Befehl), Lockup, Debugger und NFC-Wecken <span class="m code">im Code geprüft</span>. Ein Probestart ohne erfasstes Ende zählt auch so <span class="m code">im Code geprüft</span>. Der Knoten merkt sich die letzten 4 gescheiterten Images. Solange ein Image dazugehört, installiert er es nicht wieder und bietet es nicht an.</span>
         <span>Fehlte nur das Lebenszeichen oder fiel nur der Strom aus, bleibt das Image erlaubt. Ein Spannungseinbruch zählt als Stromausfall. Der Knoten versucht es später neu. Erst der 3. Stromausfall-Rückfall sperrt es <span class="m code">im Code geprüft</span>.</span>
-        <span><b>Du merkst:</b> Dein Knoten bleibt nicht alt. Jedes spätere Release mit einem Patch von seinem Stand installiert er normal.</span></div></div>
+        <span><b>Du merkst:</b> Ein gesperrtes Image blockiert spätere Releases nicht. Ein Release mit einem Patch von seinem Stand installiert der Knoten normal. Hat er ein Release verpasst, passt kein Patch mehr zu seinem Stand (<a href="fragen.html#luecken">Nachzügler</a>) <span class="m open">offen</span>.</span></div></div>
       <div class="step"><div><span class="who">Derselbe Knoten</span><b>Weiter anbieten</b>
         <span>Lag der Patch hinter dem neuen Image, liegt er nach dem Tausch noch da. Der Knoten prüft ihn beim Start erneut und bietet weiter an.</span>
         <span>Nach einem überlappenden Anwenden ist der Patch weg. Der Knoten bietet ihn nicht mehr an.</span></div></div>
@@ -282,7 +282,7 @@
         <span>60 s of a healthy main loop and a radio sign of life (one packet received, one sent) confirm the new firmware <span class="m code">checked in the code</span>. After 3 test boots without confirmation Stage-0 swaps back (revert) <span class="m meas">measured</span>.</span>
         <span>Only this one image is blocked, and only after the revert. At least one test boot must end in a fault restart. The watchdog counts <span class="m meas">measured</span>. So do the reset button, a software reset (also by command), lockup, debugger and NFC wake-up <span class="m code">checked in the code</span>. A test boot with no recorded end counts the same <span class="m code">checked in the code</span>. The node remembers the last 4 failed images. While an image is among them, it neither installs it again nor offers it.</span>
         <span>If only the sign of life or only the power failed, the image stays allowed. A voltage dip counts as a power failure. The node tries the image again later. Only the 3rd power-loss revert blocks it <span class="m code">checked in the code</span>.</span>
-        <span><b>You notice:</b> your node does not stay old. It installs any later release that has a patch from its current version as usual.</span></div></div>
+        <span><b>You notice:</b> A blocked image does not block later releases. The node installs a release with a patch from its current version as usual. If it missed a release, no patch fits its version any more (<a href="fragen.html#luecken">straggler</a>) <span class="m open">open</span>.</span></div></div>
       <div class="step"><div><span class="who">Same node</span><b>Keep offering</b>
         <span>If the patch sat behind the new image, it is still there after the swap. The node checks it again at boot and keeps offering.</span>
         <span>After an overlapping apply the patch is gone. The node no longer offers it.</span></div></div>
@@ -339,7 +339,7 @@
     <div lang="de" class="tscroll">
       <table>
         <tr><th>Befehl</th><th>Wirkung</th><th>Weg</th></tr>
-        <tr><td><code>password &lt;neu&gt;</code></td><td>Setzt das Admin-Passwort. Ein Release-Image hat keins, du setzt es beim ersten Mal per USB <span class="m code">im Code geprüft</span>. Ein leeres Passwort lehnt der Knoten ab.</td><td>USB, danach auch LoRa</td></tr>
+        <tr><td><code>password &lt;neu&gt;</code></td><td>Setzt das Admin-Passwort. Ein Release-Image hat keins, du setzt es beim ersten Mal per USB <span class="m code">im Code geprüft</span>. Ein leeres Passwort lehnt der Knoten ab, ebenso das Passwort <code>password</code> <span class="m code">im Code geprüft</span>.</td><td>USB, danach auch LoRa</td></tr>
         <tr><td><code>fuota info</code></td><td>Zeigt Build, Auto-Apply und den Stand des Updates.</td><td>USB und LoRa</td></tr>
         <tr><td><code>fuota auto now|delay|off</code></td><td>Legt fest, wann ein fertiges Update angewendet wird. <code>now</code>: sofort. <code>delay</code>: nach 7 Tagen, ab Werk. <code>off</code>: nur auf Befehl. Der Repeater speichert die Einstellung. <code>on</code> gilt weiter als <code>now</code>.</td><td>USB und LoRa</td></tr>
         <tr><td><code>fuota apply &lt;build&gt;</code></td><td>Startet das fertige Update mit dieser Build-Nummer nach 5 s <span class="m code">im Code geprüft</span>. Die Nummer nennt <code>fuota info</code>. Über LoRa ist sie Pflicht.</td><td>USB und LoRa</td></tr>
@@ -353,7 +353,7 @@
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Command</th><th>Effect</th><th>Route</th></tr>
-        <tr><td><code>password &lt;new&gt;</code></td><td>Sets the admin password. A release image has none; you set it the first time over USB <span class="m code">checked in the code</span>. The node refuses an empty password.</td><td>USB, then also LoRa</td></tr>
+        <tr><td><code>password &lt;new&gt;</code></td><td>Sets the admin password. A release image has none; you set it the first time over USB <span class="m code">checked in the code</span>. The node refuses an empty password, and the password <code>password</code> too <span class="m code">checked in the code</span>.</td><td>USB, then also LoRa</td></tr>
         <tr><td><code>fuota info</code></td><td>Shows build, auto apply and the state of the update.</td><td>USB and LoRa</td></tr>
         <tr><td><code>fuota auto now|delay|off</code></td><td>Sets when a complete update applies. <code>now</code>: at once. <code>delay</code>: after 7 days, the default. <code>off</code>: only on command. The repeater saves the setting. <code>on</code> still means <code>now</code>.</td><td>USB and LoRa</td></tr>
         <tr><td><code>fuota apply &lt;build&gt;</code></td><td>Starts the complete update with that build number after 5 s <span class="m code">checked in the code</span>. Find the number with <code>fuota info</code>. Over LoRa it is required.</td><td>USB and LoRa</td></tr>
@@ -426,21 +426,23 @@
       <h2>Release-Struktur: zwei Linien</h2>
       <p>Ein Release besteht aus zwei Linien. Die Linie 1.17.1 liefert das Basispaket, die Linie 1.18.0 das Update darauf.</p>
       <ol>
-        <li><b>Basispaket 1.17.1 (Build 1).</b> Das erste Image bekommt ein Knoten per USB. Das Paket ist eine UF2-Datei für das USB-Laufwerk des Bootloaders, eine Datei je Board und SoftDevice: FakeTec S140 6.1.1, SenseCAP P1 S140 7.3.0, RAK4631 S140 6.1.1. Es bringt Stage-0 mit, den Lader, den FUOTA nie schreibt (siehe <a href="flash.html">Flash</a>). Die Linie 1.17.1 hat keine Kampagne, sie ist die erste Auslieferung.</li>
-        <li><b>Update auf 1.18.0 (Build 2).</b> Spätere Updates kommen per Funk. Ein Knoten mit dem Basispaket 1.17.1 holt eine signierte Kampagne von 1.17.1 nach 1.18.0 über LoRa. Die Patch-Datei ist 23.749 B groß, das Manifest 400 B. Das neue Image hat 299.284 B, das alte 296.900 B.</li>
+        <li><b>Basispaket 1.17.1 (Build 1).</b> Das erste Image bekommt ein Knoten per USB. Das Paket ist eine UF2-Datei für das USB-Laufwerk des Bootloaders, eine Datei je Board und SoftDevice. Es gibt sie für 18 Boards. Beispiele: FakeTec S140 6.1.1, SenseCAP P1 S140 7.3.0, RAK4631 S140 6.1.1. Es bringt Stage-0 mit, den Lader, den FUOTA nie schreibt (siehe <a href="flash.html">Flash</a>). Die Linie 1.17.1 hat keine Kampagne, sie ist die erste Auslieferung.</li>
+        <li><b>Update auf 1.18.0.</b> Spätere Updates kommen per Funk. Ein Knoten mit dem Basispaket 1.17.1 holt eine signierte Kampagne von 1.17.1 nach 1.18.0 über LoRa. Im Nachweislauf vom 9. November 2026 (Build 2) war die Patch-Datei 23.749 B groß, das Manifest 400 B. Das neue Image hatte 299.284 B, das alte 296.900 B <span class="m meas">gemessen</span>.</li>
       </ol>
-      <p>Für 1.18.0 gibt es außerdem Seed-Pakete (UF2, per USB) für dieselben drei Boards. Ein Seed trägt das Update und bietet es seinen Nachbarn an. Wie ein Knoten die Signatur prüft, steht unter <a href="sicherheit.html">Sicherheit</a>.</p>
-      <p><b>Stand 10. November 2026:</b> Die Dateien beider Linien sind gebaut. Freigegeben ist nichts. Der Nachweislauf von 1.17.1 nach 1.18.0 ist am 9. November am Prüfbrett durchgelaufen: beide Empfänger, ein FakeTec und das RAK4631, holten die Kampagne per Funk und laufen auf 1.18.0 (Build 2) <span class="m meas">gemessen</span>. Ob und wann Tester die Dateien bekommen, steht nicht fest, einen Termin oder Download gibt es nicht <span class="m open">offen</span>.</p>
+      <p>Für 1.18.0 gibt es außerdem Seed-Pakete (UF2, per USB) für dieselben 18 Boards. Ein Seed trägt das Update und bietet es seinen Nachbarn an. Wie ein Knoten die Signatur prüft, steht unter <a href="sicherheit.html">Sicherheit</a>.</p>
+      <p><b>Stand 13. November 2026:</b> Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Releases <code>alpha-1171-b2</code> und <code>alpha-118-b3</code> tragen die Pakete für 18 Boards. Anleitung und Downloads stehen unter <a href="alpha.html">Alpha-Test</a>.</p>
+      <p>Der Nachweislauf von 1.17.1 nach 1.18.0 ist am 9. November am Prüfbrett durchgelaufen: beide Empfänger, ein FakeTec und das RAK4631, holten die Kampagne per Funk und liefen danach auf 1.18.0 (Build 2) <span class="m meas">gemessen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Release structure: two lines</h2>
       <p>A release has two lines. Line 1.17.1 delivers the base package, line 1.18.0 delivers the update on top of it.</p>
       <ol>
-        <li><b>Base package 1.17.1 (build 1).</b> A node gets its first image by USB. The package is a UF2 file for the USB drive of the bootloader, one file per board and SoftDevice: FakeTec S140 6.1.1, SenseCAP P1 S140 7.3.0, RAK4631 S140 6.1.1. It brings Stage-0 along, the loader that FUOTA never writes (see <a href="flash.html">Flash</a>). Line 1.17.1 has no campaign, it is the first delivery.</li>
-        <li><b>Update to 1.18.0 (build 2).</b> Later updates come over the air. A node with base package 1.17.1 pulls a signed campaign from 1.17.1 to 1.18.0 over LoRa. The patch file is 23,749 B, the manifest 400 B. The new image is 299,284 B, the old one 296,900 B.</li>
+        <li><b>Base package 1.17.1 (build 1).</b> A node gets its first image by USB. The package is a UF2 file for the USB drive of the bootloader. There is one file per board and SoftDevice, for 18 boards. Examples: FakeTec S140 6.1.1, SenseCAP P1 S140 7.3.0, RAK4631 S140 6.1.1. It brings Stage-0 along, the loader that FUOTA never writes (see <a href="flash.html">Flash</a>). Line 1.17.1 has no campaign, it is the first delivery.</li>
+        <li><b>Update to 1.18.0.</b> Later updates come over the air. A node with base package 1.17.1 pulls a signed campaign from 1.17.1 to 1.18.0 over LoRa. In the proof run of 9 November 2026 (build 2) the patch was 23,749 B. The manifest was 400 B. The new image had 299,284 B, the old one 296,900 B <span class="m meas">measured</span>.</li>
       </ol>
-      <p>For 1.18.0 there are also seed packages (UF2, by USB) for the same three boards. A seed carries the update and offers it to its neighbours. How a node checks the signature is described under <a href="sicherheit.html">Safety</a>.</p>
-      <p><b>Status as of 10 November 2026:</b> The files of both lines are built. Nothing is released. The proof run from 1.17.1 to 1.18.0 finished on the test bench on 9 November: both receivers, a FakeTec and the RAK4631, pulled the campaign over the air and now run 1.18.0 (build 2) <span class="m meas">measured</span>. Whether and when testers get the files is not settled, and there is no date or download <span class="m open">open</span>.</p>
+      <p>For 1.18.0 there are also seed packages (UF2, by USB) for the same 18 boards. A seed carries the update and offers it to its neighbours. How a node checks the signature is described under <a href="sicherheit.html">Safety</a>.</p>
+      <p><b>Status as of 13 November 2026:</b> An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The releases <code>alpha-1171-b2</code> and <code>alpha-118-b3</code> carry the packages for 18 boards. Instructions and downloads are under <a href="alpha.html">Alpha test</a>.</p>
+      <p>The proof run from 1.17.1 to 1.18.0 finished on the test bench on 9 November: both receivers, a FakeTec and the RAK4631, pulled the campaign over the air and then ran 1.18.0 (build 2) <span class="m meas">measured</span>.</p>
     </div>
   </section>
 
@@ -475,12 +477,15 @@
       <p>Release und Test haben verschiedene Ziel-IDs. Jedes Anwenden prüft die Ziel-ID des Manifests. Eine Kampagne für
         den Testaufbau passt darum nie auf einen Release-Knoten.</p>
       <p>Auch die Schlüssel sind getrennt. Ein Release-Build kompiliert nur mit einem eigenen Release-Schlüssel. Den
-        Test-Schlüssel nimmt er nie <span class="m code">im Code geprüft</span>. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, und die Images beider Linien tragen seinen Schlüsselblock <span class="m code">im Code geprüft</span>. Die Größe von 299.284 B stammt aus dem ersten Bau mit dem Release-Schlüssel. Die übrigen Prüfungen unten sind älter und liefen mit dem Test-Schlüssel.
+        Test-Schlüssel nimmt er nie <span class="m code">im Code geprüft</span>. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, und die Images beider Linien tragen seinen Schlüsselblock <span class="m code">im Code geprüft</span>. Die Größe von 299.284 B stammt aus dem ersten Bau mit dem Release-Schlüssel.</p>
+      <p>Der Nachweislauf vom 9. November 2026 lief mit dem Release-Schlüssel. Die Alpha-Prüfung vom 12. November 2026 lief mit Release-Images und Release-Signatur <span class="m meas">gemessen</span>. Die übrigen Prüfungen unten sind älter und liefen mit dem Test-Schlüssel.
         Mehr dazu: <a href="fragen.html#luecken">Was noch offen ist</a>.</p>
-      <h3>Am Release-Build gemessen (Prüfungen vom 20. Oktober 2026)</h3>
+      <h3>Am Release-Build gemessen (Prüfungen vom 20. Oktober bis 12. November 2026)</h3>
       <ul>
         <li>299.284 B, das sind 74 von 96 Seiten, mit signierten Angeboten. Am 8. November 2026 gemessen, beim ersten Bau des Release-Env <span class="m meas">gemessen</span></li>
         <li>kein BLE-Symbol im Image <span class="m meas">gemessen</span></li>
+        <li>Am 12. November 2026 lehnte ein Release-Image ein Manifest mit Test-Schlüssel ab (<code>ERR manifest signature</code>), der Knoten blieb unverändert <span class="m meas">gemessen</span></li>
+        <li>Der Knoten hielt eine signierte Kampagne für Build 2 (<code>dc048c3d</code>) nur als Relais. Für sich lehnte er sie ab (<code>not for this node</code>) <span class="m meas">gemessen</span>. Ob Build oder Basis-Hash der Grund war, ist nicht getrennt <span class="m open">offen</span></li>
         <li>Die Build-Sperre greift bei allen 22 geprüften Schaltern <span class="m meas">gemessen</span>. Dazu gehören
           die 7 Tage von <code>delay</code>, <code>delay</code> als Vorgabe und die Grenzen der Flut-Angebote.</li>
       </ul>
@@ -516,12 +521,15 @@
         the bench never fits a release node.</p>
       <p>The keys are separate too. A release build compiles only with its own release key. It never uses the test key
         <span class="m code">checked in the code</span>. The release key was generated on 8 November 2026, and the images of both lines carry its key block <span class="m code">checked in the code</span>. The
-        size of 299,284 B comes from the first build with the release key. The other checks below are older and used the test key. More:
+        size of 299,284 B comes from the first build with the release key.</p>
+      <p>The proof run of 9 November 2026 used the release key. The alpha check of 12 November 2026 used release images and the release signature <span class="m meas">measured</span>. The other checks below are older and used the test key. More:
         <a href="fragen.html#luecken">What is still open</a>.</p>
-      <h3>Measured on the release build (checks of 20 October 2026)</h3>
+      <h3>Measured on the release build (checks of 20 October to 12 November 2026)</h3>
       <ul>
         <li>299,284 B, that is 74 of 96 pages, with signed offers. Measured on 8 November 2026 at the first build of the release env <span class="m meas">measured</span></li>
         <li>no BLE symbol in the image <span class="m meas">measured</span></li>
+        <li>On 12 November 2026 a release image refused a test-key manifest (<code>ERR manifest signature</code>). The node stayed unchanged <span class="m meas">measured</span></li>
+        <li>The node held a signed campaign for build 2 (<code>dc048c3d</code>) only as a relay. It refused it for itself (<code>not for this node</code>) <span class="m meas">measured</span>. Whether build or base hash was the reason is not separated <span class="m open">open</span></li>
         <li>The guard fires for all 22 switches tested <span class="m meas">measured</span>. Among them: the 7 days of
           <code>delay</code>, <code>delay</code> as default, and the limits of flooded offers.</li>
       </ul>
@@ -530,8 +538,8 @@
   </main>
   <p class="next"><a href="kosten.html"><span lang="de">Weiter: Last im Mesh</span><span lang="en">Next: Load on the mesh</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. No release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

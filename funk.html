@@ -63,16 +63,16 @@
       <h1>Die Nachrichten auf Funk</h1>
       <p class="lede">FUOTA sendet 4 Nachrichten: Angebot, Anfrage, Daten und Retract. Dazu kommen der Schlüssel-Widerruf und die
         Ansage des Nebenslots. Alle sind MeshCore-Pakete vom eigenen Typ 0x0E, zwischen direkten Nachbarn oder auf
-        einem festen Pfad. Angebot, Retract und Schlüssel-Widerruf gehen zusätzlich als Flut raus. Hier stehen ihr
-        Aufbau, wer was weitergibt und welche Zeitgeber laufen.</p>
+        einem festen Pfad. Angebot, Retract und Schlüssel-Widerruf gehen zusätzlich als Flut raus. Die Statusmeldung
+        eines Knotens geht nur als Flut. Hier stehen der Aufbau der Nachrichten, wer was weitergibt und welche Zeitgeber laufen.</p>
     </div>
     <div lang="en">
       <span class="kicker">Formerly section 5 of the single page</span>
       <h1>The messages on air</h1>
       <p class="lede">FUOTA sends 4 messages: offer, request, data and retract. Two more are the key revocation and the
         announcement of the side slot. All are MeshCore packets of their own type 0x0E. They travel between direct
-        neighbours or along a fixed path. Offer, retract and key revocation also go out as a flood. This page shows
-        their layout, who passes on what, and which timers run.</p>
+        neighbours or along a fixed path. Offer, retract and key revocation also go out as a flood. The status message of a node
+        goes out only as a flood. This page shows the layout of the messages. It also shows who passes on what and which timers run.</p>
     </div>
   </header>
 
@@ -80,7 +80,7 @@
     <div lang="de" class="prose">
       <h2>Aufbau der Nachrichten</h2>
       <p>Jede Nachricht ist ein MeshCore-Paket vom Typ 0x0E mit Route Direct. Zwischen direkten Nachbarn läuft sie ohne
-        Pfad (Zero-Hop). Hinter Repeatern ohne FUOTA läuft sie mit Pfad, siehe <a href="#weiter">Wer was weitergibt</a>. Nur Angebot, Retract und Schlüssel-Widerruf gehen zusätzlich als Flut raus. Die Flut ist ein anderes Paket: eine Gruppen-Nachricht vom MeshCore-Typ 0x06.</p>
+        Pfad (Zero-Hop). Hinter Repeatern ohne FUOTA läuft sie mit Pfad, siehe <a href="#weiter">Wer was weitergibt</a>. Angebot, Retract und Schlüssel-Widerruf gehen zusätzlich als Flut raus. Die Statusmeldung geht nur als Flut, siehe <a href="#status">Statusmeldungen</a>. Die Flut ist ein anderes Paket: eine Gruppen-Nachricht vom MeshCore-Typ 0x06.</p>
       <p>Byte 1 und 2 jeder Nachricht sind die Kennung des Absenders. Das sind die ersten 2 Byte seines
         öffentlichen Schlüssels. Die Kennung ist nicht signiert. Knoten wählen damit den Anbieter und erkennen einen
         beschäftigten Anbieter. Logs und der Testfilter nutzen sie auch.</p>
@@ -95,7 +95,7 @@
       <h2>Layout of the messages</h2>
       <p>Every message is a MeshCore packet of type 0x0E with route direct. Between direct neighbours it travels
         without a path (zero hop). Behind repeaters without FUOTA it travels with a path, see
-        <a href="#weiter">Who passes on what</a>. Only the offer, the retract and the key revocation also go out as a flood. A flood is a different packet: a group message of MeshCore type 0x06.</p>
+        <a href="#weiter">Who passes on what</a>. The offer, the retract and the key revocation also go out as a flood. The status message goes out only as a flood, see <a href="#status">Status messages</a>. A flood is a different packet: a group message of MeshCore type 0x06.</p>
       <p>Bytes 1 and 2 of every message are the sender ID. They are the first 2 bytes of
         its public key. The ID is unsigned. Nodes use it to pick a provider and to spot a busy provider. Logs and the
         test filter use it too.</p>
@@ -236,7 +236,7 @@
         <li>Die großen Repeater in Hamburg laufen laut ihren Betreibern mit CR 4/5. Das Datenpaket braucht dort nur das 0,66-fache der Zeit <span class="m calc">berechnet</span>.</li>
         <li>Alle gerechneten Zeiten dieser Website nehmen CR 4/5 an. Das ist die Einstellung in Hamburg laut Betreibern, an keinem Hamburger Repeater gemessen. Mit CR 4/8 dauert ein Datenpaket das 1,5-fache. Kürzere Pakete verlieren weniger: ein Retract das 1,43-fache, eine Anfrage das 1,22-fache <span class="m calc">berechnet</span>.</li>
         <li>Der Testaufbau läuft mit SF7 und CR 4/5 <span class="m meas">gemessen</span>.</li>
-        <li>Alle gerechneten Sendezeiten nehmen 32 Preamble-Symbole an, dazu expliziten Header und CRC. Die Firmware setzt bei SF8 und darunter 32 Symbole, darüber 16 (<code>src/helpers/radiolib/RadioLibWrappers.h:56</code>) <span class="m code">im Code geprüft</span>.</li>
+        <li>Alle gerechneten Sendezeiten nehmen 32 Preamble-Symbole an, dazu expliziten Header und CRC. Die Firmware setzt bei SF8 und darunter 32 Symbole, darüber 16 (<code>src/helpers/radiolib/RadioLibWrappers.h, preambleLengthForSF()</code>) <span class="m code">im Code geprüft</span>.</li>
         <li>Die Firmware rechnet ihr Airtime-Budget mit der Airtime ihrer aktuellen Einstellungen.</li>
       </ul>
     </div>
@@ -246,7 +246,7 @@
         <li>According to their operators, the large repeaters in Hamburg run CR 4/5. A data packet takes only 0.66 times as long there <span class="m calc">calculated</span>.</li>
         <li>All calculated times on this website assume CR 4/5. That is the Hamburg setting according to the operators, not measured at any Hamburg repeater. At CR 4/8 a data packet takes 1.5 times as long. Shorter packets lose less: a retract 1.43 times, a request 1.22 times <span class="m calc">calculated</span>.</li>
         <li>The bench runs SF7 and CR 4/5 <span class="m meas">measured</span>.</li>
-        <li>All calculated airtimes assume 32 preamble symbols, plus explicit header and CRC. The firmware sets 32 symbols at SF8 and below, 16 above (<code>src/helpers/radiolib/RadioLibWrappers.h:56</code>) <span class="m code">checked in the code</span>.</li>
+        <li>All calculated airtimes assume 32 preamble symbols, plus explicit header and CRC. The firmware sets 32 symbols at SF8 and below, 16 above (<code>src/helpers/radiolib/RadioLibWrappers.h, preambleLengthForSF()</code>) <span class="m code">checked in the code</span>.</li>
         <li>The firmware computes its airtime budget from the airtime of its current settings.</li>
       </ul>
     </div>
@@ -394,6 +394,49 @@
     </div>
   </section>
 
+  <section id="status">
+    <div lang="de" class="prose">
+      <h2>Statusmeldungen der Knoten</h2>
+      <p>Ein Knoten meldet sieben Ereignisse seines Updates. Die Statusmeldung ist ein signiertes Paket von 96 B <span class="m code">im Code geprüft</span>.
+        Sie geht nur als Flut raus, als Gruppen-Nachricht im FUOTA-Kanal der Standard-Region. Ohne Standard-Region sendet der
+        Knoten keine <span class="m code">im Code geprüft</span>. Höchstens 8 Meldungen gehen je 24 Stunden Laufzeit raus <span class="m code">im Code geprüft</span>.</p>
+      <div class="tscroll"><table>
+        <tr><th>Meldung</th><th>Ereignis</th></tr>
+        <tr><td>E1</td><td>Kampagne vollständig empfangen</td></tr>
+        <tr><td>E2</td><td>Update wird angewendet, danach folgt ein Neustart</td></tr>
+        <tr><td>E3</td><td>Probestart bestätigt</td></tr>
+        <tr><td>E4</td><td>Rückfall ohne Funk-Lebenszeichen, später ein neuer Versuch</td></tr>
+        <tr><td>E5</td><td>Rückfall nach einem Fehlstart, der Build ist gebannt</td></tr>
+        <tr><td>E6</td><td>Absturz nach der Bestätigung, zurück auf den alten Build</td></tr>
+        <tr><td>E7</td><td>Retract übernommen</td></tr>
+      </table></div>
+      <p>Am Brett wurden alle sieben Meldungen gesendet <span class="m meas">gemessen</span>. Laut Status liefen sie im echten Ablauf, nicht per Testbefehl.
+        Am 10. November 2026 waren es E1 und E3 bis E6. Am 11. November 2026 folgten E2 und E7.</p>
+      <p>Am 12. November 2026 flutete ein Knoten am Brett die Meldung E3. Die Standard-Region war gesetzt. Die Flut dauerte 754 ms, laut Bericht.</p>
+      <p>Wo der Analyzer sie zeigt, steht im <a href="#analyzer">Abschnitt zum Analyzer</a>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Status messages of the nodes</h2>
+      <p>A node reports seven events of its update. The status message is a signed packet of 96 B <span class="m code">checked in the code</span>.
+        It goes out only as a flood. This is a group message in the FUOTA channel of the default region. Without a default region
+        the node sends none <span class="m code">checked in the code</span>. At most 8 messages go out per 24 hours of running time <span class="m code">checked in the code</span>.</p>
+      <div class="tscroll"><table>
+        <tr><th>Message</th><th>Event</th></tr>
+        <tr><td>E1</td><td>Campaign completely received</td></tr>
+        <tr><td>E2</td><td>Update is applied, a restart follows</td></tr>
+        <tr><td>E3</td><td>Test boot confirmed</td></tr>
+        <tr><td>E4</td><td>Revert without a radio sign of life, a new try later</td></tr>
+        <tr><td>E5</td><td>Revert after a failed start, the build is banned</td></tr>
+        <tr><td>E6</td><td>Crash after the confirmation, back to the old build</td></tr>
+        <tr><td>E7</td><td>Retract taken over</td></tr>
+      </table></div>
+      <p>On the bench all seven messages were sent <span class="m meas">measured</span>. According to the status they ran in the real flow, not by test command.
+        On 10 November 2026 these were E1 and E3 to E6. On 11 November 2026 E2 and E7 followed.</p>
+      <p>On 12 November 2026 a node on the bench flooded the message E3. The default region was set. The flood took 754 ms, according to the report.</p>
+      <p>Where the analyzer shows them is in the <a href="#analyzer">analyzer section</a>.</p>
+    </div>
+  </section>
+
   <section id="analyzer">
     <div lang="de" class="prose">
       <h2>Was im echten Netz davon zu sehen ist</h2>
@@ -401,7 +444,7 @@
         was Beobachter im echten Netz von FUOTA hören: Kampagnen mit ihrer Kennung, beteiligte Knoten, Pakete je Art
         (Angebot, Anfrage, Daten), Bytes und Airtime, dazu jeder Beobachter mit seinem Signalabstand.</p>
       <p>Viel kann dort nicht stehen. FUOTA sendet Zero-Hop, also hört ein Beobachter nur, was in seiner eigenen
-        Reichweite liegt; alles hinter einem Repeater bleibt unsichtbar. Und senden tun nur Knoten mit der Testfirmware.</p>
+        Reichweite liegt; alles hinter einem Repeater bleibt unsichtbar. Und senden tun nur Knoten mit FUOTA-Firmware, das sind die Testfirmware und die Alpha-Pakete.</p>
       <p>Am 10. November 2026 stand dort im Zeitraum 30 Tage (die längste Auswahl im Bericht) eine einzige Kampagne:
         <code>4c0180ac</code>, gehört am 7. November 2026 um 23:02 UTC von einem Beobachter mit dem Flughafenkürzel VNO
         (Vilnius), ein Datenpaket mit 142 B und 1,4 s Airtime, ein beteiligter Knoten mit der Kennung <code>8f</code>,
@@ -411,8 +454,9 @@
         über 90 Tage, so weit reicht die Schnittstelle, liefert dieselbe eine Kampagne <span class="m meas">gemessen</span>.
         Von unserem Testaufbau stammt das nicht: Der läuft in Hamburg mit 1 dBm über rund 50 cm, und unsere Knoten tragen
         andere Kennungen.</p>
-      <p>Ob es überhaupt ein FUOTA-Paket war, wissen wir nicht <span class="m open">offen</span>. Der Decoder des Analyzers
-        prüft Datenpakete nur locker und rechnet noch mit dem Paketlayout vom 18. Oktober 2026.</p>
+      <p>Ob es überhaupt ein FUOTA-Paket war, wissen wir nicht <span class="m open">offen</span>. Der Decoder des Analyzers prüfte Datenpakete damals nur locker. Er rechnete mit dem Paketlayout vom 18. Oktober 2026. Laut Status ist er seit dem
+        10. November 2026 umgebaut. Ob er dasselbe Paket heute als FUOTA-Paket anzeigt, ist nicht geprüft <span class="m open">offen</span>.</p>
+      <p>Im Alpha-Feld läuft seit dem 12. November 2026 die Kampagne <code>dc7b7cb0</code> (Build 3). Sie hat zwei Tester-Knoten <span class="m field">im Feld beobachtet</span>. Der Analyzer hört sie nur direkt (Zero-Hop) über einen Beobachter <span class="m field">im Feld beobachtet</span>. Sie steht im Tab Aktivität. Der Tab Rollout zeigt nur Repeater mit Statusmeldung, also mit Standard-Region <span class="m field">im Feld beobachtet</span>. Ohne Standard-Region kommt keine Statusmeldung. Die Tester senden ihre Angebote dann nur Zero-Hop <span class="m field">im Feld beobachtet</span>. Der Lauf ist nicht vollständig <span class="m open">offen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>What of this is visible in the real network</h2>
@@ -420,7 +464,7 @@
         what observers in the real network hear of FUOTA: campaigns with their id, participating nodes, packets by type
         (offer, request, data), bytes and airtime, plus every observer with its signal margin.</p>
       <p>There cannot be much in it. FUOTA sends zero hop, so an observer hears only what is in its own range, and
-        anything behind a repeater stays invisible. Only nodes with the test firmware send at all.</p>
+        anything behind a repeater stays invisible. Only nodes with FUOTA firmware send at all: the test firmware and the alpha packages.</p>
       <p>On 10 November 2026 the report held a single campaign for the 30-day window (the longest choice in the report):
         <code>4c0180ac</code>, heard on 7 November 2026 at 23:02 UTC by an observer with the airport code VNO
         (Vilnius), one data packet of 142 B and 1.4 s of airtime, one participating node with the id <code>8f</code>,
@@ -429,8 +473,9 @@
         local time: in Hamburg it reads 8 November, 00:02; in Vilnius it would be 01:02. A query over 90 days, as far
         back as the interface goes, returns the same single campaign <span class="m meas">measured</span>. It does not
         come from our bench: that one runs in Hamburg at 1 dBm over about 50 cm, and our nodes carry different ids.</p>
-      <p>Whether it was a FUOTA packet at all, we do not know <span class="m open">open</span>. The analyzer's decoder checks
-        data packets only loosely and still assumes the packet layout of 18 October 2026.</p>
+      <p>Whether it was a FUOTA packet at all, we do not know <span class="m open">open</span>. Back then the decoder of the analyzer checked data packets only loosely. It assumed the packet layout of 18 October 2026. According to the status it was rebuilt
+        on 10 November 2026. Whether it shows the same packet as a FUOTA packet today has not been checked <span class="m open">open</span>.</p>
+      <p>Since 12 November 2026 the alpha campaign <code>dc7b7cb0</code> (build 3) has been running in the field. It has two tester nodes <span class="m field">observed in the field</span>. The analyzer hears it only directly (zero hop) through one observer <span class="m field">observed in the field</span>. It is in the Activity tab. The Rollout tab shows only repeaters with a status message, so with a default region <span class="m field">observed in the field</span>. Without a default region there is no status message. The testers then send their offers zero hop only <span class="m field">observed in the field</span>. The run is not complete <span class="m open">open</span>.</p>
     </div>
   </section>
 
@@ -612,15 +657,16 @@
         REQ, RESPONSE und ANON_REQ bis 5, alles andere bis 10. Die Grenzen betreffen nur das Weitergeben fremder Floods.
         Eigene Sendungen, Pakete mit Pfad und Zero-Hop-Pakete laufen nicht durch sie
         <span class="m code">im Code geprüft</span>.</p>
-      <p>Die Angebots-Flut von FUOTA läuft als Gruppen-Datenpaket in der Default-Region des Knotens. Für sie gelten
+      <p>Die Angebots-Flut von FUOTA läuft als Gruppen-Datenpaket in der Standard-Region des Knotens. Für sie gelten
         <code>flood.max</code> und ein Eintrag für <code>grpdata</code>. <code>flood.max.unscoped</code> trifft sie nicht,
         denn sie hat eine Region <span class="m code">im Code geprüft</span>.</p>
       <p>Am Brett ist nur der Fall mit 0 Hops gemessen. Ab 1 Hop sind die Grenzen nur im Host-Test belegt. In einem echten Mesh mit
         mehreren Repeater-Hops hat sie niemand gemessen <span class="m open">offen</span>.</p>
       <h3>Was offen ist</h3>
       <ul>
-        <li>Die erste Zero-Hop-Advert einer Neuinstallation geht nach 360 min hinaus, nicht nach 2 min wie bei Stock. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
-        <li>Floods ohne Region laufen nur 1 Hop weit, auch Antworten auf Fernwartung. Ob das Betreiber ohne Default-Region stört, ist ungeprüft <span class="m open">offen</span>.</li>
+        <li>Bei 1.18.0-b3 sendet eine Neuinstallation die erste Zero-Hop-Advert nach 360 min. Bei Stock sind es 2 min. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
+        <li>1.17.1-b2 erlaubt für <code>advert.interval</code> nur 0 und 60 bis 240 min <span class="m code">im Code geprüft</span>. Es setzt ein Intervall unter 60 min beim Speichern auf 0. Darum sendet ein Knoten mit 1.17.1-b2 nach der ersten gespeicherten Einstellung keine Zero-Hop-Adverts mehr <span class="m code">im Code geprüft</span>.</li>
+        <li>Floods ohne Region laufen nur 1 Hop weit, auch Antworten auf Fernwartung. Ob das Betreiber ohne Standard-Region stört, ist ungeprüft <span class="m open">offen</span>.</li>
         <li>Mit <code>flood.max.advert</code> 2 und ausgeschalteter Flut-Advert sehen Beobachter einen Knoten nur aus etwa 2 Hops Umkreis. Das ist hergeleitet, nicht gemessen <span class="m open">offen</span>.</li>
         <li>Wie 10 % Duty Cycle unter echter Last im Mesh wirken, ist nicht gemessen <span class="m open">offen</span>. Am Brett änderte er den Abstand der Fragmente nicht: 6,430 s gegen 6,434 s <span class="m meas">gemessen</span>.</li>
         <li>CAD an: Die erste Slot-Anfrage ging in 2 von 4 Läufen verloren. In einer Folgeserie mit 6 Läufen mit CAD an wurden alle 12 ersten Slot-Anfragen beantwortet. Die 3 verzögerten Fälle der Serie traten alle mit CAD aus auf. Eine seltene Wirkung ist nicht ausgeschlossen <span class="m meas">gemessen</span>.</li>
@@ -650,7 +696,8 @@
         measured them in a real mesh with several repeater hops <span class="m open">open</span>.</p>
       <h3>What is open</h3>
       <ul>
-        <li>The first zero-hop advert of a new install goes out after 360 min, not after 2 min as in stock. With <code>advert.zerohop</code> the node sends at once <span class="m open">open</span>.</li>
+        <li>With 1.18.0-b3 a new install sends its first zero-hop advert after 360 min. In stock it is 2 min. With <code>advert.zerohop</code> the node sends at once <span class="m open">open</span>.</li>
+        <li>1.17.1-b2 allows only 0 and 60 to 240 min for <code>advert.interval</code> <span class="m code">checked in the code</span>. It sets an interval below 60 min to 0 when saving. So a node with 1.17.1-b2 sends no more zero-hop adverts after the first saved setting <span class="m code">checked in the code</span>.</li>
         <li>Floods without a region travel 1 hop only, remote-admin replies included. Whether that bothers operators without a default region is unchecked <span class="m open">open</span>.</li>
         <li>With <code>flood.max.advert</code> 2 and the flood advert off, observers see a node only from about 2 hops around. This is derived, not measured <span class="m open">open</span>.</li>
         <li>How 10 % duty cycle behaves under real load in a mesh is not measured <span class="m open">open</span>. On the bench it did not change the fragment gap: 6.430 s against 6.434 s <span class="m meas">measured</span>.</li>
@@ -758,7 +805,7 @@
         <tr><td>Zurückhalten der Angebots-Flut</td><td class="n">höchstens 3 Tage</td><td>In der ersten Woche und 1 Woche nach gehörter Anfrage hält ihn eine gehörte Flut derselben Kampagne höchstens 3 Tage zurück. Die 3 Tage zählen ab seiner letzten Flut oder der letzten zurückgehaltenen Wochenperiode. Danach flutet er trotz gehörter Flut, sobald sein nächster Termin kommt. Nur eine Flut aus seiner Region mit höchstens 8 Hops hält ihn zurück. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Retract</td><td class="n">bis zu 3-mal, dazu 1 Flut</td><td>Ein Knoten sendet den Retract bis zu 3-mal an direkte Nachbarn. Dazu flutet er ihn einmal. Er wartet vorher 2 bis 30 min. Auf ein Angebot des zurückgezogenen Builds antwortet er höchstens alle 30 s mit dem Retract. Kam das Angebot als Flut, antwortet er nach bis zu 30 min mit einer Flut. Das tut er höchstens einmal am Tag je Retract. Den Takt der Sendungen an Nachbarn erklärt der Absatz unter der Tabelle.</td></tr>
         <tr><td>Anwenden</td><td class="n">~10 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>: Bauen am Release-Image (9. November 2026), Tauschen am Test-Image (18. Oktober 2026). Der Knoten ist dabei rund 1 min offline, gemessen am Test-Image, am Release-Image nicht.</td></tr>
-        <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung 60 s</td><td>Die Bestätigung kommt nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet). Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware.</td></tr>
+        <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung 60 s</td><td>Die Bestätigung kommt nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet). Beides muss innerhalb der Frist T liegen. T liegt zwischen 15 Minuten und 6 Stunden. Hatte der Knoten vor dem Update keinen Tag Laufzeit, sind es 60 Minuten <span class="m code">im Code geprüft</span>. Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware. Fehlt nur das Lebenszeichen, gibt es keinen Bann. Ein neuer Versuch wartet <span class="m code">im Code geprüft</span>. Am Brett empfing ein Knoten in 18 Minuten kein Paket <span class="m meas">gemessen</span>. Im Mesh mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -781,7 +828,7 @@
         <tr><td>Holding back the offer flood</td><td class="n">up to 3 days</td><td>In the first week and 1 week after a heard request, a heard flood of the same campaign holds it back up to 3 days. The 3 days count from its last flood or the last weekly period it held back. After that it floods despite a heard flood, at its next planned time. Only a flood from its region with at most 8 hops holds it back. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Retract</td><td class="n">up to 3 times, plus 1 flood</td><td>A node sends the retract up to 3 times to direct neighbours. It also floods it once, after waiting 2 to 30 min. It answers offers of the retracted build with the retract at most every 30 s. If an offer was flooded, it answers with a flood after up to 30 min. It does so at most once a day per retract. The paragraph below the table explains the sends to neighbours.</td></tr>
         <tr><td>Apply</td><td class="n">~10 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>: build on the release image (9 November 2026), swap on the test image (18 October 2026). The node is offline for about 1 min meanwhile, measured on the test image, not on the release image.</td></tr>
-        <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation 60 s</td><td>Confirmation needs 60 s and a radio sign of life (one packet received, one sent). After 3 test boots without confirmation the node reverts to the old firmware.</td></tr>
+        <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation 60 s</td><td>Confirmation needs 60 s and a radio sign of life (one packet received, one sent). Both must come within the deadline T. T is between 15 minutes and 6 hours. Without a day of uptime before the update it is 60 minutes <span class="m code">checked in the code</span>. After 3 test boots without confirmation the node reverts to the old firmware. If only the sign of life is missing, there is no ban. A new try waits <span class="m code">checked in the code</span>. On the bench a node received no packet in 18 minutes <span class="m meas">measured</span>. In a mesh with normal traffic this has not been checked <span class="m open">open</span>.</td></tr>
       </table>
     </div>
     <div lang="de" class="prose">
@@ -808,8 +855,8 @@
   </main>
   <p class="next"><a href="flash.html"><span lang="de">Weiter: Flash</span><span lang="en">Next: Flash</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key. The release key was generated on 8 November 2026, and no release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

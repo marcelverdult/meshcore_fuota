@@ -3,7 +3,7 @@
   :root{
     --bg:#f6f7f9; --surface:#ffffff; --panel:#eef1f5; --fg:#161b24; --muted:#59636f; --line:#dde2e9;
     --accent:#0e7c86; --accent-soft:#cfe8ea; --slota:#1d6fb8; --slotb:#b4530e; --sys:#7a8494;
-    --ok:#15803d; --warn:#b45309; --crit:#b91c1c;
+    --ok:#15803d; --warn:#b45309; --crit:#b91c1c; --field:#6d28d9;
     --pk-offer:#1d6fb8; --pk-req:#c2410c; --pk-data:#0e7c86; --pk-rt:#b91c1c; --pk-ok:#15803d;
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -12,13 +12,13 @@
   @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
     --bg:#0d1117; --surface:#151b23; --panel:#1b222c; --fg:#e6edf3; --muted:#9aa4b2; --line:#272e39;
     --accent:#2dd4bf; --accent-soft:#11403d; --slota:#5aa7e6; --slotb:#fb923c; --sys:#8b95a5;
-    --ok:#4ade80; --warn:#fbbf24; --crit:#f87171; color-scheme:dark;
+    --ok:#4ade80; --warn:#fbbf24; --crit:#f87171; --field:#c4b5fd; color-scheme:dark;
     --pk-offer:#60a5fa; --pk-req:#fb923c; --pk-data:#2dd4bf; --pk-rt:#f87171; --pk-ok:#4ade80;
   }}
   :root[data-theme="dark"]{
     --bg:#0d1117; --surface:#151b23; --panel:#1b222c; --fg:#e6edf3; --muted:#9aa4b2; --line:#272e39;
     --accent:#2dd4bf; --accent-soft:#11403d; --slota:#5aa7e6; --slotb:#fb923c; --sys:#8b95a5;
-    --ok:#4ade80; --warn:#fbbf24; --crit:#f87171; color-scheme:dark;
+    --ok:#4ade80; --warn:#fbbf24; --crit:#f87171; --field:#c4b5fd; color-scheme:dark;
     --pk-offer:#60a5fa; --pk-req:#fb923c; --pk-data:#2dd4bf; --pk-rt:#f87171; --pk-ok:#4ade80;
   }
   *{box-sizing:border-box}
@@ -47,6 +47,7 @@
   .m.calc{background:color-mix(in srgb,var(--slota) 16%,transparent);color:var(--slota)}
   .m.code{background:color-mix(in srgb,var(--muted) 20%,transparent);color:var(--muted)}
   .m.open{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+  .m.field{background:color-mix(in srgb,var(--field) 16%,transparent);color:var(--field)}
   header.hero{border-bottom:1px solid var(--line);padding-bottom:26px}
   .synopsis{margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--surface);border-radius:12px;padding:14px 18px;max-width:72ch}
   .synopsis dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:8px 16px}

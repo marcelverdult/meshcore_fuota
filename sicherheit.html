@@ -62,13 +62,13 @@
       <h1>Nur signierte Firmware, und bei Startproblemen die alte</h1>
       <p class="lede">Dein Repeater installiert nur, was der Release-Schlüssel signiert hat. Startet die neue Firmware
         nicht, läuft nach 3 Probestarts (Startversuchen) ohne Bestätigung wieder die alte <span class="m meas">gemessen</span>. Im Proof of Concept
-        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben <span class="m open">offen</span>.</p>
+        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
       <h1>Only signed firmware, and the old one after a failed start</h1>
       <p class="lede">Your repeater installs only what the release key has signed. When the new firmware fails
         to start, the old one runs again after 3 test boots without confirmation <span class="m meas">measured</span>. In the proof of concept the
-        tests ran with the test key. The release key was generated on 8 November 2026, and no release is approved <span class="m open">open</span>.</p>
+        tests ran with the test key. The release key was generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>.</p>
     </div>
   </header>
 
@@ -239,7 +239,7 @@
           und ein Wurzelwechsel durch die Ersatz-Wurzel sind gebaut <span class="m code">im Code geprüft</span>. Alles lief nur am Rechner. Am Testaufbau ist es noch nicht gemessen
           <span class="m open">offen</span>. Ein Dieb der Wurzel kann Schlüssel mit neuen Nummern ausstellen, bis die Ersatz-Wurzel gewechselt hat.</li>
             <li>Dauerfunk
-          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Ein Release ist nicht freigegeben <span class="m open">offen</span>.</li>
+          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</li>
           </ul></li>
         <li><b>Die Build-Umgebung.</b> Vor dem Signieren bauen wir zweimal unabhängig und vergleichen das Ergebnis.
           <ul>
@@ -255,7 +255,7 @@
           <ul>
             <li>Die Hauptschleife lief im Probestart 60 s. Dazu hat die neue Firmware ein gültiges Paket empfangen und eines gesendet <span class="m code">im Code geprüft</span>.</li>
             <li>Fehlt dieses Lebenszeichen, startet sie neu. Nach 3 Probestarts ohne Lebenszeichen tauscht Stage-0 zurück <span class="m code">im Code geprüft</span>. Das Image bleibt erlaubt. Der automatische Start folgt frühestens nach 1 Tag, mit wachsendem Abstand (1, 2, 4, 8, 16, dann 30 Tage) <span class="m code">im Code geprüft</span>. <code>fuota apply</code> wartet nicht.</li>
-            <li>Am Testaufbau bestätigte ein Knoten so ein Update <span class="m meas">gemessen</span>. Am Testaufbau fiel ein Knoten ohne Lebenszeichen nach 3 Probestarts zurück. Das Image blieb erlaubt, dieselbe Kampagne ließ sich neu laden <span class="m meas">gemessen</span>. Offen ist der Rückfall bei einer echten Funklücke im Feld <span class="m open">offen</span>.</li>
+            <li>Am Testaufbau bestätigte ein Knoten so ein Update <span class="m meas">gemessen</span>. Am Testaufbau fiel ein Knoten ohne Lebenszeichen nach 3 Probestarts zurück. Das Image blieb erlaubt, dieselbe Kampagne ließ sich neu laden <span class="m meas">gemessen</span>. Am stillen Brett hörte ein frisch aktualisierter Knoten 18 Minuten lang kein Paket. Er hätte sich nicht selbst bestätigt <span class="m meas">gemessen</span>. Der Geber bot nur noch alle 5,7 Stunden an. In einem Netz mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>. Offen ist der Rückfall bei einer echten Funklücke im Feld <span class="m open">offen</span>.</li>
           </ul></li>
         <li><b>Stromausfall beim überlappenden Anwenden:</b> Hat danach kein Nachbar den Patch, bleibt der Knoten auf
           der alten Version <span class="m code">im Code geprüft</span>. Er wartet auf einen Anbieter in Reichweite. Das Update legt ihn nicht lahm
@@ -401,7 +401,7 @@
           built <span class="m code">checked in the code</span>. All of it ran only on a computer. It is not measured on the bench yet <span class="m open">open</span>.</li>
             <li>A thief of the root can issue keys with new
           numbers until the backup root has switched. Constant radio traffic can delay the revocation. If both roots are lost, you reach nodes only over USB. This follows from the key chain in the code; there is no test of its own.</li>
-            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026. The fingerprint of the main root is fb9fe83d1f675980, that of the backup root 64a946dcb1c4a1bf. Signing key 1 is valid up to build 20 <span class="m code">checked in the code</span>. No release is approved <span class="m open">open</span>.</li>
+            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026. The fingerprint of the main root is fb9fe83d1f675980, that of the backup root 64a946dcb1c4a1bf. Signing key 1 is valid up to build 20 <span class="m code">checked in the code</span>. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>.</li>
           </ul></li>
         <li><b>The build environment.</b> Before signing, we build twice independently and compare the result.
           <ul>
@@ -416,7 +416,7 @@
           <ul>
             <li>the main loop ran for 60 s in the test boot. The new firmware also received a valid packet and sent one <span class="m code">checked in the code</span>.</li>
             <li>Without this sign of life it restarts. After 3 test boots without a sign of life Stage-0 swaps back <span class="m code">checked in the code</span>. The image stays allowed. The automatic start waits at least 1 day. The gap then grows: 1, 2, 4, 8, 16, then 30 days <span class="m code">checked in the code</span>. <code>fuota apply</code> does not wait.</li>
-            <li>On the bench a node confirmed an update this way <span class="m meas">measured</span>. On the bench a node reverted after 3 test boots without a sign of life. The image stayed allowed, and the same campaign loaded again <span class="m meas">measured</span>. Open: the revert in a real radio gap in the field <span class="m open">open</span>.</li>
+            <li>On the bench a node confirmed an update this way <span class="m meas">measured</span>. On the bench a node reverted after 3 test boots without a sign of life. The image stayed allowed, and the same campaign loaded again <span class="m meas">measured</span>. On a quiet bench a freshly updated node heard no packet for 18 minutes. It would not have confirmed itself <span class="m meas">measured</span>. The donor then offered only every 5.7 hours. In a network with normal traffic this is not checked <span class="m open">open</span>. Open: the revert in a real radio gap in the field <span class="m open">open</span>.</li>
           </ul></li>
         <li><b>Power loss during overlapping apply:</b> if no neighbour has the patch afterwards, the node stays on the
           old version <span class="m code">checked in the code</span>. It waits for a provider in range. The update does not brick it <span class="m code">checked in the code</span>.</li>
@@ -560,6 +560,7 @@
         <tr><td>Anfragen senden, damit ein Knoten nicht anwendet</td><td>Beim überlappenden Anwenden wartet ein Knoten, solange Nachbarn den Patch noch anfragen. Anfragen an einen anderen Anbieter zählen nicht. Das Fenster endet spätestens nach 7 Tagen.</td><td>Verzögerung bis 7 Tage, nur beim überlappenden Anwenden</td><td><span class="m code">im Code geprüft</span></td></tr>
         <tr><td>Gefälschte Manifest-Pakete senden, um den Flash abzunutzen</td><td>Der Knoten sammelt ein Manifest im RAM. In den Flash schreibt er nur ein geprüftes.</td><td>Nicht mehr als bei einem echten Update</td><td><span class="m meas">gemessen</span>: Löschungen im Test am Rechner vorher 96, nachher 5</td></tr>
         <tr><td>Einen Knoten-Schlüssel mit denselben ersten 2 Byte wie ein Anbieter erzeugen</td><td>Der Knoten wechselt für <a href="nebenslot.html">Bursts auf dem Nebenslot</a> dieses Anbieters nicht mehr mit. Updates von ihm laufen nur noch über den Mesh-Kanal.</td><td>Langsamer, nie falsch</td><td><span class="m code">im Code geprüft</span></td></tr>
+        <tr><td>Statusmeldung fälschen oder wiederholen</td><td>Jede Statusmeldung ist signiert. Ein Repeater sendet höchstens 8 je 24 Stunden Laufzeit <span class="m code">im Code geprüft</span>. Die Sendezeit zählt ins FUOTA-Budget. Ohne Standard-Region sendet er keine.</td><td>Das Replay-Fenster der Statusmeldungen stufte ein Review als mittleres Risiko ein.</td><td>Wirkung im Mesh: <span class="m open">offen</span></td></tr>
         <tr><td>Eigener Knoten ohne Budget</td><td>Er sendet so viel, wie er will, wie jeder Störsender.</td><td>Betroffen ist der Kanal. Bei anderen Knoten installiert er nichts.</td><td>installiert nichts: <span class="m code">im Code geprüft</span>; Last auf dem Kanal: <span class="m open">offen</span></td></tr>
         <tr><td>Stören (Jamming)</td><td>Das gilt für jedes Funkprotokoll.</td><td>Das Update stockt und geht später weiter.</td><td>geht weiter: <span class="m code">im Code geprüft</span>; Wirkung im Mesh: <span class="m open">offen</span></td></tr>
       </table>
@@ -590,6 +591,7 @@
         <tr><td>Send requests so that a node does not apply</td><td>With overlapping apply, a node waits while neighbours still request the patch. Requests to another provider do not count. The window ends after 7 days at the latest.</td><td>A delay of up to 7 days, only with overlapping apply</td><td><span class="m code">checked in the code</span></td></tr>
         <tr><td>Send forged manifest packets to wear out the flash</td><td>The node collects a manifest in RAM. It writes only a checked one to flash.</td><td>No more than a genuine update</td><td><span class="m meas">measured</span>: erases in a test on a computer before 96, after 5</td></tr>
         <tr><td>Create a node key with the same first 2 bytes as a provider</td><td>The node no longer follows <a href="nebenslot.html">bursts on the side slot</a> of this provider. Updates from it run only on the mesh channel.</td><td>Slower, never wrong</td><td><span class="m code">checked in the code</span></td></tr>
+        <tr><td>Forge or replay a status message</td><td>Every status message is signed. A repeater sends at most 8 per 24 hours of running time <span class="m code">checked in the code</span>. The airtime counts toward the FUOTA budget. Without a default region it sends none.</td><td>A review rated the replay window of status messages as a medium risk.</td><td>Effect in the mesh: <span class="m open">open</span></td></tr>
         <tr><td>Own node without budget</td><td>It sends as much as it wants, like any jammer.</td><td>The channel is affected. It installs nothing on other nodes.</td><td>installs nothing: <span class="m code">checked in the code</span>; load on the channel: <span class="m open">open</span></td></tr>
         <tr><td>Jamming</td><td>This applies to every radio protocol.</td><td>The update stalls and resumes later.</td><td>resumes: <span class="m code">checked in the code</span>; effect in the mesh: <span class="m open">open</span></td></tr>
       </table>
@@ -598,8 +600,8 @@
   </main>
   <p class="next"><a href="funk.html"><span lang="de">Weiter: Funk</span><span lang="en">Next: On air</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key. The release key was generated on 8 November 2026, and no release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

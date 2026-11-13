@@ -274,7 +274,8 @@
           nicht ein.</li>
         <li>Nachbardaten gibt es nur von Repeatern, deren Nachbarn jemand abgerufen hat.</li>
         <li>Die Patch-Größen stammen vom Stock-FakeTec mit <code>-Os</code> aus den Release-Tags.</li>
-        <li>Mit 33 Seiten passt der Compilerwechsel nicht hinter das Image (74 Seiten, 23 frei). Ein Knoten wendet
+        <li>Mit 33 Seiten passt der Compilerwechsel nicht hinter das Image mit 75 Seiten (22 frei) <span class="m calc">berechnet</span>. Das ist das Image von 1.18.0-b3.
+          Am 8. November 2026 waren es 74 Seiten und 23 frei. Ein Knoten wendet
           ihn überlappend an, erst nach dem Fenster, in dem er weitergibt. Diese Wartezeit rechnet das Modell nicht ein.</li>
         <li>Real dauert es eher länger: Kollisionen, Paketverluste und normaler Verkehr kommen dazu.</li>
       </ul>
@@ -290,7 +291,8 @@
           for that.</li>
         <li>Neighbour data exists only for repeaters whose neighbours somebody has fetched.</li>
         <li>The patch sizes come from the stock FakeTec with <code>-Os</code> from the release tags.</li>
-        <li>At 33 pages the compiler change does not fit behind the 74-page image (23 free). A node applies it
+        <li>At 33 pages the compiler change does not fit behind the 75-page image (22 free) <span class="m calc">calculated</span>. That is the image of 1.18.0-b3.
+          On 8 November 2026 it was 74 pages and 23 free. A node applies it
           overlapping, only after the window in which it passes it on. The model does not include that wait.</li>
         <li>Real runs tend to take longer: collisions, packet loss and normal traffic add to it.</li>
       </ul>
@@ -302,7 +304,7 @@
       <h2>Warum Patches klein bleiben</h2>
       <p>Das Ziel ist, dass alle dieselben signierten Images aus den Releases auf GitHub installieren. Dann erreicht ein Patch,
         eine Kampagne jeden Repeater mit FUOTA. Ein Knoten mit selbst gebautem Image bekommt keinen Patch von seinen Nachbarn.
-        Freigegeben ist kein Release <span class="m open">offen</span>.</p>
+        Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
       <p>Einen Compilerwechsel wie von 1.17.1 nach 1.18.0 gibt es mit FUOTA nur mit Absicht. Die FUOTA-Builds frieren Compiler
         und Bibliotheken ein.</p>
 
@@ -379,14 +381,19 @@
         <li>die Härtung nach dem externen Review</li>
         <li>der Schutz gegen wiederholte Fern-Befehle</li>
         <li>signierte Angebote</li>
+        <li>signierte Statusmeldungen</li>
       </ul>
-      <p>Die Testhilfe <code>fuota hang</code> ist nicht mehr dabei. Zusammen sind es 299.284 B, 74 Seiten und 43.580 B RAM, gemessen am 8. November 2026 beim ersten Bau des Release-Env
-        <span class="m meas">gemessen</span>. Am 20. Oktober 2026 waren es 270.080 B, 66 Seiten und 37.036 B RAM.</p>
+      <p>Die Testhilfe <code>fuota hang</code> ist nicht mehr dabei. Zusammen sind es im Image von 1.18.0-b3 306.104 B <span class="m meas">gemessen</span> und 75 Seiten <span class="m calc">berechnet</span>. Der RAM beträgt 45.768 B laut Bau-Bericht.
+        Das Image von 1.17.1-b2 hat 301.928 B und 74 Seiten. Beim ersten Bau des Release-Env am 8. November 2026 waren es 299.284 B <span class="m meas">gemessen</span>.
+        Das waren 74 Seiten und 43.580 B RAM. Am 20. Oktober 2026 waren es 270.080 B, 66 Seiten und 37.036 B RAM.</p>
       <p>Weil weniger eingebetteter Code mitwandert, sind die Patches 18 bis 39 % kleiner <span class="m meas">gemessen</span>.
         Wir haben die Release-Tags am Stock-FakeTec gebaut, einmal mit <code>-Ofast</code>, einmal mit <code>-Os</code>.
         Jeder Patch hat eine Rundreise bestanden: anwenden, dann das neue Image prüfen. Beide Werte
         stehen in der <a href="#aufwand">Tabelle oben</a>.</p>
-      <p>Hinter ein Image mit 74 Seiten passen Patches bis 23 Seiten. Größere wendet der Knoten überlappend an.</p>
+      <p>Hinter ein Image mit 75 Seiten passen Patches bis 22 Seiten <span class="m calc">berechnet</span>. Größere wendet der Knoten überlappend an.
+        Beim Image vom 8. November 2026 mit 74 Seiten waren es 23 Seiten.</p>
+      <p>Der erste echte Patch des Alpha-Tests führt von 1.17.1-b2 auf 1.18.0-b3. Er hat 28.630 B <span class="m meas">gemessen</span>. Das sind 163 Fragmente zu 176 B
+        und 7 Seiten <span class="m calc">berechnet</span>. Dazu kommen das Manifest (3 Fragmente) und die Prüftabelle (8 Fragmente) <span class="m calc">berechnet</span>. Das sind 174 Fragmente: Ein Knoten holte die Kampagne <code>dc7b7cb0</code> mit 174 Fragmenten <span class="m meas">gemessen</span>. Der Patch passt hinter das Image. Laut Bericht baute der Host-Test aus ihm ein Image, das Byte für Byte gleich ist.</p>
       <p>Das kleinere Image kostet etwas Rechenzeit. Auf einem FakeTec <span class="m meas">gemessen</span>:</p>
       <div class="tscroll"><table>
         <tr><th>Vorgang</th><th>mit -Os</th><th>mit -Ofast</th></tr>
@@ -407,8 +414,7 @@
     <div lang="en" class="prose">
       <h2>Why patches stay small</h2>
       <p>The goal is that everyone installs the same signed images from the releases on GitHub. Then one patch, one campaign
-        reaches every repeater with FUOTA. A node with a self-built image gets no patch from its neighbours. No release is
-        approved <span class="m open">open</span>.</p>
+        reaches every repeater with FUOTA. A node with a self-built image gets no patch from its neighbours. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>.</p>
       <p>A compiler change like 1.17.1 to 1.18.0 happens with FUOTA only on purpose. The FUOTA builds freeze compiler and
         libraries.</p>
 
@@ -483,14 +489,19 @@
         <li>the hardening after the external review</li>
         <li>the protection against replayed remote commands</li>
         <li>signed offers</li>
+        <li>signed status messages</li>
       </ul>
-      <p>The test helper <code>fuota hang</code> is no longer in it. Together that is 299,284 B, 74 pages and 43,580 B RAM, measured on 8 November 2026 at the first build of the release env
-        <span class="m meas">measured</span>. On 20 October 2026 it was 270,080 B, 66 pages and 37,036 B RAM.</p>
+      <p>The test helper <code>fuota hang</code> is no longer in it. Together the image of 1.18.0-b3 has 306,104 B <span class="m meas">measured</span> and 75 pages <span class="m calc">calculated</span>. The RAM is 45,768 B according to the build report.
+        The image of 1.17.1-b2 has 301,928 B and 74 pages. At the first build of the release env on 8 November 2026 it was 299,284 B <span class="m meas">measured</span>.
+        That was 74 pages and 43,580 B RAM. On 20 October 2026 it was 270,080 B, 66 pages and 37,036 B RAM.</p>
       <p>Because less inlined code moves along, patches are 18 to 39 % smaller <span class="m meas">measured</span>. We built
         the release tags on the stock FakeTec, once with <code>-Ofast</code>, once with <code>-Os</code>. Every patch passed a
         round trip: apply it, then check the new image. Both values are in the
         <a href="#aufwand">table above</a>.</p>
-      <p>Patches of up to 23 pages fit behind an image of 74 pages. A node applies larger ones overlapping.</p>
+      <p>Patches of up to 22 pages fit behind an image of 75 pages <span class="m calc">calculated</span>. A node applies larger ones overlapping.
+        For the image of 8 November 2026 with 74 pages it was 23 pages.</p>
+      <p>The first real patch of the alpha test goes from 1.17.1-b2 to 1.18.0-b3. It has 28,630 B <span class="m meas">measured</span>. That is 163 fragments of 176 B
+        and 7 pages <span class="m calc">calculated</span>. The manifest (3 fragments) and the check table (8 fragments) come on top <span class="m calc">calculated</span>. That makes 174 fragments: A node pulled the campaign <code>dc7b7cb0</code> with 174 fragments <span class="m meas">measured</span>. The patch fits behind the image. According to the report, a host test built a byte-identical image from it.</p>
       <p>The smaller image costs some compute time. On a FakeTec <span class="m meas">measured</span>:</p>
       <div class="tscroll"><table>
         <tr><th>Step</th><th>with -Os</th><th>with -Ofast</th></tr>
@@ -524,7 +535,11 @@
         oder der Patch vollständig ist. Ebenso, wenn ein Pull weitergeht oder das Anbieten startet, etwa nach einem
         Neustart. Danach verdoppelt es sich bis auf 2 Tage <span class="m code">im Code geprüft</span>. Diesen Zeitgeber nennt man Trickle (mehr dazu auf der Seite <a href="funk.html#zeiten">Funk</a>).</p><p>Das Angebot liegt in der zweiten Hälfte des Intervalls. Wer später dazukommt,
         hört darum spätestens nach rund 3 Tagen ein Angebot <span class="m code">im Code geprüft</span>. Im Leerlauf lagen im Testaufbau kurz nach dem Anwenden 877 s zwischen zwei Angeboten
-        <span class="m meas">gemessen</span>, weil das Intervall erst wächst. Am 9. November 2026 stand es beim Geber im Brettlauf der Release-Kampagne bei einem Neustart des Empfängers schon auf 5,7 Stunden (20.480 s) <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p></div>
+        <span class="m meas">gemessen</span>, weil das Intervall erst wächst. Am 9. November 2026 stand es beim Geber im Brettlauf der Release-Kampagne bei einem Neustart des Empfängers schon auf 5,7 Stunden (20.480 s) <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p>
+      <p>Ein frisch aktualisierter Knoten braucht für den Probestart ein angenommenes Paket und einen eigenen Sendevorgang. Beides muss innerhalb der Frist T
+        liegen. T liegt zwischen 15 Minuten und 6 Stunden <span class="m code">im Code geprüft</span>. Ohne einen Tag Laufzeit vor dem Update sind es 60 Minuten <span class="m code">im Code geprüft</span>.
+        Am 9. November 2026 war das Brett ohne anderen Verkehr. Ein Knoten empfing dort 18 Minuten lang kein Paket <span class="m meas">gemessen</span>.
+        Ob das im Mesh mit normalem Verkehr vorkommt, ist nicht geprüft <span class="m open">offen</span>.</p></div>
     </div>
     <div class="grid2" lang="en">
       <div class="kv"><h3>Downtime while applying</h3><p>Applying took about 1 min on the test image: 12 s build, 30 to 39 s swap, plus the start.
@@ -536,14 +551,18 @@
         doubles up to 2 days <span class="m code">checked in the code</span>. This timer is called Trickle (more on the <a href="funk.html#zeiten">On air</a> page).</p><p>The offer falls in the second half of the interval. A node that joins later
         therefore hears an offer within about 3 days <span class="m code">checked in the code</span>. On
         the bench 877 s passed between two offers when idle shortly after applying <span class="m meas">measured</span>, because the interval is still growing. On 9 November 2026, in the bench run of the release campaign, it already stood at 5.7 hours (20,480 s) at the provider when a receiver restarted <span class="m meas">measured</span>. This is intended: updates
-        may take days. When idle, a node offers only once per interval.</p></div>
+        may take days. When idle, a node offers only once per interval.</p>
+      <p>A freshly updated node needs one accepted packet and one send of its own for the test boot. Both must come within the deadline T.
+        T is between 15 minutes and 6 hours <span class="m code">checked in the code</span>. Without a day of uptime before the update it is 60 minutes <span class="m code">checked in the code</span>.
+        On 9 November 2026 the bench had no other traffic. A node received no packet there for 18 minutes <span class="m meas">measured</span>.
+        Whether this happens in a mesh with normal traffic has not been checked <span class="m open">open</span>.</p></div>
     </div>
   </section>
   </main>
   <p class="next"><a href="nebenslot.html"><span lang="de">Weiter: Nebenslot</span><span lang="en">Next: Side slot</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key. The release key was generated on 8 November 2026, and no release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

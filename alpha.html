@@ -66,7 +66,9 @@
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-1171-b2">alpha-1171-b2</a> mit den
         Basispaketen 1.17.1-b2 und
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-118-b3">alpha-118-b3</a> mit den
-        Seed-Paketen 1.18.0-b3. Der Test im Feld hat noch nicht stattgefunden <span class="m open">offen</span>.</p>
+        Seed-Paketen 1.18.0-b3. Im Alpha-Feld läuft seit dem 12. November 2026 die Kampagne <code>dc7b7cb0</code> (Build 3) mit zwei Tester-Knoten <span class="m field">im Feld beobachtet</span>.
+        Der Analyzer (Stand 13. November 2026) hört sie nur direkt (Zero-Hop) über einen Beobachter <span class="m field">im Feld beobachtet</span>.
+        Ohne Standard-Region gibt es keine Statusmeldung. Der Lauf ist nicht vollständig <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
       <h1>Alpha test: repeaters that update themselves</h1>
@@ -76,7 +78,9 @@
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-1171-b2">alpha-1171-b2</a> with the
         base packages 1.17.1-b2 and
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/alpha-118-b3">alpha-118-b3</a> with the
-        seed packages 1.18.0-b3. The field test has not happened yet <span class="m open">open</span>.</p>
+        seed packages 1.18.0-b3. The field campaign <code>dc7b7cb0</code> (build 3) has run since 12 November 2026. It has two tester nodes <span class="m field">observed in the field</span>.
+        The analyzer (as of 13 November 2026) hears it only directly (zero-hop) through one observer <span class="m field">observed in the field</span>.
+        Without a default region there is no status message. The run is not complete <span class="m open">open</span>.</p>
     </div>
   </header>
 
@@ -121,7 +125,7 @@
           <span class="m code">im Code geprüft</span>. 1.18.0-b3 erlaubt 0 und 60 bis 510 Minuten
           <span class="m code">im Code geprüft</span>. Der Wert 240 gilt in beiden Versionen.
           1.17.1-b2 startet mit einem Intervall unter 60 Minuten und setzt es beim ersten Speichern einer Einstellung auf
-          0. Dann sendet der Knoten keine Adverts mehr und erscheint nicht im Analyzer. Der Seed 1.18.0-b3 startet bei einer
+          0 <span class="m code">im Code geprüft</span>. Dann sendet der Knoten keine Adverts mehr und erscheint nicht im Analyzer. Der Seed 1.18.0-b3 startet bei einer
           Neuinstallation mit 360 Minuten <span class="m code">im Code geprüft</span>.</li>
         <li>Repeat an lassen: <code>get repeat</code> zeigt <code>&gt; on</code>, ab Werk ist es an. Mit
           <code>set repeat on</code> schaltest du es wieder ein, die Antwort ist <code>OK - repeat is now ON</code>. Mit
@@ -168,7 +172,7 @@
         <li>Advert interval: <code>set advert.interval 240</code>. 1.17.1-b2 allows 0 (off) and 60 to 240 minutes
           <span class="m code">checked in the code</span>. 1.18.0-b3 allows 0 and 60 to 510 minutes
           <span class="m code">checked in the code</span>. The value 240 is valid in both versions.
-          1.17.1-b2 starts with an interval under 60 minutes and sets it to 0 when you first save a setting. Then the node sends no
+          1.17.1-b2 starts with an interval under 60 minutes and sets it to 0 when you first save a setting <span class="m code">checked in the code</span>. Then the node sends no
           adverts and does not show up in the analyzer. The seed 1.18.0-b3 starts at 360 minutes on a new install
           <span class="m code">checked in the code</span>.</li>
         <li>Keep repeat on: <code>get repeat</code> shows <code>&gt; on</code>, it is on from the factory. With
@@ -189,7 +193,7 @@
         <code>region default hansemesh</code> ein. Der Knoten antwortet <code>default scope is now hansemesh</code>.
         Das Beispiel gilt für HanseMesh. Regionsnamen sind Freitext und je Netz verschieden. Nimm den Namen deines Netzes.
         Die Region bleibt gespeichert, auch über einen Neustart <span class="m meas">gemessen</span>.</p>
-      <p>Ohne Default-Region zeigt der Analyzer keinen Repeater mit Statusmeldung. Der Knoten verwirft seine
+      <p>Ohne Standard-Region zeigt der Analyzer keinen Repeater mit Statusmeldung. Der Knoten verwirft seine
         Statusmeldungen (<code>fuota: status E3 not sent, no default region</code>). Seine Update-Angebote gehen nur an
         direkte Nachbarn (<code>fuota info</code>: <code>no default region: not flooded</code>)
         <span class="m meas">gemessen</span>.</p>
@@ -222,9 +226,9 @@
         <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a>. Sie erscheint dort erst, wenn ein
         Observer (ein Knoten, der mithört und meldet) Angebote oder Daten hört. Steht dort keine Kampagne, gilt die Anzeige am
         Gerät.</p>
-      <p>Der Analyzer zeigt die Alpha-Kampagne <span class="m meas">gemessen</span>. Du findest sie auf der Seite
+      <p>Der Analyzer zeigt die Alpha-Kampagne <span class="m field">im Feld beobachtet</span>. Du findest sie auf der Seite
         FUOTA-Kampagnen im Tab Aktivität. Der Tab Rollout zeigt nur Repeater, die Statusmeldungen senden
-        <span class="m meas">gemessen</span>. Das sind nur Knoten mit Default-Region (Abschnitt Region setzen).</p>
+        <span class="m field">im Feld beobachtet</span>. Das sind nur Knoten mit Standard-Region (Abschnitt Region setzen).</p>
       <p>Der Weg zwischen Seed und Empfänger darf über normale MeshCore-Repeater (Stock) führen. Die Angebote laufen als
         gewöhnliche Gruppen-Daten-Flut, die Stock-Repeater nach Region weiterleiten <span class="m code">im Code geprüft</span>.
         Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>. Im Feld ist
@@ -232,7 +236,9 @@
       <p>Zum Probestart: Ein frisch aktualisierter Knoten bestätigt die neue Version erst, wenn er ein Funkpaket hört und
         selbst eins sendet. Dafür hat er je nach Knoten zwischen 15 Minuten und 6 Stunden Zeit. Hört er bis dahin nichts,
         startet er neu. Nach drei solchen Starts kehrt er zur alten Version zurück. Einen neuen Versuch gibt es frühestens
-        nach einem Tag. Teste deshalb dort, wo dein Knoten andere Knoten hört.</p>
+        nach einem Tag <span class="m code">im Code geprüft</span>. Teste deshalb dort, wo dein Knoten andere Knoten hört.</p>
+      <p>Zur Dauer: Der Release-Takt hat 0,3 % Sendeanteil. Mit ihm brauchte ein Knoten 12,6 h für 174 Fragmente
+        <span class="m meas">gemessen</span>. Das war ein einzelner Lauf am Testaufbau.</p>
     </div>
     <div lang="en" class="prose">
       <p>On the device, <code>fuota info</code> and <code>fuota status</code> show the state in the USB console. After
@@ -241,17 +247,19 @@
         <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. It appears there only once an
         observer (a node that listens and reports) hears offers or data. If no campaign shows, trust the display on the
         device.</p>
-      <p>The analyzer shows the alpha campaign <span class="m meas">measured</span>. You find it on the FUOTA campaigns
+      <p>The analyzer shows the alpha campaign <span class="m field">observed in the field</span>. You find it on the FUOTA campaigns
         page, in the Activity tab. The Rollout tab shows only repeaters that send status messages
-        <span class="m meas">measured</span>. Those are only nodes with a default region (section Setting the region).</p>
+        <span class="m field">observed in the field</span>. Those are only nodes with a default region (section Setting the region).</p>
       <p>The path between seed and receiver may run through normal MeshCore repeaters (stock). The offers travel as
         ordinary group data floods, which stock repeaters forward by region <span class="m code">checked in the code</span>.
         On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>. In the field
         this is <span class="m open">open</span>. So report whether stock repeaters lay in between.</p>
       <p>On the test boot: a freshly updated node only confirms the new version once it hears a radio packet and sends
         one itself. Depending on the node, it has between 15 minutes and 6 hours for that. If it hears nothing by then,
-        it restarts. After three such starts it returns to the old version. It tries again after one day at the earliest.
+        it restarts. After three such starts it returns to the old version. It tries again after one day at the earliest <span class="m code">checked in the code</span>.
         So test where your node hears other nodes.</p>
+      <p>On the duration: the release pace has a 0.3 % send share. At that pace a node needed 12.6 h for 174 fragments
+        <span class="m meas">measured</span>. That was a single run on the bench.</p>
     </div>
   </section>
 
@@ -325,6 +333,13 @@
         (Abschnitt „Ohne USB“ unten).</p>
       <p>Die Alpha-Pakete haben keinen Display-Treiber. Ein vorhandenes Display, zum Beispiel am Heltec T114, zeigt
         nichts an. Das ist so vorgesehen <span class="m code">im Code geprüft</span>.</p>
+      <p>Die Pakete tragen ein gemeinsames Image für 18 Boards. Sechs davon sind am Gerät gesehen: FakeTec, SenseCAP P1,
+        RAK4631, T114, Xiao und T096. Zwölf sind nur gebaut und am Rechner geprüft, am Gerät nicht bestätigt
+        <span class="m open">offen</span>.</p>
+      <p>Xiao und T096 liefen am 11. November 2026 am Testaufbau bei SF7 und 1 dBm. Beide Boards wurden am Deskriptor
+        erkannt, der Funk lief <span class="m meas">gemessen</span>. Zero-Hop-Pakete gingen mit einem FakeTec in beide
+        Richtungen <span class="m meas">gemessen</span>. Nicht geprüft sind FUOTA-Pull über Funk, LED und Taste, serielles
+        DFU und Rückfall <span class="m open">offen</span>.</p>
       <p>Das Seed-Paket heißt wie das Basispaket, mit <code>1.18.0-b3</code> statt <code>1.17.1-b2</code> und <code>seed</code>
         statt <code>base</code>. Für 1.18.0-b3 gibt es nur Seed-Pakete, auch für eine spätere Installation von Hand: Sie enthalten dieselbe Firmware und zusätzlich die Kampagne. Die Prüfsummen stehen in <code>SHA256SUMS</code> des Releases alpha-118-b3 und unten in der zweiten Tabelle.</p>
     </div>
@@ -335,6 +350,13 @@
         (section “Without USB” below).</p>
       <p>The alpha packages have no display driver. A display that is present, for example on the Heltec T114, shows
         nothing. That is intended <span class="m code">checked in the code</span>.</p>
+      <p>The packages carry one shared image for 18 boards. Six were seen on a device: FakeTec, SenseCAP P1,
+        RAK4631, T114, Xiao and T096. Twelve are only built and checked on the host, not confirmed on a device
+        <span class="m open">open</span>.</p>
+      <p>Xiao and T096 ran on the bench on 11 November 2026. They used SF7 and 1 dBm. Both boards were recognised by their
+        descriptor, and the radio ran <span class="m meas">measured</span>. Zero-hop packets went in both directions
+        with a FakeTec <span class="m meas">measured</span>. Not tested: FUOTA pull over the air, LED and button,
+        serial DFU and revert <span class="m open">open</span>.</p>
       <p>The seed package is named like the base package, with <code>1.18.0-b3</code> instead of <code>1.17.1-b2</code> and
         <code>seed</code> instead of <code>base</code>. For 1.18.0-b3 there are only seed packages, also for a later manual install: they contain the same firmware plus the campaign. The checksums are in <code>SHA256SUMS</code> of the release alpha-118-b3 and in the second table below.</p>
     </div>
@@ -518,8 +540,8 @@
   </section>
   </main>
   <footer>
-    <span lang="de">Alpha-Test auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht. Der Test läuft im öffentlichen Mesh mit Testrepeatern, die du dafür entbehren kannst. Ein Release ist nicht freigegeben.</span>
-    <span lang="en">Alpha test based on MeshCore 1.18.0, nothing of it submitted upstream. The test runs in the public mesh with test repeaters that you can spare. No release is approved.</span>
+    <span lang="de">Alpha-Test auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht. Der Test läuft im öffentlichen Mesh mit Testrepeatern, die du dafür entbehren kannst. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht.</span>
+    <span lang="en">Alpha test based on MeshCore 1.18.0, nothing of it submitted upstream. The test runs in the public mesh with test repeaters that you can spare. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
     <span lang="en">Text and figures on this page: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded: it is not licensed under CC BY 4.0.</span>
   </footer>

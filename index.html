@@ -20,7 +20,7 @@
 (function () {
   // before the first paint: forward old section links of the single page, then pick the language
   // (#de / #en, saved choice, else the browser language) so the other language never flashes
-  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-linien": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "analyzer": "funk.html", "weiter": "funk.html", "filter": "funk.html", "powersaving": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html", "alpha-ablauf": "alpha.html", "alpha-region": "alpha.html", "alpha-beobachten": "alpha.html", "alpha-sieben-tage": "alpha.html", "alpha-melden": "alpha.html", "alpha-pakete": "alpha.html", "alpha-ota": "alpha.html"}, h = location.hash.slice(1);
+  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-linien": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "status": "funk.html", "analyzer": "funk.html", "weiter": "funk.html", "filter": "funk.html", "powersaving": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html", "alpha-ablauf": "alpha.html", "alpha-region": "alpha.html", "alpha-beobachten": "alpha.html", "alpha-sieben-tage": "alpha.html", "alpha-melden": "alpha.html", "alpha-pakete": "alpha.html", "alpha-ota": "alpha.html"}, h = location.hash.slice(1);
   if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
   var l = (h === "de" || h === "en") ? h : null;
   if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
@@ -75,7 +75,7 @@
     <div lang="de">
       <div class="stats">
         <div class="stat"><b>10.076 B</b><span>Patch für ein kleines Release (1.17.0 nach 1.17.1) <span class="m meas">gemessen</span></span></div>
-        <div class="stat"><b>60</b><span>Datenpakete an einen Nachbarn für dieses Release <span class="m calc">berechnet</span></span></div>
+        <div class="stat"><b>63</b><span>Datenpakete an einen Nachbarn für dieses Release <span class="m calc">berechnet</span></span></div>
         <div class="stat"><b>0,3 %</b><span>Airtime-Budget je Knoten, im Release-Build fest begrenzt <span class="m code">im Code geprüft</span></span></div>
         <div class="stat"><b>1.400 bis 1.800</b><span>Datenpakete für 152 verbundene Repeater um Hamburg <span class="m calc">berechnet</span></span></div>
       </div>
@@ -83,7 +83,7 @@
         <h2 class="intro-h">So funktioniert es</h2>
         <ol class="flow">
           <li><b>Ein Release wird signiert</b><span>Der Release-Schlüssel signiert jedes Release offline. Ohne diese
-            Signatur installiert kein Repeater etwas. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Die meisten hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel. Ein Release ist nicht freigegeben <span class="m open">offen</span>.</span></li>
+            Signatur installiert kein Repeater etwas. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Die meisten hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel. Seit dem 11. November 2026 läuft ein <a href="alpha.html">Alpha-Test</a> mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>. Im Feld läuft die Kampagne seit dem 12. November 2026 <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span></li>
           <li><b>Ein Betreiber installiert es</b><span>Ein Betreiber installiert das neueste signierte Release-Paket
             per USB oder BLE-OTA auf seinen Repeater. Dieser Repeater ist dann der Seed: Er bietet das Update seinen
             direkten Nachbarn an. Das erste Image bekommt ein Knoten per USB (Basispaket 1.17.1), spätere Updates per Funk (auf 1.18.0).
@@ -109,8 +109,8 @@
         </div>
       </div>
       <div class="meta">
-        <span class="tag">Stand 6. November 2026</span>
-        <span class="tag">Proof of Concept am Testaufbau</span>
+        <span class="tag">Stand 13. November 2026</span>
+        <span class="tag">Proof of Concept, Alpha mit Testern</span>
         <span class="tag">Basis MeshCore 1.18.0</span>
         <span class="tag">Quellcode noch nicht öffentlich</span>
       </div>
@@ -122,7 +122,7 @@
     <div lang="en">
       <div class="stats">
         <div class="stat"><b>10,076 B</b><span>patch for a small release (1.17.0 to 1.17.1) <span class="m meas">measured</span></span></div>
-        <div class="stat"><b>60</b><span>data packets to one neighbour for this release <span class="m calc">calculated</span></span></div>
+        <div class="stat"><b>63</b><span>data packets to one neighbour for this release <span class="m calc">calculated</span></span></div>
         <div class="stat"><b>0.3 %</b><span>airtime budget per node, hard limit in the release build <span class="m code">checked in the code</span></span></div>
         <div class="stat"><b>1,400 to 1,800</b><span>data packets for 152 connected repeaters around Hamburg <span class="m calc">calculated</span></span></div>
       </div>
@@ -130,7 +130,7 @@
         <h2 class="intro-h">How it works</h2>
         <ol class="flow">
           <li><b>A release is signed</b><span>The release key signs every release offline. Without that signature no
-            repeater installs anything. The release key was generated on 8 November 2026. Most of the tests described here ran with the test key, the proof run of 9 November 2026 with the release key. No release is approved <span class="m open">open</span>.</span></li>
+            repeater installs anything. The release key was generated on 8 November 2026. Most of the tests described here ran with the test key, the proof run of 9 November 2026 with the release key. An <a href="alpha.html">alpha test</a> with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>. The field campaign has run since 12 November 2026 <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span></li>
           <li><b>One operator installs it</b><span>An operator installs the latest signed release package by USB or BLE OTA. That repeater is then the seed: it offers the update to its direct
             neighbours. A node gets its first image by USB (base package 1.17.1) and later updates over the air (to 1.18.0).
             The release structure is described under <a href="ablauf.html#release-linien">How it runs</a>.</span></li>
@@ -153,8 +153,8 @@
         </div>
       </div>
       <div class="meta">
-        <span class="tag">As of 6 November 2026</span>
-        <span class="tag">Proof of concept on the bench</span>
+        <span class="tag">As of 13 November 2026</span>
+        <span class="tag">Proof of concept, alpha with testers</span>
         <span class="tag">Based on MeshCore 1.18.0</span>
         <span class="tag">Source code not public yet</span>
       </div>
@@ -178,8 +178,8 @@
   </main>
   <p class="next"><a href="ablauf.html"><span lang="de">Weiter: Ablauf</span><span lang="en">Next: How it runs</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt, ein Release ist nicht freigegeben. Testverkehr nur im Testaufbau (SF7, 1 dBm), nie im Mesh.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key. The release key was generated on 8 November 2026, and no release is approved. Test traffic only on the bench (SF7, 1 dBm), never in the mesh.</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
