@@ -422,66 +422,83 @@
     <div lang="de" class="prose">
       <p>Kommst du an dein Gerät nicht per USB heran, nimm die OTA-ZIP-Datei. Sie bringt dieselbe Firmware wie die UF2
         per Bluetooth auf das Gerät. Jedes Release führt 18 ZIP-Dateien.</p>
-      <p>Am Gerät lief nur der Seeed SenseCAP Solar P1 (S140 7.3.0), mit Basis-ZIP und Seed-ZIP
-        <span class="m meas">gemessen</span>. Für Boards mit S140 6.1.1 ist der Weg nicht belegt
-        <span class="m open">offen</span>. Beim FakeTec blieb die Übertragung nach Init-Paket und Start stehen. Die Ursache
-        ist offen. Mit dem Handy ist der Weg ungetestet <span class="m open">offen</span>. Alle anderen Boards liefen nie
-        per Bluetooth. Hast du USB, flashe lieber die UF2.</p>
+      <p>Am Gerät liefen zwei Boards, je mit Basis-ZIP und Seed-ZIP, je ein Lauf <span class="m meas">gemessen</span>.
+        Es sind der Seeed SenseCAP Solar P1 (S140 7.3.0) und ein FakeTec (S140 6.1.1, Bootloader
+        <code>0.9.2-OTAFIX2.3-BP1.4</code> laut <code>INFO_UF2.TXT</code>).</p>
+      <p>Mit einem älteren Bootloader (OTAFIX 1.x,
+        DFU-Name <code>AdaDFU</code>) ist der Weg nicht belegt <span class="m open">offen</span>. Ein FakeTec, das als
+        <code>AdaDFU</code> warb, verlor bei schwachem Signal Pakete. Nach dem Aktivieren meldete es sich weder am USB noch
+        per Bluetooth zurück. Die Ursache ist offen. Der Name passt zu OTAFIX 1.x, die Version selbst ist nicht gemessen.
+        Mit dem Handy ist der Weg ungetestet <span class="m open">offen</span>. Die übrigen Boards liefen nie per
+        Bluetooth.</p>
+      <p>Hast du USB, flashe lieber die UF2. Lies vor dem Update die Zeile in <code>INFO_UF2.TXT</code>, die mit
+        <code>UF2 Bootloader</code> beginnt. Steht dort OTAFIX 1.x, nimm die UF2.</p>
       <ol>
         <li>Nimm den Namen der UF2 ohne <code>.uf2</code>, dazu <code>-ota.zip</code>. Die Basis-ZIPs liegen im Release
           <code>alpha-1171-b2</code>, die Seed-ZIPs im Release <code>alpha-118-b3</code>.</li>
         <li>Vergleiche die Prüfsumme mit <code>SHA256SUMS-ota</code> desselben Releases. <code>SHA256SUMS</code> gilt nur
           für die UF2.</li>
-        <li>Lass Funkwerte und Region, wie sie sind. Beim P1 blieben sie nach dem Update gleich
+        <li>Lass Funkwerte und Region, wie sie sind. Beim P1 und beim FakeTec blieben sie nach dem Update gleich
           <span class="m meas">gemessen</span>.</li>
         <li>Schick dem Repeater <code>start ota</code>. Er antwortet <code>OK - BLE DFU of the bootloader in 5 s</code>
           und meldet, dass er bis zu einem Update oder Stromwechsel offline bleibt <span class="m meas">gemessen</span>.</li>
-        <li>Nach 5 s wirbt er als DFU-Gerät, am P1 als <code>SCAP_DFU</code>. Bis das Update fertig ist, arbeitet er nicht
-          als Repeater.</li>
+        <li>Nach 5 s wirbt er als DFU-Gerät, am P1 als <code>SCAP_DFU</code>, am FakeTec mit OTAFIX 2.3 als
+          <code>PROM_DFU</code>. Bis das Update fertig ist, arbeitet er nicht als Repeater.</li>
         <li>Übertrage die ZIP per Bluetooth. Am Mac lief das mit einem Projektskript, das nicht zu den Releases gehört.
           Auf dem Handy wählst du in nRF Connect das DFU-Gerät und die ZIP <span class="m open">offen</span>.</li>
-        <li>Nach etwa 15 s startet der Knoten von selbst. Prüfe <code>ver</code>, <code>fuota status</code> und
+        <li>Danach startet der Knoten von selbst, am P1 nach etwa 15 s, am FakeTec nach höchstens 8 s
+          <span class="m meas">gemessen</span>. Prüfe <code>ver</code>, <code>fuota status</code> und
           <code>fuota info</code>.</li>
       </ol>
-      <p>Am P1 dauerte die Übertragung 134,6 s (Basis) und 192,2 s (Seed) <span class="m meas">gemessen</span>. Nach der
-        Seed-ZIP zeigte <code>fuota info</code> ohne weiteren Befehl <code>passing on update dc7b7cb0</code>
-        <span class="m meas">gemessen</span>.</p>
+      <p>Am P1 dauerte die Übertragung 134,6 s (Basis) und 192,2 s (Seed), am FakeTec 199,5 s (Basis) und 280,6 s (Seed)
+        <span class="m meas">gemessen</span>. Nach der Seed-ZIP zeigte <code>fuota info</code> an beiden Boards ohne
+        weiteren Befehl <code>passing on update dc7b7cb0</code> <span class="m meas">gemessen</span>.</p>
       <p>Nur ein DFU-Gerät darf in der Nähe sein, sonst überschreibst du vielleicht ein fremdes.
-        Bleib dicht am Gerät: Der P1 lief bei -72 dBm, das FakeTec scheiterte bei -80 bis -92 dBm. Der Bootloader sollte
-        0.9.2-OTAFIX2.1 oder neuer sein. Bleibt das Gerät hängen, trenne den Strom und halte bei S140 6.1.1 den
-        USB-Zugang bereit.</p>
+        Bleib dicht am Gerät. Beim P1 lag das Signal bei -72 dBm, beim FakeTec mit OTAFIX 2.3 im Scan im Mittel bei -78 und
+        -76 dBm. Das FakeTec mit <code>AdaDFU</code> lag bei -87 bis -93 dBm und verlor Pakete. Ob Signal oder Bootloader
+        der Grund war, ist nicht getrennt <span class="m open">offen</span>. Bleibt das Gerät hängen, trenne den Strom. Dem
+        FakeTec mit <code>AdaDFU</code> half das nicht. Halte darum den USB-Zugang bereit.</p>
       <p>Die ausführliche Fassung steht in der <code>tester-anleitung.md</code> des Releases, Abschnitt 3a.</p>
     </div>
     <div lang="en" class="prose">
       <p>If you cannot reach your device over USB, use the OTA ZIP file. It puts the same firmware as the UF2 on the
         device over Bluetooth. Each release carries 18 ZIP files.</p>
-      <p>Only the Seeed SenseCAP Solar P1 (S140 7.3.0) has run on a device, with the base ZIP and the seed ZIP
-        <span class="m meas">measured</span>. For boards with S140 6.1.1 the way is not proven
-        <span class="m open">open</span>. On the FakeTec the transfer stalled after the init packet and the start. The
-        cause is open. From a phone the way is untested <span class="m open">open</span>. All other boards never ran
-        over Bluetooth. If you have USB, flash the UF2 instead.</p>
+      <p>Two boards have run on a device, each with the base ZIP and the seed ZIP, one run each
+        <span class="m meas">measured</span>. They are the Seeed SenseCAP Solar P1 (S140 7.3.0) and a FakeTec (S140 6.1.1,
+        bootloader <code>0.9.2-OTAFIX2.3-BP1.4</code> according to <code>INFO_UF2.TXT</code>).</p>
+      <p>With an older bootloader (OTAFIX 1.x, DFU name
+        <code>AdaDFU</code>) the way is not proven <span class="m open">open</span>. A FakeTec that advertised as
+        <code>AdaDFU</code> lost packets at a weak signal. After the activation it did not come back over USB or
+        Bluetooth. The cause is open. The name fits OTAFIX 1.x, the version itself is not measured. From a phone the way
+        is untested <span class="m open">open</span>. The remaining boards never ran over Bluetooth.</p>
+      <p>If you have USB, flash the UF2 instead. Before the update, read the line in <code>INFO_UF2.TXT</code> that starts
+        with <code>UF2 Bootloader</code>. If it shows OTAFIX 1.x, use the UF2.</p>
       <ol>
         <li>Take the name of the UF2 without <code>.uf2</code>, plus <code>-ota.zip</code>. The base ZIPs are in the
           release <code>alpha-1171-b2</code>, the seed ZIPs in the release <code>alpha-118-b3</code>.</li>
         <li>Compare the checksum with <code>SHA256SUMS-ota</code> of the same release. <code>SHA256SUMS</code> applies to
           the UF2 only.</li>
-        <li>Leave radio values and region as they are. On the P1 they stayed the same after the update
+        <li>Leave radio values and region as they are. On the P1 and on the FakeTec they stayed the same after the update
           <span class="m meas">measured</span>.</li>
         <li>Send the repeater <code>start ota</code>. It replies <code>OK - BLE DFU of the bootloader in 5 s</code> and
           says it stays offline until an update or a power cycle <span class="m meas">measured</span>.</li>
-        <li>After 5 s it advertises as a DFU device, on the P1 as <code>SCAP_DFU</code>. Until the update is done, it does
-          not work as a repeater.</li>
+        <li>After 5 s it advertises as a DFU device, on the P1 as <code>SCAP_DFU</code>, on the FakeTec with OTAFIX 2.3 as
+          <code>PROM_DFU</code>. Until the update is done, it does not work as a repeater.</li>
         <li>Transfer the ZIP over Bluetooth. On the Mac this ran with a project script that is not part of the releases.
           On a phone you pick the DFU device and the ZIP in nRF Connect <span class="m open">open</span>.</li>
-        <li>After about 15 s the node starts by itself. Check <code>ver</code>, <code>fuota status</code> and
+        <li>Then the node starts by itself, on the P1 after about 15 s, on the FakeTec after 8 s at most
+          <span class="m meas">measured</span>. Check <code>ver</code>, <code>fuota status</code> and
           <code>fuota info</code>.</li>
       </ol>
-      <p>On the P1 the transfer took 134.6 s (base) and 192.2 s (seed) <span class="m meas">measured</span>. After the
-        seed ZIP, <code>fuota info</code> showed <code>passing on update dc7b7cb0</code> without any further command
+      <p>On the P1 the transfer took 134.6 s (base) and 192.2 s (seed), on the FakeTec 199.5 s (base) and 280.6 s (seed)
+        <span class="m meas">measured</span>. After the seed ZIP, <code>fuota info</code> showed
+        <code>passing on update dc7b7cb0</code> on both boards without any further command
         <span class="m meas">measured</span>.</p>
       <p>Only one DFU device may be nearby, or you may overwrite someone else's. Stay close to the
-        device: the P1 ran at -72 dBm, the FakeTec failed at -80 to -92 dBm. The bootloader should be 0.9.2-OTAFIX2.1 or
-        newer. If the device gets stuck, cut the power and keep USB access ready for S140 6.1.1.</p>
+        device. On the P1 the signal was -72 dBm, on the FakeTec with OTAFIX 2.3 the scan averaged -78 and -76 dBm. The
+        FakeTec with <code>AdaDFU</code> sat at -87 to -93 dBm and lost packets. Whether the signal or the bootloader was
+        the reason is not separated <span class="m open">open</span>. If the device gets stuck, cut the power. That did not
+        help the FakeTec with <code>AdaDFU</code>. So keep USB access ready.</p>
       <p>The detailed version is in <code>tester-anleitung.md</code> of the release, section 3a.</p>
     </div>
   </section>
