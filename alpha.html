@@ -111,7 +111,9 @@
           Netzes. Die Antwort ist <code>OK - reboot to apply</code>, danach startest du den Knoten neu
           <span class="m code">im Code geprüft</span>.</li>
         <li>Region: siehe Abschnitt Region setzen.</li>
-        <li>Advert-Intervall: <code>set advert.interval 240</code>. Erlaubt sind 0 (aus) und 60 bis 240 Minuten.
+        <li>Advert-Intervall: <code>set advert.interval 240</code>. 1.17.1-b2 erlaubt 0 (aus) und 60 bis 240 Minuten
+          <span class="m code">im Code geprüft</span>. 1.18.0-b3 erlaubt 0 und 60 bis 510 Minuten
+          <span class="m code">im Code geprüft</span>. Der Wert 240 gilt in beiden Versionen.
           1.17.1-b2 startet mit einem Intervall unter 60 Minuten und setzt es beim ersten Speichern einer Einstellung auf
           0. Dann sendet der Knoten keine Adverts mehr und erscheint nicht im Analyzer. Der Seed 1.18.0-b3 startet bei einer
           Neuinstallation mit 360 Minuten <span class="m code">im Code geprüft</span>.</li>
@@ -151,8 +153,10 @@
           network. The answer is <code>OK - reboot to apply</code>, then you restart the node
           <span class="m code">checked in the code</span>.</li>
         <li>Region: see the section Setting the region.</li>
-        <li>Advert interval: <code>set advert.interval 240</code>. 0 (off) and 60 to 240 minutes are allowed. 1.17.1-b2
-          starts with an interval under 60 minutes and sets it to 0 when you first save a setting. Then the node sends no
+        <li>Advert interval: <code>set advert.interval 240</code>. 1.17.1-b2 allows 0 (off) and 60 to 240 minutes
+          <span class="m code">checked in the code</span>. 1.18.0-b3 allows 0 and 60 to 510 minutes
+          <span class="m code">checked in the code</span>. The value 240 is valid in both versions.
+          1.17.1-b2 starts with an interval under 60 minutes and sets it to 0 when you first save a setting. Then the node sends no
           adverts and does not show up in the analyzer. The seed 1.18.0-b3 starts at 360 minutes on a new install
           <span class="m code">checked in the code</span>.</li>
         <li>Keep repeat on: <code>get repeat</code> shows <code>&gt; on</code>, it is on from the factory. With
