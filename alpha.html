@@ -99,6 +99,12 @@
           Admin-Zugang aus der Ferne. Der Knoten antwortet mit <code>password now:</code> und dem Passwort
           <span class="m code">im Code geprüft</span>. Mit einem Release-Image am Gerät ist das noch nicht gemessen
           <span class="m open">offen</span>.</li>
+        <li>Das Passwort <code>password</code> geht nicht, ein leeres auch nicht. Ein Release-Image lehnt beide beim
+          Admin-Login ab, auch wenn alte gespeicherte Einstellungen sie enthalten
+          <span class="m code">im Code geprüft</span>. Wer <code>password password</code> tippt, bekommt die Zeile
+          <code>Err - no admin login with an empty password (in a release: nor with the stock default)</code>
+          <span class="m code">im Code geprüft</span>. Wähle ein anderes Passwort. Mit einem Release-Image am Gerät ist
+          das noch nicht gemessen <span class="m open">offen</span>.</li>
         <li>GPS-Position: <code>set lat &lt;Breite&gt;</code> und <code>set lon &lt;Länge&gt;</code>. Die Antwort ist
           jeweils <code>OK</code> <span class="m code">im Code geprüft</span>.</li>
         <li>Name mit der Startversion: <code>set name FUOTA-Test 1.17</code> auf den Repeatern mit 1.17.1-b2,
@@ -141,6 +147,12 @@
           from afar. The node answers with <code>password now:</code> and the password
           <span class="m code">checked in the code</span>. With a release image on a device this is not yet measured
           <span class="m open">open</span>.</li>
+        <li>The password <code>password</code> does not work, and neither does an empty one. A release image refuses both
+          at the admin login, even when old saved settings hold them
+          <span class="m code">checked in the code</span>. If you type <code>password password</code>, you get the line
+          <code>Err - no admin login with an empty password (in a release: nor with the stock default)</code>
+          <span class="m code">checked in the code</span>. Choose another password. With a release image on a device this
+          is not yet measured <span class="m open">open</span>.</li>
         <li>GPS position: <code>set lat &lt;latitude&gt;</code> and <code>set lon &lt;longitude&gt;</code>. Each answer is
           <code>OK</code> <span class="m code">checked in the code</span>.</li>
         <li>Name with the starting version: <code>set name FUOTA-Test 1.17</code> on the repeaters with 1.17.1-b2,
@@ -311,6 +323,8 @@
         Das SoftDevice im Dateinamen muss zur Zeile <code>SoftDevice:</code> in <code>INFO_UF2.TXT</code> deines Geräts passen.
         Zum Flashen drückst du zweimal Reset und ziehst die Datei auf das Laufwerk. Ohne USB-Zugang geht es per Bluetooth
         (Abschnitt „Ohne USB“ unten).</p>
+      <p>Die Alpha-Pakete haben keinen Display-Treiber. Ein vorhandenes Display, zum Beispiel am Heltec T114, zeigt
+        nichts an. Das ist so vorgesehen <span class="m code">im Code geprüft</span>.</p>
       <p>Das Seed-Paket heißt wie das Basispaket, mit <code>1.18.0-b3</code> statt <code>1.17.1-b2</code> und <code>seed</code>
         statt <code>base</code>. Für 1.18.0-b3 gibt es nur Seed-Pakete, auch für eine spätere Installation von Hand: Sie enthalten dieselbe Firmware und zusätzlich die Kampagne. Die Prüfsummen stehen in <code>SHA256SUMS</code> des Releases alpha-118-b3 und unten in der zweiten Tabelle.</p>
     </div>
@@ -319,6 +333,8 @@
         The SoftDevice in the file name must match the <code>SoftDevice:</code> line in <code>INFO_UF2.TXT</code> of your device.
         To flash, press reset twice and drag the file onto the drive. Without USB access it works over Bluetooth
         (section “Without USB” below).</p>
+      <p>The alpha packages have no display driver. A display that is present, for example on the Heltec T114, shows
+        nothing. That is intended <span class="m code">checked in the code</span>.</p>
       <p>The seed package is named like the base package, with <code>1.18.0-b3</code> instead of <code>1.17.1-b2</code> and
         <code>seed</code> instead of <code>base</code>. For 1.18.0-b3 there are only seed packages, also for a later manual install: they contain the same firmware plus the campaign. The checksums are in <code>SHA256SUMS</code> of the release alpha-118-b3 and in the second table below.</p>
     </div>
