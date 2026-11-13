@@ -92,6 +92,13 @@
         <li>Die anderen holen das Update per Funk, prüfen die Signatur, starten zur Probe und bestätigen. Du tust nichts.</li>
         <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
       </ol>
+      <p>Gib jedem Testrepeater einen Namen mit der Version, mit der er startet. Damit siehst du im Analyzer, welcher
+        Repeater welcher ist. Tippe in der USB-Konsole auf den Repeatern mit 1.17.1-b2
+        <code>set name FUOTA-Test 1.17</code> ein. Auf dem Seed tippst du <code>set name FUOTA-Test 1.18</code>. Der Knoten
+        antwortet <code>OK</code> <span class="m code">im Code geprüft</span>. Der Name geht mit dem nächsten Advert
+        raus, <code>advert</code> sendet ihn sofort <span class="m code">im Code geprüft</span>. Der Name bleibt nach
+        einem Update stehen, auch wenn der Repeater dann 1.18 trägt <span class="m code">im Code geprüft</span>. Für ein
+        Update per Funk ist das am Gerät noch nicht gemessen <span class="m open">offen</span>.</p>
       <p>Mehrere Gruppen können unabhängig voneinander testen, je mehr, desto besser. Ohne Gruppe geht es auch allein
         mit zwei Geräten: eines mit 1.17.1-b2 als Empfänger, eines mit dem Seed-Paket.</p>
     </div>
@@ -104,6 +111,13 @@
         <li>The others fetch the update over the air, check the signature, start it on trial and confirm. You do nothing.</li>
         <li>You watch the state and report what happened.</li>
       </ol>
+      <p>Give every test repeater a name with the version it starts with. That way you can tell in the analyzer which
+        repeater is which. In the USB console, enter <code>set name FUOTA-Test 1.17</code> on the repeaters with 1.17.1-b2.
+        On the seed, enter <code>set name FUOTA-Test 1.18</code>. The node answers <code>OK</code>
+        <span class="m code">checked in the code</span>. The name goes out with the next advert, and <code>advert</code>
+        sends it at once <span class="m code">checked in the code</span>. The name stays after an update, even when the
+        repeater then runs 1.18 <span class="m code">checked in the code</span>. For an update over the air, this is not
+        yet measured on a device <span class="m open">open</span>.</p>
       <p>Several groups can test independently of each other, the more the better. Without a group it also works alone
         with two devices: one with 1.17.1-b2 as the receiver, one with the seed package.</p>
     </div>
