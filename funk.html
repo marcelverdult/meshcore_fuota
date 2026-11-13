@@ -556,6 +556,173 @@
     </div>
   </section>
 
+  <section id="filter">
+    <div lang="de" class="prose">
+      <h2>Werkseinstellungen und Paketfilter</h2>
+      <p>Die FUOTA-Firmware der Linie 1.18.0 startet mit engeren Werten als Stock-MeshCore. Sie gelten nur für eine
+        Neuinstallation, also einen Knoten ohne Prefs-Datei. Ein Knoten im Feld behält alle seine Werte. Ein Schlüssel,
+        der in einer alten Datei fehlt, bekommt den Stock-Wert <span class="m code">im Code geprüft</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Factory settings and packet filter</h2>
+      <p>The FUOTA firmware of the 1.18.0 line starts with tighter values than stock MeshCore. They apply to a new
+        install only, meaning a node without a prefs file. A node in the field keeps all its values. A key that is
+        missing from an old file gets the stock value <span class="m code">checked in the code</span>.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Befehl</th><th>Werk</th><th>Erlaubt</th><th>Stock 1.18.0</th></tr>
+        <tr><td><code>advert.interval</code></td><td class="n">360 min</td><td>0 oder 60 bis 510 min</td><td>2 min bis zum ersten <code>set</code>, dann 0. Erlaubt 0 oder 60 bis 240 min.</td></tr>
+        <tr><td><code>flood.advert.interval</code></td><td class="n">0 (aus)</td><td>0 oder 24 bis 168 h</td><td>47 h. Erlaubt 3 bis 168 h.</td></tr>
+        <tr><td><code>dutycycle</code></td><td class="n">10 %</td><td>10 bis 100 %</td><td>50 %. Erlaubt 1 bis 100 %.</td></tr>
+        <tr><td><code>cad</code></td><td class="n">an</td><td>an, aus</td><td>aus</td></tr>
+        <tr><td><code>flood.max</code></td><td class="n">10 Hops</td><td>0 bis 64</td><td>64</td></tr>
+        <tr><td><code>flood.max.unscoped</code></td><td class="n">1 Hop</td><td>0 bis 64</td><td>64</td></tr>
+        <tr><td><code>flood.max.advert</code></td><td class="n">2 Hops</td><td>0 bis 64</td><td>8</td></tr>
+        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td>je Typ 0 bis 64 oder <code>off</code></td><td>keine Einträge</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Command</th><th>Factory</th><th>Allowed</th><th>Stock 1.18.0</th></tr>
+        <tr><td><code>advert.interval</code></td><td class="n">360 min</td><td>0 or 60 to 510 min</td><td>2 min until the first <code>set</code>, then 0. Allowed 0 or 60 to 240 min.</td></tr>
+        <tr><td><code>flood.advert.interval</code></td><td class="n">0 (off)</td><td>0 or 24 to 168 h</td><td>47 h. Allowed 3 to 168 h.</td></tr>
+        <tr><td><code>dutycycle</code></td><td class="n">10 %</td><td>10 to 100 %</td><td>50 %. Allowed 1 to 100 %.</td></tr>
+        <tr><td><code>cad</code></td><td class="n">on</td><td>on, off</td><td>off</td></tr>
+        <tr><td><code>flood.max</code></td><td class="n">10 hops</td><td>0 to 64</td><td>64</td></tr>
+        <tr><td><code>flood.max.unscoped</code></td><td class="n">1 hop</td><td>0 to 64</td><td>64</td></tr>
+        <tr><td><code>flood.max.advert</code></td><td class="n">2 hops</td><td>0 to 64</td><td>8</td></tr>
+        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td>per type 0 to 64 or <code>off</code></td><td>no entries</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <p>Alle Werte stehen im Code <span class="m code">im Code geprüft</span>. Eine neue Installation zeigte sie am Brett
+        mit <code>get</code>, ein Knoten mit Prefs behielt seine Werte, und die Grenzen der Setter griffen an den Rändern
+        <span class="m meas">gemessen</span>. Die Typen 0, 1 und 7 sind REQ, RESPONSE und ANON_REQ.</p>
+      <h3>So wählt der Knoten, was er weitergibt</h3>
+      <p>Ein Repeater prüft jedes fremde Flood-Paket. Er gibt es nicht weiter, wenn es schon so viele Hops hinter sich hat
+        wie eine der Grenzen erlaubt. Die strengste Grenze gewinnt <span class="m code">im Code geprüft</span>.</p>
+      <ul>
+        <li><code>flood.max</code> gilt für jedes Flood-Paket.</li>
+        <li><code>flood.max.unscoped</code> gilt für Floods ohne Region.</li>
+        <li><code>flood.max.advert</code> gilt für Adverts.</li>
+        <li><code>flood.max.type &lt;Typ&gt; &lt;Hops&gt;</code> gilt für einen Pakettyp. Der Typ steht als Name oder Zahl von 0 bis 15 da, zum Beispiel <code>grpdata</code> oder <code>6</code>.</li>
+      </ul>
+      <p>Mit den Werkswerten gibt ein Repeater ein Flood-Paket ohne Region einmal weiter. Adverts reichen bis 2 Hops,
+        REQ, RESPONSE und ANON_REQ bis 5, alles andere bis 10. Die Grenzen betreffen nur das Weitergeben fremder Floods.
+        Eigene Sendungen, Pakete mit Pfad und Zero-Hop-Pakete laufen nicht durch sie
+        <span class="m code">im Code geprüft</span>.</p>
+      <p>Die Angebots-Flut von FUOTA läuft als Gruppen-Datenpaket in der Default-Region des Knotens. Für sie gelten
+        <code>flood.max</code> und ein Eintrag für <code>grpdata</code>. <code>flood.max.unscoped</code> trifft sie nicht,
+        denn sie hat eine Region <span class="m code">im Code geprüft</span>.</p>
+      <p>Am Brett ist nur der Fall mit 0 Hops gemessen. Ab 1 Hop sind die Grenzen nur im Host-Test belegt. In einem echten Mesh mit
+        mehreren Repeater-Hops hat sie niemand gemessen <span class="m open">offen</span>.</p>
+      <h3>Was offen ist</h3>
+      <ul>
+        <li>Die erste Zero-Hop-Advert einer Neuinstallation geht nach 360 min hinaus, nicht nach 2 min wie bei Stock. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
+        <li>Floods ohne Region laufen nur 1 Hop weit, auch Antworten auf Fernwartung. Ob das Betreiber ohne Default-Region stört, ist ungeprüft <span class="m open">offen</span>.</li>
+        <li>Mit <code>flood.max.advert</code> 2 und ausgeschalteter Flut-Advert sehen Beobachter einen Knoten nur aus etwa 2 Hops Umkreis. Das ist hergeleitet, nicht gemessen <span class="m open">offen</span>.</li>
+        <li>Wie 10 % Duty Cycle unter echter Last im Mesh wirken, ist nicht gemessen <span class="m open">offen</span>. Am Brett änderte er den Abstand der Fragmente nicht: 6,430 s gegen 6,434 s <span class="m meas">gemessen</span>.</li>
+        <li>CAD an: Die erste Slot-Anfrage ging in 2 von 4 Läufen verloren. In einer Folgeserie mit 6 Läufen mit CAD an wurden alle 12 ersten Slot-Anfragen beantwortet. Die 3 verzögerten Fälle der Serie traten alle mit CAD aus auf. Eine seltene Wirkung ist nicht ausgeschlossen <span class="m meas">gemessen</span>.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <p>All values are in the code <span class="m code">checked in the code</span>. On the bench, a new install showed
+        them with <code>get</code>, a node with prefs kept its values, and the setter limits held at their edges
+        <span class="m meas">measured</span>. Types 0, 1 and 7 are REQ, RESPONSE and ANON_REQ.</p>
+      <h3>How the node picks what it forwards</h3>
+      <p>A repeater checks every foreign flood packet. It does not forward the packet once it has travelled as many hops
+        as one of the limits allows. The strictest limit wins <span class="m code">checked in the code</span>.</p>
+      <ul>
+        <li><code>flood.max</code> applies to every flood packet.</li>
+        <li><code>flood.max.unscoped</code> applies to floods without a region.</li>
+        <li><code>flood.max.advert</code> applies to adverts.</li>
+        <li><code>flood.max.type &lt;type&gt; &lt;hops&gt;</code> applies to one packet type. The type is a name or a number from 0 to 15, for example <code>grpdata</code> or <code>6</code>.</li>
+      </ul>
+      <p>With the factory values, a repeater forwards a flood packet without a region once. Adverts reach 2 hops,
+        REQ, RESPONSE and ANON_REQ reach 5, everything else reaches 10. The limits only affect forwarding of foreign
+        floods. Own sends, packets with a path and zero-hop packets do not pass through them
+        <span class="m code">checked in the code</span>.</p>
+      <p>The offer flood of FUOTA travels as a group data packet in the default region of the node. For it,
+        <code>flood.max</code> and an entry for <code>grpdata</code> apply. <code>flood.max.unscoped</code> does not
+        affect it, because it carries a region <span class="m code">checked in the code</span>.</p>
+      <p>On the bench, only the case with 0 hops is measured. From 1 hop on, the limits are proven in host tests only. Nobody has
+        measured them in a real mesh with several repeater hops <span class="m open">open</span>.</p>
+      <h3>What is open</h3>
+      <ul>
+        <li>The first zero-hop advert of a new install goes out after 360 min, not after 2 min as in stock. With <code>advert.zerohop</code> the node sends at once <span class="m open">open</span>.</li>
+        <li>Floods without a region travel 1 hop only, remote-admin replies included. Whether that bothers operators without a default region is unchecked <span class="m open">open</span>.</li>
+        <li>With <code>flood.max.advert</code> 2 and the flood advert off, observers see a node only from about 2 hops around. This is derived, not measured <span class="m open">open</span>.</li>
+        <li>How 10 % duty cycle behaves under real load in a mesh is not measured <span class="m open">open</span>. On the bench it did not change the fragment gap: 6.430 s against 6.434 s <span class="m meas">measured</span>.</li>
+        <li>CAD on: the first slot request was lost in 2 of 4 runs. In a follow-up series of 6 runs with CAD on, all 12 first slot requests were answered. The 3 delayed cases of the series all occurred with CAD off. A rare effect is not ruled out <span class="m meas">measured</span>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="powersaving">
+    <div lang="de" class="prose">
+      <h2>Stromsparen (<code>powersaving</code>)</h2>
+      <p>Der Befehl <code>powersaving on|off</code> stammt aus dem Upstream-MeshCore und steckt in der Basis 1.18.0.
+        Ab Werk ist er aus. FUOTA ändert die Schlaflogik nicht.
+        Die Auto-Sleep-Funktion des Boards RAK13302 aus dem Upstream fehlt in FUOTA <span class="m code">im Code geprüft</span>.</p>
+      <h3>Wann der Knoten schläft</h3>
+      <p>Der Repeater schläft, wenn der Befehl an ist und die Sendewarteschlange leer ist. Der nRF52 schläft dann bei
+        jedem Schleifendurchlauf bis zum nächsten Interrupt. Danach arbeitet er weiter. Das ist die einzige Bedingung:
+        ein laufender Pull oder ein Update hält den Knoten nicht wach <span class="m code">im Code geprüft</span>.</p>
+      <h3>Was mit den FUOTA-Zeitgebern passiert</h3>
+      <p>Die FUOTA-Zeitgeber sind Zeitmarken, die die Hauptschleife abfragt. Dazu gehören Angebot, Anfrage, Slot-Burst,
+        Holen und Probestart. Einen eigenen Hardware-Timer oder Interrupt gibt es dafür nicht <span class="m code">im Code geprüft</span>.</p>
+      <p>Das System taktet mit 1024 Hz über einen RTC-Interrupt. Der Schlaf endet damit nach dieser Herleitung spätestens nach rund 1 ms.
+        Ob der Tick im Schlaf wirklich durchläuft, ist ungeprüft <span class="m open">offen</span>. Ein Funkpaket weckt den Knoten über den DIO1-Interrupt des Funkchips. Die Zeitgeber laufen darum mit
+        etwa 1 ms Auflösung weiter, aber der Prozessor wacht auch 1024-mal je Sekunde auf. Wie viel Strom das spart, ist
+        nicht gemessen <span class="m open">offen</span>. Der Watchdog läuft im Schlaf weiter und wird in jedem Durchlauf gefüttert
+        <span class="m code">im Code geprüft</span>.</p>
+      <h3>Was gemessen ist</h3>
+      <p>Ein Pull mit <code>powersaving on</code> auf beiden beteiligten Knoten lief am Brett durch. Er hatte 2 Bursts
+        und brauchte 187 s bis <code>complete</code>. Es gab keinen <code>slot-stall</code>. Der Fragmentabstand lag bei 673 bis 675 ms
+        und damit wie ohne Stromsparen <span class="m meas">gemessen</span>. Danach schalteten wir den Befehl wieder aus.</p>
+      <h3>Was fehlt</h3>
+      <ul>
+        <li>Die Stromaufnahme mit und ohne <code>powersaving</code> <span class="m open">offen</span>.</li>
+        <li>Die Empfangsverluste fremder Pakete mit <code>powersaving on</code> <span class="m open">offen</span>.</li>
+        <li>Angebote und Anfragen über viele Stunden, Anwenden, Probestart und Rückfall mit dem Befehl an <span class="m open">offen</span>.</li>
+        <li>BLE-OTA und das SoftDevice im Schlaf <span class="m open">offen</span>.</li>
+        <li>Andere Boards als die zwei Testknoten und ein Anbieter mit dem Befehl an <span class="m open">offen</span>.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <h2>Power saving (<code>powersaving</code>)</h2>
+      <p>The command <code>powersaving on|off</code> comes from upstream MeshCore and is part of the 1.18.0 base.
+        It is off from the factory. FUOTA does not change the sleep logic.
+        The auto-sleep function of the RAK13302 board from upstream is missing in FUOTA <span class="m code">checked in the code</span>.</p>
+      <h3>When the node sleeps</h3>
+      <p>The repeater sleeps when the command is on and the send queue is empty. The nRF52 then sleeps on every loop
+        pass until the next interrupt. After that it carries on. This is the only condition: a running pull or an
+        update does not keep the node awake <span class="m code">checked in the code</span>.</p>
+      <h3>What happens to the FUOTA timers</h3>
+      <p>The FUOTA timers are timestamps that the main loop polls. They include offer, request, slot burst, pull and
+        test boot. There is no hardware timer or interrupt of its own for them <span class="m code">checked in the code</span>.</p>
+      <p>The system ticks at 1024 Hz from an RTC interrupt. By this derivation, the sleep ends after about 1 ms at the latest.
+        Whether the tick really keeps running during sleep is unchecked <span class="m open">open</span>. A radio
+        packet wakes the node through the DIO1 interrupt of the radio chip. The timers therefore keep running with
+        about 1 ms resolution, but the processor also wakes 1024 times a second. How much power this saves is not
+        measured <span class="m open">open</span>. The watchdog keeps running during sleep and is fed on every pass
+        <span class="m code">checked in the code</span>.</p>
+      <h3>What is measured</h3>
+      <p>A pull with <code>powersaving on</code> on both nodes involved ran through on the bench. It had 2 bursts
+        and took 187 s to <code>complete</code>. There was no <code>slot-stall</code>. The fragment gap was 673 to 675 ms,
+        the same as without power saving <span class="m meas">measured</span>. Afterwards we switched the command off again.</p>
+      <h3>What is missing</h3>
+      <ul>
+        <li>The power draw with and without <code>powersaving</code> <span class="m open">open</span>.</li>
+        <li>The receive losses of foreign packets with <code>powersaving on</code> <span class="m open">open</span>.</li>
+        <li>Offers and requests over many hours, apply, test boot and fallback with the command on <span class="m open">open</span>.</li>
+        <li>BLE-OTA and the SoftDevice during sleep <span class="m open">open</span>.</li>
+        <li>Boards other than the two test nodes, and a provider with the command on <span class="m open">open</span>.</li>
+      </ul>
+    </div>
+  </section>
+
   <section id="zeiten">
     <div lang="de" class="prose">
       <h2>Zeiten und Zeitgeber</h2>
