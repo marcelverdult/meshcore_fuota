@@ -94,9 +94,11 @@
       </ol>
       <p>Richte jeden Testrepeater ein wie jeden anderen Repeater. Tippe die Befehle in der USB-Konsole.</p>
       <ul>
-        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>. Das Alpha-Paket ist ein Release-Image und hat ab
-          Werk keines. Der Knoten antwortet mit <code>password now:</code> und dem Passwort
-          <span class="m code">im Code geprüft</span>.</li>
+        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>, höchstens 15 Zeichen. Die Alpha-Pakete sind
+          Release-Images und haben ab Werk keines. Für die USB-Befehle brauchst du es nicht, es gilt für den
+          Admin-Zugang aus der Ferne. Der Knoten antwortet mit <code>password now:</code> und dem Passwort
+          <span class="m code">im Code geprüft</span>. Mit einem Release-Image am Gerät ist das noch nicht gemessen
+          <span class="m open">offen</span>.</li>
         <li>GPS-Position: <code>set lat &lt;Breite&gt;</code> und <code>set lon &lt;Länge&gt;</code>. Die Antwort ist
           jeweils <code>OK</code> <span class="m code">im Code geprüft</span>.</li>
         <li>Name mit der Startversion: <code>set name FUOTA-Test 1.17</code> auf den Repeatern mit 1.17.1-b2,
@@ -132,9 +134,11 @@
       </ol>
       <p>Set up every test repeater like any other repeater. Type the commands in the USB console.</p>
       <ul>
-        <li>Admin password: <code>password &lt;password&gt;</code>. The alpha package is a release image and has none
-          from the factory. The node answers with <code>password now:</code> and the password
-          <span class="m code">checked in the code</span>.</li>
+        <li>Admin password: <code>password &lt;password&gt;</code>, 15 characters at most. The alpha packages are
+          release images and have none from the factory. You do not need it for the USB commands, it is for admin access
+          from afar. The node answers with <code>password now:</code> and the password
+          <span class="m code">checked in the code</span>. With a release image on a device this is not yet measured
+          <span class="m open">open</span>.</li>
         <li>GPS position: <code>set lat &lt;latitude&gt;</code> and <code>set lon &lt;longitude&gt;</code>. Each answer is
           <code>OK</code> <span class="m code">checked in the code</span>.</li>
         <li>Name with the starting version: <code>set name FUOTA-Test 1.17</code> on the repeaters with 1.17.1-b2,
