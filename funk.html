@@ -495,7 +495,7 @@
         flutet er trotz gehörter Flut, sobald sein nächster Termin kommt <span class="m code">im Code geprüft</span>.</p>
       <p>Der Start der Periode zählt in vollen Stunden. Die Grenze endet daher bis zu 1 h früher <span class="m code">im Code geprüft</span>. Läuft seine
         Laufzeit mit der Kampagne nicht, hält ihn keine gehörte Flut zurück <span class="m code">im Code geprüft</span>.</p>
-      <p>Nur eine Flut aus seiner Region mit höchstens 8 Hops hält ihn zurück <span class="m code">im Code geprüft</span>. Das gilt auch für eine Flut, die er
+      <p>Nur eine Flut aus seiner Region mit höchstens 5 Hops hält ihn zurück <span class="m code">im Code geprüft</span>. Das gilt auch für eine Flut, die er
         hörte, während er die Kampagne holte. Eine Kopie von weiter her erreicht nicht die Knoten, die seine Flut
         erreichen würde. Gegen einen Angreifer in Funkreichweite hilft das nicht. Er wiederholt eine mitgeschnittene Flut
         mit Hop-Zahl 0. Der Transport-Code deckt Typ und Nutzlast, nicht den Pfad <span class="m code">im Code geprüft</span>.</p>
@@ -529,7 +529,7 @@
         at its next planned time <span class="m code">checked in the code</span>.</p>
       <p>The start of the period counts in whole hours. The limit therefore ends up to 1 h early <span class="m code">checked in the code</span>. Without a
         running time for the campaign, no heard flood holds the provider back <span class="m code">checked in the code</span>.</p>
-      <p>Only a flood from its region with at most 8 hops holds it back <span class="m code">checked in the code</span>. This also holds for a flood it heard
+      <p>Only a flood from its region with at most 5 hops holds it back <span class="m code">checked in the code</span>. This also holds for a flood it heard
         while it fetched the campaign. A copy from farther away misses nodes that its own flood would reach. That does
         not help against an attacker in radio range. The attacker repeats a recorded flood with hop count 0. The
         transport code covers type and payload, not the path <span class="m code">checked in the code</span>.</p>
@@ -618,32 +618,54 @@
       <table>
         <tr><th>Befehl</th><th>Werk</th><th>Erlaubt</th><th>Stock 1.18.0</th></tr>
         <tr><td><code>advert.interval</code></td><td class="n">360 min</td><td>0 oder 60 bis 510 min</td><td>2 min bis zum ersten <code>set</code>, dann 0. Erlaubt 0 oder 60 bis 240 min.</td></tr>
-        <tr><td><code>flood.advert.interval</code></td><td class="n">0 (aus)</td><td>0 oder 24 bis 168 h</td><td>47 h. Erlaubt 3 bis 168 h.</td></tr>
+        <tr><td><code>flood.advert.interval</code></td><td class="n">0 (aus)</td><td>0 oder 24 bis 255 h</td><td>47 h. Erlaubt 3 bis 168 h.</td></tr>
         <tr><td><code>dutycycle</code></td><td class="n">10 %</td><td>10 bis 100 %</td><td>50 %. Erlaubt 1 bis 100 %.</td></tr>
         <tr><td><code>cad</code></td><td class="n">an</td><td>an, aus</td><td>aus</td></tr>
         <tr><td><code>flood.max</code></td><td class="n">10 Hops</td><td>0 bis 64</td><td>64</td></tr>
         <tr><td><code>flood.max.unscoped</code></td><td class="n">1 Hop</td><td>0 bis 64</td><td>64</td></tr>
         <tr><td><code>flood.max.advert</code></td><td class="n">2 Hops</td><td>0 bis 64</td><td>8</td></tr>
-        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td>je Typ 0 bis 64 oder <code>off</code></td><td>keine Einträge</td></tr>
+        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td>je Typ 0 bis 64 oder <code>off</code>, nicht für FUOTA</td><td>keine Einträge</td></tr>
+        <tr><td><code>path.hash.mode</code></td><td class="n">2 (3 Byte je Hop)</td><td>0 bis 2</td><td>0 (1 Byte je Hop)</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
       <table>
         <tr><th>Command</th><th>Factory</th><th>Allowed</th><th>Stock 1.18.0</th></tr>
         <tr><td><code>advert.interval</code></td><td class="n">360 min</td><td>0 or 60 to 510 min</td><td>2 min until the first <code>set</code>, then 0. Allowed 0 or 60 to 240 min.</td></tr>
-        <tr><td><code>flood.advert.interval</code></td><td class="n">0 (off)</td><td>0 or 24 to 168 h</td><td>47 h. Allowed 3 to 168 h.</td></tr>
+        <tr><td><code>flood.advert.interval</code></td><td class="n">0 (off)</td><td>0 or 24 to 255 h</td><td>47 h. Allowed 3 to 168 h.</td></tr>
         <tr><td><code>dutycycle</code></td><td class="n">10 %</td><td>10 to 100 %</td><td>50 %. Allowed 1 to 100 %.</td></tr>
         <tr><td><code>cad</code></td><td class="n">on</td><td>on, off</td><td>off</td></tr>
         <tr><td><code>flood.max</code></td><td class="n">10 hops</td><td>0 to 64</td><td>64</td></tr>
         <tr><td><code>flood.max.unscoped</code></td><td class="n">1 hop</td><td>0 to 64</td><td>64</td></tr>
         <tr><td><code>flood.max.advert</code></td><td class="n">2 hops</td><td>0 to 64</td><td>8</td></tr>
-        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td>per type 0 to 64 or <code>off</code></td><td>no entries</td></tr>
+        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td>per type 0 to 64 or <code>off</code>, not for FUOTA</td><td>no entries</td></tr>
+        <tr><td><code>path.hash.mode</code></td><td class="n">2 (3 bytes per hop)</td><td>0 to 2</td><td>0 (1 byte per hop)</td></tr>
       </table>
     </div>
     <div lang="de" class="prose">
       <p>Alle Werte stehen im Code <span class="m code">im Code geprüft</span>. Eine neue Installation zeigte sie am Brett
         mit <code>get</code>, ein Knoten mit Prefs behielt seine Werte, und die Grenzen der Setter griffen an den Rändern
         <span class="m meas">gemessen</span>. Die Typen 0, 1 und 7 sind REQ, RESPONSE und ANON_REQ.</p>
+      <p>Die Setter lesen eine Eingabe ganz. Ist sie keine Zahl im erlaubten Bereich oder nicht das ganze Wort <code>on</code>
+        oder <code>off</code>, antwortet der Knoten mit einem Fehler und ändert nichts. <code>ON</code> in Großbuchstaben gilt
+        nicht als <code>on</code>.</p>
+      <ul>
+        <li>Zahlen: <code>flood.max</code>, <code>flood.max.unscoped</code> und <code>flood.max.advert</code> (0 bis 64),
+          <code>path.hash.mode</code> (0 bis 2), <code>agc.reset.interval</code> (0 bis 1020), <code>int.thresh</code> (0 bis 255),
+          <code>multi.acks</code> (0 oder 1), <code>tx</code> (-9 bis 30 dBm, Fehlertext <code>Error, tx -9..30</code>),
+          <code>advert.interval</code> (0 oder 60 bis 510 Minuten) und <code>flood.advert.interval</code> (0 oder 24 bis 255 Stunden).
+          Die beiden Advert-Setter behalten ihren bisherigen Fehlertext. <code>set advert.interval abc</code> schaltete vorher still
+          das Advert aus, und <code>set flood.advert.interval 24x</code> wurde als 24 gelesen. Jetzt antwortet der Knoten mit dem Bereichsfehler und speichert nichts.</li>
+        <li>Koordinaten: <code>lat</code> (-90 bis 90) und <code>lon</code> (-180 bis 180) als Dezimalzahl mit Punkt. <code>52,01</code> mit Komma
+          wird abgelehnt. Fehlertexte <code>Error, lat -90..90</code> und <code>Error, lon -180..180</code>.</li>
+        <li>Wörter: <code>cad</code>, <code>repeat</code>, <code>powersaving</code>, <code>allow.read.only</code>,
+          <code>radio.rxgain</code>, <code>fuota auto</code> und <code>fuota relay</code>.</li>
+      </ul>
+      <p>Stock antwortet auf alles davon mit <code>OK</code>. <code>set flood.max abc</code> setzt 0, der Knoten gibt dann nichts
+        mehr weiter. <code>set flood.max 320</code> setzt 64. <code>set cad ON</code> schaltet die Kanalprüfung aus und
+        <code>set repeat offxyz</code> das Weitergeben <span class="m code">im Code geprüft</span>. Der Host-Test prüft die
+        Entscheidung mit diesen Fehlfällen <span class="m code">im Code geprüft</span>. Die Antworten am Brett sind
+        <span class="m open">offen</span>.</p>
       <h3>So wählt der Knoten, was er weitergibt</h3>
       <p>Ein Repeater prüft jedes fremde Flood-Paket. Er gibt es nicht weiter, wenn es schon so viele Hops hinter sich hat
         wie eine der Grenzen erlaubt. Die strengste Grenze gewinnt <span class="m code">im Code geprüft</span>.</p>
@@ -657,14 +679,20 @@
         REQ, RESPONSE und ANON_REQ bis 5, alles andere bis 10. Die Grenzen betreffen nur das Weitergeben fremder Floods.
         Eigene Sendungen, Pakete mit Pfad und Zero-Hop-Pakete laufen nicht durch sie
         <span class="m code">im Code geprüft</span>.</p>
-      <p>Die Angebots-Flut von FUOTA läuft als Gruppen-Datenpaket in der Standard-Region des Knotens. Für sie gelten
-        <code>flood.max</code> und ein Eintrag für <code>grpdata</code>. <code>flood.max.unscoped</code> trifft sie nicht,
-        denn sie hat eine Region <span class="m code">im Code geprüft</span>.</p>
+      <p>Die Angebots-Flut von FUOTA läuft als Gruppen-Datenpaket in der Standard-Region des Knotens. Für sie gilt allein
+        <code>flood.max</code>. Ein Eintrag für <code>grpdata</code> trifft sie nicht: Der Repeater erkennt das Paket am
+        FUOTA-Kanal und lässt die Typliste weg. <code>flood.max.unscoped</code> trifft sie ebenfalls nicht, denn sie hat
+        eine Region <span class="m code">im Code geprüft</span>.</p>
+      <p>Der Typ <code>fuota</code> selbst wird nie geflutet. Darum lehnt <code>set flood.max.type fuota 3</code> mit
+        <code>Error, fuota packets cannot be limited</code> ab <span class="m code">im Code geprüft</span>.
+        Der Kanalschlüssel ist öffentlich. Wer ihn kennt, kann ein Paket bauen, das als FUOTA-Flut durchgeht. Auch dieses Paket
+        hält <code>flood.max</code>. Nicht ausgenommen sind <code>repeat off</code>, <code>fuota relay off</code>, eine fehlende
+        Region und <code>loop.detect</code>.</p>
       <p>Am Brett ist nur der Fall mit 0 Hops gemessen. Ab 1 Hop sind die Grenzen nur im Host-Test belegt. In einem echten Mesh mit
         mehreren Repeater-Hops hat sie niemand gemessen <span class="m open">offen</span>.</p>
       <h3>Was offen ist</h3>
       <ul>
-        <li>Bei 1.18.0-b3 sendet eine Neuinstallation die erste Zero-Hop-Advert nach 360 min. Bei Stock sind es 2 min. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
+        <li>Im Bench-Build von 1.18.0-b3 sendet eine Neuinstallation die erste Zero-Hop-Advert nach 360 min, weil dort die Advert beim Start ausgeschaltet ist <span class="m code">im Code geprüft</span>. Bei Stock sind es 2 min. Ein Release-Build sendet sie etwa 16 s nach dem Start <span class="m code">im Code geprüft</span>. Am Release-Gerät ist das nicht gemessen <span class="m open">offen</span>. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
         <li>1.17.1-b2 erlaubt für <code>advert.interval</code> nur 0 und 60 bis 240 min <span class="m code">im Code geprüft</span>. Es setzt ein Intervall unter 60 min beim Speichern auf 0. Darum sendet ein Knoten mit 1.17.1-b2 nach der ersten gespeicherten Einstellung keine Zero-Hop-Adverts mehr <span class="m code">im Code geprüft</span>.</li>
         <li>Floods ohne Region laufen nur 1 Hop weit, auch Antworten auf Fernwartung. Ob das Betreiber ohne Standard-Region stört, ist ungeprüft <span class="m open">offen</span>.</li>
         <li>Mit <code>flood.max.advert</code> 2 und ausgeschalteter Flut-Advert sehen Beobachter einen Knoten nur aus etwa 2 Hops Umkreis. Das ist hergeleitet, nicht gemessen <span class="m open">offen</span>.</li>
@@ -676,6 +704,25 @@
       <p>All values are in the code <span class="m code">checked in the code</span>. On the bench, a new install showed
         them with <code>get</code>, a node with prefs kept its values, and the setter limits held at their edges
         <span class="m meas">measured</span>. Types 0, 1 and 7 are REQ, RESPONSE and ANON_REQ.</p>
+      <p>The setters read an input completely. If it is not a number in the allowed range, or not the whole word <code>on</code>
+        or <code>off</code>, the node answers an error and changes nothing. <code>ON</code> in capitals is not <code>on</code>.</p>
+      <ul>
+        <li>Numbers: <code>flood.max</code>, <code>flood.max.unscoped</code> and <code>flood.max.advert</code> (0 to 64),
+          <code>path.hash.mode</code> (0 to 2), <code>agc.reset.interval</code> (0 to 1020), <code>int.thresh</code> (0 to 255),
+          <code>multi.acks</code> (0 or 1), <code>tx</code> (-9 to 30 dBm, error text <code>Error, tx -9..30</code>),
+          <code>advert.interval</code> (0 or 60 to 510 minutes) and <code>flood.advert.interval</code> (0 or 24 to 255 hours).
+          The two advert setters keep their earlier error text. <code>set advert.interval abc</code> used to turn the advert off
+          without a word, and <code>set flood.advert.interval 24x</code> was read as 24. Now the node answers the range error and stores nothing.</li>
+        <li>Coordinates: <code>lat</code> (-90 to 90) and <code>lon</code> (-180 to 180) as a decimal number with a point. <code>52,01</code>
+          with a comma is refused. Error texts <code>Error, lat -90..90</code> and <code>Error, lon -180..180</code>.</li>
+        <li>Words: <code>cad</code>, <code>repeat</code>, <code>powersaving</code>, <code>allow.read.only</code>,
+          <code>radio.rxgain</code>, <code>fuota auto</code> and <code>fuota relay</code>.</li>
+      </ul>
+      <p>Stock answers <code>OK</code> to all of them. <code>set flood.max abc</code> sets 0, so the node forwards nothing any
+        more. <code>set flood.max 320</code> sets 64. <code>set cad ON</code> turns the channel check off and
+        <code>set repeat offxyz</code> turns forwarding off <span class="m code">checked in the code</span>. The host test
+        checks the decision with those failing inputs <span class="m code">checked in the code</span>. The answers on the bench
+        are <span class="m open">open</span>.</p>
       <h3>How the node picks what it forwards</h3>
       <p>A repeater checks every foreign flood packet. It does not forward the packet once it has travelled as many hops
         as one of the limits allows. The strictest limit wins <span class="m code">checked in the code</span>.</p>
@@ -689,14 +736,20 @@
         REQ, RESPONSE and ANON_REQ reach 5, everything else reaches 10. The limits only affect forwarding of foreign
         floods. Own sends, packets with a path and zero-hop packets do not pass through them
         <span class="m code">checked in the code</span>.</p>
-      <p>The offer flood of FUOTA travels as a group data packet in the default region of the node. For it,
-        <code>flood.max</code> and an entry for <code>grpdata</code> apply. <code>flood.max.unscoped</code> does not
-        affect it, because it carries a region <span class="m code">checked in the code</span>.</p>
+      <p>The offer flood of FUOTA travels as a group data packet in the default region of the node. For it, only
+        <code>flood.max</code> applies. An entry for <code>grpdata</code> does not affect it: the repeater recognises the packet by
+        the FUOTA channel and leaves the type list out. <code>flood.max.unscoped</code> does not affect it either, because it
+        carries a region <span class="m code">checked in the code</span>.</p>
+      <p>The type <code>fuota</code> itself is never flooded. So <code>set flood.max.type fuota 3</code> answers
+        <code>Error, fuota packets cannot be limited</code> <span class="m code">checked in the code</span>.
+        The channel key is public. Whoever knows it can build a packet that passes as a FUOTA flood. <code>flood.max</code> holds that
+        packet as well. Not exempt are <code>repeat off</code>, <code>fuota relay off</code>, a missing region and
+        <code>loop.detect</code>.</p>
       <p>On the bench, only the case with 0 hops is measured. From 1 hop on, the limits are proven in host tests only. Nobody has
         measured them in a real mesh with several repeater hops <span class="m open">open</span>.</p>
       <h3>What is open</h3>
       <ul>
-        <li>With 1.18.0-b3 a new install sends its first zero-hop advert after 360 min. In stock it is 2 min. With <code>advert.zerohop</code> the node sends at once <span class="m open">open</span>.</li>
+        <li>In the bench build of 1.18.0-b3 a new install sends its first zero-hop advert after 360 min, because the advert at start is switched off there <span class="m code">checked in the code</span>. In stock it is 2 min. A release build sends it about 16 s after start <span class="m code">checked in the code</span>. On a release device this is not measured <span class="m open">open</span>. With <code>advert.zerohop</code> the node sends at once <span class="m open">open</span>.</li>
         <li>1.17.1-b2 allows only 0 and 60 to 240 min for <code>advert.interval</code> <span class="m code">checked in the code</span>. It sets an interval below 60 min to 0 when saving. So a node with 1.17.1-b2 sends no more zero-hop adverts after the first saved setting <span class="m code">checked in the code</span>.</li>
         <li>Floods without a region travel 1 hop only, remote-admin replies included. Whether that bothers operators without a default region is unchecked <span class="m open">open</span>.</li>
         <li>With <code>flood.max.advert</code> 2 and the flood advert off, observers see a node only from about 2 hops around. This is derived, not measured <span class="m open">open</span>.</li>
@@ -802,7 +855,7 @@
         <tr><td>Pull pausiert</td><td class="n">100 Abstände, mindestens 20 min</td><td>Der Knoten pausiert, wenn so lange weder Angebot noch Daten kamen. Bei 0,3 % sind das 10,6 h <span class="m calc">berechnet</span>. Niemand hat die Kampagne mehr. Beim nächsten Angebot setzt der Knoten den Pull fort.</td></tr>
         <tr><td>Manifest 3× beschädigt</td><td class="n">10 min übergehen</td><td>Keine Dauersperre wegen einer schlechten Verbindung.</td></tr>
         <tr><td>Angebots-Flut</td><td class="n">höchstens 1 am Tag, dann 1 je Woche</td><td>Ein Anbieter flutet sein Angebot, sobald er die ganze Kampagne hat. Die Tagesgrenze gilt in der ersten Woche und 1 Woche nach gehörter Anfrage. Danach gilt die Wochengrenze: höchstens einmal je Woche. Die Wochen zählen seine Laufzeit. In der Wochenphase hält ihn eine gehörte Flut derselben Kampagne höchstens 2-mal hintereinander zurück. Dann flutet er spätestens 3 Wochen nach seiner letzten Flut wieder. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
-        <tr><td>Zurückhalten der Angebots-Flut</td><td class="n">höchstens 3 Tage</td><td>In der ersten Woche und 1 Woche nach gehörter Anfrage hält ihn eine gehörte Flut derselben Kampagne höchstens 3 Tage zurück. Die 3 Tage zählen ab seiner letzten Flut oder der letzten zurückgehaltenen Wochenperiode. Danach flutet er trotz gehörter Flut, sobald sein nächster Termin kommt. Nur eine Flut aus seiner Region mit höchstens 8 Hops hält ihn zurück. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
+        <tr><td>Zurückhalten der Angebots-Flut</td><td class="n">höchstens 3 Tage</td><td>In der ersten Woche und 1 Woche nach gehörter Anfrage hält ihn eine gehörte Flut derselben Kampagne höchstens 3 Tage zurück. Die 3 Tage zählen ab seiner letzten Flut oder der letzten zurückgehaltenen Wochenperiode. Danach flutet er trotz gehörter Flut, sobald sein nächster Termin kommt. Nur eine Flut aus seiner Region mit höchstens 5 Hops hält ihn zurück. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Retract</td><td class="n">bis zu 3-mal, dazu 1 Flut</td><td>Ein Knoten sendet den Retract bis zu 3-mal an direkte Nachbarn. Dazu flutet er ihn einmal. Er wartet vorher 2 bis 30 min. Auf ein Angebot des zurückgezogenen Builds antwortet er höchstens alle 30 s mit dem Retract. Kam das Angebot als Flut, antwortet er nach bis zu 30 min mit einer Flut. Das tut er höchstens einmal am Tag je Retract. Den Takt der Sendungen an Nachbarn erklärt der Absatz unter der Tabelle.</td></tr>
         <tr><td>Anwenden</td><td class="n">~10 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>: Bauen am Release-Image (9. November 2026), Tauschen am Test-Image (18. Oktober 2026). Der Knoten ist dabei rund 1 min offline, gemessen am Test-Image, am Release-Image nicht.</td></tr>
         <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung 60 s</td><td>Die Bestätigung kommt nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet). Beides muss innerhalb der Frist T liegen. T liegt zwischen 15 Minuten und 6 Stunden. Hatte der Knoten vor dem Update keinen Tag Laufzeit, sind es 60 Minuten <span class="m code">im Code geprüft</span>. Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware. Fehlt nur das Lebenszeichen, gibt es keinen Bann. Ein neuer Versuch wartet <span class="m code">im Code geprüft</span>. Am Brett empfing ein Knoten in 18 Minuten kein Paket <span class="m meas">gemessen</span>. Im Mesh mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>.</td></tr>
@@ -825,7 +878,7 @@
         <tr><td>Pull paused</td><td class="n">100 gaps, at least 20 min</td><td>The node pauses when neither an offer nor data came for that long. At 0.3 %, that is 10.6 h <span class="m calc">calculated</span>. Nobody has the campaign any more. At the next offer the node resumes the pull.</td></tr>
         <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
         <tr><td>Offer flood</td><td class="n">at most 1 a day, then 1 a week</td><td>A provider floods its offer once it has the whole campaign. The daily limit holds in the first week and 1 week after a heard request. After that, the weekly limit holds: at most once a week. The weeks count its running time. In the weekly phase, a heard flood of the same campaign holds it back at most 2 times in a row. Then it floods again 3 weeks after its last flood at the latest. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
-        <tr><td>Holding back the offer flood</td><td class="n">up to 3 days</td><td>In the first week and 1 week after a heard request, a heard flood of the same campaign holds it back up to 3 days. The 3 days count from its last flood or the last weekly period it held back. After that it floods despite a heard flood, at its next planned time. Only a flood from its region with at most 8 hops holds it back. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
+        <tr><td>Holding back the offer flood</td><td class="n">up to 3 days</td><td>In the first week and 1 week after a heard request, a heard flood of the same campaign holds it back up to 3 days. The 3 days count from its last flood or the last weekly period it held back. After that it floods despite a heard flood, at its next planned time. Only a flood from its region with at most 5 hops holds it back. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Retract</td><td class="n">up to 3 times, plus 1 flood</td><td>A node sends the retract up to 3 times to direct neighbours. It also floods it once, after waiting 2 to 30 min. It answers offers of the retracted build with the retract at most every 30 s. If an offer was flooded, it answers with a flood after up to 30 min. It does so at most once a day per retract. The paragraph below the table explains the sends to neighbours.</td></tr>
         <tr><td>Apply</td><td class="n">~10 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>: build on the release image (9 November 2026), swap on the test image (18 October 2026). The node is offline for about 1 min meanwhile, measured on the test image, not on the release image.</td></tr>
         <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation 60 s</td><td>Confirmation needs 60 s and a radio sign of life (one packet received, one sent). Both must come within the deadline T. T is between 15 minutes and 6 hours. Without a day of uptime before the update it is 60 minutes <span class="m code">checked in the code</span>. After 3 test boots without confirmation the node reverts to the old firmware. If only the sign of life is missing, there is no ban. A new try waits <span class="m code">checked in the code</span>. On the bench a node received no packet in 18 minutes <span class="m meas">measured</span>. In a mesh with normal traffic this has not been checked <span class="m open">open</span>.</td></tr>
@@ -839,7 +892,7 @@
         Bei 0,3 % und SF8 wartet er nach einem Retract 211 s (bei CR 4/8 301 s) <span class="m calc">berechnet</span>. Im Testaufbau hatte er gerade ein Datenpaket
         gesendet. Die erste Sendung kam darum erst nach 6,0 s <span class="m meas">gemessen</span>. Ein gezielter Lauf bestätigte das: mit Last 5,4 s (27. Oktober und 3. November 2026), das ist der Rest des Sendebudgets von 6,43 s minus 1,0 s seit dem letzten Fragment. Ohne Last waren es 0,4 s und 1,3 s <span class="m meas">gemessen</span>.</p>
       <p>Die Flut ist eine eigene Sendung. Der Knoten wartet vorher zufällig 2 bis 30 min. Hört er in der Zeit dieselbe Flut
-        aus seiner Region mit höchstens 8 Hops, sendet er keine <span class="m code">im Code geprüft</span>.</p>
+        aus seiner Region mit höchstens 5 Hops, sendet er keine <span class="m code">im Code geprüft</span>.</p>
     </div>
     <div lang="en" class="prose">
       <p>A node sends a retract at the earliest 0.3 to 2 s after it has verified it. The second send comes at the
@@ -849,7 +902,7 @@
         SF8 it waits 211 s (301 s at CR 4/8) after a retract <span class="m calc">calculated</span>. On the bench it had just sent a data packet. So the first send
         came only after 6.0 s <span class="m meas">measured</span>. A targeted run confirmed this: 5.4 s under load (27 October and 3 November 2026), which is the rest of the 6.43 s send budget minus 1.0 s since the last fragment. Without load it was 0.4 s and 1.3 s <span class="m meas">measured</span>.</p>
       <p>The flood is a send of its own. The node first waits 2 to 30 min at random. If it hears the same flood from its
-        own region with at most 8 hops in that time, it sends none <span class="m code">checked in the code</span>.</p>
+        own region with at most 5 hops in that time, it sends none <span class="m code">checked in the code</span>.</p>
     </div>
   </section>
   </main>
