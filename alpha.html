@@ -220,8 +220,11 @@
     <div lang="de" class="prose"><h2>Beobachten</h2></div>
     <div lang="en" class="prose"><h2>Watching</h2></div>
     <div lang="de" class="prose">
-      <p>Am Gerät zeigen <code>fuota info</code> und <code>fuota status</code> den Stand in der USB-Konsole. Nach dem Flashen
-        steht bei 1.17.1-b2 <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
+      <p><code>fuota info</code> zeigt am Gerät den Stand in der USB-Konsole. Als angemeldeter Admin fragst du ihn auch
+        übers Mesh ab <span class="m code">im Code geprüft</span>. Dort gibt <code>fuota status</code> nur die Kurzantwort
+        von <code>fuota info</code>, die ausführliche Anzeige gibt es nur per USB
+        <span class="m code">im Code geprüft</span>. Das ist am Gerät noch nicht gemessen <span class="m open">offen</span>.
+        Nach dem Flashen steht bei 1.17.1-b2 <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
       <p>Von außen siehst du die Kampagne im
         <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a>. Sie erscheint dort erst, wenn ein
         Observer (ein Knoten, der mithört und meldet) Angebote oder Daten hört. Steht dort keine Kampagne, gilt die Anzeige am
@@ -241,8 +244,12 @@
         <span class="m meas">gemessen</span>. Das war ein einzelner Lauf am Testaufbau.</p>
     </div>
     <div lang="en" class="prose">
-      <p>On the device, <code>fuota info</code> and <code>fuota status</code> show the state in the USB console. After
-        flashing, 1.17.1-b2 shows <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
+      <p><code>fuota info</code> shows the state in the USB console on the device. As a logged-in admin you can also query it
+        over the mesh <span class="m code">checked in the code</span>. Over the mesh, <code>fuota status</code> gives only
+        the short answer of <code>fuota info</code>, and the detailed display exists only over USB
+        <span class="m code">checked in the code</span>. This is not yet measured on a device
+        <span class="m open">open</span>. After flashing, 1.17.1-b2 shows <code>build 1 (6b3af727)</code> in
+        <code>fuota info</code>.</p>
       <p>From outside you can see the campaign in the
         <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. It appears there only once an
         observer (a node that listens and reports) hears offers or data. If no campaign shows, trust the display on the
@@ -289,7 +296,9 @@
       <p>Am liebsten als GitHub Issue mit der Vorlage „Alpha-Bericht“:
         <a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>.
         Telegram (<a href="https://t.me/meshcorede/37922">Thread</a>) und
-        <a href="https://discord.gg/ZxU66yWVC">Discord</a> gehen auch. Kopiere Ausgaben als Text, keine Screenshots.</p>
+        <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die
+        Alpha-Meldungen <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">direkt in diesem
+        Kanal</a>. Kopiere Ausgaben als Text, keine Screenshots.</p>
       <ul>
         <li>Board, Dateiname und ob die Prüfsumme gepasst hat</li>
         <li>Version vorher und nachher (<code>ver</code>, <code>fuota info</code>)</li>
@@ -307,7 +316,9 @@
       <p>Preferably as a GitHub issue with the template “Alpha-Bericht”:
         <a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>.
         Telegram (<a href="https://t.me/meshcorede/37922">thread</a>) and
-        <a href="https://discord.gg/ZxU66yWVC">Discord</a> work too. Copy output as text, not screenshots.</p>
+        <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the
+        alpha reports <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">directly in this
+        channel</a>. Copy output as text, not screenshots.</p>
       <ul>
         <li>board, file name and whether the checksum matched</li>
         <li>version before and after (<code>ver</code>, <code>fuota info</code>)</li>
