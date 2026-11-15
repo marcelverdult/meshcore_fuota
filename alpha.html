@@ -220,8 +220,11 @@
     <div lang="de" class="prose"><h2>Beobachten</h2></div>
     <div lang="en" class="prose"><h2>Watching</h2></div>
     <div lang="de" class="prose">
-      <p>Am Gerät zeigen <code>fuota info</code> und <code>fuota status</code> den Stand in der USB-Konsole. Nach dem Flashen
-        steht bei 1.17.1-b2 <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
+      <p><code>fuota info</code> zeigt am Gerät den Stand in der USB-Konsole. Als angemeldeter Admin fragst du ihn auch
+        übers Mesh ab <span class="m code">im Code geprüft</span>. Dort gibt <code>fuota status</code> nur die Kurzantwort
+        von <code>fuota info</code>, die ausführliche Anzeige gibt es nur per USB
+        <span class="m code">im Code geprüft</span>. Das ist am Gerät noch nicht gemessen <span class="m open">offen</span>.
+        Nach dem Flashen steht bei 1.17.1-b2 <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
       <p>Von außen siehst du die Kampagne im
         <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a>. Sie erscheint dort erst, wenn ein
         Observer (ein Knoten, der mithört und meldet) Angebote oder Daten hört. Steht dort keine Kampagne, gilt die Anzeige am
@@ -231,8 +234,18 @@
         <span class="m field">im Feld beobachtet</span>. Das sind nur Knoten mit Standard-Region (Abschnitt Region setzen).</p>
       <p>Der Weg zwischen Seed und Empfänger darf über normale MeshCore-Repeater (Stock) führen. Die Angebote laufen als
         gewöhnliche Gruppen-Daten-Flut, die Stock-Repeater nach Region weiterleiten <span class="m code">im Code geprüft</span>.
-        Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>. Im Feld ist
-        das <span class="m open">offen</span>. Melde deshalb, ob Stock-Repeater dazwischen lagen.</p>
+        Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>.</p>
+      <p>Im ersten Test kam das geflutete Angebot über das Mesh bis zu 6 Hops weit
+        <span class="m field">im Feld beobachtet</span>. Ein Empfänger bekam Datenpakete über 2 Repeater hintereinander,
+        von denen der Analyzer nie FUOTA-Pakete gehört hat, bis zum 15.11. 48 von 174
+        <span class="m field">im Feld beobachtet</span>. Ein ganzes Update kam auf diesem Weg noch nicht an. Viele
+        Anfragen gingen auf dem Rückweg verloren: Von 73 gehörten Pfad-Anfragen kamen 35 beim letzten Repeater vor dem
+        Anbieter an <span class="m field">im Feld beobachtet</span>.</p>
+      <p>Deshalb geht die Anfrage zuerst auf dem Rückweg des Angebots zum Anbieter. Bleibt sie zweimal ohne Antwort,
+        schickt der Empfänger sie einmal als Flut. Der Anbieter meldet ihm den Weg zurück, den die Flut genommen hat.
+        Danach fragt der Empfänger auf diesem Weg. Das steht im Entwicklungszweig
+        <span class="m code">im Code geprüft</span>. Ob die Pakete des zweiten Tests es schon enthalten, ist
+        <span class="m open">offen</span>. Melde weiter, ob Stock-Repeater dazwischen lagen.</p>
       <p>Zum Probestart: Ein frisch aktualisierter Knoten bestätigt die neue Version erst, wenn er ein Funkpaket hört und
         selbst eins sendet. Dafür hat er je nach Knoten zwischen 15 Minuten und 6 Stunden Zeit. Hört er bis dahin nichts,
         startet er neu. Nach drei solchen Starts kehrt er zur alten Version zurück. Einen neuen Versuch gibt es frühestens
@@ -241,8 +254,12 @@
         <span class="m meas">gemessen</span>. Das war ein einzelner Lauf am Testaufbau.</p>
     </div>
     <div lang="en" class="prose">
-      <p>On the device, <code>fuota info</code> and <code>fuota status</code> show the state in the USB console. After
-        flashing, 1.17.1-b2 shows <code>build 1 (6b3af727)</code> in <code>fuota info</code>.</p>
+      <p><code>fuota info</code> shows the state in the USB console on the device. As a logged-in admin you can also query it
+        over the mesh <span class="m code">checked in the code</span>. Over the mesh, <code>fuota status</code> gives only
+        the short answer of <code>fuota info</code>, and the detailed display exists only over USB
+        <span class="m code">checked in the code</span>. This is not yet measured on a device
+        <span class="m open">open</span>. After flashing, 1.17.1-b2 shows <code>build 1 (6b3af727)</code> in
+        <code>fuota info</code>.</p>
       <p>From outside you can see the campaign in the
         <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. It appears there only once an
         observer (a node that listens and reports) hears offers or data. If no campaign shows, trust the display on the
@@ -252,8 +269,18 @@
         <span class="m field">observed in the field</span>. Those are only nodes with a default region (section Setting the region).</p>
       <p>The path between seed and receiver may run through normal MeshCore repeaters (stock). The offers travel as
         ordinary group data floods, which stock repeaters forward by region <span class="m code">checked in the code</span>.
-        On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>. In the field
-        this is <span class="m open">open</span>. So report whether stock repeaters lay in between.</p>
+        On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>.</p>
+      <p>In the first test the flooded offer travelled up to 6 hops through the mesh
+        <span class="m field">observed in the field</span>. One receiver got data packets over 2 repeaters in a row from
+        which the analyzer never heard FUOTA packets, 48 of 174 by 15 November
+        <span class="m field">observed in the field</span>. No complete update has arrived this way yet. Many requests
+        were lost on the way back: of 73 heard path requests, 35 reached the last repeater before the provider
+        <span class="m field">observed in the field</span>.</p>
+      <p>So the request first goes back to the provider along the path the offer took. If it stays unanswered twice,
+        the receiver sends it once as a flood. The provider reports back the path the flood took. After that the
+        receiver asks along this path. This is in the development branch
+        <span class="m code">checked in the code</span>. Whether the packages of the second test already contain it is
+        <span class="m open">open</span>. Keep reporting whether stock repeaters lay in between.</p>
       <p>On the test boot: a freshly updated node only confirms the new version once it hears a radio packet and sends
         one itself. Depending on the node, it has between 15 minutes and 6 hours for that. If it hears nothing by then,
         it restarts. After three such starts it returns to the old version. It tries again after one day at the earliest <span class="m code">checked in the code</span>.
@@ -289,7 +316,9 @@
       <p>Am liebsten als GitHub Issue mit der Vorlage „Alpha-Bericht“:
         <a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>.
         Telegram (<a href="https://t.me/meshcorede/37922">Thread</a>) und
-        <a href="https://discord.gg/ZxU66yWVC">Discord</a> gehen auch. Kopiere Ausgaben als Text, keine Screenshots.</p>
+        <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die
+        Alpha-Meldungen <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">direkt in diesem
+        Kanal</a>. Kopiere Ausgaben als Text, keine Screenshots.</p>
       <ul>
         <li>Board, Dateiname und ob die Prüfsumme gepasst hat</li>
         <li>Version vorher und nachher (<code>ver</code>, <code>fuota info</code>)</li>
@@ -307,7 +336,9 @@
       <p>Preferably as a GitHub issue with the template “Alpha-Bericht”:
         <a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>.
         Telegram (<a href="https://t.me/meshcorede/37922">thread</a>) and
-        <a href="https://discord.gg/ZxU66yWVC">Discord</a> work too. Copy output as text, not screenshots.</p>
+        <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the
+        alpha reports <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">directly in this
+        channel</a>. Copy output as text, not screenshots.</p>
       <ul>
         <li>board, file name and whether the checksum matched</li>
         <li>version before and after (<code>ver</code>, <code>fuota info</code>)</li>
