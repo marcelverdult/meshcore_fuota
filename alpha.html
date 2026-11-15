@@ -234,8 +234,18 @@
         <span class="m field">im Feld beobachtet</span>. Das sind nur Knoten mit Standard-Region (Abschnitt Region setzen).</p>
       <p>Der Weg zwischen Seed und Empfänger darf über normale MeshCore-Repeater (Stock) führen. Die Angebote laufen als
         gewöhnliche Gruppen-Daten-Flut, die Stock-Repeater nach Region weiterleiten <span class="m code">im Code geprüft</span>.
-        Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>. Im Feld ist
-        das <span class="m open">offen</span>. Melde deshalb, ob Stock-Repeater dazwischen lagen.</p>
+        Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>.</p>
+      <p>Im ersten Test kam das geflutete Angebot über das Mesh bis zu 6 Hops weit
+        <span class="m field">im Feld beobachtet</span>. Ein Empfänger bekam Datenpakete über 2 Repeater hintereinander,
+        von denen der Analyzer nie FUOTA-Pakete gehört hat, bis zum 15.11. 48 von 174
+        <span class="m field">im Feld beobachtet</span>. Ein ganzes Update kam auf diesem Weg noch nicht an. Viele
+        Anfragen gingen auf dem Rückweg verloren: Von 73 gehörten Pfad-Anfragen kamen 35 beim letzten Repeater vor dem
+        Anbieter an <span class="m field">im Feld beobachtet</span>.</p>
+      <p>Deshalb geht die Anfrage zuerst auf dem Rückweg des Angebots zum Anbieter. Bleibt sie zweimal ohne Antwort,
+        schickt der Empfänger sie einmal als Flut. Der Anbieter meldet ihm den Weg zurück, den die Flut genommen hat.
+        Danach fragt der Empfänger auf diesem Weg. Das steht im Entwicklungszweig
+        <span class="m code">im Code geprüft</span>. Ob die Pakete des zweiten Tests es schon enthalten, ist
+        <span class="m open">offen</span>. Melde weiter, ob Stock-Repeater dazwischen lagen.</p>
       <p>Zum Probestart: Ein frisch aktualisierter Knoten bestätigt die neue Version erst, wenn er ein Funkpaket hört und
         selbst eins sendet. Dafür hat er je nach Knoten zwischen 15 Minuten und 6 Stunden Zeit. Hört er bis dahin nichts,
         startet er neu. Nach drei solchen Starts kehrt er zur alten Version zurück. Einen neuen Versuch gibt es frühestens
@@ -259,8 +269,18 @@
         <span class="m field">observed in the field</span>. Those are only nodes with a default region (section Setting the region).</p>
       <p>The path between seed and receiver may run through normal MeshCore repeaters (stock). The offers travel as
         ordinary group data floods, which stock repeaters forward by region <span class="m code">checked in the code</span>.
-        On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>. In the field
-        this is <span class="m open">open</span>. So report whether stock repeaters lay in between.</p>
+        On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>.</p>
+      <p>In the first test the flooded offer travelled up to 6 hops through the mesh
+        <span class="m field">observed in the field</span>. One receiver got data packets over 2 repeaters in a row from
+        which the analyzer never heard FUOTA packets, 48 of 174 by 15 November
+        <span class="m field">observed in the field</span>. No complete update has arrived this way yet. Many requests
+        were lost on the way back: of 73 heard path requests, 35 reached the last repeater before the provider
+        <span class="m field">observed in the field</span>.</p>
+      <p>So the request first goes back to the provider along the path the offer took. If it stays unanswered twice,
+        the receiver sends it once as a flood. The provider reports back the path the flood took. After that the
+        receiver asks along this path. This is in the development branch
+        <span class="m code">checked in the code</span>. Whether the packages of the second test already contain it is
+        <span class="m open">open</span>. Keep reporting whether stock repeaters lay in between.</p>
       <p>On the test boot: a freshly updated node only confirms the new version once it hears a radio packet and sends
         one itself. Depending on the node, it has between 15 minutes and 6 hours for that. If it hears nothing by then,
         it restarts. After three such starts it returns to the old version. It tries again after one day at the earliest <span class="m code">checked in the code</span>.
