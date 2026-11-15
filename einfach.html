@@ -455,10 +455,10 @@ footer p{margin:6px 0}
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>Per USB-Kabel</h4>
           <p>Lade die Datei mit deinem Board im Namen. Vergleiche ihre Prüfsumme mit <code>SHA256SUMS</code> aus dem Release. Die Prüfsumme zeigt, dass die Datei beim Laden nicht beschädigt wurde. Schließe das Board per USB an, drück zweimal Reset und zieh die Datei auf das Laufwerk, das dann erscheint.</p>
-          <p class="st"><b>Der erprobte Weg.</b> Kommst du an das Kabel, nimm ihn.</p></div>
+          <p class="st"><b>Kommst du an das Kabel, nimm diesen Weg.</b></p></div>
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>Per Bluetooth (OTA)</h4>
           <p>OTA heißt: ohne Kabel, per Funk. Du nimmst die ZIP-Datei statt der UF2-Datei. Sie bringt dieselbe Firmware auf einen Repeater, der schon eingerichtet läuft. Mit dem Befehl <code>start ota</code> schaltet der Repeater auf Bluetooth-Update. Bis das Update fertig ist, arbeitet er nicht als Repeater.</p>
-          <p class="st"><b>Weniger erprobt.</b> Bei Tests dauerte die Übertragung 135 bis 281 Sekunden. Hat dein Board den Bootloader OTAFIX 1.x, nimm USB. Ob die ZIP-Dateien im Paket liegen, steht beim Release.
+          <p class="st"><b>Bei Tests dauerte die Übertragung 135 bis 281 Sekunden.</b> Hat dein Board den Bootloader OTAFIX 1.x, nimm USB. Ob die ZIP-Dateien im Paket liegen, steht beim Release.
             <a href="alpha.html#alpha-ota">Mehr dazu</a></p></div>
       </div></li>
     <li><h3>Einrichten</h3>
@@ -502,7 +502,7 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
     <ul>
       <li><b>Es ist ein Alpha-Test.</b> Fällt etwas aus, flasht du den Repeater per USB-Kabel neu. Darum nimm einen Repeater, an den du gut rankommst.</li>
       <li><b>Dein Repeater ist kurz weg.</b> Beim Einspielen startet er ohne dein Zutun neu und ist kurz nicht erreichbar. Fällt er zurück, versucht er es frühestens nach 1 Tag erneut.</li>
-      <li><b>Bluetooth ist weniger erprobt als USB.</b> Hat dein Board den Bootloader OTAFIX 1.x, nimm USB. Halte das USB-Kabel bereit.</li>
+      <li><b>Boards mit dem Bootloader OTAFIX 1.x:</b> Nimm USB statt Bluetooth. Halte das USB-Kabel bereit.</li>
       <li><b>Ein Display bleibt dunkel.</b> Die Alpha-Pakete haben keinen Display-Treiber, zum Beispiel am Heltec T114. Das ist so gewollt.</li>
       <li><b>Ohne Funkkontakt keine Bestätigung.</b> Hört dein Repeater nach dem Update niemanden, kann er die neue Firmware nicht bestätigen. Nach 3 Probestarts läuft wieder die alte. Stell ihn dahin, wo er andere Repeater hört.</li>
       <li><b>Zurück zu MeshCore:</b> Gib in der USB-Konsole <code>fuota uf2</code> ein. Der Repeater startet neu und erscheint am Rechner als USB-Laufwerk. Zieh die normale MeshCore-Datei (UF2) für dein Board darauf. Antwortet der Repeater nicht mehr, drück zweimal kurz Reset, dann erscheint dasselbe Laufwerk. Ohne USB geht es per Bluetooth: Der Befehl <code>start ota</code> startet den Repeater in den Bluetooth-Update-Modus (auch per Fernzugriff als Admin), dann spielst du das normale MeshCore-Paket ein.</li>
@@ -654,10 +654,10 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>By USB cable</h4>
           <p>Download the file with your board in its name. Compare its checksum with <code>SHA256SUMS</code> from the release. The checksum shows that the file was not damaged while downloading. Connect the board by USB, press reset twice and drag the file onto the drive that appears.</p>
-          <p class="st"><b>The proven way.</b> If you can reach the cable, use it.</p></div>
+          <p class="st"><b>If you can reach the cable, use this one.</b></p></div>
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>Over Bluetooth (OTA)</h4>
           <p>OTA means: without a cable, by radio. You use the ZIP file instead of the UF2 file. It carries the same firmware onto a repeater that is already set up and running. With the command <code>start ota</code> the repeater switches to Bluetooth update. Until the update is done, it does not work as a repeater.</p>
-          <p class="st"><b>Less proven.</b> In tests the transfer took 135 to 281 seconds. If your board has the OTAFIX 1.x bootloader, use USB. Whether the ZIP files are in the package is stated with the release.
+          <p class="st"><b>In tests the transfer took 135 to 281 seconds.</b> If your board has the OTAFIX 1.x bootloader, use USB. Whether the ZIP files are in the package is stated with the release.
             <a href="alpha.html#alpha-ota">More</a></p></div>
       </div></li>
     <li><h3>Set it up</h3>
@@ -701,7 +701,7 @@ set lon <span class="c">&lt;longitude&gt;</span></div>
     <ul>
       <li><b>It is an alpha test.</b> If something fails, you reflash the repeater by USB cable. So pick a repeater you can reach easily.</li>
       <li><b>Your repeater is briefly gone.</b> While the update is installed, it restarts on its own and is briefly out of reach. If it falls back, it tries again after 1 day at the earliest.</li>
-      <li><b>Bluetooth is less proven than USB.</b> If your board has the OTAFIX 1.x bootloader, use USB. Keep a USB cable ready.</li>
+      <li><b>Boards with the OTAFIX 1.x bootloader:</b> Use USB instead of Bluetooth. Keep a USB cable ready.</li>
       <li><b>A display stays dark.</b> The alpha packages have no display driver, for example on the Heltec T114. This is intended.</li>
       <li><b>No radio contact, no confirmation.</b> If your repeater hears nobody after the update, it cannot confirm the new firmware. After 3 test boots the old one runs again. Place it where it hears other repeaters.</li>
       <li><b>Back to MeshCore:</b> Enter <code>fuota uf2</code> in the USB console. The repeater restarts and shows up on your computer as a USB drive. Drag the regular MeshCore file (UF2) for your board onto it. If the repeater no longer answers, press reset twice in quick succession and the same drive appears. Without USB it works over Bluetooth: the command <code>start ota</code> restarts the repeater into the Bluetooth update mode (also by remote access as admin), then you load the regular MeshCore package.</li>
