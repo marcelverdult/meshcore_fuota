@@ -22,9 +22,9 @@ design for review and the guide for the alpha test, in German and English:
 **https://marcelverdult.github.io/meshcore_fuota/**
 
 Status: proof of concept based on MeshCore 1.18.0, measured on the bench with FakeTecs (nRF52840, S140 6.1.1), one
-SenseCAP P1 (S140 7.3.0) and one RAK4631. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since
-11 November 2026, and the packages are releases in this repository. There is no general release. Nothing of it has been
-submitted to MeshCore. The source code follows later. We are looking for flaws in the reasoning: please send feedback as an issue.
+SenseCAP P1 (S140 7.3.0) and one RAK4631. An alpha test with 1.17.1-b2 and 1.18.0-b3 began on 11 November 2026.
+Its packages were withdrawn on 16 November 2026, and new packages for a second test will follow. There is no general
+release. Nothing of it has been submitted to MeshCore. The source code follows later. We are looking for flaws in the reasoning: please send feedback as an issue.
 
 **Lizenz / License:** Text und Abbildungen / text and figures: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 siehe / see `LICENSE`. Namensnennung / attribution: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“.
