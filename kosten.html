@@ -78,25 +78,25 @@
     <div class="aufwand">
     <div lang="de" class="prose">
       <h2>Patch, Datenpakete und Airtime je Release</h2>
-      <p>Ein Patch ist der Unterschied zwischen 2 Images. Airtime ist die Sendezeit auf dem Kanal. Die Größen stammen von
-        echten MeshCore-Releases. Wir haben ihre Tags für den FakeTec gebaut, ein nRF52840-Board. Gebaut ist Stock (MeshCore
+      <p>Ein Patch ist der Unterschied zwischen 2 Images. Airtime ist die Sendezeit auf dem Mesh-Kanal. Die Größen stammen von
+        echten MeshCore-Releases. Wir haben ihre Tags für den FakeTec gebaut, ein nRF52840-Board, als Stock (MeshCore
         unverändert) mit <code>-Os</code>, also auf Größe übersetzt <span class="m meas">gemessen</span>. Daraus folgt, was ein
         Knoten sendet, der einen Nachbarn versorgt <span class="m calc">berechnet</span>:</p>
     </div>
     <div lang="de"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Datenpakete</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>kleines Release (1.17.0 nach 1.17.1)</td><td class="n">10.076 B</td><td class="n">63</td><td class="n">108 s</td><td class="n">72 s</td></tr><tr><td>Release ohne Compilerwechsel (1.17.1 mit GCC 14 nach 1.18.0)</td><td class="n">22.680 B</td><td class="n">138</td><td class="n">238 s</td><td class="n">158 s</td></tr><tr><td>mittleres Release (1.16.0 nach 1.17.0)</td><td class="n">34.179 B</td><td class="n">207</td><td class="n">356 s</td><td class="n">237 s</td></tr></table></div></div>
     <div lang="de" class="prose">
-      <p>Die Airtime-Spalten zeigen die Sendezeit für ein Release. Sie gilt für alle Datenpakete, einmal an einen Nachbarn gesendet. Datenpakete sind alle Fragmente einer Kampagne: das Manifest (beim kleinen Release 2), die Prüftabelle mit einem Prüfwert je Patch-Fragment (3) und der Patch selbst (58), zusammen 63 <span class="m calc">berechnet</span>.</p>
+      <p>Die Airtime-Spalten zeigen die Sendezeit für ein Release. Sie gilt, wenn alle Datenpakete einmal an einen Nachbarn gehen. Die Datenpakete einer Kampagne sind das Manifest (beim kleinen Release 2), die Prüftabelle mit einem Prüfwert je Patch-Datenpaket (3) und der Patch selbst (58), zusammen 63 <span class="m calc">berechnet</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Patch, data packets and airtime per release</h2>
-      <p>A patch is the difference between 2 images. Airtime is the time a node transmits on the channel. The sizes come
-        from real MeshCore releases. We built their tags for the FakeTec, an nRF52840 board. We built stock (MeshCore
+      <p>A patch is the difference between 2 images. Airtime is the time a node transmits on the mesh channel. The sizes come
+        from real MeshCore releases. We built their tags for the FakeTec, an nRF52840 board, as stock (MeshCore
         unchanged) with <code>-Os</code>, that is for size <span class="m meas">measured</span>. From them follows what a node
         sends that supplies one neighbour <span class="m calc">calculated</span>:</p>
     </div>
     <div lang="en"><div class="tscroll"><table><tr><th>Update</th><th>Patch</th><th>Data packets</th><th>Airtime CR 4/8</th><th>Airtime CR 4/5</th></tr><tr><td>small release (1.17.0 to 1.17.1)</td><td class="n">10,076 B</td><td class="n">63</td><td class="n">108 s</td><td class="n">72 s</td></tr><tr><td>release without compiler change (1.17.1 with GCC 14 to 1.18.0)</td><td class="n">22,680 B</td><td class="n">138</td><td class="n">238 s</td><td class="n">158 s</td></tr><tr><td>medium release (1.16.0 to 1.17.0)</td><td class="n">34,179 B</td><td class="n">207</td><td class="n">356 s</td><td class="n">237 s</td></tr></table></div></div>
     <div lang="en" class="prose">
-      <p>The airtime columns show the transmit time for one release. It covers all data packets, sent once to one neighbour. Data packets are all fragments of a campaign: the manifest (2 for the small release), the check table with one check value per patch fragment (3) and the patch itself (58), 63 in total <span class="m calc">calculated</span>.</p>
+      <p>The airtime columns show the transmit time for one release. It applies when all data packets go once to one neighbour. The data packets of a campaign are the manifest (2 for the small release), the check table with one check value per patch data packet (3) and the patch itself (58), 63 in total <span class="m calc">calculated</span>.</p>
     </div>
     </div>
 
@@ -107,7 +107,7 @@
         Funkmodul meldete 10,8 % <span class="m meas">gemessen</span>. Der Unterschied sind die normalen lokalen Adverts
         (Selbstmeldungen) des Repeaters, alle 2 min, 449 ms. Ohne sie stimmt die Rechnung mit der gemessenen Sendezeit
         überein.</p></div>
-      <div class="kv"><h3>Kanallast</h3><p>Jeder Sender nutzt höchstens sein Budget. In Hamburg hört ein Knoten im Median 2 Sender in
+      <div class="kv"><h3>Last auf dem Mesh-Kanal</h3><p>Jeder Sender nutzt höchstens sein Budget. In Hamburg hört ein Knoten im Median 2 Sender in
         Reichweite, im 90. Perzentil (p90) 6. Bei 0,3 % Budget sind es im dichtesten Zehntel bis rund 1,8 % Update-Verkehr
         <span class="m calc">berechnet</span>. Bei 1 % sind es rund 6 % <span class="m calc">berechnet</span>. Eine Anfrage
         nennt genau einen Anbieter. Auch wenn mehrere das Update haben, sendet für einen Fragenden immer nur einer. Die Zahlen für ganz Hamburg stehen unter
@@ -119,7 +119,7 @@
         count the highest share per 120 s was 10.1 % <span class="m calc">calculated</span>. The radio module
         reported 10.8 % <span class="m meas">measured</span>. The difference is the repeater's normal local adverts
         (self-announcements), every 2 min, 449 ms. Without them the calculation matches the measured transmit time.</p></div>
-      <div class="kv"><h3>Channel load</h3><p>Each sender uses at most its budget. In Hamburg a node hears 2 senders in range (median).
+      <div class="kv"><h3>Load on the mesh channel</h3><p>Each sender uses at most its budget. In Hamburg a node hears 2 senders in range (median).
         At the 90th percentile (p90) it hears 6. At 0.3 % the densest tenth sees up to about 1.8 % update traffic
         <span class="m calc">calculated</span>. At 1 % it is about 6 % <span class="m calc">calculated</span>. A request
         names exactly one provider. Even when several have the update, only one sends for a given puller. The figures for all of Hamburg are under
@@ -136,8 +136,8 @@
         <li>Eine Seite sind 23,3 Datenpakete. Bei 0,3 % dauert jeder weitere Hop rund 2,5 h
           <span class="m calc">berechnet</span>.</li>
         <li>Bei 1 % sind es rund 0,7 h <span class="m calc">berechnet</span>.</li>
-        <li>Im Testaufbau trifft die Rechnung. Hop 1 dauerte bei 10 % 484,5 s <span class="m meas">gemessen</span>, gerechnet
-          waren es 486 bis 490 s <span class="m calc">berechnet</span>. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
+        <li>Im Testaufbau stimmt die Rechnung. Hop 1 dauerte bei 10 % 484,5 s <span class="m meas">gemessen</span>, die Rechnung
+          ergab 486 bis 490 s <span class="m calc">berechnet</span>. Hop 2 lag eine Seite dahinter <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Aus den gemessenen Patches folgt die Dauer <span class="m calc">berechnet</span>:</p>
     </div>
@@ -231,8 +231,8 @@
             <option value="34179" data-de="mittleres Release, 34,2 KB" data-en="medium release, 34.2 KB">mittleres Release, 34,2 KB</option>
             <option value="134894" data-de="Compilerwechsel, 135 KB" data-en="compiler change, 135 KB">Compilerwechsel, 135 KB</option>
           </select></div>
-        <div class="ctl"><label for="bud">Budget</label>
-          <select id="bud"><option value="0.003" data-de="0,3 % (Standard)" data-en="0.3 % (default)" selected>0,3 % (Standard)</option><option value="0.005" data-de="0,5 %" data-en="0.5 %">0,5 %</option><option value="0.01">1 %</option><option value="0.02">2 %</option></select></div>
+        <div class="ctl"><label for="bud">Airtime-Budget</label>
+          <select id="bud"><option value="0.003" data-de="0,3 % (Werkswert)" data-en="0.3 % (factory value)" selected>0,3 % (Werkswert)</option><option value="0.005" data-de="0,5 %" data-en="0.5 %">0,5 %</option><option value="0.01">1 %</option><option value="0.02">2 %</option></select></div>
         <div class="ctl"><label for="share"><span lang="de">Anteil Repeater mit FUOTA</span><span lang="en">share of repeaters running FUOTA</span></label>
           <select id="share"><option value="1" selected>100 %</option><option value="0.75">75 %</option><option value="0.5">50 %</option><option value="0.25">25 %</option></select></div>
         <div class="ctl"><label for="seed">Seed</label>
@@ -240,7 +240,7 @@
             <option value="center" data-de="gut verbunden (Mitte)" data-en="well connected (centre)">gut verbunden (Mitte)</option>
             <option value="edge" data-de="am Rand" data-en="at the edge">am Rand</option>
           </select></div>
-        <div class="ctl"><label for="hspeed"><span lang="de">Tempo (ganzer Rollout)</span><span lang="en">speed (whole rollout)</span></label>
+        <div class="ctl"><label for="hspeed"><span lang="de">Tempo (ganze Kampagne)</span><span lang="en">speed (whole campaign)</span></label>
           <select id="hspeed"><option value="180" data-de="langsam, 3 min" data-en="slow, 3 min">langsam, 3 min</option><option value="90" selected data-de="mittel, 90 s" data-en="medium, 90 s">mittel, 90 s</option><option value="30" data-de="schnell, 30 s" data-en="fast, 30 s">schnell, 30 s</option></select></div>
         <div class="timebar"><button type="button" class="stepbtn" id="hprev"><span lang="de">◂ zurück</span><span lang="en">◂ back</span></button>
           <button type="button" class="play" id="play"><span lang="de">Abspielen</span><span lang="en">Play</span></button>
@@ -303,8 +303,8 @@
     <div lang="de" class="prose">
       <h2>Warum Patches klein bleiben</h2>
       <p>Das Ziel ist, dass alle dieselben signierten Images aus den Releases auf GitHub installieren. Dann erreicht ein Patch,
-        eine Kampagne jeden Repeater mit FUOTA. Ein Knoten mit selbst gebautem Image bekommt keinen Patch von seinen Nachbarn.
-        Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
+        also eine Kampagne, jeden Repeater mit FUOTA. Ein Knoten mit selbst gebautem Image bekommt keinen Patch von seinen Nachbarn.
+        Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
       <p>Einen Compilerwechsel wie von 1.17.1 nach 1.18.0 gibt es mit FUOTA nur mit Absicht. Die FUOTA-Builds frieren Compiler
         und Bibliotheken ein.</p>
 
@@ -347,7 +347,7 @@
         <span class="m meas">gemessen</span>. Der unabhängige Build nutzte Python-Pakete ohne Hashes und einen anderen Pfad.
         Ob ein x86_64-Rechner dasselbe Image baut, ist nicht geprüft <span class="m open">offen</span>.</p>
       <p>Patches entstehen immer gegen das archivierte Release-Image, das auf den Geräten läuft. Nie gegen einen Neubau.
-        Ein Patch für das falsche Image zerstört nichts. Der Knoten zieht nur, wenn der Quell-Hash im Angebot zu seinem
+        Ein Patch für das falsche Image zerstört nichts. Der Knoten holt nur, wenn der Hash des Quell-Images im Angebot zu seinem
         Image passt.</p>
 
       <h3>Kleineres Image, kleinere Patches</h3>
@@ -384,7 +384,7 @@
         <li>signierte Statusmeldungen</li>
       </ul>
       <p>Die Testhilfe <code>fuota hang</code> ist nicht mehr dabei. Zusammen sind es im Image von 1.18.0-b3 306.104 B <span class="m meas">gemessen</span> und 75 Seiten <span class="m calc">berechnet</span>. Der RAM beträgt 45.768 B laut Bau-Bericht.
-        Das Image von 1.17.1-b2 hat 301.928 B und 74 Seiten. Beim ersten Bau des Release-Env am 8. November 2026 waren es 299.284 B <span class="m meas">gemessen</span>.
+        Das Image von 1.17.1-b2 hat 301.928 B und 74 Seiten. Beim ersten Release-Build am 8. November 2026 waren es 299.284 B <span class="m meas">gemessen</span>.
         Das waren 74 Seiten und 43.580 B RAM. Am 20. Oktober 2026 waren es 270.080 B, 66 Seiten und 37.036 B RAM.</p>
       <p>Weil weniger eingebetteter Code mitwandert, sind die Patches 18 bis 39 % kleiner <span class="m meas">gemessen</span>.
         Wir haben die Release-Tags am Stock-FakeTec gebaut, einmal mit <code>-Ofast</code>, einmal mit <code>-Os</code>.
@@ -392,15 +392,15 @@
         stehen in der <a href="#aufwand">Tabelle oben</a>.</p>
       <p>Hinter ein Image mit 75 Seiten passen Patches bis 22 Seiten <span class="m calc">berechnet</span>. Größere wendet der Knoten überlappend an.
         Beim Image vom 8. November 2026 mit 74 Seiten waren es 23 Seiten.</p>
-      <p>Der erste echte Patch des Alpha-Tests führt von 1.17.1-b2 auf 1.18.0-b3. Er hat 28.630 B <span class="m meas">gemessen</span>. Das sind 163 Fragmente zu 176 B
-        und 7 Seiten <span class="m calc">berechnet</span>. Dazu kommen das Manifest (3 Fragmente) und die Prüftabelle (8 Fragmente) <span class="m calc">berechnet</span>. Das sind 174 Fragmente: Ein Knoten holte die Kampagne <code>dc7b7cb0</code> mit 174 Fragmenten <span class="m meas">gemessen</span>. Der Patch passt hinter das Image. Laut Bericht baute der Host-Test aus ihm ein Image, das Byte für Byte gleich ist.</p>
+      <p>Der erste echte Patch des Alpha-Tests führt von 1.17.1-b2 auf 1.18.0-b3. Er hat 28.630 B <span class="m meas">gemessen</span>. Das sind 163 Datenpakete zu 176 B
+        und 7 Seiten <span class="m calc">berechnet</span>. Dazu kommen das Manifest (3 Datenpakete) und die Prüftabelle (8 Datenpakete) <span class="m calc">berechnet</span>. Das sind 174 Datenpakete: Ein Knoten holte die Kampagne <code>dc7b7cb0</code> mit 174 Datenpaketen <span class="m meas">gemessen</span>. Der Patch passt hinter das Image. Laut Bericht setzte der Rechner-Test das neue Image aus altem Image und Patch zusammen. Es war Byte für Byte gleich dem echten.</p>
       <p>Das kleinere Image kostet etwas Rechenzeit. Auf einem FakeTec <span class="m meas">gemessen</span>:</p>
       <div class="tscroll"><table>
         <tr><th>Vorgang</th><th>mit -Os</th><th>mit -Ofast</th></tr>
         <tr><td>Signieren eines eigenen Adverts</td><td class="n">12,9 ms</td><td class="n">11,7 ms</td></tr>
         <tr><td>Schlüsseltausch bei einer Anmeldung</td><td class="n">30,6 ms</td><td class="n">30,3 ms</td></tr>
       </table></div>
-      <p>Prüfen, AES und SHA-256 laufen in der CryptoCell (Prüfen 17,8 ms). Sie hängen nicht am Compiler
+      <p>Prüfen, AES und SHA-256 laufen in der CryptoCell (dem Krypto-Baustein des Chips; Prüfen 17,8 ms). Sie hängen nicht am Compiler
         <span class="m meas">gemessen</span>.</p>
 
       <h3>Ein Image für alle Boards</h3>
@@ -413,8 +413,8 @@
     </div>
     <div lang="en" class="prose">
       <h2>Why patches stay small</h2>
-      <p>The goal is that everyone installs the same signed images from the releases on GitHub. Then one patch, one campaign
-        reaches every repeater with FUOTA. A node with a self-built image gets no patch from its neighbours. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>.</p>
+      <p>The goal is that everyone installs the same signed images from the releases on GitHub. Then one patch, that is one campaign,
+        reaches every repeater with FUOTA. A node with a self-built image gets no patch from its neighbours. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release <span class="m open">open</span>.</p>
       <p>A compiler change like 1.17.1 to 1.18.0 happens with FUOTA only on purpose. The FUOTA builds freeze compiler and
         libraries.</p>
 
@@ -456,7 +456,7 @@
         <span class="m meas">measured</span>. The independent build used Python packages without hashes and another path.
         Whether an x86_64 machine builds the same image is not checked <span class="m open">open</span>.</p>
       <p>Patches are always built against the archived release image on the devices. Never against a rebuild. A patch for the
-        wrong image breaks nothing. The node only pulls when the source hash in the offer matches its image.</p>
+        wrong image breaks nothing. The node only pulls when the hash of the source image in the offer matches its image.</p>
 
       <h3>Smaller image, smaller patches</h3>
       <p>The Adafruit core compiles nRF52 firmware with <code>-Ofast</code>, that is for speed. FUOTA builds compile with
@@ -492,7 +492,7 @@
         <li>signed status messages</li>
       </ul>
       <p>The test helper <code>fuota hang</code> is no longer in it. Together the image of 1.18.0-b3 has 306,104 B <span class="m meas">measured</span> and 75 pages <span class="m calc">calculated</span>. The RAM is 45,768 B according to the build report.
-        The image of 1.17.1-b2 has 301,928 B and 74 pages. At the first build of the release env on 8 November 2026 it was 299,284 B <span class="m meas">measured</span>.
+        The image of 1.17.1-b2 has 301,928 B and 74 pages. At the first release build on 8 November 2026 it was 299,284 B <span class="m meas">measured</span>.
         That was 74 pages and 43,580 B RAM. On 20 October 2026 it was 270,080 B, 66 pages and 37,036 B RAM.</p>
       <p>Because less inlined code moves along, patches are 18 to 39 % smaller <span class="m meas">measured</span>. We built
         the release tags on the stock FakeTec, once with <code>-Ofast</code>, once with <code>-Os</code>. Every patch passed a
@@ -500,15 +500,15 @@
         <a href="#aufwand">table above</a>.</p>
       <p>Patches of up to 22 pages fit behind an image of 75 pages <span class="m calc">calculated</span>. A node applies larger ones overlapping.
         For the image of 8 November 2026 with 74 pages it was 23 pages.</p>
-      <p>The first real patch of the alpha test goes from 1.17.1-b2 to 1.18.0-b3. It has 28,630 B <span class="m meas">measured</span>. That is 163 fragments of 176 B
-        and 7 pages <span class="m calc">calculated</span>. The manifest (3 fragments) and the check table (8 fragments) come on top <span class="m calc">calculated</span>. That makes 174 fragments: A node pulled the campaign <code>dc7b7cb0</code> with 174 fragments <span class="m meas">measured</span>. The patch fits behind the image. According to the report, a host test built a byte-identical image from it.</p>
+      <p>The first real patch of the alpha test goes from 1.17.1-b2 to 1.18.0-b3. It has 28,630 B <span class="m meas">measured</span>. That is 163 data packets of 176 B
+        and 7 pages <span class="m calc">calculated</span>. The manifest (3 data packets) and the check table (8 data packets) come on top <span class="m calc">calculated</span>. That makes 174 data packets: A node pulled the campaign <code>dc7b7cb0</code> with 174 data packets <span class="m meas">measured</span>. The patch fits behind the image. The report says the host test rebuilt the new image from old image and patch. The result matched the real image byte for byte.</p>
       <p>The smaller image costs some compute time. On a FakeTec <span class="m meas">measured</span>:</p>
       <div class="tscroll"><table>
         <tr><th>Step</th><th>with -Os</th><th>with -Ofast</th></tr>
         <tr><td>signing the node's own advert</td><td class="n">12.9 ms</td><td class="n">11.7 ms</td></tr>
         <tr><td>key exchange of a login</td><td class="n">30.6 ms</td><td class="n">30.3 ms</td></tr>
       </table></div>
-      <p>Verification, AES and SHA-256 run in the CryptoCell (verification 17.8 ms). They do not depend on the compiler
+      <p>Verification, AES and SHA-256 run in the CryptoCell (the crypto block of the chip; verification 17.8 ms). They do not depend on the compiler
         <span class="m meas">measured</span>.</p>
 
       <h3>One image for all boards</h3>
@@ -535,10 +535,10 @@
         oder der Patch vollständig ist. Ebenso, wenn ein Pull weitergeht oder das Anbieten startet, etwa nach einem
         Neustart. Danach verdoppelt es sich bis auf 2 Tage <span class="m code">im Code geprüft</span>. Diesen Zeitgeber nennt man Trickle (mehr dazu auf der Seite <a href="funk.html#zeiten">Funk</a>).</p><p>Das Angebot liegt in der zweiten Hälfte des Intervalls. Wer später dazukommt,
         hört darum spätestens nach rund 3 Tagen ein Angebot <span class="m code">im Code geprüft</span>. Im Leerlauf lagen im Testaufbau kurz nach dem Anwenden 877 s zwischen zwei Angeboten
-        <span class="m meas">gemessen</span>, weil das Intervall erst wächst. Am 9. November 2026 stand es beim Geber im Brettlauf der Release-Kampagne bei einem Neustart des Empfängers schon auf 5,7 Stunden (20.480 s) <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p>
-      <p>Ein frisch aktualisierter Knoten braucht für den Probestart ein angenommenes Paket und einen eigenen Sendevorgang. Beides muss innerhalb der Frist T
+        <span class="m meas">gemessen</span>, weil das Intervall erst wächst. Am 9. November 2026 stand es im Testaufbau der Release-Kampagne beim Anbieter schon auf 5,7 Stunden (20.480 s), als der Empfänger neu startete <span class="m meas">gemessen</span>. Das ist gewollt: Updates dürfen Tage dauern. Im Leerlauf bietet ein Knoten nur einmal je Intervall an.</p>
+      <p>Ein frisch aktualisierter Knoten braucht für den Probestart (Startversuch) ein angenommenes Paket und einen eigenen Sendevorgang. Beides muss innerhalb der Frist T
         liegen. T liegt zwischen 15 Minuten und 6 Stunden <span class="m code">im Code geprüft</span>. Ohne einen Tag Laufzeit vor dem Update sind es 60 Minuten <span class="m code">im Code geprüft</span>.
-        Am 9. November 2026 war das Brett ohne anderen Verkehr. Ein Knoten empfing dort 18 Minuten lang kein Paket <span class="m meas">gemessen</span>.
+        Am 9. November 2026 hatte der Testaufbau keinen anderen Verkehr. Ein Knoten empfing dort 18 Minuten lang kein Paket <span class="m meas">gemessen</span>.
         Ob das im Mesh mit normalem Verkehr vorkommt, ist nicht geprüft <span class="m open">offen</span>.</p></div>
     </div>
     <div class="grid2" lang="en">
@@ -552,7 +552,7 @@
         therefore hears an offer within about 3 days <span class="m code">checked in the code</span>. On
         the bench 877 s passed between two offers when idle shortly after applying <span class="m meas">measured</span>, because the interval is still growing. On 9 November 2026, in the bench run of the release campaign, it already stood at 5.7 hours (20,480 s) at the provider when a receiver restarted <span class="m meas">measured</span>. This is intended: updates
         may take days. When idle, a node offers only once per interval.</p>
-      <p>A freshly updated node needs one accepted packet and one send of its own for the test boot. Both must come within the deadline T.
+      <p>A freshly updated node needs one accepted packet and one send of its own for the test boot (start attempt). Both must come within the deadline T.
         T is between 15 minutes and 6 hours <span class="m code">checked in the code</span>. Without a day of uptime before the update it is 60 minutes <span class="m code">checked in the code</span>.
         On 9 November 2026 the bench had no other traffic. A node received no packet there for 18 minutes <span class="m meas">measured</span>.
         Whether this happens in a mesh with normal traffic has not been checked <span class="m open">open</span>.</p></div>
@@ -561,8 +561,8 @@
   </main>
   <p class="next"><a href="nebenslot.html"><span lang="de">Weiter: Nebenslot</span><span lang="en">Next: Side slot</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

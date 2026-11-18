@@ -62,13 +62,13 @@
       <h1>Nur signierte Firmware, und bei Startproblemen die alte</h1>
       <p class="lede">Dein Repeater installiert nur, was der Release-Schlüssel signiert hat. Startet die neue Firmware
         nicht, läuft nach 3 Probestarts (Startversuchen) ohne Bestätigung wieder die alte <span class="m meas">gemessen</span>. Im Proof of Concept
-        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
+        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
       <h1>Only signed firmware, and the old one after a failed start</h1>
       <p class="lede">Your repeater installs only what the release key has signed. When the new firmware fails
         to start, the old one runs again after 3 test boots without confirmation <span class="m meas">measured</span>. In the proof of concept the
-        tests ran with the test key. The release key was generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>.</p>
+        tests ran with the test key. The release key was generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release <span class="m open">open</span>.</p>
     </div>
   </header>
 
@@ -106,7 +106,7 @@
         <li><b>Beim Empfang</b><span>jede Seite, bevor er sie weitergibt</span></li>
         <li><b>Vor dem Anwenden</b><span>den ganzen Patch</span></li>
         <li><b>Nach dem Bauen</b><span>das neue Image</span></li>
-        <li><b>Vor dem Tausch</b><span>beide Slots, durch Stage-0</span></li>
+        <li><b>Vor dem Tausch</b><span>beide Slots, durch Stage-0 (den Loader beim Start)</span></li>
         <li><b>Nach dem Tausch</b><span>Slot A noch einmal</span></li>
       </ol>
     </figure>
@@ -121,61 +121,61 @@
         <li><b>On receipt</b><span>every page, before passing it on</span></li>
         <li><b>Before applying</b><span>the whole patch</span></li>
         <li><b>After building</b><span>the new image</span></li>
-        <li><b>Before the swap</b><span>both slots, by Stage-0</span></li>
+        <li><b>Before the swap</b><span>both slots, by Stage-0 (the loader at boot)</span></li>
         <li><b>After the swap</b><span>slot A once more</span></li>
       </ol>
     </figure>
 
 
     <div lang="de" class="prose">
-      <h3>Nur Signiertes wird installiert</h3>
+      <h3>Signaturprüfung</h3>
       <p>Der Knoten prüft in dieser Reihenfolge:</p>
       <ol>
-        <li>Vor dem Anwenden: der ganze Patch <span class="m code">im Code geprüft</span>. Am Brett lief der Erfolgsweg durch <span class="m meas">gemessen</span></li>
-        <li>Nach dem Bauen: das neue Image <span class="m code">im Code geprüft</span>. Am Brett ergab der Neuaufbau das erwartete Image <span class="m meas">gemessen</span></li>
+        <li>Vor dem Anwenden: der ganze Patch <span class="m code">im Code geprüft</span>. Am Testaufbau lief der Erfolgsweg durch <span class="m meas">gemessen</span></li>
+        <li>Nach dem Bauen: das neue Image <span class="m code">im Code geprüft</span>. Am Testaufbau ergab der Neuaufbau das erwartete Image <span class="m meas">gemessen</span></li>
         <li>Vor dem Tausch: beide Slots, durch Stage-0</li>
         <li>Nach dem Tausch: Slot A noch einmal</li>
       </ol>
-      <p>Dass der Knoten einen manipulierten Patch oder ein Image mit falschem Hash abweist, ist durch keinen Negativtest belegt <span class="m open">offen</span>. Am Brett abgewiesen wurden bisher verfälschte Fragmente.</p>
-      <p>Stage-0 ist der Lader, der beim Start die Images tauscht. Slot A hält die laufende Firmware. Slot B ist das
+      <p>Dass der Knoten einen manipulierten Patch oder ein Image mit falschem Hash abweist, ist durch keinen Negativtest belegt <span class="m open">offen</span>. Am Testaufbau abgewiesen wurden bisher verfälschte Datenpakete.</p>
+      <p>Stage-0 ist der Loader, der beim Start die Images tauscht. Slot A hält die laufende Firmware. Slot B ist das
         Zwischenlager für das neue Image. Das Layout steht unter <a href="flash.html">Wo was im Flash liegt</a>.</p>
       <p>Um anderes zu installieren, müsste ein Angreifer Ed25519 fälschen. Oder er müsste eine zweite Eingabe mit
         gleichem SHA-256 finden.</p>
 
-      <h3>Fehler bleiben lokal</h3>
-      <p>Der Knoten prüft jede Seite, bevor er sie weitergibt. Ein verfälschtes Fragment verdirbt darum höchstens die
-        Seite eines einzelnen Empfängers. Der Empfänger holt sie neu <span class="m meas">gemessen</span>. Ein Fragment
-        ist der Teil von Patch oder Manifest, den ein Datenpaket trägt.</p>
+      <h3>Folgen eines Fehlers</h3>
+      <p>Der Knoten prüft jede Seite, bevor er sie weitergibt. Ein verfälschtes Datenpaket verdirbt darum höchstens die
+        Seite eines einzelnen Empfängers. Der Empfänger holt sie neu <span class="m meas">gemessen</span>. Ein Datenpaket
+        trägt einen Teil von Patch oder Manifest.</p>
       <p>Der Knoten beschreibt ein Wort im Flash höchstens einmal. Steht dort schon ein anderer Wert, löscht der Knoten die
         ungeprüfte Seite. Eine geprüfte Seite schützt sich selbst.</p>
       <p>Ein Manifest sammelt der Knoten zuerst im RAM. In den Flash schreibt er es erst, wenn Hash und Signatur
         stimmen <span class="m code">im Code geprüft</span>. Gefälschte Manifest-Pakete nutzen den Flash so nicht ab.</p>
-      <p>Fuzzing füttert den Code mit zufällig veränderten Eingaben. Es lief auf dem Rechner mit zusammen 2,8 Milliarden
+      <p>Fuzzing füttert den Code mit zufällig veränderten Eingaben. Der Test lief auf dem Rechner mit zusammen 2,8 Milliarden
         Eingaben (Stand 27. Oktober 2026). Rund 514 Millionen gingen an den Code, der Manifeste, Tickets, Widerrufe und Datenpakete einliest.
         Der Code im Knoten, der Funkpakete verarbeitet, bekam rund 8,5 Millionen.</p>
       <p>Gut 2,1 Milliarden prüften den Filter für Admin-Befehle und die Board-Auswahl. Die übrigen 171 Millionen gingen an Journal, Prüfsumme, Stage-0 und das Anwenden von Patches.
         Es gab keinen Speicherfehler, also keinen Zugriff außerhalb des erlaubten Speichers, und keinen Absturz <span class="m meas">gemessen</span>.</p>
       <p>Nicht geprüft sind der Code seit diesem Stand und der Teil von MeshCore ohne FUOTA.</p>
 
-      <h3>Das Update kommt überall an, wo Repeater mit FUOTA verbunden sind</h3>
+      <h3>Reichweite des Updates</h3>
       <ul>
         <li>Ein Knoten fragt nach dem niedrigsten fehlenden Block, solange ein Nachbar anbietet.</li>
         <li>Trickle, der Zeitgeber der Angebote, lässt jeden Knoten spätestens nach rund 3 Tagen wieder ein Angebot hören <span class="m code">im Code geprüft</span>. Das Intervall wächst bis 2 Tage, das Angebot liegt in seiner zweiten Hälfte.</li>
         <li>Ab 1 h Intervall bietet jeder Anbieter an, auch wenn er ein gleiches gehört hat.</li>
-        <li>Ein Hop braucht nur einen einzigen Nachbarn mit der Seite. Ein Hop ist ein Sprung von Knoten zu Knoten.</li>
+        <li>Ein Hop braucht nur einen einzigen Nachbarn mit der Seite. Ein Hop ist ein Sprung von Repeater zu Repeater.</li>
         <li>Sind alle Repeater mit FUOTA vom Seed aus verbunden, erreicht das Update jeden. Ein Seed ist per USB oder
           BLE installiert und gibt das Update weiter.</li>
         <li>Ein unterbrochener Pull (das Holen eines Updates) behält seine geprüften Seiten
           <span class="m meas">gemessen</span>.</li>
       </ul>
 
-      <h3>Update-Daten fluten nie</h3>
+      <h3>Update-Daten und Flut</h3>
       <p>Update-Daten gehen an direkte Nachbarn. Jeder Knoten sendet höchstens sein Airtime-Budget, seine erlaubte
         Sendezeit. Die gesamte Last hat damit eine Obergrenze: Zahl der Sender × Budget. Wie viele Knoten mitmachen,
         ändert daran nichts. Eine Anfrage nennt genau einen Anbieter und löst keine Kettenreaktion aus.</p>
       <p>Nur kleine Nachrichten gehen als Flut raus: Angebot, Retract (signierter Rückruf) und Schlüssel-Widerruf. Das hilft Knoten hinter Repeatern ohne FUOTA:</p>
       <ul>
-        <li><b>Flut-Angebot.</b> Ein Anbieter mit einer ganzen Kampagne flutet sein Angebot als Gruppen-Daten in seiner
+        <li><b>Flut-Angebot.</b> Ein Anbieter mit einer ganzen Kampagne flutet sein Angebot als Gruppen-Nachricht in seiner
           Standard-Region. Eine Region ist der Flood-Scope, auf dem eine Nachricht läuft. Die Standard-Region ist die,
           in der er flutet. Ohne sie flutet er nicht. Jeder Repeater der Region sendet die Flut einmal weiter.</li>
         <li><b>Grenzen der Flut.</b> Er flutet höchstens einmal am Tag je Kampagne. Dazu muss eines zutreffen:
@@ -205,12 +205,12 @@
         <li>Auch die Grenzen für frische Fluten und für Fluten nach einer Anfrage
           <span class="m meas">gemessen</span>. Der Test-Build lief mit 300 s und 2 Fluten.</li>
         <li>Diese Fluten sind gebaut: ohne Anfrage, von Retract, von Widerruf und als Antwort <span class="m code">im Code geprüft</span>. Am 10. November 2026 lief am Testaufbau die Flut von Retract. Ein Knoten sendete sie. Ein Nachbar empfing und prüfte sie und unterdrückte darauf seine eigene Flut <span class="m meas">gemessen</span>. Die übrigen drei sind dort nicht getestet <span class="m open">offen</span>. Ob normale Repeater sie weitergeben, ist nicht geprüft <span class="m open">offen</span>.</li>
-        <li>Die Grenze von 3 Tagen lief am Testaufbau mit der heutigen Firmware noch nicht. Der Lauf nimmt ein Kurzzeit-Image. Es wartet 10 min statt 1 Tag. Die Grenze liegt bei 30 min statt 3 Tagen <span class="m open">offen</span>.</li>
+        <li>Die Grenze von 3 Tagen lief am Testaufbau mit der heutigen Firmware noch nicht. Der Lauf nimmt ein Kurzzeit-Image. Das Image wartet 10 min statt 1 Tag. Die Grenze liegt bei 30 min statt 3 Tagen <span class="m open">offen</span>.</li>
         <li>Am Testaufbau lässt sich keine Flut aus einer anderen Region oder über 5 Hops erzeugen. Die Images dort fluten fest in einer Region <span class="m code">im Code geprüft</span>. Diesen Fall prüft nur ein Rechner-Test, der die Flut-Funktionen der Firmware unverändert ausführt <span class="m meas">gemessen</span>. Am Testaufbau ist er <span class="m open">offen</span>.</li>
       </ul>
       <p>Mehr dazu: <a href="funk.html#weiter">Wer was weitergibt</a>.</p>
 
-      <h3>Ein Update kann nicht halb installiert sein</h3>
+      <h3>Installation und Neustart</h3>
       <ul>
         <li>Nur Stage-0 ersetzt die laufende Firmware, Seite für Seite, mit Journal. Das Journal ist ein Protokoll der
           Tauschschritte im Flash.</li>
@@ -239,15 +239,15 @@
           und ein Wurzelwechsel durch die Ersatz-Wurzel sind gebaut <span class="m code">im Code geprüft</span>. Alles lief nur am Rechner. Am Testaufbau ist es noch nicht gemessen
           <span class="m open">offen</span>. Ein Dieb der Wurzel kann Schlüssel mit neuen Nummern ausstellen, bis die Ersatz-Wurzel gewechselt hat.</li>
             <li>Dauerfunk
-          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</li>
+          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</li>
           </ul></li>
         <li><b>Die Build-Umgebung.</b> Vor dem Signieren bauen wir zweimal unabhängig und vergleichen das Ergebnis.
           <ul>
             <li>Am 27. Oktober 2026
           waren alle 15 Build-Dateien beider Builds byte-gleich <span class="m meas">gemessen</span>. SHA-256 legt jedes Software-Paket des Builds fest: 118 Einträge, und 88 frisch geladene
-          Pakete stimmten mit ihnen überein <span class="m meas">gemessen</span>. Beim Doppelbau des Release-Env vom 8. November 2026 waren es 9 Dateien (Image, ELF, HEX und 6 Stage-0-Dateien), ebenfalls byte-gleich <span class="m meas">gemessen</span>.</li>
+          Pakete stimmten mit ihnen überein <span class="m meas">gemessen</span>. Beim Doppelbau der Release-Umgebung vom 8. November 2026 waren es 9 Dateien (Image, ELF, HEX und 6 Stage-0-Dateien), ebenfalls byte-gleich <span class="m meas">gemessen</span>.</li>
             <li>Beide Läufe liefen in Containern (abgeschotteten Bauumgebungen). Der zweite lief aber ohne unser Dockerfile (die Bauanleitung des Containers). Ein Release braucht außerdem ein signiertes Tag (eine signierte Versionsmarke in Git) und eine fortlaufende Build-Nummer
-          <span class="m code">im Code geprüft</span>. Offen: Der Vergleich zwischen zwei Prozessor-Architekturen fehlt <span class="m open">offen</span>.</li>
+          <span class="m code">im Code geprüft</span>. Der Vergleich zwischen zwei Prozessor-Architekturen fehlt <span class="m open">offen</span>.</li>
             <li>Wer Docker (die Software für den Build-Container) nutzen oder im Checkout (der Kopie des Quellcodes) schreiben darf, beeinflusst den Build. Ein Paket, das in beiden Umgebungen gleich vergiftet ist, fällt nicht auf. Docker und Python auf dem Bau-Rechner sowie das Debian-Paket git im Container-Abbild sind nicht per Hash festgelegt. Ebenso die Python-Pakete (pip) des zweiten Laufs.</li>
             <li>Code der Build-Plattform läuft aber schon vor dieser Prüfung <span class="m open">offen</span>.</li>
           </ul></li>
@@ -255,17 +255,16 @@
           <ul>
             <li>Die Hauptschleife lief im Probestart 60 s. Dazu hat die neue Firmware ein gültiges Paket empfangen und eines gesendet <span class="m code">im Code geprüft</span>.</li>
             <li>Fehlt dieses Lebenszeichen, startet sie neu. Nach 3 Probestarts ohne Lebenszeichen tauscht Stage-0 zurück <span class="m code">im Code geprüft</span>. Das Image bleibt erlaubt. Der automatische Start folgt frühestens nach 1 Tag, mit wachsendem Abstand (1, 2, 4, 8, 16, dann 30 Tage) <span class="m code">im Code geprüft</span>. <code>fuota apply</code> wartet nicht.</li>
-            <li>Am Testaufbau bestätigte ein Knoten so ein Update <span class="m meas">gemessen</span>. Am Testaufbau fiel ein Knoten ohne Lebenszeichen nach 3 Probestarts zurück. Das Image blieb erlaubt, dieselbe Kampagne ließ sich neu laden <span class="m meas">gemessen</span>. Am stillen Brett hörte ein frisch aktualisierter Knoten 18 Minuten lang kein Paket. Er hätte sich nicht selbst bestätigt <span class="m meas">gemessen</span>. Der Geber bot nur noch alle 5,7 Stunden an. In einem Netz mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>. Offen ist der Rückfall bei einer echten Funklücke im Feld <span class="m open">offen</span>.</li>
+            <li>Am Testaufbau bestätigte ein Knoten so ein Update <span class="m meas">gemessen</span>. Am Testaufbau fiel ein Knoten ohne Lebenszeichen nach 3 Probestarts zurück. Das Image blieb erlaubt, dieselbe Kampagne ließ sich neu laden <span class="m meas">gemessen</span>. Am stillen Testaufbau hörte ein frisch aktualisierter Knoten 18 Minuten lang kein Paket. Er hätte sich nicht selbst bestätigt <span class="m meas">gemessen</span>. Der Anbieter bot nur noch alle 5,7 Stunden an. In einem Netz mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>. Der Rückfall bei einer echten Funklücke im Feld ist nicht gemessen <span class="m open">offen</span>.</li>
           </ul></li>
         <li><b>Stromausfall beim überlappenden Anwenden:</b> Hat danach kein Nachbar den Patch, bleibt der Knoten auf
-          der alten Version <span class="m code">im Code geprüft</span>. Er wartet auf einen Anbieter in Reichweite. Das Update legt ihn nicht lahm
-          <span class="m code">im Code geprüft</span>.</li>
+          der alten Version <span class="m code">im Code geprüft</span>. Er wartet auf einen Anbieter in Reichweite.</li>
         <li><b>Admin-Zugang.</b> Ein Release-Image hat kein Admin-Passwort.
           <ul>
             <li>Du setzt es per USB mit <code>password</code>
           <span class="m code">im Code geprüft</span>. Wer schon als Admin in der Zugriffsliste (ACL) steht, bleibt aber Admin <span class="m code">im Code geprüft</span>.</li>
             <li>Lief dein Knoten vorher mit
-          Stock und „password“, prüfe die Liste per USB mit <code>get acl</code>. Der Knoten speichert die
+          Stock (MeshCore unverändert) und „password“, prüfe die Liste per USB mit <code>get acl</code>. Der Knoten speichert die
           Einstellungen jetzt über eine Temp-Datei (eine Zwischendatei) und benennt sie danach um. So bleibt die alte Datei bis zum Schluss ganz <span class="m code">im Code geprüft</span>.</li>
             <li>Das gilt auf den Prozessoren nRF52 und STM32. Der nRF52 schreibt im Flash aber immer eine ganze Seite. Ob ein Stromausfall mitten im Speichern wirklich nichts zerstört, ist am Testaufbau noch nicht gemessen
           <span class="m open">offen</span>.</li>
@@ -289,7 +288,7 @@
       <p>Alle offenen Punkte stehen unter <a href="fragen.html#luecken">Was noch offen ist</a>.</p>
     </div>
     <div lang="en" class="prose">
-      <h3>Only signed material is installed</h3>
+      <h3>Signature check</h3>
       <p>The node checks in this order:</p>
       <ol>
         <li>Before applying: the whole patch <span class="m code">checked in the code</span>. On the bench the success path went through <span class="m meas">measured</span></li>
@@ -297,46 +296,46 @@
         <li>Before the swap: both slots, by Stage-0</li>
         <li>After the swap: slot A once more</li>
       </ol>
-      <p>No negative test shows the node rejecting a tampered patch or a wrong-hash image <span class="m open">open</span>. What the bench has rejected so far are corrupted fragments.</p>
+      <p>No negative test shows the node rejecting a tampered patch or a wrong-hash image <span class="m open">open</span>. What the bench has rejected so far are corrupted data packets.</p>
       <p>Stage-0 is the loader that swaps the images at boot. Slot A holds the running firmware. Slot B is the
         intermediate store for the new image. The layout is described under
         <a href="flash.html">Where everything sits in flash</a>.</p>
       <p>To get anything else installed, an attacker would have to forge Ed25519. Or they would have to find a second
         input with the same SHA-256.</p>
 
-      <h3>Errors stay local</h3>
-      <p>The node checks every page before it passes the page on. A corrupted fragment can therefore spoil at most the
-        page of a single receiver. That receiver pulls the page again <span class="m meas">measured</span>. A fragment
-        is the part of a patch or manifest that one data packet carries.</p>
+      <h3>Effects of a fault</h3>
+      <p>The node checks every page before it passes the page on. A corrupted data packet can therefore spoil at most the
+        page of a single receiver. That receiver pulls the page again <span class="m meas">measured</span>. A data packet
+        carries a part of a patch or manifest.</p>
       <p>The node writes a word in flash at most once. If a different value is already there, the node erases the
         unchecked page. A checked page protects itself.</p>
       <p>The node first collects a manifest in RAM. It writes it to flash only when hash and signature match
         <span class="m code">checked in the code</span>. Forged manifest packets therefore do not wear out the flash.</p>
-      <p>Fuzzing feeds the code with randomly altered inputs. It ran on a computer: 2.8 billion inputs in total
+      <p>Fuzzing feeds the code with randomly altered inputs. The test ran on a computer: 2.8 billion inputs in total
         (state of 27 October 2026). About 514 million went to the code that reads manifests, tickets, retracts and data packets.
         The code in the node that handles radio packets got about 8.5 million.</p>
       <p>Just over 2.1 billion tested the filter for admin commands and the board choice. The other 171 million went to the journal, the checksum, Stage-0 and applying patches.
         There was no memory error (no access outside the allowed memory) and no crash <span class="m meas">measured</span>.</p>
       <p>Not covered: code added since then and the part of MeshCore without FUOTA.</p>
 
-      <h3>The update arrives wherever repeaters with FUOTA are connected</h3>
+      <h3>Reach of the update</h3>
       <ul>
         <li>A node keeps asking for the lowest missing block as long as a neighbour offers.</li>
         <li>Trickle is the timer of the offers. It makes every node hear an offer again within about 3 days <span class="m code">checked in the code</span>. The interval grows up to 2 days, and the offer falls in its second half.</li>
         <li>From a 1 h interval on, every provider offers, even after hearing an equal offer.</li>
-        <li>One hop needs only a single neighbour with the page. A hop is one jump from node to node.</li>
+        <li>One hop needs only a single neighbour with the page. A hop is one jump from repeater to repeater.</li>
         <li>If the repeaters with FUOTA are connected from the seed, the update reaches each one. A seed is
           installed by USB or BLE and passes the update on.</li>
         <li>An interrupted pull (fetching an update) keeps its checked pages <span class="m meas">measured</span>.</li>
       </ul>
 
-      <h3>Update data never floods</h3>
+      <h3>Update data and floods</h3>
       <p>Update data goes to direct neighbours. Every node sends at most its airtime budget, its allowed time on air.
         The total load therefore has an upper bound: number of senders × budget. How many nodes take part does not
         change that. A request names exactly one provider, so it triggers no chain reaction.</p>
       <p>Only small messages go out as a flood: offer, retract (signed recall) and key revocation. This helps nodes behind repeaters without FUOTA:</p>
       <ul>
-        <li><b>Flooded offer.</b> A provider with a whole campaign floods its offer. It sends it as group data in its
+        <li><b>Flooded offer.</b> A provider with a whole campaign floods its offer. It sends it as a group message in its
           default region. A region is the flood scope a message travels on. The default region is the one the provider
           floods in. Without it the provider does not flood. Every repeater of the region repeats the flood once.</li>
         <li><b>Limits of the flood.</b> The provider floods at most once a day per campaign. One more condition must hold:
@@ -366,12 +365,12 @@
         <li>The limits for fresh floods and for floods after a request hold as well
           <span class="m meas">measured</span>. The test build ran with 300 s and 2 floods.</li>
         <li>These floods are built: without a request, of the retract, of the revocation and as an answer <span class="m code">checked in the code</span>. The flood of the retract ran on the bench on 10 November 2026. It was sent, received and checked. Its own was held back as a result <span class="m meas">measured</span>. The other three are not tested there <span class="m open">open</span>. Whether normal repeaters pass them on is not checked <span class="m open">open</span>.</li>
-        <li>The limit of 3 days has not yet run on the bench with today's firmware. The run uses a short-time image. It waits 10 min instead of a day. Its limit is 30 min instead of 3 days <span class="m open">open</span>.</li>
+        <li>The limit of 3 days has not yet run on the bench with today's firmware. The run uses a short-time image. The image waits 10 min instead of a day. Its limit is 30 min instead of 3 days <span class="m open">open</span>.</li>
         <li>The bench cannot make a flood from another region or beyond 5 hops. The images there flood in one fixed region <span class="m code">checked in the code</span>. Only a host test checks this case. It runs the flood functions of the firmware unchanged <span class="m meas">measured</span>. On the bench it is <span class="m open">open</span>.</li>
       </ul>
       <p>More: <a href="funk.html#weiter">Who passes on what</a>.</p>
 
-      <h3>An update cannot be half-installed</h3>
+      <h3>Installation and restart</h3>
       <ul>
         <li>Only Stage-0 replaces the running firmware, page by page, with a journal. The journal is a log of the swap
           steps in flash.</li>
@@ -401,14 +400,14 @@
           built <span class="m code">checked in the code</span>. All of it ran only on a computer. It is not measured on the bench yet <span class="m open">open</span>.</li>
             <li>A thief of the root can issue keys with new
           numbers until the backup root has switched. Constant radio traffic can delay the revocation. If both roots are lost, you reach nodes only over USB. This follows from the key chain in the code; there is no test of its own.</li>
-            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026. The fingerprint of the main root is fb9fe83d1f675980, that of the backup root 64a946dcb1c4a1bf. Signing key 1 is valid up to build 20 <span class="m code">checked in the code</span>. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release <span class="m open">open</span>.</li>
+            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026. The fingerprint of the main root is fb9fe83d1f675980, that of the backup root 64a946dcb1c4a1bf. Signing key 1 is valid up to build 20 <span class="m code">checked in the code</span>. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release <span class="m open">open</span>.</li>
           </ul></li>
         <li><b>The build environment.</b> Before signing, we build twice independently and compare the result.
           <ul>
             <li>On 27 October 2026
-          all 15 build files of both builds were byte-identical <span class="m meas">measured</span>. SHA-256 fixes every software package of the build: 118 entries. Freshly downloaded, 88 packages matched them <span class="m meas">measured</span>. For the double build of the release env on 8 November 2026 it was 9 files (image, ELF, HEX and 6 stage-0 files), likewise byte-identical <span class="m meas">measured</span>.</li>
+          all 15 build files of both builds were byte-identical <span class="m meas">measured</span>. SHA-256 fixes every software package of the build: 118 entries. Freshly downloaded, 88 packages matched them <span class="m meas">measured</span>. For the double build of the release environment on 8 November 2026 it was 9 files (image, ELF, HEX and 6 stage-0 files), likewise byte-identical <span class="m meas">measured</span>.</li>
             <li>Both runs happened in containers (sealed build environments). The second one ran without our Dockerfile (the build recipe of the container). A release also needs a signed tag (a signed version mark in Git) and a running build number
-          <span class="m code">checked in the code</span>. Missing: the comparison between two processor architectures <span class="m open">open</span>.</li>
+          <span class="m code">checked in the code</span>. The comparison between two processor architectures is missing <span class="m open">open</span>.</li>
             <li>Whoever may use Docker (the software behind the build container) influences the build. So does whoever may write in the checkout (the copy of the source code). A package poisoned the same way in both environments goes unnoticed. Docker and Python on the build computer are not fixed by a hash. Neither is the Debian package git in the container image. Nor are the Python packages (pip) of the second run.</li>
             <li>Code of the build platform still runs before this check <span class="m open">open</span>.</li>
           </ul></li>
@@ -416,15 +415,15 @@
           <ul>
             <li>the main loop ran for 60 s in the test boot. The new firmware also received a valid packet and sent one <span class="m code">checked in the code</span>.</li>
             <li>Without this sign of life it restarts. After 3 test boots without a sign of life Stage-0 swaps back <span class="m code">checked in the code</span>. The image stays allowed. The automatic start waits at least 1 day. The gap then grows: 1, 2, 4, 8, 16, then 30 days <span class="m code">checked in the code</span>. <code>fuota apply</code> does not wait.</li>
-            <li>On the bench a node confirmed an update this way <span class="m meas">measured</span>. On the bench a node reverted after 3 test boots without a sign of life. The image stayed allowed, and the same campaign loaded again <span class="m meas">measured</span>. On a quiet bench a freshly updated node heard no packet for 18 minutes. It would not have confirmed itself <span class="m meas">measured</span>. The donor then offered only every 5.7 hours. In a network with normal traffic this is not checked <span class="m open">open</span>. Open: the revert in a real radio gap in the field <span class="m open">open</span>.</li>
+            <li>On the bench a node confirmed an update this way <span class="m meas">measured</span>. On the bench a node reverted after 3 test boots without a sign of life. The image stayed allowed, and the same campaign loaded again <span class="m meas">measured</span>. On a quiet bench a freshly updated node heard no packet for 18 minutes. It would not have confirmed itself <span class="m meas">measured</span>. The provider then offered only every 5.7 hours. In a network with normal traffic this is not checked <span class="m open">open</span>. The revert in a real radio gap in the field is not measured <span class="m open">open</span>.</li>
           </ul></li>
         <li><b>Power loss during overlapping apply:</b> if no neighbour has the patch afterwards, the node stays on the
-          old version <span class="m code">checked in the code</span>. It waits for a provider in range. The update does not brick it <span class="m code">checked in the code</span>.</li>
+          old version <span class="m code">checked in the code</span>. It waits for a provider in range.</li>
         <li><b>Admin access.</b> A release image has no admin password.
           <ul>
             <li>You set it over USB with <code>password</code>
           <span class="m code">checked in the code</span>. Whoever is already an admin in the access list (ACL) still stays an admin <span class="m code">checked in the code</span>.</li>
-            <li>If your node ran stock
+            <li>If your node ran stock (MeshCore unchanged)
           with “password” before, check the list over USB with <code>get acl</code>. The node now saves its
           settings through a temporary file and renames it afterwards. So the old file stays whole until the end <span class="m code">checked in the code</span>.</li>
             <li>This holds on the processors nRF52 and STM32. The nRF52 always writes a whole page in flash, though. Whether a power cut in the middle of saving really destroys nothing is not measured on the bench yet
@@ -538,9 +537,9 @@
       <table>
         <tr><th>Angriff</th><th>Was passiert</th><th>Schaden</th><th>Beleg</th></tr>
         <tr><td>Manifest mit eigenem Schlüssel anbieten, oder ein Angebot fälschen</td><td>Die Signatur im Ticket des Angebots stammt nicht vom Release-Schlüssel. Der Knoten verwirft das Angebot, bevor er etwas anfragt. Das gilt auch, wenn er gerade eine Kampagne hält. Angebote, die ihn nicht betreffen, ignoriert er ungeprüft.</td><td>Rechenzeit, keine Airtime. Eine Prüfung je neuem Ticket dauert 17,8 ms <span class="m meas">gemessen</span>.</td><td><span class="m meas">gemessen</span>: auch bei gehaltener Kampagne</td></tr>
-        <tr><td>Echte Fragmente verfälschen</td><td>Der Seiten-Hash schlägt an, und der Knoten holt die Seite neu.</td><td>Verzögerung. Wer schneller fälscht, als echte Quellen senden, kann einen Knoten aufhalten (Dienstverweigerung, DoS).</td><td><span class="m meas">gemessen</span></td></tr>
+        <tr><td>Echte Datenpakete verfälschen</td><td>Der Seiten-Hash schlägt an, und der Knoten holt die Seite neu.</td><td>Verzögerung. Wer schneller fälscht, als echte Quellen senden, kann einen Knoten aufhalten (Dienstverweigerung, DoS).</td><td><span class="m meas">gemessen</span></td></tr>
         <tr><td>Altes echtes Manifest wiederholen</td><td>Der Build ist nicht höher als der laufende, der Knoten lehnt das Manifest ab.</td><td>Keiner</td><td><span class="m meas">gemessen</span></td></tr>
-        <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>Der Knoten lehnt es ab, bevor er ein Fragment anfragt. Das gilt auch, wenn danach ein anderes Update kam. Eine dauerhafte Liste hält die letzten 4 gescheiterten Images.</td><td>Erst ab dem 5. gescheiterten Image fällt das älteste heraus.</td><td><span class="m meas">gemessen</span></td></tr>
+        <tr><td>Echtes, hier schon gescheitertes Update wiederholen</td><td>Der Knoten lehnt es ab, bevor er ein Datenpaket anfragt. Das gilt auch, wenn danach ein anderes Update kam. Eine dauerhafte Liste hält die letzten 4 gescheiterten Images.</td><td>Erst ab dem 5. gescheiterten Image fällt das älteste heraus.</td><td><span class="m meas">gemessen</span></td></tr>
         <tr><td>Gefälschter Retract (signierter Rückruf)</td><td>Die Signatur ist falsch, der Knoten verwirft den Retract. Das gilt auch für einen Retract in einer Flut. Per Flut können mehrere ankommen, die der Knoten nicht kennt. Er prüft die Signatur nur eines davon je 10 s <span class="m code">im Code geprüft</span>.</td><td>Keiner</td><td><span class="m meas">gemessen</span>: gefälschter Retract. <span class="m code">im Code geprüft</span>: Retract in einer Flut</td></tr>
         <tr><td>Echten Retract wiederholen</td><td>Er bleibt ohne neue Wirkung: Der Knoten kennt ihn schon.</td><td>Keiner, ein Retract ist ohnehin endgültig</td><td><span class="m code">im Code geprüft</span></td></tr>
         <tr><td>Alte Retracts wiederholen, bis der Speicher voll ist</td><td>Der Knoten speichert keinen Retract für einen Build unter dem laufenden. Ist der Speicher voll, verwirft er den Retract mit dem niedrigsten Build.</td><td>Erst ab dem 5. Retract fällt der für den niedrigsten Build heraus.</td><td><span class="m meas">gemessen</span>: 4 Plätze, ein 5. Retract verdrängte den niedrigsten Build</td></tr>
@@ -548,14 +547,14 @@
         <tr><td>Sich mit dem Werkspasswort als Admin anmelden</td><td>Ein Release-Image liefert kein Admin-Passwort aus. Im Release öffnen weder ein leeres Passwort noch „password“ einen Admin-Login. Das eigene Passwort setzt der Betreiber per USB. In Test-Builds mit „password“ führt der Knoten <code>start ota</code>, <code>fuota auto</code> und <code>fuota apply</code> über das Mesh nicht aus.</td><td>Keiner über das Passwort. Wer schon als Admin in der Zugriffsliste (ACL) des Knotens steht, bleibt Admin, auch nach dem Wechsel auf das Release.</td><td><span class="m meas">gemessen</span>: Test am Rechner für Login und Befehlsprüfung</td></tr>
         <tr><td>Einen Fern-Befehl mit einem Zeitstempel weit in der Zukunft senden</td><td>Das braucht das Admin-Passwort. Liegt der Zeitstempel mehr als 2 Tage nach der Uhr des Knotens, lehnt er ab und speichert ihn nicht. Kennt der Knoten noch keine plausible Uhrzeit, setzt der Admin den Zähler mit <code>fuota cmdtime</code> über das Mesh zurück.</td><td>Fern-Befehle des Admins bleiben bis dahin gesperrt. Ein mitgeschnittener Befehl aus der Zukunft kann danach erneut sperren.</td><td><span class="m meas">gemessen</span>: Test am Rechner; am Testaufbau <span class="m open">offen</span></td></tr>
         <tr><td>Ein Befehl über das Mesh gibt sich als USB aus</td><td>Der Knoten wertet einen Befehl nur als USB-Befehl, wenn er über die serielle Schnittstelle kommt. Ein Befehl über das Mesh schaltet die Befehle zum Laden eines Patches nicht frei.</td><td>Keiner</td><td><span class="m meas">gemessen</span></td></tr>
-        <tr><td>Billige Anfragen senden</td><td>Der genannte Anbieter sendet bis zu 16 Datenpakete je Anfrage, in Airtime rund das 80-Fache bei CR 4/8 und das 64-Fache bei CR 4/5 <span class="m calc">berechnet</span>. Mit Ziel 0xFFFF sendet jeder Anbieter in Reichweite, über einen Pfad auch aus der Ferne. Der Anbieter bedient reihum ab dem zuletzt gesendeten Datenpaket. Ein in den letzten 10 bis 20 min gesendetes Datenpaket zählt als Wiederholung. Wiederholungen gehen erst nach neuen Datenpaketen raus <span class="m code">im Code geprüft</span>. Wartet ein Nachbar auf ein Datenpaket, bekommen Pfade höchstens die Hälfte seiner Airtime <span class="m code">im Code geprüft</span>.</td><td><p>Anbieter schöpfen ihr Budget aus. Eine echte Anfrage wird reihum bedient <span class="m meas">gemessen</span> (mit 2 Anfragenden, Handlauf vom 20. Oktober 2026). Ohne Drossel wurde Knoten C in 1500 s nicht fertig, und Anbieter A sendete 235 statt 46 Datenpakete <span class="m meas">gemessen</span>. Mit Drossel fragte der Angreifer im Simulator immer den ersten Block an. Neben dem Anbieter brauchte ein Empfänger höchstens das 1,6-Fache der Zeit ohne Angriff, hinter Repeatern höchstens das 1,7-Fache, über einen erfundenen Pfad höchstens das 1,8-Fache <span class="m meas">gemessen</span>.</p><p>Hinter 3 Repeatern waren nach 12 h höchstens 2 von 100 Läufen nicht fertig. Alle endeten innerhalb von 48 h <span class="m meas">gemessen</span>. Fragt der Angreifer jeden Block reihum, braucht ein Empfänger neben dem Anbieter bis zum 3,67-Fachen, neben einem Empfänger hinter 3 Repeatern bis zum 4,21-Fachen der Zeit ohne Angreifer <span class="m meas">gemessen</span>. Dieses Risiko bleibt.</p></td><td><span class="m meas">gemessen</span>: eine immer wiederholte Anfrage bekommt ihren Anteil, keinen Vorrang. Drossel: im Simulator <span class="m meas">gemessen</span>. Am Testaufbau ist der Kern am 10. November 2026 geprüft, mit Abweichung: 4 von 5 Läufen über der Annahme von 1,5 (drei vom 10. November 2026, zwei laut Lauf vom 3. November 2026) <span class="m meas">gemessen</span></td></tr>
+        <tr><td>Billige Anfragen senden</td><td>Der genannte Anbieter sendet bis zu 16 Datenpakete je Anfrage, in Airtime rund das 80-Fache bei CR 4/8 und das 64-Fache bei CR 4/5 <span class="m calc">berechnet</span>. Mit Ziel 0xFFFF sendet jeder Anbieter in Reichweite, über einen Pfad auch aus der Ferne. Der Anbieter bedient reihum ab dem zuletzt gesendeten Datenpaket. Ein in den letzten 10 bis 20 min gesendetes Datenpaket zählt als Wiederholung. Wiederholungen gehen erst nach neuen Datenpaketen raus <span class="m code">im Code geprüft</span>. Wartet ein Nachbar auf ein Datenpaket, bekommen Pfade höchstens die Hälfte seiner Airtime <span class="m code">im Code geprüft</span>.</td><td><p>Anbieter schöpfen ihr Budget aus. Eine echte Anfrage wird reihum bedient <span class="m meas">gemessen</span> (mit 2 Anfragenden, manueller Lauf vom 20. Oktober 2026). Ohne Drossel wurde Knoten C in 1500 s nicht fertig, und Anbieter A sendete 235 statt 46 Datenpakete <span class="m meas">gemessen</span>. Mit Drossel fragte der Angreifer im Simulator immer den ersten Block an. Neben dem Anbieter brauchte ein Empfänger höchstens das 1,6-Fache der Zeit ohne Angriff, hinter Repeatern höchstens das 1,7-Fache, über einen erfundenen Pfad höchstens das 1,8-Fache <span class="m meas">gemessen</span>.</p><p>Hinter 3 Repeatern waren nach 12 h höchstens 2 von 100 Läufen nicht fertig. Alle endeten innerhalb von 48 h <span class="m meas">gemessen</span>. Fragt der Angreifer jeden Block reihum, braucht ein Empfänger neben dem Anbieter bis zum 3,67-Fachen, neben einem Empfänger hinter 3 Repeatern bis zum 4,21-Fachen der Zeit ohne Angreifer <span class="m meas">gemessen</span>. Dieses Risiko bleibt.</p></td><td><span class="m meas">gemessen</span>: eine immer wiederholte Anfrage bekommt ihren Anteil, keinen Vorrang. Drossel: im Simulator <span class="m meas">gemessen</span>. Am Testaufbau ist der Kern am 10. November 2026 geprüft, mit Abweichung: 4 von 5 Läufen über der Annahme von 1,5 (drei vom 10. November 2026, zwei laut Lauf vom 3. November 2026) <span class="m meas">gemessen</span></td></tr>
         <tr><td>Echtes Angebot eines neueren Builds (auch mitgeschnitten und wiederholt)</td><td>Der Knoten hält eine Kampagne: Er bedient, wartet aufs Anwenden oder hat den Pull pausiert. Er holt nur das neue Manifest in den RAM. Er wechselt erst, wenn Signatur, Passung, Größe und ein höherer Build stimmen. Sonst behält er seine Kampagne.</td><td>Nur echte Kampagnen. Ein wiederholtes echtes Angebot mit falscher Seitenzahl oder falschem Absender kann Anfragen ins Leere lenken.</td><td><span class="m meas">gemessen</span></td></tr>
         <tr><td>Angebot mit echter ID und falscher Größe oder falschem Quell-Präfix</td><td>Größe, Quelle und ID stehen im signierten Ticket. Ein geändertes Feld bricht die Signatur, und der Knoten verwirft das Angebot.</td><td>Keiner</td><td><span class="m meas">gemessen</span></td></tr>
         <tr><td>Aus der Ferne über Pfade und Flut</td><td>Pfade über beliebige Repeater tragen Anfragen und Daten bis zum Ziel. Geflutete Angebote und Retracts erreichen eine Region. Ein Anbieter merkt sich 4 Pfade. Ein weiterer ersetzt den am längsten unbenutzten <span class="m code">im Code geprüft</span>.</td><td>Die Kopien der Repeater zählen in kein Budget. Jeder Knoten verwirft gefälschte Angebote an der Ticket-Signatur, gefälschte Retracts ebenso. Mit vier erfundenen Pfaden im Wechsel kann ein Angreifer echte Anfrager verdrängen. Das ist nicht simuliert <span class="m open">offen</span>.</td><td><span class="m meas">gemessen</span>: gefälschte Angebote. <span class="m code">im Code geprüft</span>: geflutete Angebote und Retracts, dieselbe Prüfung; 4 Pfade je Anbieter</td></tr>
         <tr><td>Echtes Flut-Angebot täglich wiederholen</td><td>Hat ein Anbieter die Flut seiner Kampagne gehört, flutet er an diesem Tag nicht selbst. Knoten hinter normalen Repeatern lernen dann den Pfad zum Angreifer. Das Zurückhalten endet 3 Tage nach seiner letzten Flut. In der Wochenphase hält er sich außerdem höchstens 2-mal hintereinander zurück <span class="m code">im Code geprüft</span>.</td><td><p>Wiederholt der Angreifer täglich, fragen diese Knoten bis dahin ins Leere. Danach flutet der Anbieter trotz gehörter Flut. In der Wochenphase tut er das spätestens 3 Wochen nach seiner letzten Flut <span class="m code">im Code geprüft</span>.</p><p>Der Filter für Region und Hop-Zahl schützt nicht vor einem Angreifer in Funkreichweite. Der Angreifer wiederholt eine mitgeschnittene Flut mit Hop-Zahl 0. Der Transport-Code deckt Typ und Nutzlast, nicht den Pfad <span class="m code">im Code geprüft</span>. Ob die Wiederholung Knoten hinter normalen Repeatern bis dahin ohne Update lässt, ist nicht getestet <span class="m open">offen</span>.</p><p>Eine Wiederholung erzeugt kein falsches Image. Der Knoten prüft vor dem Tausch die Signatur des Manifests und den Hash des Images <span class="m code">im Code geprüft</span>.</p></td><td><span class="m code">im Code geprüft</span>; Wirkung im Mesh: <span class="m open">offen</span></td></tr>
         <tr><td>Absender-Kennung fälschen</td><td>Das betrifft Logs, den Testfilter und die Erkennung eines beschäftigten Anbieters. Ein Knoten hält einen Anbieter nur nach einem richtigen Datenpaket für beschäftigt, höchstens einmal je eigener Anfrage <span class="m code">im Code geprüft</span>. Kurze Datenpakete halten ihn nicht auf. Falsche Datenpakete im Namen eines Anbieters bringen den Knoten dazu, ihn zu meiden.</td><td>Verzögerung: Der Knoten holt dann bei anderen oder bei „wer es hat“.</td><td><span class="m meas">gemessen</span>: Bei einem Strom kurzer Datenpakete sendete der Knoten 9 Anfragen in 180 s (27. Oktober und 3. November 2026), in der ersten Messung waren es 8. Meiden: <span class="m meas">gemessen</span>, siehe <a href="nebenslot.html">Nebenslot</a></td></tr>
         <tr><td>Kurze Datenpakete im Namen eines Anbieters senden</td><td>Ein Knoten will ein Datenpaket senden. Hört er einen Nachbarn dasselbe senden, streicht er seines nur, wenn Länge und Inhalt mit seiner Kopie übereinstimmen.</td><td>Kein falsches Datenpaket, kein Zustandswechsel. Am 10. November 2026 liefen zwei Messungen am Testaufbau. In der einen dauerte das Laden mit Angriff 23 % länger (369 s ohne, 454 s mit), in der anderen 15 % kürzer (445 s ohne, 378 s mit) <span class="m meas">gemessen</span>. Eine Verzögerung durch den Angriff zeigt sich darin nicht.</td><td><span class="m meas">gemessen</span>: Der Anbieter verwarf 167 kurze Fälschungen und sendete weiter (10. November 2026)</td></tr>
-        <tr><td>Echte Angebote mit ausgedachten Absender-Kennungen wiederholen</td><td>Ein Knoten behält den Nachbarn, der zuletzt geprüfte Datenpakete lieferte, in seiner Anbieterliste und fragt ihn zuerst.</td><td>Ein mitgeschnittenes echtes Datenpaket unter einer ausgedachten Kennung umgeht das. Der Durchsatz sinkt dann auf rund ein Drittel <span class="m calc">berechnet</span>.</td><td><span class="m meas">gemessen</span>: Anfragen an eine Fälschung vorher 5, nachher 1 (Fix-Messung vom 27. Oktober 2026). Im Regressionslauf vom 3. November 2026 gingen 3 von 3 Anfragen an den echten Lieferer</td></tr>
+        <tr><td>Echte Angebote mit ausgedachten Absender-Kennungen wiederholen</td><td>Ein Knoten behält den Nachbarn, der zuletzt geprüfte Datenpakete lieferte, in seiner Anbieterliste und fragt ihn zuerst.</td><td>Ein mitgeschnittenes echtes Datenpaket unter einer ausgedachten Kennung umgeht das. Der Durchsatz sinkt dann auf rund ein Drittel <span class="m calc">berechnet</span>.</td><td><span class="m meas">gemessen</span>: Anfragen an eine Fälschung vorher 5, nachher 1 (Fix-Messung vom 27. Oktober 2026). Im Regressionslauf vom 3. November 2026 gingen 3 von 3 Anfragen an den echten Anbieter</td></tr>
         <tr><td>Fremde Anfragen für denselben Block senden</td><td>Hört ein Knoten eine fremde Anfrage für seinen Block, schiebt er die eigene höchstens einmal je eigener Anfrage auf.</td><td>Keiner</td><td><span class="m code">im Code geprüft</span></td></tr>
         <tr><td>Anfragen senden, damit ein Knoten nicht anwendet</td><td>Beim überlappenden Anwenden wartet ein Knoten, solange Nachbarn den Patch noch anfragen. Anfragen an einen anderen Anbieter zählen nicht. Das Fenster endet spätestens nach 7 Tagen.</td><td>Verzögerung bis 7 Tage, nur beim überlappenden Anwenden</td><td><span class="m code">im Code geprüft</span></td></tr>
         <tr><td>Gefälschte Manifest-Pakete senden, um den Flash abzunutzen</td><td>Der Knoten sammelt ein Manifest im RAM. In den Flash schreibt er nur ein geprüftes.</td><td>Nicht mehr als bei einem echten Update</td><td><span class="m meas">gemessen</span>: Löschungen im Test am Rechner vorher 96, nachher 5</td></tr>
@@ -569,9 +568,9 @@
       <table>
         <tr><th>Attack</th><th>What happens</th><th>Damage</th><th>Evidence</th></tr>
         <tr><td>Offer a manifest signed with an own key, or forge an offer</td><td>The signature in the ticket of the offer does not come from the release key. The node drops the offer before it asks for anything. It does so also while it holds a campaign. It ignores offers that do not concern it without checking them.</td><td>Processing time, no airtime. One check per new ticket takes 17.8 ms <span class="m meas">measured</span>.</td><td><span class="m meas">measured</span>: also while holding a campaign</td></tr>
-        <tr><td>Corrupt genuine fragments</td><td>The page hash fails, and the node pulls the page again.</td><td>Delay. Whoever forges faster than genuine sources send can stall a node (denial of service, DoS).</td><td><span class="m meas">measured</span></td></tr>
+        <tr><td>Corrupt genuine data packets</td><td>The page hash fails, and the node pulls the page again.</td><td>Delay. Whoever forges faster than genuine sources send can stall a node (denial of service, DoS).</td><td><span class="m meas">measured</span></td></tr>
         <tr><td>Replay an old genuine manifest</td><td>The build is not higher than the running one, so the node rejects the manifest.</td><td>None</td><td><span class="m meas">measured</span></td></tr>
-        <tr><td>Replay a genuine update that has already failed here</td><td>The node rejects it before it requests a fragment. It does so also after another update came in between. A persistent list holds the last 4 failed images.</td><td>Only from the 5th failed image on does the oldest one drop out.</td><td><span class="m meas">measured</span></td></tr>
+        <tr><td>Replay a genuine update that has already failed here</td><td>The node rejects it before it requests a data packet. It does so also after another update came in between. A persistent list holds the last 4 failed images.</td><td>Only from the 5th failed image on does the oldest one drop out.</td><td><span class="m meas">measured</span></td></tr>
         <tr><td>Forged retract (signed recall)</td><td>The signature is wrong, and the node drops the retract. That holds for a retract in a flood too. Several unknown retracts may arrive by flood. The node checks the signature of only one every 10 s <span class="m code">checked in the code</span>.</td><td>None</td><td><span class="m meas">measured</span>: forged retract. <span class="m code">checked in the code</span>: retract in a flood</td></tr>
         <tr><td>Replay a genuine retract</td><td>It has no new effect: the node already knows it.</td><td>None, a retract is final anyway</td><td><span class="m code">checked in the code</span></td></tr>
         <tr><td>Replay old retracts until the store is full</td><td>The node stores no retract for a build below the running one. When the store is full, it drops the retract with the lowest build.</td><td>Only from the 5th retract on does the one for the lowest build fall out.</td><td><span class="m meas">measured</span>: 4 places, a 5th retract pushed out the lowest build</td></tr>
@@ -600,8 +599,8 @@
   </main>
   <p class="next"><a href="funk.html"><span lang="de">Weiter: Funk</span><span lang="en">Next: On air</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

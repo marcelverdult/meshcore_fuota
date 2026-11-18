@@ -71,12 +71,12 @@
   <section id="speicher">
     <div lang="de" class="prose">
       <h2>Aufteilung</h2>
-      <p>Die Boards sind nRF52840 mit Adafruit-Bootloader. Der Bootloader springt ans Ende des SoftDevice, des Bluetooth-Stacks von Nordic. Dort sitzt Stage-0, der Lader, der beim Start die Images tauscht.</p>
+      <p>Die Boards nutzen den Chip nRF52840 und den Adafruit-Bootloader. Der Bootloader springt ans Ende des SoftDevice, des Bluetooth-Stacks von Nordic. Dort sitzt Stage-0, der Lader, der beim Start die Images tauscht.</p>
       <ul>
         <li><b>S140 6.1.1</b> (FakeTec, RAK4631): Sprungziel 0x26000.</li>
         <li><b>S140 7.3.0</b> (SenseCAP P1, T1000-E): Sprungziel 0x27000.</li>
       </ul>
-      <p>Ab 0x28000 ist alles für beide gleich. Dort folgen die Status-Seite und zwei Slots mit je 98 Seiten. Eine Seite im Flash sind 4 KB.</p>
+      <p>Ab 0x28000 ist alles für beide gleich. Dort folgen die Status-Seite und 2 Slots mit je 98 Seiten. Eine Seite im Flash sind 4 KB.</p>
       <ul>
         <li><b>Slot A</b> enthält die App, das laufende Repeater-Image.</li>
         <li><b>Slot B</b> ist das Zwischenlager für den Patch, das Manifest und das neue Image.</li>
@@ -86,7 +86,7 @@
     </div>
     <div lang="en" class="prose">
       <h2>Layout</h2>
-      <p>The boards are nRF52840 with the Adafruit bootloader. The bootloader jumps to the end of the SoftDevice, Nordic's Bluetooth stack. Stage-0 sits there: the loader that swaps the images at boot.</p>
+      <p>The boards use the nRF52840 chip and the Adafruit bootloader. The bootloader jumps to the end of the SoftDevice, Nordic's Bluetooth stack. Stage-0 sits there: the loader that swaps the images at boot.</p>
       <ul>
         <li><b>S140 6.1.1</b> (FakeTec, RAK4631): jump target 0x26000.</li>
         <li><b>S140 7.3.0</b> (SenseCAP P1, T1000-E): jump target 0x27000.</li>
@@ -240,13 +240,13 @@
     <div lang="de" class="prose">
       <h2>Flash und RAM</h2>
       <ul>
-        <li><b>Image mit FUOTA</b> für alle Boards: 1.18.0-b3 hat 306.104 B Flash <span class="m meas">gemessen</span>. Das sind 75 von höchstens 96 Seiten <span class="m calc">gerechnet</span>. 1.17.1-b2 hat 301.928 B und 74 Seiten <span class="m meas">gemessen</span>. Das Release-Image vom 8. November 2026 hatte 299.284 B und 74 Seiten, gemessen beim ersten Bau des Release-Env <span class="m meas">gemessen</span>. Am 20. Oktober 2026 waren es 270.080 B und 66 Seiten. Bis zum 8. November 2026 kamen 29.204 B dazu. Bis 1.18.0-b3 sind es 36.024 B <span class="m calc">gerechnet</span>.</li>
+        <li><b>Image mit FUOTA</b> für alle Boards: 1.18.0-b3 hat 306.104 B Flash <span class="m meas">gemessen</span>. Das sind 75 von höchstens 96 Seiten <span class="m calc">berechnet</span>. 1.17.1-b2 hat 301.928 B und 74 Seiten <span class="m meas">gemessen</span>. Das Release-Image vom 8. November 2026 hatte beim ersten Bau 299.284 B und 74 Seiten <span class="m meas">gemessen</span>. Am 20. Oktober 2026 waren es 270.080 B und 66 Seiten. Bis zum 8. November 2026 kamen 29.204 B dazu. Bis 1.18.0-b3 sind es 36.024 B <span class="m calc">berechnet</span>.</li>
         <li><b>RAM</b>: 1.18.0-b3 belegt laut Bericht zum Neubau 45.768 B. Das haben wir nicht selbst nachgemessen. Am 8. November 2026 waren es 43.580 B <span class="m meas">gemessen</span>.</li>
         <li><b>Stock-P1</b> (MeshCore unverändert) mit BLE-OTA zum Vergleich: 365.292 B (Stand 19. Oktober 2026) <span class="m meas">gemessen</span>. Am offiziellen UF2 von Version 1.18.0 nachgemessen: 1.427 Blöcke zu je 256 B, das sind höchstens 365.312 B <span class="m meas">gemessen</span>. Eigene Neubauten vom 27. Oktober 2026 kamen auf 365.452 und 365.468 B, den Abstand von 160 B haben wir nicht untersucht <span class="m meas">gemessen</span>.</li>
-        <li><b>FUOTA selbst</b>: 49.946 bis 58.969 B Code und Daten im Release-Image vom 8. November 2026 <span class="m meas">gemessen</span>. Davon sind 49.946 B Code, Konstanten und Anfangswerte und 9.023 B Zeichenketten <span class="m meas">gemessen</span>. Der Linker legt gleiche Zeichenketten zusammen, darum ist ihr Anteil ein oberer Wert. FUOTA belegt 14.205 B RAM <span class="m meas">gemessen</span>. Der Firmware-Code war bis zum Stand vom 10. November 2026 unverändert. Bis 1.18.0-b3 kamen die Statusmeldungen, die Werkseinstellungen und zwölf weitere Boards dazu <span class="m code">im Code geprüft</span>. Den Anteil für 1.18.0-b3 haben wir nicht neu gezählt.</li>
-        <li><b>Gezählt</b> sind laut Linker-Map die acht Objektdateien unter <code>src/helpers/fuota</code>, soweit der Linker sie übernommen hat. Nicht enthalten sind die Anpassungen in MeshCore-Dateien und die Board-Dateien.</li>
+        <li><b>FUOTA selbst</b>: 49.946 bis 58.969 B Code und Daten im Release-Image vom 8. November 2026 <span class="m meas">gemessen</span>. Davon sind 49.946 B Code, Konstanten und Anfangswerte und 9.023 B Zeichenketten <span class="m meas">gemessen</span>. Der Linker legt gleiche Zeichenketten zusammen, darum ist ihr Anteil ein oberer Wert. FUOTA belegt 14.205 B RAM <span class="m meas">gemessen</span>. Der Firmware-Code war bis zum Stand vom 10. November 2026 unverändert. Bis 1.18.0-b3 kamen die Statusmeldungen, die Werkseinstellungen und 12 weitere Boards dazu <span class="m code">im Code geprüft</span>. Den Anteil für 1.18.0-b3 haben wir nicht neu gezählt.</li>
+        <li><b>Gezählt</b> sind laut Linker-Map die 8 Objektdateien unter <code>src/helpers/fuota</code>, soweit der Linker sie übernommen hat. Nicht enthalten sind die Anpassungen in MeshCore-Dateien und die Board-Dateien.</li>
         <li><b>FUOTA am 20. Oktober 2026</b>: Ein Neubau dieses Stands hat nach derselben Zählung 31.272 B Flash <span class="m meas">gemessen</span>. Sein RAM liegt bei 7.771 B <span class="m meas">gemessen</span>. Die damalige Angabe 31.584 B ist um 312 B größer. So groß sind dort die Build-Attribute dieser Dateien. Sie liegen nicht im Flash <span class="m meas">gemessen</span>. Wie die Angabe damals gezählt wurde, ist nicht festgehalten.</li>
-        <li><b>Stage-0</b> belegt 3.032 B in einer Seite, am RAK4631 2.984 B. Am ausgelieferten Paket gemessen <span class="m meas">gemessen</span>.</li>
+        <li><b>Stage-0</b> belegt 3.032 B in einer Seite, am RAK4631 2.984 B. Am ausgelieferten Paket <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Jeder Schalter für sich, auf den Stock-P1 angewendet:</p>
       <ul>
@@ -258,13 +258,13 @@
     <div lang="en" class="prose">
       <h2>Flash and RAM</h2>
       <ul>
-        <li><b>Image with FUOTA</b> for all boards: 1.18.0-b3 has 306,104 B of flash <span class="m meas">measured</span>. That is 75 of at most 96 pages <span class="m calc">calculated</span>. 1.17.1-b2 has 301,928 B and 74 pages <span class="m meas">measured</span>. The release image of 8 November 2026 had 299,284 B and 74 pages, measured at the first build of the release env <span class="m meas">measured</span>. On 20 October 2026 it was 270,080 B and 66 pages. By 8 November 2026 the image had grown by 29,204 B. By 1.18.0-b3 it is 36,024 B <span class="m calc">calculated</span>.</li>
+        <li><b>Image with FUOTA</b> for all boards: 1.18.0-b3 has 306,104 B of flash <span class="m meas">measured</span>. That is 75 of at most 96 pages <span class="m calc">calculated</span>. 1.17.1-b2 has 301,928 B and 74 pages <span class="m meas">measured</span>. At its first build, the release image of 8 November 2026 had 299,284 B and 74 pages <span class="m meas">measured</span>. On 20 October 2026 it was 270,080 B and 66 pages. By 8 November 2026 the image had grown by 29,204 B. By 1.18.0-b3 it is 36,024 B <span class="m calc">calculated</span>.</li>
         <li><b>RAM</b>: 1.18.0-b3 uses 45,768 B according to the report on the rebuild. We did not measure that ourselves. On 8 November 2026 it was 43,580 B <span class="m meas">measured</span>.</li>
-        <li><b>Stock P1</b> (MeshCore as published, unchanged) with BLE OTA for comparison: 365,292 B (as of 19 October 2026) <span class="m meas">measured</span>. Measured again on the official UF2 of version 1.18.0: 1,427 blocks of 256 B each, so at most 365,312 B <span class="m meas">measured</span>. Our own rebuilds of 27 October 2026 came to 365,452 and 365,468 B, and we have not investigated the gap of 160 B <span class="m meas">measured</span>.</li>
-        <li><b>FUOTA itself</b>: 49,946 to 58,969 B of code and data in the release image of 8 November 2026 <span class="m meas">measured</span>. Of these, 49,946 B are code, constants and initial values and 9,023 B are strings <span class="m meas">measured</span>. The linker merges equal strings, so their share is an upper value. FUOTA also uses 14,205 B of RAM <span class="m meas">measured</span>. The firmware code was unchanged up to the state of 10 November 2026. Up to 1.18.0-b3 the status messages, the factory settings and twelve more boards were added <span class="m code">checked in the code</span>. We did not count the share again for 1.18.0-b3.</li>
-        <li><b>Counted</b> are the eight object files under <code>src/helpers/fuota</code> in the linker map, as far as the linker kept them. This leaves out the changes in MeshCore files and the board files.</li>
+        <li><b>Stock P1</b> (MeshCore as published, unchanged) with BLE OTA for comparison: 365,292 B (as of 19 October 2026) <span class="m meas">measured</span>. Measured again on the official UF2 of version 1.18.0: 1,427 blocks of 256 B each, so at most 365,312 B <span class="m meas">measured</span>. Our own rebuilds of 27 October 2026 came to 365,452 and 365,468 B. We have not investigated the gap of 160 B <span class="m meas">measured</span>.</li>
+        <li><b>FUOTA itself</b>: 49,946 to 58,969 B of code and data in the release image of 8 November 2026 <span class="m meas">measured</span>. Of these, 49,946 B are code, constants and initial values and 9,023 B are strings <span class="m meas">measured</span>. The linker merges equal strings, so their share is an upper value. FUOTA also uses 14,205 B of RAM <span class="m meas">measured</span>. The firmware code was unchanged up to the state of 10 November 2026. Up to 1.18.0-b3 the status messages, the factory settings and 12 more boards were added <span class="m code">checked in the code</span>. We did not count the share again for 1.18.0-b3.</li>
+        <li><b>Counted</b> are the 8 object files under <code>src/helpers/fuota</code> in the linker map, as far as the linker kept them. This leaves out the changes in MeshCore files and the board files.</li>
         <li><b>FUOTA on 20 October 2026</b>: By the same count, a rebuild of that state has 31,272 B of flash <span class="m meas">measured</span>. Its RAM is 7,771 B <span class="m meas">measured</span>. The figure given back then, 31,584 B, is 312 B larger. That is the size of the build attributes of these files in that build. They are not stored in flash <span class="m meas">measured</span>. How the old figure was counted was not recorded.</li>
-        <li><b>Stage-0</b> takes 3,032 B in one page, 2,984 B on the RAK4631. Measured on the delivered package <span class="m meas">measured</span>.</li>
+        <li><b>Stage-0</b> takes 3,032 B in one page, 2,984 B on the RAK4631. On the delivered package <span class="m meas">measured</span>.</li>
       </ul>
       <p>Each switch on its own, applied to the stock P1:</p>
       <ul>
@@ -298,12 +298,12 @@
     <div lang="de" class="prose">
       <ul>
         <li>Das Release-Werkzeug spielt genau diesen Code vorher auf dem Rechner durch.</li>
-        <li>Es setzt im signierten Manifest ein Flag, nur wenn das Überlappen sicher ist.</li>
+        <li>Es setzt im signierten Manifest ein Kennzeichen (Flag), nur wenn das Überlappen sicher ist.</li>
         <li>Der Knoten hält die Regel beim Anwenden trotzdem selbst ein und bricht sonst ab.</li>
         <li>Nach dem überlappenden Anwenden ist der Patch weg. Darum gibt der Knoten ihn vorher ein Fenster lang weiter <span class="m meas">gemessen</span>. Mehr dazu steht unter <a href="ablauf.html#ablauf">Ablauf</a>.</li>
         <li>Ein Patch darf bis zu 64 Seiten groß sein <span class="m code">im Code geprüft</span>.</li>
         <li>Hinter ein Image mit 75 Seiten (1.18.0-b3) passen 22 Seiten <span class="m calc">berechnet</span>. Das sind 98 im Slot, minus 75 fürs Image, minus 1 fürs Manifest. Beim Image vom 8. November 2026 mit 74 Seiten waren es 23. Größere Patches wendet der Knoten überlappend an.</li>
-        <li>Der Alpha-Patch von 1.17.1-b2 auf 1.18.0-b3 hat 28.630 B <span class="m meas">gemessen</span>. Das sind 163 Fragmente zu 176 B und 7 Seiten <span class="m calc">berechnet</span>. Dazu kommen das Manifest (3 Fragmente) und die Prüftabelle (8 Fragmente) <span class="m calc">berechnet</span>. Das sind 174 Fragmente: Ein Knoten holte die Kampagne <code>dc7b7cb0</code> mit 174 Fragmenten <span class="m meas">gemessen</span>. Er passt hinter das Image und wird nicht überlappend angewendet <span class="m calc">berechnet</span>. Laut Bericht baute der Host-Test aus ihm ein Image, das Byte für Byte gleich ist.</li>
+        <li>Der Alpha-Patch von 1.17.1-b2 auf 1.18.0-b3 hat 28.630 B <span class="m meas">gemessen</span>. Das sind 163 Datenpakete zu 176 B und 7 Seiten <span class="m calc">berechnet</span>. Dazu kommen das Manifest (3 Datenpakete) und die Prüftabelle (8 Datenpakete) <span class="m calc">berechnet</span>. Das sind 174 Datenpakete: Ein Knoten holte die Kampagne <code>dc7b7cb0</code> mit 174 Datenpaketen <span class="m meas">gemessen</span>. Er passt hinter das Image und wird nicht überlappend angewendet <span class="m calc">berechnet</span>. Laut Bericht setzte der Rechner-Test das neue Image aus altem Image und Patch zusammen. Es war Byte für Byte gleich dem echten.</li>
       </ul>
     </div>
     <div lang="en" class="prose">
@@ -314,18 +314,18 @@
         <li>After an overlapping apply the patch is gone. So the node passes it on for a window first <span class="m meas">measured</span>. More on this under <a href="ablauf.html#ablauf">How it runs</a>.</li>
         <li>A patch may be up to 64 pages <span class="m code">checked in the code</span>.</li>
         <li>22 pages fit behind an image of 75 pages (1.18.0-b3) <span class="m calc">calculated</span>. The slot has 98 pages, minus 75 for the image, minus 1 for the manifest. With the image of 8 November 2026 and its 74 pages it was 23. The node applies larger patches overlapping.</li>
-        <li>The alpha patch from 1.17.1-b2 to 1.18.0-b3 has 28,630 B <span class="m meas">measured</span>. That is 163 fragments of 176 B and 7 pages <span class="m calc">calculated</span>. The manifest (3 fragments) and the check table (8 fragments) come on top <span class="m calc">calculated</span>. That makes 174 fragments: A node pulled the campaign <code>dc7b7cb0</code> with 174 fragments <span class="m meas">measured</span>. It fits behind the image and is not applied overlapping <span class="m calc">calculated</span>. According to the report, a host test built a byte-identical image from it.</li>
+        <li>The alpha patch from 1.17.1-b2 to 1.18.0-b3 has 28,630 B <span class="m meas">measured</span>. That is 163 data packets of 176 B and 7 pages <span class="m calc">calculated</span>. The manifest (3 data packets) and the check table (8 data packets) come on top <span class="m calc">calculated</span>. That makes 174 data packets: A node pulled the campaign <code>dc7b7cb0</code> with 174 data packets <span class="m meas">measured</span>. It fits behind the image and is not applied overlapping <span class="m calc">calculated</span>. The report says the host test rebuilt the new image from old image and patch. The result matched the real image byte for byte.</li>
       </ul>
     </div>
     <div lang="de" class="prose">
       <h2>Ein Image für mehrere Boards</h2>
       <p>Ein Repeater-Image wählt das Board beim Start. Es läuft auf diesen Boards, alle nRF52840 mit SX1262:</p>
       <ul>
-        <li>auf Hardware getestet: FakeTec, SenseCAP P1, Heltec T114, RAK4631 <span class="m meas">gemessen</span></li>
-        <li>am Brett gemessen (11. November 2026): Seeed Xiao nRF52840 und Heltec T096. Das Board wird am Deskriptor erkannt, der Funk läuft, Zero-Hop-Pakete gehen in beide Richtungen mit einem FakeTec <span class="m meas">gemessen</span>. Offen: Update per Funk annehmen, LED und Taste, serielles DFU, Rückfall <span class="m open">offen</span></li>
-        <li>nur gebaut und am Rechner geprüft, laut Bericht: zwölf weitere Boards im Einheitsimage. Die Namen stehen auf der Seite <a href="alpha.html#alpha-pakete">Alpha-Test</a></li>
+        <li>auf Hardware gemessen: FakeTec, SenseCAP P1, Heltec T114, RAK4631 <span class="m meas">gemessen</span></li>
+        <li>im Testaufbau gemessen (11. November 2026): Seeed Xiao nRF52840 und Heltec T096. Das Board wird am Deskriptor erkannt, der Funk läuft, Pakete an direkte Nachbarn gehen in beide Richtungen mit einem FakeTec <span class="m meas">gemessen</span>. Offen: Update per Funk annehmen, LED und Taste, serielles DFU, Rückfall <span class="m open">offen</span></li>
+        <li>nur gebaut und am Rechner geprüft, laut Bericht: 12 weitere Boards im Einheitsimage. Die Namen stehen auf der Seite <a href="alpha.html#alpha-pakete">Alpha-Test</a></li>
       </ul>
-      <p>Das Einheitsimage trägt 18 Boards. Sechs davon sind am Gerät gesehen, zwölf nur gebaut. Laut Bericht zum Neubau gibt es Alpha-Pakete für alle 18, je Board für seine SoftDevice-Version. FakeTec (S140 6.1.1), SenseCAP P1 (S140 7.3.0) und RAK4631 (S140 6.1.1) sind dabei.</p>
+      <p>Das Einheitsimage trägt 18 Boards. Davon sind 6 am Gerät gesehen, 12 nur gebaut. Laut Bericht zum Neubau gibt es Alpha-Pakete für alle 18, je Board für seine SoftDevice-Version. FakeTec (S140 6.1.1), SenseCAP P1 (S140 7.3.0) und RAK4631 (S140 6.1.1) sind dabei.</p>
       <p>Eine Tabelle im Image enthält, was sich je Board unterscheidet:</p>
       <ul>
         <li>Pins für Funkchip, SPI, I2C, GPS, LEDs, Taste und Batteriemessung</li>
@@ -334,8 +334,8 @@
       </ul>
       <h3>Wie das Image sein Board erkennt</h3>
       <ol>
-        <li>Ein Deskriptor von 32 Byte am Ende der Stage-0-Seite nennt das Board. Er enthält Magic-Wert, Version, Board-ID, die Adresse der Seite und die Prüfsumme CRC-32.</li>
-        <li>Du installierst Stage-0 je Board einmal per USB oder BLE-DFU. FUOTA schreibt diese Seite nie. Ein BLE-DFU ersetzt Stage-0, darum bringt jedes FUOTA-Paket Stage-0 mit <span class="m meas">gemessen</span>. Ohne USB-Zugang nimmst du die OTA-ZIP-Datei, siehe <a href="alpha.html#alpha-ota">Ohne USB: Update per Bluetooth</a>. BLE-OTA ist vom Rechner aus am P1 und an einem FakeTec gemessen <span class="m meas">gemessen</span> (Bootloader ab 0.9.2-OTAFIX2.1 nötig). Ungetestet sind nRF Connect am Handy, der RAK4631 und Bootloader mit OTAFIX 1.x <span class="m open">offen</span>.</li>
+        <li>Ein Deskriptor von 32 Byte am Ende der Stage-0-Seite nennt das Board. Er enthält einen festen Erkennungswert (Magic), die Version, Board-ID, die Adresse der Seite und die Prüfsumme CRC-32.</li>
+        <li>Du installierst Stage-0 je Board einmal per USB oder BLE-DFU. FUOTA schreibt diese Seite nie. Ein BLE-DFU ersetzt Stage-0, darum bringt jedes FUOTA-Paket Stage-0 mit <span class="m meas">gemessen</span>. Ohne USB-Zugang nimmst du die OTA-ZIP-Datei, siehe <a href="alpha.html#alpha-ota">Ohne USB: Update per Bluetooth</a>. BLE-OTA ist vom Rechner aus am P1 und an einem FakeTec <span class="m meas">gemessen</span> (Bootloader ab 0.9.2-OTAFIX2.1 nötig). Nicht gemessen sind nRF Connect am Handy, der RAK4631 und Bootloader mit OTAFIX 1.x <span class="m open">offen</span>.</li>
         <li>Die App liest den Deskriptor an der Adresse, die das SoftDevice als Sprungziel nennt.</li>
         <li>Sie vergleicht ihn mit der Board-ID im Bootloader. Nennt der Bootloader ein anderes bekanntes Board, gilt das als Widerspruch.</li>
         <li>Ohne Deskriptor reicht die Board-ID nur, wenn der Bootloader zu genau einem Board gehört (P1).</li>
@@ -343,7 +343,7 @@
       <h3>Unbekanntes oder widersprüchliches Board</h3>
       <ul>
         <li>Die App fasst keinen Pin an, sendet nicht und läuft nur im USB-Notbetrieb.</li>
-        <li>Die App bestätigt ein neues Image dann nie. Stage-0 tauscht nach 3 Probestarts ohne Bestätigung zurück.</li>
+        <li>Die App bestätigt ein neues Image dann nie. Stage-0 tauscht nach 3 Probestarts (Startversuchen) ohne Bestätigung zurück.</li>
       </ul>
       <p>Die App bestätigt ein neues Image außerdem nur, wenn der Funkchip geantwortet hat. Eine signierte Kampagne (eine Ziel-ID, ein Patch) aktualisiert so FakeTec, SenseCAP P1, Heltec T114 und RAK4631 <span class="m meas">gemessen</span>.</p>
     </div>
@@ -351,11 +351,11 @@
       <h2>One image for several boards</h2>
       <p>One repeater image picks the board at start. It runs on these boards, all nRF52840 with SX1262:</p>
       <ul>
-        <li>tested on hardware: FakeTec, SenseCAP P1, Heltec T114, RAK4631 <span class="m meas">measured</span></li>
-        <li>measured on the bench (11 November 2026): Seeed Xiao nRF52840 and Heltec T096. The board is recognised by its descriptor, the radio works, zero-hop packets go in both directions with a FakeTec <span class="m meas">measured</span>. Open: accepting an update by radio, LED and button, serial DFU, rollback <span class="m open">open</span></li>
-        <li>only built and checked on the host, according to the report: twelve more boards in the unified image. The names are on the <a href="alpha.html#alpha-pakete">alpha test</a> page</li>
+        <li>measured on hardware: FakeTec, SenseCAP P1, Heltec T114, RAK4631 <span class="m meas">measured</span></li>
+        <li>measured on the bench (11 November 2026): Seeed Xiao nRF52840 and Heltec T096. The board is recognised by its descriptor and the radio works. Packets to direct neighbours go in both directions with a FakeTec <span class="m meas">measured</span>. Open: accepting an update by radio, LED and button, serial DFU, revert <span class="m open">open</span></li>
+        <li>only built and checked on the host, according to the report: 12 more boards in the unified image. The names are on the <a href="alpha.html#alpha-pakete">alpha test</a> page</li>
       </ul>
-      <p>The unified image carries 18 boards. Six of them were seen on a device, twelve are only built. According to the report on the rebuild, there are alpha packages for all 18, each board for its SoftDevice version. FakeTec (S140 6.1.1), SenseCAP P1 (S140 7.3.0) and RAK4631 (S140 6.1.1) are among them.</p>
+      <p>The unified image carries 18 boards. Of these, 6 were seen on a device and 12 are only built. According to the report on the rebuild, there are alpha packages for all 18, each board for its SoftDevice version. FakeTec (S140 6.1.1), SenseCAP P1 (S140 7.3.0) and RAK4631 (S140 6.1.1) are among them.</p>
       <p>A table inside the image contains what differs per board:</p>
       <ul>
         <li>pins of radio chip, SPI, I2C, GPS, LEDs, button and battery measurement</li>
@@ -364,8 +364,8 @@
       </ul>
       <h3>How the image recognises its board</h3>
       <ol>
-        <li>A 32-byte descriptor at the end of the Stage-0 page names the board. It contains a magic number, version, board ID, the page address and the CRC-32 checksum.</li>
-        <li>You install Stage-0 once per board by USB or BLE DFU. FUOTA never writes that page. A BLE DFU replaces Stage-0, so every FUOTA package carries Stage-0 <span class="m meas">measured</span>. Without USB access you take the OTA ZIP file, see <a href="alpha.html#alpha-ota">Without USB: update over Bluetooth</a>. BLE OTA is measured from a computer on the P1 and on one FakeTec <span class="m meas">measured</span> (bootloader from 0.9.2-OTAFIX2.1 required). Untested: nRF Connect on a phone, the RAK4631 and bootloaders with OTAFIX 1.x <span class="m open">open</span>.</li>
+        <li>A 32-byte descriptor at the end of the Stage-0 page names the board. It contains a fixed identification value (magic), the version, board ID, the page address and the CRC-32 checksum.</li>
+        <li>You install Stage-0 once per board by USB or BLE DFU. FUOTA never writes that page. A BLE DFU replaces Stage-0, so every FUOTA package carries Stage-0 <span class="m meas">measured</span>. Without USB access you take the OTA ZIP file, see <a href="alpha.html#alpha-ota">Without USB: update over Bluetooth</a>. BLE OTA from a computer on the P1 and on one FakeTec is <span class="m meas">measured</span> (bootloader from 0.9.2-OTAFIX2.1 required). Not measured: nRF Connect on a phone, the RAK4631 and bootloaders with OTAFIX 1.x <span class="m open">open</span>.</li>
         <li>The app reads the descriptor at the address the SoftDevice names as the jump target.</li>
         <li>It compares the descriptor with the board ID in the bootloader. If the bootloader names another known board, that is a contradiction.</li>
         <li>Without a descriptor, the board ID can suffice. That holds only if the bootloader belongs to exactly one board (P1).</li>
@@ -373,7 +373,7 @@
       <h3>Unknown or contradictory board</h3>
       <ul>
         <li>The app touches no pin and does not transmit. It runs only in a USB fallback mode.</li>
-        <li>The app then never confirms a new image. Stage-0 reverts after 3 test boots without confirmation.</li>
+        <li>The app then never confirms a new image. Stage-0 reverts after 3 test boots (start attempts) without confirmation.</li>
       </ul>
       <p>The app also confirms a new image only if the radio chip answered. One signed campaign (one target ID, one patch) thus updates FakeTec, SenseCAP P1, Heltec T114 and RAK4631 <span class="m meas">measured</span>.</p>
     </div>
@@ -381,8 +381,8 @@
   </main>
   <p class="next"><a href="tests.html"><span lang="de">Weiter: Messungen</span><span lang="en">Next: Measurements</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

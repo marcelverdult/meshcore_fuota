@@ -398,7 +398,7 @@
     <div lang="de" class="prose">
       <h2>Statusmeldungen der Knoten</h2>
       <p>Ein Knoten meldet sieben Ereignisse seines Updates. Die Statusmeldung ist ein signiertes Paket von 96 B <span class="m code">im Code geprüft</span>.
-        Sie geht nur als Flut raus, als Gruppen-Nachricht im FUOTA-Kanal der Standard-Region. Ohne Standard-Region sendet der
+        Sie geht nur als Flut raus, als Gruppen-Nachricht im FUOTA-Kanal der Standard-Region. Eine Region ist der Flood-Scope, auf dem eine Flut reist. Die Standard-Region ist die Region, in der der Knoten flutet. Ohne Standard-Region sendet der
         Knoten keine <span class="m code">im Code geprüft</span>. Höchstens 8 Meldungen gehen je 24 Stunden Laufzeit raus <span class="m code">im Code geprüft</span>.</p>
       <div class="tscroll"><table>
         <tr><th>Meldung</th><th>Ereignis</th></tr>
@@ -406,19 +406,19 @@
         <tr><td>E2</td><td>Update wird angewendet, danach folgt ein Neustart</td></tr>
         <tr><td>E3</td><td>Probestart bestätigt</td></tr>
         <tr><td>E4</td><td>Rückfall ohne Funk-Lebenszeichen, später ein neuer Versuch</td></tr>
-        <tr><td>E5</td><td>Rückfall nach einem Fehlstart, der Build ist gebannt</td></tr>
+        <tr><td>E5</td><td>Rückfall, der Build ist gesperrt: nach einem Fehler-Neustart oder nach 3 Rückfällen durch Stromausfall im Probestart <span class="m code">im Code geprüft</span></td></tr>
         <tr><td>E6</td><td>Absturz nach der Bestätigung, zurück auf den alten Build</td></tr>
         <tr><td>E7</td><td>Retract übernommen</td></tr>
       </table></div>
-      <p>Am Brett wurden alle sieben Meldungen gesendet <span class="m meas">gemessen</span>. Laut Status liefen sie im echten Ablauf, nicht per Testbefehl.
+      <p>Am Testaufbau wurden alle sieben Meldungen gesendet <span class="m meas">gemessen</span>. Laut Status liefen sie im echten Ablauf, nicht per Testbefehl.
         Am 10. November 2026 waren es E1 und E3 bis E6. Am 11. November 2026 folgten E2 und E7.</p>
-      <p>Am 12. November 2026 flutete ein Knoten am Brett die Meldung E3. Die Standard-Region war gesetzt. Die Flut dauerte 754 ms, laut Bericht.</p>
+      <p>Am 12. November 2026 flutete ein Knoten am Testaufbau die Meldung E3. Die Standard-Region war gesetzt. Die Flut dauerte 754 ms, laut Bericht.</p>
       <p>Wo der Analyzer sie zeigt, steht im <a href="#analyzer">Abschnitt zum Analyzer</a>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Status messages of the nodes</h2>
       <p>A node reports seven events of its update. The status message is a signed packet of 96 B <span class="m code">checked in the code</span>.
-        It goes out only as a flood. This is a group message in the FUOTA channel of the default region. Without a default region
+        It goes out only as a flood. This is a group message in the FUOTA channel of the default region. A region is the flood scope a flood travels on. The default region is the region the node floods in. Without a default region
         the node sends none <span class="m code">checked in the code</span>. At most 8 messages go out per 24 hours of running time <span class="m code">checked in the code</span>.</p>
       <div class="tscroll"><table>
         <tr><th>Message</th><th>Event</th></tr>
@@ -426,7 +426,7 @@
         <tr><td>E2</td><td>Update is applied, a restart follows</td></tr>
         <tr><td>E3</td><td>Test boot confirmed</td></tr>
         <tr><td>E4</td><td>Revert without a radio sign of life, a new try later</td></tr>
-        <tr><td>E5</td><td>Revert after a failed start, the build is banned</td></tr>
+        <tr><td>E5</td><td>Revert, the build is blocked: after a fault restart or after 3 reverts through power loss in the test boot <span class="m code">checked in the code</span></td></tr>
         <tr><td>E6</td><td>Crash after the confirmation, back to the old build</td></tr>
         <tr><td>E7</td><td>Retract taken over</td></tr>
       </table></div>
@@ -604,15 +604,13 @@
   <section id="filter">
     <div lang="de" class="prose">
       <h2>Werkseinstellungen und Paketfilter</h2>
-      <p>Die FUOTA-Firmware der Linie 1.18.0 startet mit engeren Werten als Stock-MeshCore. Sie gelten nur für eine
-        Neuinstallation, also einen Knoten ohne Prefs-Datei. Ein Knoten im Feld behält alle seine Werte. Ein Schlüssel,
-        der in einer alten Datei fehlt, bekommt den Stock-Wert <span class="m code">im Code geprüft</span>.</p>
+      <p>Die FUOTA-Firmware der Linie 1.18.0 startet mit engeren Werkswerten als Stock-MeshCore (MeshCore wie veröffentlicht, unverändert). Ein Werkswert ist der Wert einer neuen Installation. Er gilt nur für einen Knoten ohne Prefs-Datei (Einstellungsdatei). Ein Knoten im Feld behält alle seine Werte. Ein Schlüssel,
+        der in einer alten Datei fehlt, bekommt den Stock-Wert <span class="m code">im Code geprüft</span>. Ein Hop ist ein Sprung von einem Repeater zum nächsten.</p>
     </div>
     <div lang="en" class="prose">
       <h2>Factory settings and packet filter</h2>
-      <p>The FUOTA firmware of the 1.18.0 line starts with tighter values than stock MeshCore. They apply to a new
-        install only, meaning a node without a prefs file. A node in the field keeps all its values. A key that is
-        missing from an old file gets the stock value <span class="m code">checked in the code</span>.</p>
+      <p>The FUOTA firmware of the 1.18.0 line starts with tighter factory values than stock MeshCore (MeshCore as published, unchanged). A factory value is the value of a new install. It applies only to a node without a prefs file (settings file). A node in the field keeps all its values. A key that is
+        missing from an old file gets the stock value <span class="m code">checked in the code</span>. A hop is a jump from one repeater to the next.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
@@ -643,10 +641,10 @@
       </table>
     </div>
     <div lang="de" class="prose">
-      <p>Alle Werte stehen im Code <span class="m code">im Code geprüft</span>. Eine neue Installation zeigte sie am Brett
-        mit <code>get</code>, ein Knoten mit Prefs behielt seine Werte, und die Grenzen der Setter griffen an den Rändern
+      <p>Alle Werte stehen im Code <span class="m code">im Code geprüft</span>. Eine neue Installation zeigte sie am Testaufbau
+        mit <code>get</code>, ein Knoten mit Prefs behielt seine Werte, und die Grenzen der Einstellbefehle griffen an den Rändern
         <span class="m meas">gemessen</span>. Die Typen 0, 1 und 7 sind REQ, RESPONSE und ANON_REQ.</p>
-      <p>Die Setter lesen eine Eingabe ganz. Ist sie keine Zahl im erlaubten Bereich oder nicht das ganze Wort <code>on</code>
+      <p>Die Einstellbefehle lesen eine Eingabe ganz. Ist sie keine Zahl im erlaubten Bereich oder nicht das ganze Wort <code>on</code>
         oder <code>off</code>, antwortet der Knoten mit einem Fehler und ändert nichts. <code>ON</code> in Großbuchstaben gilt
         nicht als <code>on</code>.</p>
       <ul>
@@ -654,7 +652,7 @@
           <code>path.hash.mode</code> (0 bis 2), <code>agc.reset.interval</code> (0 bis 1020), <code>int.thresh</code> (0 bis 255),
           <code>multi.acks</code> (0 oder 1), <code>tx</code> (-9 bis 30 dBm, Fehlertext <code>Error, tx -9..30</code>),
           <code>advert.interval</code> (0 oder 60 bis 510 Minuten) und <code>flood.advert.interval</code> (0 oder 24 bis 255 Stunden).
-          Die beiden Advert-Setter behalten ihren bisherigen Fehlertext. <code>set advert.interval abc</code> schaltete vorher still
+          Die beiden Advert-Befehle behalten ihren bisherigen Fehlertext. <code>set advert.interval abc</code> schaltete vorher still
           das Advert aus, und <code>set flood.advert.interval 24x</code> wurde als 24 gelesen. Jetzt antwortet der Knoten mit dem Bereichsfehler und speichert nichts.</li>
         <li>Koordinaten: <code>lat</code> (-90 bis 90) und <code>lon</code> (-180 bis 180) als Dezimalzahl mit Punkt. <code>52,01</code> mit Komma
           wird abgelehnt. Fehlertexte <code>Error, lat -90..90</code> und <code>Error, lon -180..180</code>.</li>
@@ -663,11 +661,11 @@
       </ul>
       <p>Stock antwortet auf alles davon mit <code>OK</code>. <code>set flood.max abc</code> setzt 0, der Knoten gibt dann nichts
         mehr weiter. <code>set flood.max 320</code> setzt 64. <code>set cad ON</code> schaltet die Kanalprüfung aus und
-        <code>set repeat offxyz</code> das Weitergeben <span class="m code">im Code geprüft</span>. Der Host-Test prüft die
-        Entscheidung mit diesen Fehlfällen <span class="m code">im Code geprüft</span>. Die Antworten am Brett sind
+        <code>set repeat offxyz</code> das Weitergeben <span class="m code">im Code geprüft</span>. Der Rechner-Test (die Firmware-Funktionen laufen unverändert auf einem Rechner statt am Gerät) prüft die
+        Entscheidung mit diesen Fehlfällen <span class="m code">im Code geprüft</span>. Die Antworten am Testaufbau sind
         <span class="m open">offen</span>.</p>
       <h3>So wählt der Knoten, was er weitergibt</h3>
-      <p>Ein Repeater prüft jedes fremde Flood-Paket. Er gibt es nicht weiter, wenn es schon so viele Hops hinter sich hat
+      <p>Ein Repeater prüft jedes fremde Flood-Paket, also jedes Paket, das er an alle Nachbarn weitergeben würde. Er gibt es nicht weiter, wenn es schon so viele Hops hinter sich hat
         wie eine der Grenzen erlaubt. Die strengste Grenze gewinnt <span class="m code">im Code geprüft</span>.</p>
       <ul>
         <li><code>flood.max</code> gilt für jedes Flood-Paket.</li>
@@ -688,14 +686,14 @@
         Der Kanalschlüssel ist öffentlich. Wer ihn kennt, kann ein Paket bauen, das als FUOTA-Flut durchgeht. Auch dieses Paket
         hält <code>flood.max</code>. Nicht ausgenommen sind <code>repeat off</code>, <code>fuota relay off</code>, eine fehlende
         Region und <code>loop.detect</code>.</p>
-      <p>Am Brett ist nur der Fall mit 0 Hops gemessen. Ab 1 Hop sind die Grenzen nur im Host-Test belegt. In einem echten Mesh mit
+      <p>Am Testaufbau ist nur der Fall mit 0 Hops gemessen. Ab 1 Hop sind die Grenzen nur im Rechner-Test belegt. In einem echten Mesh mit
         mehreren Repeater-Hops hat sie niemand gemessen <span class="m open">offen</span>.</p>
       <h3>Kanalfilter für Gruppen-Nachrichten</h3>
-      <p>Der Kanalfilter begrenzt, wie weit Fluten gelisteter Gruppenkanäle laufen. Er entscheidet nur, ob der Repeater mit FUOTA eine Flut weitergibt.
+      <p>Der Kanalfilter begrenzt, wie weit Fluten gelisteter Gruppenkanäle laufen. Ein Gruppenkanal ist ein Kanal für Gruppen-Nachrichten, zum Beispiel #wetter. Der Filter entscheidet nur, ob der Repeater mit FUOTA eine Flut weitergibt.
         Betroffen sind Fluten der Typen <code>grptxt</code> und <code>grpdata</code> <span class="m code">im Code geprüft</span>.</p>
       <p>Der Repeater empfängt das Paket und merkt es sich wie sonst. Er entschlüsselt keine Nachricht. Den Kanal erkennt er
         an der Kennung im Paket. Den Schlüssel dazu leitet er aus dem Namen ab <span class="m code">im Code geprüft</span>.</p>
-      <p>Die Liste hat höchstens 8 Einträge, N reicht von 1 bis 64. Sie liegt in der Datei <code>/chfilter</code>. Der öffentliche Kanal und der
+      <p>Die Liste hat höchstens 8 Einträge. Die Hop-Zahl N im Befehl reicht von 1 bis 64. Sie liegt in der Datei <code>/chfilter</code>. Der öffentliche Kanal und der
         FUOTA-Kanal lassen sich nie filtern <span class="m code">im Code geprüft</span>.</p>
     </div>
     <div lang="de" class="tscroll">
@@ -711,11 +709,11 @@
       </table>
     </div>
     <div lang="de" class="prose">
-      <p>Die Werksliste verwirft <code>#wardriving</code>. Für <code>#bots</code>, <code>#wetter</code>,
+      <p>Die Werksliste, die Liste einer neuen Installation, verwirft <code>#wardriving</code>. Für <code>#bots</code>, <code>#wetter</code>,
         <code>#test</code> und <code>#ping</code> gilt eine Grenze. Der Repeater gibt sie weiter, solange das Paket weniger als 3 Hops hinter sich hat <span class="m code">im Code geprüft</span>.</p>
       <p>Auf Funk ist der Filter nicht gemessen <span class="m open">offen</span>.</p>
       <h3>Hop-Grenze je Pakettyp</h3>
-      <p>Die Tabelle zeigt, wie weit eine Flut mit Region läuft. Ein Repeater gibt ein Paket weiter, solange es weniger
+      <p>Die Tabelle zeigt, wie weit eine Flut mit Region läuft. Eine Region ist der Flood-Scope, auf dem eine Flut reist. Ein Repeater gibt ein Paket weiter, solange es weniger
         Hops hinter sich hat als erlaubt. Die strengste Grenze gewinnt <span class="m code">im Code geprüft</span>.</p>
     </div>
     <div lang="de" class="tscroll">
@@ -761,26 +759,26 @@
     <div lang="de" class="prose">
       <h3>Was offen ist</h3>
       <ul>
-        <li>Im Bench-Build von 1.18.0-b3 sendet eine Neuinstallation die erste Zero-Hop-Advert nach 360 min, weil dort die Advert beim Start ausgeschaltet ist <span class="m code">im Code geprüft</span>. Bei Stock sind es 2 min. Ein Release-Build sendet sie etwa 16 s nach dem Start <span class="m code">im Code geprüft</span>. Am Release-Gerät ist das nicht gemessen <span class="m open">offen</span>. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
+        <li>Im Testaufbau-Build von 1.18.0-b3 sendet eine Neuinstallation die erste Zero-Hop-Advert nach 360 min, weil dort die Advert beim Start ausgeschaltet ist <span class="m code">im Code geprüft</span>. Bei Stock sind es 2 min. Ein Release-Build sendet sie etwa 16 s nach dem Start <span class="m code">im Code geprüft</span>. Am Release-Gerät ist das nicht gemessen <span class="m open">offen</span>. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
         <li>1.17.1-b2 erlaubt für <code>advert.interval</code> nur 0 und 60 bis 240 min <span class="m code">im Code geprüft</span>. Es setzt ein Intervall unter 60 min beim Speichern auf 0. Darum sendet ein Knoten mit 1.17.1-b2 nach der ersten gespeicherten Einstellung keine Zero-Hop-Adverts mehr <span class="m code">im Code geprüft</span>.</li>
         <li>Floods ohne Region laufen nur 1 Hop weit, auch Antworten auf Fernwartung. Ob das Betreiber ohne Standard-Region stört, ist ungeprüft <span class="m open">offen</span>.</li>
         <li>Mit <code>flood.max.advert</code> 2 und ausgeschalteter Flut-Advert sehen Beobachter einen Knoten nur aus etwa 2 Hops Umkreis. Das ist hergeleitet, nicht gemessen <span class="m open">offen</span>.</li>
-        <li>Wie 10 % Duty Cycle unter echter Last im Mesh wirken, ist nicht gemessen <span class="m open">offen</span>. Am Brett änderte er den Abstand der Fragmente nicht: 6,430 s gegen 6,434 s <span class="m meas">gemessen</span>.</li>
+        <li>Wie 10 % Duty Cycle unter echter Last im Mesh wirken, ist nicht gemessen <span class="m open">offen</span>. Am Testaufbau änderte er den Abstand der Fragmente nicht: 6,430 s gegen 6,434 s <span class="m meas">gemessen</span>.</li>
         <li>CAD an: Die erste Slot-Anfrage ging in 2 von 4 Läufen verloren. In einer Folgeserie mit 6 Läufen mit CAD an wurden alle 12 ersten Slot-Anfragen beantwortet. Die 3 verzögerten Fälle der Serie traten alle mit CAD aus auf. Eine seltene Wirkung ist nicht ausgeschlossen <span class="m meas">gemessen</span>.</li>
       </ul>
     </div>
     <div lang="en" class="prose">
       <p>All values are in the code <span class="m code">checked in the code</span>. On the bench, a new install showed
-        them with <code>get</code>, a node with prefs kept its values, and the setter limits held at their edges
+        them with <code>get</code>, a node with prefs kept its values, and the limits of the setting commands held at their edges
         <span class="m meas">measured</span>. Types 0, 1 and 7 are REQ, RESPONSE and ANON_REQ.</p>
-      <p>The setters read an input completely. If it is not a number in the allowed range, or not the whole word <code>on</code>
+      <p>The setting commands read an input completely. If it is not a number in the allowed range, or not the whole word <code>on</code>
         or <code>off</code>, the node answers an error and changes nothing. <code>ON</code> in capitals is not <code>on</code>.</p>
       <ul>
         <li>Numbers: <code>flood.max</code>, <code>flood.max.unscoped</code> and <code>flood.max.advert</code> (0 to 64),
           <code>path.hash.mode</code> (0 to 2), <code>agc.reset.interval</code> (0 to 1020), <code>int.thresh</code> (0 to 255),
           <code>multi.acks</code> (0 or 1), <code>tx</code> (-9 to 30 dBm, error text <code>Error, tx -9..30</code>),
           <code>advert.interval</code> (0 or 60 to 510 minutes) and <code>flood.advert.interval</code> (0 or 24 to 255 hours).
-          The two advert setters keep their earlier error text. <code>set advert.interval abc</code> used to turn the advert off
+          The two advert commands keep their earlier error text. <code>set advert.interval abc</code> used to turn the advert off
           without a word, and <code>set flood.advert.interval 24x</code> was read as 24. Now the node answers the range error and stores nothing.</li>
         <li>Coordinates: <code>lat</code> (-90 to 90) and <code>lon</code> (-180 to 180) as a decimal number with a point. <code>52,01</code>
           with a comma is refused. Error texts <code>Error, lat -90..90</code> and <code>Error, lon -180..180</code>.</li>
@@ -789,11 +787,11 @@
       </ul>
       <p>Stock answers <code>OK</code> to all of them. <code>set flood.max abc</code> sets 0, so the node forwards nothing any
         more. <code>set flood.max 320</code> sets 64. <code>set cad ON</code> turns the channel check off and
-        <code>set repeat offxyz</code> turns forwarding off <span class="m code">checked in the code</span>. The host test
+        <code>set repeat offxyz</code> turns forwarding off <span class="m code">checked in the code</span>. The host test (the firmware functions run unchanged on a computer, not on the device)
         checks the decision with those failing inputs <span class="m code">checked in the code</span>. The answers on the bench
         are <span class="m open">open</span>.</p>
       <h3>How the node picks what it forwards</h3>
-      <p>A repeater checks every foreign flood packet. It does not forward the packet once it has travelled as many hops
+      <p>A repeater checks every foreign flood packet, that is every packet it would pass on to all neighbours. It does not forward the packet once it has travelled as many hops
         as one of the limits allows. The strictest limit wins <span class="m code">checked in the code</span>.</p>
       <ul>
         <li><code>flood.max</code> applies to every flood packet.</li>
@@ -817,11 +815,11 @@
       <p>On the bench, only the case with 0 hops is measured. From 1 hop on, the limits are proven in host tests only. Nobody has
         measured them in a real mesh with several repeater hops <span class="m open">open</span>.</p>
       <h3>Channel filter for group messages</h3>
-      <p>The channel filter limits how far floods of listed group channels travel. It only decides whether the repeater with FUOTA forwards a flood.
+      <p>The channel filter limits how far floods of listed group channels travel. A group channel is a channel for group messages, for example #wetter. The filter only decides whether the repeater with FUOTA forwards a flood.
         It affects floods of the types <code>grptxt</code> and <code>grpdata</code> <span class="m code">checked in the code</span>.</p>
       <p>The repeater receives the packet and marks it as seen as before. It decrypts no message. It recognises a channel
         by the identifier in the packet. It derives the key from the name <span class="m code">checked in the code</span>.</p>
-      <p>The list holds 8 entries at most, N ranges from 1 to 64. It lives in the file <code>/chfilter</code>. The public channel and the FUOTA
+      <p>The list holds 8 entries at most. The hop count N in the command ranges from 1 to 64. It lives in the file <code>/chfilter</code>. The public channel and the FUOTA
         channel can never be filtered <span class="m code">checked in the code</span>.</p>
     </div>
     <div lang="en" class="tscroll">
@@ -837,11 +835,11 @@
       </table>
     </div>
     <div lang="en" class="prose">
-      <p>The factory list drops <code>#wardriving</code>. A limit applies to <code>#bots</code>, <code>#wetter</code>,
+      <p>The factory list, the list of a new install, drops <code>#wardriving</code>. A limit applies to <code>#bots</code>, <code>#wetter</code>,
         <code>#test</code> and <code>#ping</code>. The repeater forwards them while the packet has made fewer than 3 hops <span class="m code">checked in the code</span>.</p>
       <p>The filter is not measured on air <span class="m open">open</span>.</p>
       <h3>Hop limit per packet type</h3>
-      <p>The table shows how far a flood with a region travels. A repeater forwards a packet while it has made fewer
+      <p>The table shows how far a flood with a region travels. A region is the flood scope a flood travels on. A repeater forwards a packet while it has made fewer
         hops than allowed. The strictest limit wins <span class="m code">checked in the code</span>.</p>
     </div>
     <div lang="en" class="tscroll">
@@ -916,7 +914,7 @@
         nicht gemessen <span class="m open">offen</span>. Der Watchdog läuft im Schlaf weiter und wird in jedem Durchlauf gefüttert
         <span class="m code">im Code geprüft</span>.</p>
       <h3>Was gemessen ist</h3>
-      <p>Ein Pull mit <code>powersaving on</code> auf beiden beteiligten Knoten lief am Brett durch. Er hatte 2 Bursts
+      <p>Ein Pull mit <code>powersaving on</code> auf beiden beteiligten Knoten lief am Testaufbau durch. Er hatte 2 Bursts
         und brauchte 187 s bis <code>complete</code>. Es gab keinen <code>slot-stall</code>. Der Fragmentabstand lag bei 673 bis 675 ms
         und damit wie ohne Stromsparen <span class="m meas">gemessen</span>. Danach schalteten wir den Befehl wieder aus.</p>
       <h3>Was fehlt</h3>
@@ -985,7 +983,7 @@
         <tr><td>Sofort-Angebot</td><td class="n">0,2 bis 1 s</td><td>Der Knoten hat eine neue Seite geprüft, und jemand wartete darauf. Das ist Pipelining: Seiten gehen weiter, während der Rest noch kommt.</td></tr>
         <tr><td>Erste Anfrage, nächster Block</td><td class="n">0,5 s bis 1 Abstand</td><td>Die Wartezeit ist zufällig und höchstens 30 s lang. So fragen Nachbarn, die sich nicht hören, nicht im Gleichschritt.</td></tr>
         <tr><td>Warten auf das erste Fragment</td><td class="n">2 Abstände + 5 s</td><td>Dazu wartet der Knoten zufällig bis zu 1 Abstand. Jedes Fragment verlängert die Wartezeit auf den Rest des Blocks. Ohne Antwort fragt der Knoten den nächsten Anbieter oder 0xFFFF. Nach 12 Anfragen ohne Daten pausiert er.</td></tr>
-        <tr><td>Genannter Anbieter sendet Daten an andere</td><td class="n">Wartezeit verlängert</td><td>Er ist beschäftigt, nicht verloren: kein Fehlversuch.</td></tr>
+        <tr><td>Genannter Anbieter sendet Daten an andere</td><td class="n">Wartezeit verlängert</td><td>Er ist beschäftigt: kein Fehlversuch.</td></tr>
         <tr><td>Nachbar fragt denselben Block</td><td class="n">3 s still</td><td>Die Antwort an ihn kommt hier auch an.</td></tr>
         <tr><td>Nachfrage, wenn niemand Daten anbietet</td><td class="n">max(30 s, 4 Abstände)</td><td>Meldet den Bedarf, solange noch niemand mehr hat. Der Nachbar bietet nach der nächsten geprüften Seite sofort an.</td></tr>
         <tr><td>Bedienen starten</td><td class="n">50 bis 1000 ms</td><td>Bei einer Anfrage an alle (0xFFFF) beginnt einer zuerst.</td></tr>
@@ -996,7 +994,7 @@
         <tr><td>Zurückhalten der Angebots-Flut</td><td class="n">höchstens 3 Tage</td><td>In der ersten Woche und 1 Woche nach gehörter Anfrage hält ihn eine gehörte Flut derselben Kampagne höchstens 3 Tage zurück. Die 3 Tage zählen ab seiner letzten Flut oder der letzten zurückgehaltenen Wochenperiode. Danach flutet er trotz gehörter Flut, sobald sein nächster Termin kommt. Nur eine Flut aus seiner Region mit höchstens 5 Hops hält ihn zurück. Die Regeln stehen unter <a href="#weiter">Wer was weitergibt und was nie</a>.</td></tr>
         <tr><td>Retract</td><td class="n">bis zu 3-mal, dazu 1 Flut</td><td>Ein Knoten sendet den Retract bis zu 3-mal an direkte Nachbarn. Dazu flutet er ihn einmal. Er wartet vorher 2 bis 30 min. Auf ein Angebot des zurückgezogenen Builds antwortet er höchstens alle 30 s mit dem Retract. Kam das Angebot als Flut, antwortet er nach bis zu 30 min mit einer Flut. Das tut er höchstens einmal am Tag je Retract. Den Takt der Sendungen an Nachbarn erklärt der Absatz unter der Tabelle.</td></tr>
         <tr><td>Anwenden</td><td class="n">~10 s bauen, 30 bis 39 s tauschen</td><td><span class="m meas">gemessen</span>: Bauen am Release-Image (9. November 2026), Tauschen am Test-Image (18. Oktober 2026). Der Knoten ist dabei rund 1 min offline, gemessen am Test-Image, am Release-Image nicht.</td></tr>
-        <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung 60 s</td><td>Die Bestätigung kommt nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet). Beides muss innerhalb der Frist T liegen. T liegt zwischen 15 Minuten und 6 Stunden. Hatte der Knoten vor dem Update keinen Tag Laufzeit, sind es 60 Minuten <span class="m code">im Code geprüft</span>. Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware. Fehlt nur das Lebenszeichen, gibt es keinen Bann. Ein neuer Versuch wartet <span class="m code">im Code geprüft</span>. Am Brett empfing ein Knoten in 18 Minuten kein Paket <span class="m meas">gemessen</span>. Im Mesh mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>.</td></tr>
+        <tr><td>Probestart</td><td class="n">Watchdog 30 s, Bestätigung 60 s</td><td>Die Bestätigung kommt nach 60 s und einem Funk-Lebenszeichen (ein Paket empfangen, eines gesendet). Beides muss innerhalb der Frist T liegen. T liegt zwischen 15 Minuten und 6 Stunden. Hatte der Knoten vor dem Update keinen Tag Laufzeit, sind es 60 Minuten <span class="m code">im Code geprüft</span>. Nach 3 Probestarts ohne Bestätigung folgt der Rückfall auf die alte Firmware. Fehlt nur das Lebenszeichen, gibt es keine Sperre. Ein neuer Versuch wartet <span class="m code">im Code geprüft</span>. Am Testaufbau empfing ein Knoten in 18 Minuten kein Paket <span class="m meas">gemessen</span>. Im Mesh mit normalem Verkehr ist das nicht geprüft <span class="m open">offen</span>.</td></tr>
       </table>
     </div>
     <div lang="en" class="tscroll">
@@ -1008,18 +1006,18 @@
         <tr><td>Immediate offer</td><td class="n">0.2 to 1 s</td><td>The node has checked a new page, and someone was waiting for it. This is pipelining: pages pass on while the rest still arrives.</td></tr>
         <tr><td>First request, next block</td><td class="n">0.5 s to 1 gap</td><td>The wait is random and at most 30 s long. So neighbours that cannot hear each other do not ask in step.</td></tr>
         <tr><td>Waiting for the first fragment</td><td class="n">2 gaps + 5 s</td><td>The node also waits up to 1 gap at random. Every fragment extends the wait to the rest of the block. Without an answer the node asks the next provider or 0xFFFF. After 12 requests without data it pauses.</td></tr>
-        <tr><td>Named provider sends data to others</td><td class="n">Wait extended</td><td>It is busy, not lost: no failed attempt.</td></tr>
+        <tr><td>Named provider sends data to others</td><td class="n">Wait extended</td><td>It is busy: no failed attempt.</td></tr>
         <tr><td>Neighbour requests the same block</td><td class="n">3 s silent</td><td>The answer to it arrives here as well.</td></tr>
         <tr><td>Request while nobody offers data</td><td class="n">max(30 s, 4 gaps)</td><td>Reports demand while nobody has more yet. The neighbour offers at once after its next checked page.</td></tr>
         <tr><td>Start serving</td><td class="n">50 to 1000 ms</td><td>For a request to everybody (0xFFFF), one node starts first.</td></tr>
         <tr><td>Channel busy</td><td class="n">20 ms, then again</td><td>First hear what the neighbour sends, then pick an own fragment.</td></tr>
         <tr><td>Pull paused</td><td class="n">100 gaps, at least 20 min</td><td>The node pauses when neither an offer nor data came for that long. At 0.3 %, that is 10.6 h <span class="m calc">calculated</span>. Nobody has the campaign any more. At the next offer the node resumes the pull.</td></tr>
-        <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent ban because of a poor link.</td></tr>
+        <tr><td>Manifest damaged 3×</td><td class="n">Skip for 10 min</td><td>No permanent block because of a poor link.</td></tr>
         <tr><td>Offer flood</td><td class="n">at most 1 a day, then 1 a week</td><td>A provider floods its offer once it has the whole campaign. The daily limit holds in the first week and 1 week after a heard request. After that, the weekly limit holds: at most once a week. The weeks count its running time. In the weekly phase, a heard flood of the same campaign holds it back at most 2 times in a row. Then it floods again 3 weeks after its last flood at the latest. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Holding back the offer flood</td><td class="n">up to 3 days</td><td>In the first week and 1 week after a heard request, a heard flood of the same campaign holds it back up to 3 days. The 3 days count from its last flood or the last weekly period it held back. After that it floods despite a heard flood, at its next planned time. Only a flood from its region with at most 5 hops holds it back. The rules are under <a href="#weiter">Who passes on what, and what never</a>.</td></tr>
         <tr><td>Retract</td><td class="n">up to 3 times, plus 1 flood</td><td>A node sends the retract up to 3 times to direct neighbours. It also floods it once, after waiting 2 to 30 min. It answers offers of the retracted build with the retract at most every 30 s. If an offer was flooded, it answers with a flood after up to 30 min. It does so at most once a day per retract. The paragraph below the table explains the sends to neighbours.</td></tr>
         <tr><td>Apply</td><td class="n">~10 s build, 30 to 39 s swap</td><td><span class="m meas">measured</span>: build on the release image (9 November 2026), swap on the test image (18 October 2026). The node is offline for about 1 min meanwhile, measured on the test image, not on the release image.</td></tr>
-        <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation 60 s</td><td>Confirmation needs 60 s and a radio sign of life (one packet received, one sent). Both must come within the deadline T. T is between 15 minutes and 6 hours. Without a day of uptime before the update it is 60 minutes <span class="m code">checked in the code</span>. After 3 test boots without confirmation the node reverts to the old firmware. If only the sign of life is missing, there is no ban. A new try waits <span class="m code">checked in the code</span>. On the bench a node received no packet in 18 minutes <span class="m meas">measured</span>. In a mesh with normal traffic this has not been checked <span class="m open">open</span>.</td></tr>
+        <tr><td>Test boot</td><td class="n">Watchdog 30 s, confirmation 60 s</td><td>Confirmation needs 60 s and a radio sign of life (one packet received, one sent). Both must come within the deadline T. T is between 15 minutes and 6 hours. Without a day of uptime before the update it is 60 minutes <span class="m code">checked in the code</span>. After 3 test boots without confirmation the node reverts to the old firmware. If only the sign of life is missing, there is no block. A new try waits <span class="m code">checked in the code</span>. On the bench a node received no packet in 18 minutes <span class="m meas">measured</span>. In a mesh with normal traffic this has not been checked <span class="m open">open</span>.</td></tr>
       </table>
     </div>
     <div lang="de" class="prose">
@@ -1046,8 +1044,8 @@
   </main>
   <p class="next"><a href="flash.html"><span lang="de">Weiter: Flash</span><span lang="en">Next: Flash</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

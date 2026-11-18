@@ -59,23 +59,23 @@
   <main>
   <header class="hero">
     <div lang="de">
-      <h1>Alpha-Test: Repeater, die sich selbst updaten</h1>
-      <p class="lede">Du flasht Testrepeater mit 1.17.1-fuota1. Dieser Stand holt Updates per Funk und wendet sie an.
+      <h1>Alpha-Test: Der erste Funk-Update-Test</h1>
+      <p class="lede">Du installierst 1.17.1-fuota1 auf Testrepeatern. Dieser Stand holt Updates per Funk und wendet sie an.
         Er bietet selbst keine an und leitet keine weiter. Er ist die Ausgangsbasis, damit ein späteres 1.18 von Repeater zu
-        Repeater laufen kann. Spiel ihn nur auf Knoten, die du gut erreichst.</p>
+        Repeater laufen kann. Installiere ihn nur auf Knoten, die du gut erreichst.</p>
       <p><strong>Stand 18. November 2026:</strong> Der zweite Alpha-Test nutzt das Release
-        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>. Wer beim ersten Test dabei war, flasht neu: Die Pakete 1.17.1-b2 und 1.18.0-b3
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>. Wer beim ersten Test dabei war, installiert neu: Die Pakete 1.17.1-b2 und 1.18.0-b3
         sind zurückgezogen und passen nicht zur neuen Kampagne.
-        Genau diese signierten Release-Dateien sind noch auf keinem Gerät gelaufen. Die Brettläufe liefen mit dem Test-Image.
+        Genau diese signierten Release-Dateien sind noch auf keinem Gerät gelaufen. Die Läufe am Testaufbau nutzten das Test-Image.
         Dieser Release ist selbst der erste Test <span class="m open">offen</span>.</p>
     </div>
     <div lang="en">
-      <h1>Alpha test: repeaters that update themselves</h1>
-      <p class="lede">You flash test repeaters with 1.17.1-fuota1. This build fetches updates over the air and applies them.
+      <h1>Alpha test: the first over-the-air update test</h1>
+      <p class="lede">You install 1.17.1-fuota1 on test repeaters. This build fetches updates over the air and applies them.
         It offers none itself and passes none on. It is the starting point so that a later 1.18 can run from repeater to
         repeater. Use it only on nodes that you can reach easily.</p>
       <p><strong>Status as of 18 November 2026:</strong> The second alpha test uses the release
-        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>. If you took part in the first test, flash again. The packages 1.17.1-b2 and 1.18.0-b3
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>. If you took part in the first test, install again. The packages 1.17.1-b2 and 1.18.0-b3
         have been withdrawn and do not fit the new campaign.
         These exact signed release files have not yet run on any device. The bench runs used the test image. This release is
         itself the first test <span class="m open">open</span>.</p>
@@ -88,15 +88,15 @@
     <div lang="de" class="prose">
       <ol>
         <li>Such dir ein paar andere Tester und bildet eine Gruppe. Ihr teilt mehrere Testrepeater unter euch auf.
-          Alle Geräte der Gruppe liegen in Funkreichweite zueinander.</li>
-        <li>Alle flashen das Basispaket 1.17.1-fuota1 per USB (Tabelle unten) und setzen die Region ihres Netzes (Abschnitt Region setzen).</li>
-        <li>Der Knoten holt Updates per Funk, prüft die Signatur, startet zur Probe und bestätigt. Du tust nichts. Er bietet selbst keine Updates an und leitet keine weiter. Einen Termin für ein späteres 1.18 nennen wir hier nicht.</li>
+          Alle Knoten der Gruppe liegen in Funkreichweite zueinander.</li>
+        <li>Alle installieren das Basispaket 1.17.1-fuota1 per USB (Tabelle unten) und setzen die Region ihres Netzes (Abschnitt Region setzen).</li>
+        <li>Der Knoten holt Updates per Funk, prüft die Signatur, macht einen Probestart und bestätigt. Du tust nichts. Er bietet selbst keine Updates an und leitet keine weiter. Einen Termin für ein späteres 1.18 nennen wir hier nicht.</li>
         <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
       </ol>
       <p>Richte jeden Testrepeater ein wie jeden anderen Repeater. Tippe die Befehle in der USB-Konsole.</p>
       <p><strong>Wichtig für einen koordinierten Test:</strong> Gib jedem Repeater einen sprechenden Namen nach dem Muster <code>FUOTA &lt;Spitzname&gt; 1.17.1-fuota1</code>. Setze außerdem eine grobe GPS-Position und ein Admin-Passwort. So zeigen Analyzer und Karte, wer welchen Repeater betreibt und welche Version er trägt. Die Gruppe kann sich bei Fragen auch gezielt auf einen Repeater beziehen.</p>
       <ul>
-        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>, höchstens 15 Zeichen. Bitte setzen. Die Pakete sind
+        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>, höchstens 15 Zeichen. Setze eines. Die Pakete sind
           Release-Images und haben ab Werk keines. Für die USB-Befehle brauchst du es nicht, es gilt für den
           Admin-Zugang aus der Ferne. Der Knoten antwortet mit <code>password now:</code> und dem Passwort
           <span class="m code">im Code geprüft</span>. Mit einem Release-Image am Gerät ist das noch nicht gemessen
@@ -108,7 +108,7 @@
           <span class="m code">im Code geprüft</span>. Wähle ein anderes Passwort. Mit einem Release-Image am Gerät ist
           das noch nicht gemessen <span class="m open">offen</span>.</li>
         <li>GPS-Position: <code>set lat &lt;Breite&gt;</code> und <code>set lon &lt;Länge&gt;</code>. Die Antwort ist
-          jeweils <code>OK</code> <span class="m code">im Code geprüft</span>. Bitte setzen, grob genügt (der Stadtteil).</li>
+          jeweils <code>OK</code> <span class="m code">im Code geprüft</span>. Setze sie, grob genügt (der Stadtteil).</li>
         <li>Name mit Spitzname und Version: <code>set name FUOTA Spitzname 1.17.1-fuota1</code>. Setze deinen Spitznamen ein. Die Antwort ist <code>OK</code>. So siehst du im Analyzer,
           welcher Repeater welcher ist. Der Name geht mit dem nächsten Advert raus, <code>advert</code> sendet ihn
           sofort <span class="m code">im Code geprüft</span>. Er bleibt nach einem Update stehen, auch wenn der Repeater
@@ -125,20 +125,20 @@
         <li>Repeat an lassen: <code>get repeat</code> zeigt <code>&gt; on</code>, ab Werk ist es an. Mit
           <code>set repeat on</code> schaltest du es wieder ein, die Antwort ist <code>OK - repeat is now ON</code>.</li>
       </ul>
-      <p>Mehrere Gruppen können unabhängig voneinander testen, je mehr, desto besser.</p>
+      <p>Mehrere Gruppen können unabhängig voneinander testen.</p>
     </div>
     <div lang="en" class="prose">
       <ol>
         <li>Find a few other testers and form a group. You split several test repeaters among yourselves.
-          All devices of the group are within radio range of each other.</li>
-        <li>Everyone flashes the base package 1.17.1-fuota1 over USB (table below) and sets the region of their network (section Setting the region).</li>
-        <li>The node fetches updates over the air, checks the signature, starts them on trial and confirms. You do nothing. It offers no updates itself and passes none on. We name no date for a later 1.18 here.</li>
+          All nodes of the group are within radio range of each other.</li>
+        <li>Everyone installs the base package 1.17.1-fuota1 over USB (table below) and sets the region of their network (section Setting the region).</li>
+        <li>The node fetches updates over the air, checks the signature, does a test boot and confirms. You do nothing. It offers no updates itself and passes none on. We name no date for a later 1.18 here.</li>
         <li>You watch the state and report what happened.</li>
       </ol>
       <p>Set up every test repeater like any other repeater. Type the commands in the USB console.</p>
       <p><strong>Important for a coordinated test:</strong> give every repeater a meaningful name like <code>FUOTA &lt;nickname&gt; 1.17.1-fuota1</code>. Also set a rough GPS position and an admin password. Then the analyzer and the map show who runs which repeater and which version it carries. The group can also point to one repeater when questions come up.</p>
       <ul>
-        <li>Admin password: <code>password &lt;password&gt;</code>, 15 characters at most. Please set one. The packages are
+        <li>Admin password: <code>password &lt;password&gt;</code>, 15 characters at most. Set one. The packages are
           release images and have none from the factory. You do not need it for the USB commands, it is for admin access
           from afar. The node answers with <code>password now:</code> and the password
           <span class="m code">checked in the code</span>. With a release image on a device this is not yet measured
@@ -150,7 +150,7 @@
           <span class="m code">checked in the code</span>. Choose another password. With a release image on a device this
           is not yet measured <span class="m open">open</span>.</li>
         <li>GPS position: <code>set lat &lt;latitude&gt;</code> and <code>set lon &lt;longitude&gt;</code>. Each answer is
-          <code>OK</code> <span class="m code">checked in the code</span>. Please set it, a rough one is enough (the district).</li>
+          <code>OK</code> <span class="m code">checked in the code</span>. Set it, a rough one is enough (the district).</li>
         <li>Name with nickname and version: <code>set name FUOTA nickname 1.17.1-fuota1</code>. Use your own nickname. The answer is <code>OK</code>. That way you can tell in the
           analyzer which repeater is which. The name goes out with the next advert, and <code>advert</code> sends it at
           once <span class="m code">checked in the code</span>. It stays after an update, even when the repeater then
@@ -167,7 +167,7 @@
         <li>Keep repeat on: <code>get repeat</code> shows <code>&gt; on</code>, it is on from the factory. With
           <code>set repeat on</code> you switch it back on, the answer is <code>OK - repeat is now ON</code>.</li>
       </ul>
-      <p>Several groups can test independently of each other, the more the better.</p>
+      <p>Several groups can test independently of each other.</p>
     </div>
   </section>
 
@@ -175,7 +175,7 @@
     <div lang="de" class="prose"><h2>Region setzen</h2></div>
     <div lang="en" class="prose"><h2>Setting the region</h2></div>
     <div lang="de" class="prose">
-      <p>Setze auf jedem Testrepeater die Region deines Netzes als Default. Gib in der USB-Konsole
+      <p>Eine Region heißt in MeshCore auch Flood-Scope. Ein Knoten flutet nur in seiner Region. Setze auf jedem Testrepeater die Region deines Mesh als Standard-Region. Gib in der USB-Konsole
         <code>region default hansemesh</code> ein. Der Knoten antwortet <code>default scope is now hansemesh</code>.
         Das Beispiel gilt für HanseMesh. Regionsnamen sind Freitext und je Netz verschieden. Nimm den Namen deines Netzes.
         Die Region bleibt gespeichert, auch über einen Neustart <span class="m meas">gemessen</span>.</p>
@@ -188,7 +188,7 @@
         gedrosselt, höchstens 8 in 24 Stunden.</p>
     </div>
     <div lang="en" class="prose">
-      <p>On every test repeater, set the region of your network as the default. In the USB console, enter
+      <p>A region is also called a flood scope in MeshCore. A node floods only in its region. On every test repeater, set the region of your mesh as the default region. In the USB console, enter
         <code>region default hansemesh</code>. The node answers <code>default scope is now hansemesh</code>.
         The example is for HanseMesh. Region names are free text and differ from network to network. Use the name of
         your network. The region stays stored, even across a restart <span class="m meas">measured</span>.</p>
@@ -217,25 +217,25 @@
       <p>Der Analyzer zeigt die Alpha-Kampagne <span class="m field">im Feld beobachtet</span>. Du findest sie auf der Seite
         FUOTA-Kampagnen im Tab Aktivität. Der Tab Rollout zeigt nur Repeater, die Statusmeldungen senden
         <span class="m field">im Feld beobachtet</span>. Das sind nur Knoten mit Standard-Region (Abschnitt Region setzen).</p>
-      <p>Der Weg zwischen Seed und Empfänger darf über normale MeshCore-Repeater (Stock) führen. Die Angebote laufen als
+      <p>Der Weg zwischen Anbieter und Empfänger darf über normale MeshCore-Repeater (Stock, also unverändert) führen. Die Angebote laufen als
         gewöhnliche Gruppen-Daten-Flut, die Stock-Repeater nach Region weiterleiten <span class="m code">im Code geprüft</span>.
-        Am Brett lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>.</p>
-      <p>Im ersten Test kam das geflutete Angebot über das Mesh bis zu 6 Hops weit
+        Am Testaufbau lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>.</p>
+      <p>Im ersten Test kam das geflutete Angebot über das Mesh bis zu 6 Hops (Sprüngen von Repeater zu Repeater) weit
         <span class="m field">im Feld beobachtet</span>. Ein Empfänger bekam Datenpakete über 2 Repeater hintereinander,
         von denen der Analyzer nie FUOTA-Pakete gehört hat, bis zum 15.11. 48 von 174
-        <span class="m field">im Feld beobachtet</span>. Ein ganzes Update kam auf diesem Weg noch nicht an. Viele
+        <span class="m field">im Feld beobachtet</span>. Ein ganzes Update kam auf diesem Weg noch nicht an.
         Anfragen gingen auf dem Rückweg verloren. Von 73 gehörten Pfad-Anfragen kamen 35 beim letzten Repeater vor dem
         Anbieter an <span class="m field">im Feld beobachtet</span>.</p>
-      <p>Deshalb geht die Anfrage zuerst auf dem Rückweg des Angebots zum Anbieter. Bleibt sie zweimal ohne Antwort,
+      <p>Deshalb geht die Anfrage zuerst auf dem Rückweg des Angebots zum Anbieter. Bleibt sie 2-mal ohne Antwort,
         schickt der Empfänger sie einmal als Flut. Der Anbieter meldet ihm den Weg zurück, den die Flut genommen hat.
         Danach fragt der Empfänger auf diesem Weg. Das steht im Entwicklungszweig
         <span class="m code">im Code geprüft</span>. Ob 1.17.1-fuota1 es schon enthält, ist
         <span class="m open">offen</span>. Melde weiter, ob Stock-Repeater dazwischen lagen.</p>
       <p>Zum Probestart: Ein frisch aktualisierter Knoten bestätigt die neue Version erst, wenn er ein Funkpaket hört und
         selbst eins sendet. Dafür hat er je nach Knoten zwischen 15 Minuten und 6 Stunden Zeit. Hört er bis dahin nichts,
-        startet er neu. Nach drei solchen Starts kehrt er zur alten Version zurück. Einen neuen Versuch gibt es frühestens
+        startet er neu. Nach 3 Probestarts ohne Bestätigung läuft wieder die alte Firmware. Einen neuen Versuch gibt es frühestens
         nach einem Tag <span class="m code">im Code geprüft</span>. Teste deshalb dort, wo dein Knoten andere Knoten hört.</p>
-      <p>Zur Dauer: Der Release-Takt hat 0,3 % Sendeanteil. Mit ihm brauchte ein Knoten 12,6 h für 174 Fragmente
+      <p>Zur Dauer: Der Release-Takt begrenzt die Sendezeit (Airtime) auf 0,3 %. Damit brauchte ein Knoten 12,6 h für 174 Datenpakete
         <span class="m meas">gemessen</span>. Das war ein einzelner Lauf am Testaufbau.</p>
     </div>
     <div lang="en" class="prose">
@@ -251,13 +251,13 @@
       <p>The analyzer shows the alpha campaign <span class="m field">observed in the field</span>. You find it on the FUOTA campaigns
         page, in the Activity tab. The Rollout tab shows only repeaters that send status messages
         <span class="m field">observed in the field</span>. Those are only nodes with a default region (section Setting the region).</p>
-      <p>The path between seed and receiver may run through normal MeshCore repeaters (stock). The offers travel as
+      <p>The path between provider and receiver may run through normal MeshCore repeaters (stock, that is unchanged). The offers travel as
         ordinary group data floods, which stock repeaters forward by region <span class="m code">checked in the code</span>.
         On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>.</p>
-      <p>In the first test the flooded offer travelled up to 6 hops through the mesh
-        <span class="m field">observed in the field</span>. One receiver got data packets over 2 repeaters in a row from
-        which the analyzer never heard FUOTA packets, 48 of 174 by 15 November
-        <span class="m field">observed in the field</span>. No complete update has arrived this way yet. Many requests
+      <p>In the first test the flooded offer travelled up to 6 hops (jumps from repeater to repeater) through the mesh
+        <span class="m field">observed in the field</span>. One receiver got data packets over 2 repeaters in a row. The
+        analyzer never heard FUOTA packets from them, 48 of 174 by 15 November
+        <span class="m field">observed in the field</span>. No complete update has arrived this way yet. Requests
         were lost on the way back. Of 73 heard path requests, 35 reached the last repeater before the provider
         <span class="m field">observed in the field</span>.</p>
       <p>So the request first goes back to the provider along the path the offer took. If it stays unanswered twice,
@@ -267,29 +267,29 @@
         <span class="m open">open</span>. Keep reporting whether stock repeaters lay in between.</p>
       <p>On the test boot. A freshly updated node confirms the new version only after it hears a radio packet and sends
         one. Depending on the node, it has between 15 minutes and 6 hours for that. If it hears nothing by then,
-        it restarts. After three such starts it returns to the old version. It tries again after one day at the earliest <span class="m code">checked in the code</span>.
+        it restarts. After 3 test boots without confirmation the old firmware runs again. It tries again after one day at the earliest <span class="m code">checked in the code</span>.
         So test where your node hears other nodes.</p>
-      <p>On the duration: the release pace has a 0.3 % send share. At that pace a node needed 12.6 h for 174 fragments
+      <p>On the duration: the release pace limits airtime to 0.3 %. At that pace a node needed 12.6 h for 174 data packets
         <span class="m meas">measured</span>. That was a single run on the bench.</p>
     </div>
   </section>
 
   <section id="alpha-sieben-tage">
-    <div lang="de" class="prose"><h2>Sieben Tage Wartezeit und „sofort“</h2></div>
-    <div lang="en" class="prose"><h2>Seven days of delay and “now”</h2></div>
+    <div lang="de" class="prose"><h2>7 Tage Wartezeit und „sofort“</h2></div>
+    <div lang="en" class="prose"><h2>7 days of delay and “now”</h2></div>
     <div lang="de" class="prose">
       <p>Ein Release-Image installiert ein fertig geholtes Update nicht sofort. Ab Werk steht <code>auto delay</code>: Der Knoten
         wartet 7 Tage und installiert das Update danach. In dieser Woche lässt sich ein Update noch
         zurückziehen. Der Release-Build lässt sich nicht mit kürzerer Wartezeit bauen <span class="m code">im Code geprüft</span>.</p>
       <p>Wer nicht warten will, gibt am Knoten in der USB-Konsole <code>fuota auto now</code> ein. Der Knoten installiert dann,
-        sobald das Update vollständig da ist. Wir bitten dich, das am Anfang zu setzen.</p>
+        sobald das Update vollständig da ist. Setze das am Anfang.</p>
     </div>
     <div lang="en" class="prose">
       <p>A release image does not install a fetched update at once. The factory setting is <code>auto delay</code>: the node
         waits 7 days and installs the update afterwards. During that week an update can still be
         withdrawn. The release build cannot be built with a shorter delay <span class="m code">checked in the code</span>.</p>
       <p>If you do not want to wait, type <code>fuota auto now</code> in the USB console of the node. The node then installs
-        as soon as the update is complete. We ask you to set this at the start.</p>
+        as soon as the update is complete. Set this at the start.</p>
     </div>
   </section>
 
@@ -309,7 +309,7 @@
         <li>Zeit bis zum Update: wann es fertig war, wann <code>testing</code> und <code>confirmed</code> kamen</li>
         <li>ob du <code>auto now</code>, <code>fuota apply 3</code> oder <code>auto delay</code> genutzt hast</li>
         <li>Auszug aus dem Analyzer oder dem Log (<code>fuota radio</code>, <code>fuota status</code>)</li>
-        <li>ob Stock-Repeater zwischen Seed und Empfänger lagen</li>
+        <li>ob Stock-Repeater zwischen Anbieter und Empfänger lagen</li>
         <li>alles Auffällige: Neustart ohne dein Zutun, Rückfall auf 1.17.1, Meldungen mit <code>ERR</code>, Strom weg</li>
       </ul>
       <p>Wenn es klappt, lässt du 1.17.1-fuota1 auf den Repeatern. Künftige Updates sollen auf demselben Weg per Funk kommen.
@@ -329,7 +329,7 @@
         <li>time to the update: when it was complete, when <code>testing</code> and <code>confirmed</code> came</li>
         <li>whether you used <code>auto now</code>, <code>fuota apply 3</code> or <code>auto delay</code></li>
         <li>an excerpt from the analyzer or the log (<code>fuota radio</code>, <code>fuota status</code>)</li>
-        <li>whether stock repeaters lay between seed and receiver</li>
+        <li>whether stock repeaters lay between provider and receiver</li>
         <li>anything unusual: a restart without your doing, a fall back to 1.17.1, messages with <code>ERR</code>, power loss</li>
       </ul>
       <p>If it works, you keep 1.17.1-fuota1 on the repeaters. Future updates are meant to arrive the same way over the air.
@@ -345,12 +345,10 @@
       <p>Nimm die Datei mit deinem Board im Namen und vergleiche die Prüfsumme mit <code>SHA256SUMS</code> aus dem
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">Release v1.17.1-fuota1</a>.
         Das SoftDevice im Dateinamen muss zur Zeile <code>SoftDevice:</code> in <code>INFO_UF2.TXT</code> deines Geräts passen.
-        Zum Flashen drückst du zweimal Reset und ziehst die Datei auf das Laufwerk. Ohne USB-Zugang geht es per Bluetooth
+        Zum Installieren per USB drückst du 2-mal Reset und ziehst die Datei auf das Laufwerk. Ohne USB-Zugang geht es per Bluetooth
         (Abschnitt „Ohne USB“ unten).</p>
-      <p>Das Release hat 18 Basispakete, eins je Board. Am Brett lief die Kette mit FakeTec und P1. Alle übrigen Boards
-        sind gebaut, aber nicht am Brett getestet <span class="m open">offen</span>.</p>
-      <p>Genau diese signierten Release-Dateien sind noch auf keinem Gerät gelaufen. Die Brettläufe liefen mit dem
-        Test-Image. Dieser Release ist selbst der erste Test <span class="m open">offen</span>.</p>
+      <p>Das Release hat 18 Basispakete, eins je Board. Am Testaufbau lief die Kette mit FakeTec und P1. Alle übrigen Boards
+        sind gebaut, aber nicht am Testaufbau getestet <span class="m open">offen</span>.</p>
       <p>Die Pakete des ersten Tests hatten keinen Display-Treiber. Ein vorhandenes Display, zum Beispiel am Heltec T114,
         zeigte nichts an. Das war so vorgesehen <span class="m code">im Code geprüft</span>. Für 1.17.1-fuota1 ist das
         nicht neu geprüft <span class="m open">offen</span>.</p>
@@ -362,12 +360,10 @@
       <p>Take the file with your board in its name and compare its checksum with <code>SHA256SUMS</code> from the
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">release v1.17.1-fuota1</a>.
         The SoftDevice in the file name must match the <code>SoftDevice:</code> line in <code>INFO_UF2.TXT</code> of your device.
-        To flash, press reset twice and drag the file onto the drive. Without USB access it works over Bluetooth
+        To install over USB, press reset twice and drag the file onto the drive. Without USB access it works over Bluetooth
         (section “Without USB” below).</p>
       <p>The release has 18 base packages, one per board. On the bench the chain ran with a FakeTec and a P1. All other
         boards are built but not tested on the bench <span class="m open">open</span>.</p>
-      <p>These exact signed release files have not yet run on any device. The bench runs used the test image. This
-        release is itself the first test <span class="m open">open</span>.</p>
       <p>The packages of the first test had no display driver. A display that is present, for example on the Heltec
         T114, showed nothing. That was intended <span class="m code">checked in the code</span>. For 1.17.1-fuota1 this
         is not newly checked <span class="m open">open</span>.</p>
@@ -431,7 +427,7 @@
         per Bluetooth auf das Gerät. Das Release führt 18 ZIP-Dateien.</p>
       <p>Die ZIP-Dateien sind aus den UF2 abgeleitet und gegen sie geprüft. Per Bluetooth am Gerät sind sie nicht
         verifiziert <span class="m open">offen</span>. Wer USB hat, nimmt die UF2.</p>
-      <p>Mit den ZIP-Dateien des ersten Tests liefen zwei Boards am Gerät, je ein Lauf <span class="m meas">gemessen</span>.
+      <p>Mit den ZIP-Dateien des ersten Tests liefen 2 Boards am Gerät, je ein Lauf <span class="m meas">gemessen</span>.
         Es sind der Seeed SenseCAP Solar P1 (S140 7.3.0) und ein FakeTec (S140 6.1.1, Bootloader
         <code>0.9.2-OTAFIX2.3-BP1.4</code> laut <code>INFO_UF2.TXT</code>).</p>
       <p>Mit einem älteren Bootloader (OTAFIX 1.x,
@@ -440,7 +436,7 @@
         per Bluetooth zurück. Die Ursache ist offen. Der Name passt zu OTAFIX 1.x, die Version selbst ist nicht gemessen.
         Mit dem Handy ist der Weg ungetestet <span class="m open">offen</span>. Die übrigen Boards liefen nie per
         Bluetooth.</p>
-      <p>Hast du USB, flashe lieber die UF2. Lies vor dem Update die Zeile in <code>INFO_UF2.TXT</code>, die mit
+      <p>Hast du USB, installiere lieber die UF2. Lies vor dem Update die Zeile in <code>INFO_UF2.TXT</code>, die mit
         <code>UF2 Bootloader</code> beginnt. Steht dort OTAFIX 1.x, nimm die UF2.</p>
       <ol>
         <li>Nimm den Namen der UF2 ohne <code>.uf2</code>, dazu <code>-ota.zip</code>. Die ZIP-Dateien liegen im
@@ -471,7 +467,7 @@
         device over Bluetooth. The release carries 18 ZIP files.</p>
       <p>The ZIP files are derived from the UF2 files and checked against them. They are not verified on a device over
         Bluetooth <span class="m open">open</span>. If you have USB, use the UF2.</p>
-      <p>With the ZIP files of the first test, two boards have run on a device, one run each
+      <p>With the ZIP files of the first test, 2 boards have run on a device, one run each
         <span class="m meas">measured</span>. They are the Seeed SenseCAP Solar P1 (S140 7.3.0) and a FakeTec (S140 6.1.1,
         bootloader <code>0.9.2-OTAFIX2.3-BP1.4</code> according to <code>INFO_UF2.TXT</code>).</p>
       <p>With an older bootloader (OTAFIX 1.x, DFU name
@@ -479,7 +475,7 @@
         <code>AdaDFU</code> lost packets at a weak signal. After the activation it did not come back over USB or
         Bluetooth. The cause is open. The name fits OTAFIX 1.x, the version itself is not measured. From a phone the way
         is untested <span class="m open">open</span>. The remaining boards never ran over Bluetooth.</p>
-      <p>If you have USB, flash the UF2 instead. Before the update, read the line in <code>INFO_UF2.TXT</code> that starts
+      <p>If you have USB, install the UF2 instead. Before the update, read the line in <code>INFO_UF2.TXT</code> that starts
         with <code>UF2 Bootloader</code>. If it shows OTAFIX 1.x, use the UF2.</p>
       <ol>
         <li>Take the name of the UF2 without <code>.uf2</code>, plus <code>-ota.zip</code>. The ZIP files are in the

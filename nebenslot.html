@@ -60,8 +60,8 @@
   <header class="hero">
     <div lang="de">
       <h1>Updates in Stunden statt in einem Tag</h1>
-      <p class="lede">Der Nebenslot-Burst schickt die Datenpakete auf einem freien Slot neben dem Mesh-Kanal 869,618 MHz.
-        Ein Slot ist ein Abschnitt von 62,5 kHz, auf dem Mesh-Kanal bleiben nur kurze Ansagen. Ein mittleres Release
+      <p class="lede">Der Nebenslot-Burst schickt einen Block Datenpakete am Stück. Er nutzt einen freien Slot neben dem Mesh-Kanal 869,618 MHz.
+        Ein Slot ist ein Abschnitt von 62,5 kHz. Auf dem Mesh-Kanal bleiben nur kurze Ansagen. Ein mittleres Release
         ist so in Hamburg nach 1,6 bis 2,7 h überall, zum Start im Feld nach 4,9 bis 6,8 h <span class="m calc">berechnet</span>.</p>
       <p><strong>Stand:</strong> Der Nebenslot-Burst läuft am Testaufbau mit bis zu 3 Knoten <span class="m meas">gemessen</span>.
         Er läuft auch neben älteren FUOTA-Versionen <span class="m meas">gemessen</span>. Die Alpha-Pakete 1.17.1-b2 und 1.18.0-b3 enthalten ihn mit 2 % Slot-Airtime je Stunde <span class="m code">im Code geprüft</span>. Offen sind Messungen im Feld und die Punkte unter
@@ -69,7 +69,7 @@
     </div>
     <div lang="en">
       <h1>Updates in hours instead of a day</h1>
-      <p class="lede">The side slot burst sends data packets on a free slot beside the mesh channel. A slot is 62.5 kHz wide.
+      <p class="lede">The side slot burst sends a block of data packets in a row. It uses a free slot beside the mesh channel. A slot is 62.5 kHz wide.
         The 869.618 MHz mesh channel keeps only short announcements. A medium
         release then reaches all of Hamburg in 1.6 to 2.7 h. At the field start it takes 4.9 to 6.8 h <span class="m calc">calculated</span>.</p>
       <p><strong>Status:</strong> the side slot burst runs on the bench with up to 3 nodes <span class="m meas">measured</span>.
@@ -87,7 +87,7 @@
         27 h, mit CR 4/5 <span class="m calc">berechnet</span>. Mehr Airtime auf demselben Kanal geht nicht. Bei 10 % würden
         Update-Daten im dichtesten Zehntel 60 % des Kanals belegen <span class="m calc">berechnet</span>.</p></div>
       <div class="kv"><h3>Prinzip</h3><p>Der Mesh-Kanal liegt in Band 54 (869,4 bis 869,65 MHz).
-        Die BNetzA führt Band 54 in der <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, Tabelle 2, Nr. 54. In <a href="https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf">ETSI EN 300 220-2 V3.2.1</a>,
+        Die Bundesnetzagentur (BNetzA) führt Band 54 in der <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, Tabelle 2, Nr. 54. In <a href="https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf">ETSI EN 300 220-2 V3.2.1</a>,
         Anhang B, heißt das Band Teilband P. Das Band hat 4 Slots mit je 62,5 kHz. Der Mesh-Kanal belegt einen davon. Ein
         Anbieter sagt auf dem Mesh-Kanal einen Burst an: einen Block Datenpakete am Stück. Jeder direkte Nachbar, dem
         der Block fehlt, wechselt mit auf einen freien Slot. Danach sind alle zurück auf dem Mesh-Kanal.</p></div>
@@ -104,7 +104,7 @@
         <span class="m code">checked in the code</span>. That spares the channel. But a medium release takes 27 h in
         Hamburg at CR 4/5 <span class="m calc">calculated</span>. More airtime on the same channel does not work. At 10 %, updates would fill 60 % of the channel in the densest tenth <span class="m calc">calculated</span>.</p></div>
       <div class="kv"><h3>Principle</h3><p>The mesh channel sits in band 54 (869.4 to 869.65 MHz).
-        BNetzA lists band 54 in <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, table 2, no. 54. In <a href="https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf">ETSI EN 300 220-2 V3.2.1</a>,
+        The Bundesnetzagentur (BNetzA) lists band 54 in <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, table 2, no. 54. In <a href="https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf">ETSI EN 300 220-2 V3.2.1</a>,
         annex B, the band is called sub-band P. The band has 4 slots of 62.5 kHz each. The mesh channel uses one of them. A
         provider announces a burst on the mesh channel. A burst is one block of data packets in a row. Every direct neighbour that
         lacks the block switches to a free slot along with it. Then everyone returns to the mesh channel.</p></div>
@@ -148,7 +148,7 @@
           heute an. Danach wartet jeder noch zufällig bis zu 2 Datenpaket-Zeiten, bevor er wartende Mesh-Pakete sendet
           (<code>src/helpers/fuota/FuotaNRF52.cpp, gateHold()</code>, <code>src/helpers/fuota/FuotaNRF52.cpp, burstSendNext()</code>) <span class="m code">im Code geprüft</span>.</p>
           <p>Der Mitwechsler wartet
-          zusätzlich, bis der Anbieter zurück ist. Am Testaufbau stießen ohne diese Wartezeit nach 6 von 6 Bursts zwei
+          zusätzlich, bis der Anbieter zurück ist. Adverts sind die Ich-bin-hier-Meldungen der Knoten. Am Testaufbau stießen ohne diese Wartezeit nach 6 von 6 Bursts zwei
           Adverts zusammen <span class="m meas">gemessen</span>. Mit ihr hörten alle 3 Knoten beide Adverts, in 6 von 6 Bursts (21. Oktober 2026; am 27. Oktober 2026 6 von 6 erst im zweiten Lauf, am 3. November 2026 5 von 6, am 4. November 2026 wieder 6 von 6) <span class="m meas">gemessen</span>. Am Testaufbau hörte der Anbieter danach die nächsten Anfragen wieder auf dem Mesh-Kanal
           <span class="m meas">gemessen</span>.</p></li>
       </ol>
@@ -185,7 +185,7 @@
           missing, as today. Then each node waits a random time of up to 2 data packet times before it sends queued
           mesh packets (<code>src/helpers/fuota/FuotaNRF52.cpp, gateHold()</code>, <code>src/helpers/fuota/FuotaNRF52.cpp, burstSendNext()</code>) <span class="m code">checked in the code</span>.</p>
           <p>The follower also
-          waits until the provider is back. Without this wait, two adverts collided after 6 of 6 bursts on the bench
+          waits until the provider is back. Adverts are the I-am-here calls of nodes. Without this wait, two adverts collided after 6 of 6 bursts on the bench
           <span class="m meas">measured</span>. With it, all 3 nodes heard both adverts in 6 of 6 bursts (21 October 2026; on 27 October 2026 6 of 6 only in the second run, on 3 November 2026 5 of 6, on 4 November 2026 6 of 6 again) <span class="m meas">measured</span>. On the bench the provider heard the next requests on the mesh channel again
           <span class="m meas">measured</span>.</p></li>
       </ol>
@@ -273,7 +273,7 @@
     <div lang="de" class="prose">
       <h2>Band 54 und seine Slots</h2>
       <p>Der Mesh-Kanal in Hamburg liegt bei 869,618 MHz, in Band 54. Dort darf jedes Gerät je Stunde bis zu 10 % der Zeit im Band senden.
-        Das regelt die BNetzA in der <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, Tabelle 2, Nr. 54. Der Mesh-Verkehr zählt mit. FUOTA nutzt darum höchstens 5 %, zusammen mit dem
+        Das regelt die Bundesnetzagentur in der <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, Tabelle 2, Nr. 54. Der Mesh-Verkehr zählt mit. FUOTA nutzt darum höchstens 5 %, zusammen mit dem
         Mesh höchstens 9 % (<code>src/helpers/fuota/FuotaNRF52.cpp, FUOTA_SLOT_PERMILLE, FUOTA_BAND_PERMILLE</code>, Release-Wächter <code>src/helpers/fuota/FuotaNRF52.cpp, #ifdef FUOTA_RELEASE</code>) <span class="m code">im Code geprüft</span>. Zum Start im
         Feld sind es 2 % (<code>variants/fuota_common/platformio.ini, FUOTA_SLOT_PERMILLE=20</code>) <span class="m code">im Code geprüft</span>. In der ersten Stunde nach einem
         Neustart sendet ein Knoten keinen Burst <span class="m code">im Code geprüft</span>.</p>
@@ -314,7 +314,7 @@
     <div lang="en" class="prose">
       <h2>Band 54 and its slots</h2>
       <p>The mesh channel in Hamburg sits at 869.618 MHz, in band 54. There every device may send up to 10 % of the
-        time per hour. That holds for the whole band. The BNetzA sets this in <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, table 2, no. 54. Mesh traffic counts too. So FUOTA uses 5 % at most, 9 % at most together with the mesh
+        time per hour. That holds for the whole band. The Bundesnetzagentur sets this in <a href="https://www.bundesnetzagentur.de/DE/Fachthemen/Telekommunikation/Frequenzen/Allgemeinzuteilungen/_DL/vfg91_2025.pdf">Vfg. 91/2025</a>, table 2, no. 54. Mesh traffic counts too. So FUOTA uses 5 % at most, 9 % at most together with the mesh
         (<code>src/helpers/fuota/FuotaNRF52.cpp, FUOTA_SLOT_PERMILLE, FUOTA_BAND_PERMILLE</code>, release guards <code>src/helpers/fuota/FuotaNRF52.cpp, #ifdef FUOTA_RELEASE</code>) <span class="m code">checked in the code</span>. The field start uses 2 %
         (<code>variants/fuota_common/platformio.ini, FUOTA_SLOT_PERMILLE=20</code>) <span class="m code">checked in the code</span>. In the first hour after a reboot a node sends no
         burst <span class="m code">checked in the code</span>.</p>
@@ -363,7 +363,7 @@
         <li>Je mittlerem Release hört ein Knoten 5 bis 7 min nichts <span class="m calc">berechnet</span>. Nach jedem Burst pausiert der Anbieter.
           Ein Nachbar ist darum je Anbieter höchstens 21 s am Stück taub <span class="m calc">berechnet</span>. Sind mehrere Anbieter in
           Reichweite, greift die Grenze je Stunde. Sie deckelt die Zeit auf dem Slot insgesamt <span class="m code">im Code geprüft</span>.</li>
-        <li>Fluten finden fast immer einen anderen Weg. Bei 5 % bleiben 97,5 % der Knotenpaare verbunden, die gerade
+        <li>Fluten weichen auf andere Wege aus. Bei 5 % bleiben 97,5 % der Knotenpaare verbunden, die gerade
           hören <span class="m calc">berechnet</span>.</li>
         <li>Eine Direktnachricht über 2 Repeater kommt ohne Wiederholung in 90,0 % der Fälle durch
           <span class="m calc">berechnet</span>. Ohne Nebenslot stören Update-Daten auf dem Mesh-Kanal etwa genauso oft. Ein
@@ -381,7 +381,7 @@
         <li>Per medium release a node hears nothing for 5 to 7 min <span class="m calc">calculated</span>. After each burst the provider pauses. So a
           neighbour is deaf for at most 21 s per provider at a time <span class="m calc">calculated</span>. With several providers in range
           the limit per hour applies. It caps the total time on the slot <span class="m code">checked in the code</span>.</li>
-        <li>Floods almost always find another way. At 5 %, 97.5 % of the pairs of listening nodes stay connected
+        <li>Floods route around such a node. At 5 %, 97.5 % of the pairs of listening nodes stay connected
           <span class="m calc">calculated</span>.</li>
         <li>A direct message over 2 repeaters gets through without a retry in 90.0 % of cases
           <span class="m calc">calculated</span>. Without the side slot, update data on the mesh channel disturbs about as often. A
@@ -432,7 +432,7 @@
   <section id="nebenslot-angriffe">
     <div lang="de" class="prose">
       <h2>Angriffe</h2>
-      <p>Ohne Schutz könnte ein einziges gefälschtes Paket alle holenden Nachbarn vom Mesh-Kanal holen. Sie wären
+      <p>Ohne Schutz könnte ein einziges gefälschtes Paket alle Nachbarn, die gerade Datenpakete holen, vom Mesh-Kanal abziehen. Sie wären
         dann rund 20 s weg <span class="m calc">berechnet</span>. Darum gilt für jeden Wechsel, am Testaufbau mit einem dritten Knoten als Angreifer
         geprüft:</p>
       <ul>
@@ -446,7 +446,7 @@
         <li>Ein Knoten wechselt je Stunde höchstens 3-mal so lange mit, wie sein Budget erlaubt
           (<code>src/helpers/fuota/FuotaNRF52.cpp, followRoom()</code>) <span class="m code">im Code geprüft</span>. Ist die Grenze erreicht, holt er auf dem Mesh-Kanal <span class="m meas">gemessen</span>. Mit 5 % sind das
           9 min je Stunde <span class="m calc">berechnet</span>. Zum Start mit 2 % sind es 3,6 min <span class="m calc">berechnet</span>.</li>
-        <li>Eine Anfrage an „wer es hat" löst keinen Burst aus <span class="m meas">gemessen</span>.</li>
+        <li>Eine Anfrage an „wer es hat“ löst keinen Burst aus <span class="m meas">gemessen</span>.</li>
         <li>Ein Knoten wechselt nur bei Anbietern mit, deren Schlüssel er seit 6 h kennt <span class="m code">im Code geprüft</span>. Dafür
           merkt er sich bis zu 32 Anbieter in einer Vertrauensliste. Höchstens 8 davon kennt er kürzer als 6 h
           (<code>src/helpers/fuota/FuotaNRF52.cpp, FUOTA_TRUST_N</code>, <code>src/helpers/fuota/FuotaNRF52.cpp, trustSeen()</code>) <span class="m code">im Code geprüft</span>. Am Testaufbau galten 10 min statt 6 h. Bei einem neuen
@@ -455,7 +455,7 @@
           Nach 2 nutzlosen Bursts in Folge beginnen die 6 h des Anbieters neu (<code>src/helpers/fuota/FuotaNRF52.cpp, backOff()</code>)
           <span class="m code">im Code geprüft</span>. Am Testaufbau galten 60 s statt 6 h. Der Knoten wechselte danach erst nach 60 s wieder
           mit <span class="m meas">gemessen</span>.</li>
-        <li>In Format 4 hat jedes Datenpaket einen Prüfwert, abgesichert durch das signierte Manifest. Der Knoten prüft
+        <li>Im Manifest-Format 4 hat jedes Datenpaket einen Prüfwert. Das signierte Manifest sichert ihn ab. Der Knoten prüft
           jedes beim Empfang (<code>src/helpers/fuota/FuotaNRF52.cpp, fragOk()</code>,
           <code>src/helpers/fuota/FuotaNRF52.cpp, onData()</code>) <span class="m code">im Code geprüft</span>. Passt ein Datenpaket im Burst nicht dazu, kehrt der Knoten sofort zurück
           <span class="m meas">gemessen</span>. Auf dem Mesh-Kanal verwirft er ein solches Datenpaket <span class="m meas">gemessen</span>.</li>
@@ -466,7 +466,7 @@
           <code>src/helpers/fuota/FuotaNRF52.cpp, onData()</code>) <span class="m code">im Code geprüft</span>. Am Testaufbau fragte der Knoten
           dann den anderen Anbieter <span class="m meas">gemessen</span>. Die Kennung des Anbieters im Datenpaket ist nicht signiert <span class="m code">im Code geprüft</span>.
           Ein Angreifer kann so einen ehrlichen Anbieter meiden lassen. Waren am Testaufbau beide gemieden, holte
-          der Knoten über „wer es hat" weiter <span class="m meas">gemessen</span>.</li>
+          der Knoten über „wer es hat“ weiter <span class="m meas">gemessen</span>.</li>
       </ul>
       <p>Was bleibt: Ein Angreifer kann Nachbarn zeitweise vom Mesh-Kanal fernhalten. Mit vielen Schlüsseln, aber ohne
         echte Daten, sind es 0,38 bis 0,61 % je Stunde <span class="m calc">berechnet</span>. Sendet er echte Datenpakete einzeln,
@@ -491,7 +491,7 @@
         <li>Per hour a node follows bursts for at most 3 times what its budget allows (<code>src/helpers/fuota/FuotaNRF52.cpp, followRoom()</code>)
           <span class="m code">checked in the code</span>. Once the limit is reached, it pulls on the mesh channel <span class="m meas">measured</span>. At 5 % that is 9 min per hour <span class="m calc">calculated</span>. At the
           2 % field start it is 3.6 min <span class="m calc">calculated</span>.</li>
-        <li>A request to "whoever has it" starts no burst <span class="m meas">measured</span>.</li>
+        <li>A request to “whoever has it” starts no burst <span class="m meas">measured</span>.</li>
         <li>A node follows only providers whose key it has known for 6 h <span class="m code">checked in the code</span>. For this it
           keeps up to 32 providers in a trust list. It has known at most 8 of them for less than 6 h
           (<code>src/helpers/fuota/FuotaNRF52.cpp, FUOTA_TRUST_N</code>, <code>src/helpers/fuota/FuotaNRF52.cpp, trustSeen()</code>) <span class="m code">checked in the code</span>. On the bench we used 10 min instead of 6 h. The node
@@ -500,7 +500,7 @@
           useless bursts in a row, that provider's 6 h restart (<code>src/helpers/fuota/FuotaNRF52.cpp, backOff()</code>)
           <span class="m code">checked in the code</span>. On the bench we used 60 s instead of 6 h. The node then followed again only after
           60 s <span class="m meas">measured</span>.</li>
-        <li>In format 4 every data packet has a check value, secured by the signed manifest. The node checks
+        <li>In manifest format 4 every data packet has a check value. The signed manifest secures it. The node checks
           each one on arrival (<code>src/helpers/fuota/FuotaNRF52.cpp, fragOk()</code>,
           <code>src/helpers/fuota/FuotaNRF52.cpp, onData()</code>) <span class="m code">checked in the code</span>. If a burst data packet does not match it, the node returns at once
           <span class="m meas">measured</span>. On the mesh channel it drops such a data packet <span class="m meas">measured</span>.</li>
@@ -510,7 +510,7 @@
           (<code>src/helpers/fuota/FuotaNRF52.cpp, avoided(), avoidBad(), avoidGood()</code>,
           <code>src/helpers/fuota/FuotaNRF52.cpp, onData()</code>) <span class="m code">checked in the code</span>. On the bench the node then asked the other provider <span class="m meas">measured</span>. The
           provider identifier in data packets is not signed <span class="m code">checked in the code</span>. So an attacker can make nodes avoid an
-          honest provider. With both avoided on the bench, the node pulled from "whoever has it"
+          honest provider. With both avoided on the bench, the node pulled from “whoever has it”
           <span class="m meas">measured</span>.</li>
       </ul>
       <p>What remains: an attacker can keep neighbours off the mesh channel for a while. Many keys without real data cost
@@ -690,8 +690,8 @@
   </main>
   <p class="next"><a href="sicherheit.html"><span lang="de">Weiter: Sicherheit</span><span lang="en">Next: Safety</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Seit dem 11. November 2026 läuft ein Alpha-Test mit 1.17.1-b2 und 1.18.0-b3. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. An alpha test with 1.17.1-b2 and 1.18.0-b3 has been running since 11 November 2026. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, Quellcode folgt. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, source code follows later. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>
