@@ -94,8 +94,9 @@
         <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
       </ol>
       <p>Richte jeden Testrepeater ein wie jeden anderen Repeater. Tippe die Befehle in der USB-Konsole.</p>
+      <p><strong>Wichtig für einen koordinierten Test:</strong> Gib jedem Repeater einen sprechenden Namen nach dem Muster <code>FUOTA &lt;Spitzname&gt; 1.17.1-fuota1</code>. Setze außerdem eine grobe GPS-Position und ein Admin-Passwort. So zeigen Analyzer und Karte, wer welchen Repeater betreibt und welche Version er trägt. Die Gruppe kann sich bei Fragen auch gezielt auf einen Repeater beziehen.</p>
       <ul>
-        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>, höchstens 15 Zeichen. Die Pakete sind
+        <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>, höchstens 15 Zeichen. Bitte setzen. Die Pakete sind
           Release-Images und haben ab Werk keines. Für die USB-Befehle brauchst du es nicht, es gilt für den
           Admin-Zugang aus der Ferne. Der Knoten antwortet mit <code>password now:</code> und dem Passwort
           <span class="m code">im Code geprüft</span>. Mit einem Release-Image am Gerät ist das noch nicht gemessen
@@ -107,8 +108,8 @@
           <span class="m code">im Code geprüft</span>. Wähle ein anderes Passwort. Mit einem Release-Image am Gerät ist
           das noch nicht gemessen <span class="m open">offen</span>.</li>
         <li>GPS-Position: <code>set lat &lt;Breite&gt;</code> und <code>set lon &lt;Länge&gt;</code>. Die Antwort ist
-          jeweils <code>OK</code> <span class="m code">im Code geprüft</span>.</li>
-        <li>Name mit der Version: <code>set name FUOTA-Test 1.17</code>. Die Antwort ist <code>OK</code>. So siehst du im Analyzer,
+          jeweils <code>OK</code> <span class="m code">im Code geprüft</span>. Bitte setzen, grob genügt (der Stadtteil).</li>
+        <li>Name mit Spitzname und Version: <code>set name FUOTA Spitzname 1.17.1-fuota1</code>. Setze deinen Spitznamen ein. Die Antwort ist <code>OK</code>. So siehst du im Analyzer,
           welcher Repeater welcher ist. Der Name geht mit dem nächsten Advert raus, <code>advert</code> sendet ihn
           sofort <span class="m code">im Code geprüft</span>. Er bleibt nach einem Update stehen, auch wenn der Repeater
           dann 1.18 trägt <span class="m code">im Code geprüft</span>. Für ein Update per Funk ist das am Gerät noch
@@ -135,8 +136,9 @@
         <li>You watch the state and report what happened.</li>
       </ol>
       <p>Set up every test repeater like any other repeater. Type the commands in the USB console.</p>
+      <p><strong>Important for a coordinated test:</strong> give every repeater a meaningful name like <code>FUOTA &lt;nickname&gt; 1.17.1-fuota1</code>. Also set a rough GPS position and an admin password. Then the analyzer and the map show who runs which repeater and which version it carries. The group can also point to one repeater when questions come up.</p>
       <ul>
-        <li>Admin password: <code>password &lt;password&gt;</code>, 15 characters at most. The packages are
+        <li>Admin password: <code>password &lt;password&gt;</code>, 15 characters at most. Please set one. The packages are
           release images and have none from the factory. You do not need it for the USB commands, it is for admin access
           from afar. The node answers with <code>password now:</code> and the password
           <span class="m code">checked in the code</span>. With a release image on a device this is not yet measured
@@ -148,8 +150,8 @@
           <span class="m code">checked in the code</span>. Choose another password. With a release image on a device this
           is not yet measured <span class="m open">open</span>.</li>
         <li>GPS position: <code>set lat &lt;latitude&gt;</code> and <code>set lon &lt;longitude&gt;</code>. Each answer is
-          <code>OK</code> <span class="m code">checked in the code</span>.</li>
-        <li>Name with the version: <code>set name FUOTA-Test 1.17</code>. The answer is <code>OK</code>. That way you can tell in the
+          <code>OK</code> <span class="m code">checked in the code</span>. Please set it, a rough one is enough (the district).</li>
+        <li>Name with nickname and version: <code>set name FUOTA nickname 1.17.1-fuota1</code>. Use your own nickname. The answer is <code>OK</code>. That way you can tell in the
           analyzer which repeater is which. The name goes out with the next advert, and <code>advert</code> sends it at
           once <span class="m code">checked in the code</span>. It stays after an update, even when the repeater then
           runs 1.18 <span class="m code">checked in the code</span>. For an update over the air, this is not yet measured
