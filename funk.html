@@ -690,6 +690,75 @@
         Region und <code>loop.detect</code>.</p>
       <p>Am Brett ist nur der Fall mit 0 Hops gemessen. Ab 1 Hop sind die Grenzen nur im Host-Test belegt. In einem echten Mesh mit
         mehreren Repeater-Hops hat sie niemand gemessen <span class="m open">offen</span>.</p>
+      <h3>Kanalfilter für Gruppen-Nachrichten</h3>
+      <p>Der Kanalfilter begrenzt, wie weit Fluten gelisteter Gruppenkanäle laufen. Er entscheidet nur, ob der Repeater mit FUOTA eine Flut weitergibt.
+        Betroffen sind Fluten der Typen <code>grptxt</code> und <code>grpdata</code> <span class="m code">im Code geprüft</span>.</p>
+      <p>Der Repeater empfängt das Paket und merkt es sich wie sonst. Er entschlüsselt keine Nachricht. Den Kanal erkennt er
+        an der Kennung im Paket. Den Schlüssel dazu leitet er aus dem Namen ab <span class="m code">im Code geprüft</span>.</p>
+      <p>Die Liste hat höchstens 8 Einträge, N reicht von 1 bis 64. Sie liegt in der Datei <code>/chfilter</code>. Der öffentliche Kanal und der
+        FUOTA-Kanal lassen sich nie filtern <span class="m code">im Code geprüft</span>.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Befehl</th><th>Wirkung</th></tr>
+        <tr><td><code>filter channel add #name</code></td><td>Der Repeater gibt den Kanal nie weiter.</td></tr>
+        <tr><td><code>filter channel add #name hops N</code></td><td>Er gibt ein Paket weiter, solange es weniger als N Hops (Sprünge von Repeater zu Repeater) hinter sich hat.</td></tr>
+        <tr><td><code>filter channel del #name</code></td><td>Entfernt den Eintrag.</td></tr>
+        <tr><td><code>filter channel list [Seite]</code></td><td>Zeigt je Eintrag Nummer, Name, Kennung, Regel und die Zähler gehört und verworfen.</td></tr>
+        <tr><td><code>set filter on</code>, <code>set filter off</code></td><td>Schaltet den Filter ein oder aus. Ist die Datei beschädigt, stellt <code>on</code> die Werksliste her.</td></tr>
+        <tr><td><code>get filter</code></td><td>Zeigt den Schalter und die Zahl der Einträge von 8. Ohne eigene Datei steht dort „factory list“.</td></tr>
+        <tr><td><code>clear stats</code></td><td>Setzt die Zähler des Filters zurück.</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <p>Die Werksliste verwirft <code>#wardriving</code>. Für <code>#bots</code>, <code>#wetter</code>,
+        <code>#test</code> und <code>#ping</code> gilt eine Grenze. Der Repeater gibt sie weiter, solange das Paket weniger als 3 Hops hinter sich hat <span class="m code">im Code geprüft</span>.</p>
+      <p>Auf Funk ist der Filter nicht gemessen <span class="m open">offen</span>.</p>
+      <h3>Hop-Grenze je Pakettyp</h3>
+      <p>Die Tabelle zeigt, wie weit eine Flut mit Region läuft. Ein Repeater gibt ein Paket weiter, solange es weniger
+        Hops hinter sich hat als erlaubt. Die strengste Grenze gewinnt <span class="m code">im Code geprüft</span>.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Typ</th><th>Name</th><th>Werk</th><th>Stock 1.18.0</th><th>Erklärung</th></tr>
+        <tr><td>0</td><td><code>req</code></td><td class="n">5 Hops</td><td class="n">64</td><td>Das Werk setzt sie über <code>flood.max.type</code>.</td></tr>
+        <tr><td>1</td><td><code>response</code></td><td class="n">5 Hops</td><td class="n">64</td><td>Das Werk setzt sie über <code>flood.max.type</code>.</td></tr>
+        <tr><td>2</td><td><code>txt</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+        <tr><td>3</td><td><code>ack</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+        <tr><td>4</td><td><code>advert</code></td><td class="n">2 Hops</td><td class="n">8</td><td><code>flood.max.advert</code> begrenzt Adverts.</td></tr>
+        <tr><td>5</td><td><code>grptxt</code></td><td class="n">10 Hops</td><td class="n">64</td><td>Zusätzlich greift der Kanalfilter.</td></tr>
+        <tr><td>6</td><td><code>grpdata</code></td><td class="n">10 Hops</td><td class="n">64</td><td>Zusätzlich greift der Kanalfilter. FUOTA-Angebot, Retract und Zertifikat fluten als <code>grpdata</code>. <code>flood.max.type</code> begrenzt sie nie.</td></tr>
+        <tr><td>7</td><td><code>anonreq</code></td><td class="n">5 Hops</td><td class="n">64</td><td>Das Werk setzt sie über <code>flood.max.type</code>.</td></tr>
+        <tr><td>8</td><td><code>path</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+        <tr><td>9</td><td><code>trace</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+        <tr><td>10</td><td><code>multipart</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+        <tr><td>11</td><td><code>control</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+        <tr><td>12, 13</td><td>ohne Name</td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max.type</code> kennt diese Typen nur als Zahl.</td></tr>
+        <tr><td>14</td><td><code>fuota</code></td><td class="n">nie geflutet</td><td class="n">64</td><td>Der Befehl nimmt nur <code>off</code>.</td></tr>
+        <tr><td>15</td><td><code>raw</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>flood.max</code> begrenzt diesen Typ.</td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <p>Ohne Region gilt zusätzlich <code>flood.max.unscoped</code>. Der Werkswert ist 1 Hop, bei Stock 64 <span class="m code">im Code geprüft</span>.</p>
+      <h3>Testfilter <code>fuota hear</code></h3>
+      <p>Mit <code>fuota hear &lt;hex&gt;,&lt;hex&gt;</code> nimmt ein Knoten FUOTA-Pakete nur von diesen Absendern an. Ein Wert ist das
+        erste Byte der Kennung des Absenders. <code>fuota hear all</code> hebt den Filter auf. Der Knoten speichert die Liste in
+        <code>/fuota.dat</code>. Den Befehl gibt es nur in Testbuilds mit <code>FUOTA_TEST_CMDS</code>, nie im Release <span class="m code">im Code geprüft</span>.</p>
+      <h3>Werkswerte</h3>
+      <p>Die Werte der Tabelle sind Konstanten der Firmware <span class="m code">im Code geprüft</span>.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <tr><th>Einstellung</th><th>Werk</th><th>Stock 1.18.0</th><th>Datei</th></tr>
+        <tr><td>Kanalfilter</td><td class="n">an, 5 Einträge</td><td class="n">gibt es nicht</td><td><code>/chfilter</code></td></tr>
+        <tr><td><code>fuota hear</code></td><td class="n">all</td><td class="n">gibt es nicht</td><td><code>/fuota.dat</code></td></tr>
+        <tr><td><code>flood.max</code></td><td class="n">10 Hops</td><td class="n">64</td><td><code>/prefs.json</code></td></tr>
+        <tr><td><code>flood.max.unscoped</code></td><td class="n">1 Hop</td><td class="n">64</td><td><code>/prefs.json</code></td></tr>
+        <tr><td><code>flood.max.advert</code></td><td class="n">2 Hops</td><td class="n">8</td><td><code>/prefs.json</code></td></tr>
+        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td class="n">keine Einträge</td><td><code>/prefs.json</code></td></tr>
+      </table>
+    </div>
+    <div lang="de" class="prose">
       <h3>Was offen ist</h3>
       <ul>
         <li>Im Bench-Build von 1.18.0-b3 sendet eine Neuinstallation die erste Zero-Hop-Advert nach 360 min, weil dort die Advert beim Start ausgeschaltet ist <span class="m code">im Code geprüft</span>. Bei Stock sind es 2 min. Ein Release-Build sendet sie etwa 16 s nach dem Start <span class="m code">im Code geprüft</span>. Am Release-Gerät ist das nicht gemessen <span class="m open">offen</span>. Mit <code>advert.zerohop</code> sendet der Knoten sofort <span class="m open">offen</span>.</li>
@@ -747,6 +816,75 @@
         <code>loop.detect</code>.</p>
       <p>On the bench, only the case with 0 hops is measured. From 1 hop on, the limits are proven in host tests only. Nobody has
         measured them in a real mesh with several repeater hops <span class="m open">open</span>.</p>
+      <h3>Channel filter for group messages</h3>
+      <p>The channel filter limits how far floods of listed group channels travel. It only decides whether the repeater with FUOTA forwards a flood.
+        It affects floods of the types <code>grptxt</code> and <code>grpdata</code> <span class="m code">checked in the code</span>.</p>
+      <p>The repeater receives the packet and marks it as seen as before. It decrypts no message. It recognises a channel
+        by the identifier in the packet. It derives the key from the name <span class="m code">checked in the code</span>.</p>
+      <p>The list holds 8 entries at most, N ranges from 1 to 64. It lives in the file <code>/chfilter</code>. The public channel and the FUOTA
+        channel can never be filtered <span class="m code">checked in the code</span>.</p>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Command</th><th>Effect</th></tr>
+        <tr><td><code>filter channel add #name</code></td><td>The repeater never forwards the channel.</td></tr>
+        <tr><td><code>filter channel add #name hops N</code></td><td>It forwards a packet while it has made fewer than N hops (jumps from repeater to repeater).</td></tr>
+        <tr><td><code>filter channel del #name</code></td><td>Removes the entry.</td></tr>
+        <tr><td><code>filter channel list [page]</code></td><td>Shows number, name, identifier, rule and the counters heard and dropped for each entry.</td></tr>
+        <tr><td><code>set filter on</code>, <code>set filter off</code></td><td>Switches the filter on or off. If the file is damaged, <code>on</code> restores the factory list.</td></tr>
+        <tr><td><code>get filter</code></td><td>Shows the switch and the number of entries out of 8. Without its own file it says "factory list".</td></tr>
+        <tr><td><code>clear stats</code></td><td>Resets the counters of the filter.</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="prose">
+      <p>The factory list drops <code>#wardriving</code>. A limit applies to <code>#bots</code>, <code>#wetter</code>,
+        <code>#test</code> and <code>#ping</code>. The repeater forwards them while the packet has made fewer than 3 hops <span class="m code">checked in the code</span>.</p>
+      <p>The filter is not measured on air <span class="m open">open</span>.</p>
+      <h3>Hop limit per packet type</h3>
+      <p>The table shows how far a flood with a region travels. A repeater forwards a packet while it has made fewer
+        hops than allowed. The strictest limit wins <span class="m code">checked in the code</span>.</p>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Type</th><th>Name</th><th>Factory</th><th>Stock 1.18.0</th><th>Explanation</th></tr>
+        <tr><td>0</td><td><code>req</code></td><td class="n">5 hops</td><td class="n">64</td><td>The factory value comes from <code>flood.max.type</code>.</td></tr>
+        <tr><td>1</td><td><code>response</code></td><td class="n">5 hops</td><td class="n">64</td><td>The factory value comes from <code>flood.max.type</code>.</td></tr>
+        <tr><td>2</td><td><code>txt</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+        <tr><td>3</td><td><code>ack</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+        <tr><td>4</td><td><code>advert</code></td><td class="n">2 hops</td><td class="n">8</td><td><code>flood.max.advert</code> limits adverts.</td></tr>
+        <tr><td>5</td><td><code>grptxt</code></td><td class="n">10 hops</td><td class="n">64</td><td>The channel filter applies as well.</td></tr>
+        <tr><td>6</td><td><code>grpdata</code></td><td class="n">10 hops</td><td class="n">64</td><td>The channel filter applies as well. The FUOTA offer, retract and certificate flood as <code>grpdata</code>. <code>flood.max.type</code> never limits them.</td></tr>
+        <tr><td>7</td><td><code>anonreq</code></td><td class="n">5 hops</td><td class="n">64</td><td>The factory value comes from <code>flood.max.type</code>.</td></tr>
+        <tr><td>8</td><td><code>path</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+        <tr><td>9</td><td><code>trace</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+        <tr><td>10</td><td><code>multipart</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+        <tr><td>11</td><td><code>control</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+        <tr><td>12, 13</td><td>no name</td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max.type</code> knows these types only by number.</td></tr>
+        <tr><td>14</td><td><code>fuota</code></td><td class="n">never flooded</td><td class="n">64</td><td>The command takes only <code>off</code>.</td></tr>
+        <tr><td>15</td><td><code>raw</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>flood.max</code> limits this type.</td></tr>
+      </table>
+    </div>
+    <div lang="en" class="prose">
+      <p>Without a region, <code>flood.max.unscoped</code> applies as well. The factory value is 1 hop, in stock 64 <span class="m code">checked in the code</span>.</p>
+      <h3>Test filter <code>fuota hear</code></h3>
+      <p>With <code>fuota hear &lt;hex&gt;,&lt;hex&gt;</code> a node accepts FUOTA packets only from these senders. A value is the
+        first byte of the sender's identifier. <code>fuota hear all</code> lifts the filter. The node saves the list in
+        <code>/fuota.dat</code>. The command exists only in test builds with <code>FUOTA_TEST_CMDS</code>, never in a release <span class="m code">checked in the code</span>.</p>
+      <h3>Factory values</h3>
+      <p>The values in the table are constants of the firmware <span class="m code">checked in the code</span>.</p>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <tr><th>Setting</th><th>Factory</th><th>Stock 1.18.0</th><th>File</th></tr>
+        <tr><td>Channel filter</td><td class="n">on, 5 entries</td><td class="n">does not exist</td><td><code>/chfilter</code></td></tr>
+        <tr><td><code>fuota hear</code></td><td class="n">all</td><td class="n">does not exist</td><td><code>/fuota.dat</code></td></tr>
+        <tr><td><code>flood.max</code></td><td class="n">10 hops</td><td class="n">64</td><td><code>/prefs.json</code></td></tr>
+        <tr><td><code>flood.max.unscoped</code></td><td class="n">1 hop</td><td class="n">64</td><td><code>/prefs.json</code></td></tr>
+        <tr><td><code>flood.max.advert</code></td><td class="n">2 hops</td><td class="n">8</td><td><code>/prefs.json</code></td></tr>
+        <tr><td><code>flood.max.type</code></td><td class="n"><code>0:5,1:5,7:5</code></td><td class="n">no entries</td><td><code>/prefs.json</code></td></tr>
+      </table>
+    </div>
+    <div lang="en" class="prose">
       <h3>What is open</h3>
       <ul>
         <li>In the bench build of 1.18.0-b3 a new install sends its first zero-hop advert after 360 min, because the advert at start is switched off there <span class="m code">checked in the code</span>. In stock it is 2 min. A release build sends it about 16 s after start <span class="m code">checked in the code</span>. On a release device this is not measured <span class="m open">open</span>. With <code>advert.zerohop</code> the node sends at once <span class="m open">open</span>.</li>
