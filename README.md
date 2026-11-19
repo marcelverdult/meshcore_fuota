@@ -16,7 +16,7 @@ SenseCAP P1 (S140 7.3.0) und einem RAK4631. Der erste Alpha-Test begann am 11. N
 1.18.0-b3. Wir haben diese Pakete am 16. November 2026 zurückgezogen. Seit dem 18. November 2026 läuft ein zweiter Alpha-Test mit
 v1.17.1-fuota1. Sein Release liegt in diesem Repository. Eine allgemeine Freigabe gibt es nicht. Nichts davon ist
 in MeshCore eingereicht.
-Der Quellcode folgt später. Wir suchen Denkfehler: Schick Rückmeldungen als Issue.
+Die Veröffentlichung des Quellcodes ist noch offen. Wir suchen Denkfehler: Schick Rückmeldungen als Issue.
 
 **English:** Firmware updates over LoRa for MeshCore repeaters. For now this repository holds the description of the
 design for review and the guide for the alpha test, in German and English:
@@ -25,7 +25,7 @@ design for review and the guide for the alpha test, in German and English:
 Status: proof of concept based on MeshCore 1.18.0, measured on the bench with FakeTecs (nRF52840, S140 6.1.1), one
 SenseCAP P1 (S140 7.3.0) and one RAK4631. The first alpha test began on 11 November 2026 with 1.17.1-b2 and 1.18.0-b3. We withdrew those packages on
 16 November 2026. A second alpha test with v1.17.1-fuota1 has been running since 18 November 2026. Its release is in this
-repository. There is no general release. Nothing of it has been submitted to MeshCore. The source code follows later. We are looking for flaws in the reasoning: send feedback as an issue.
+repository. There is no general release. Nothing of it has been submitted to MeshCore. Publication of the source code is still open. We are looking for flaws in the reasoning: send feedback as an issue.
 
 **Lizenz / License:** Text und Abbildungen / text and figures: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 siehe / see `LICENSE`. Namensnennung / attribution: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“.
