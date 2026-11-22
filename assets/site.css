@@ -330,7 +330,7 @@
   /* long paths in running text (file:line) break instead of widening the page on a phone */
   main p code,main li code{overflow-wrap:anywhere}
 
-  /* start page (start.html): cards for the do and do-not choices, numbered steps */
+  /* start part of the alpha page (alpha.html): cards for the do and do-not choices, numbered steps */
   .sk-card{border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface);padding:16px 18px;margin:12px 0}
   .sk-card p{margin:0 0 8px;color:var(--fg-2)}
   .sk-card p:last-child{margin-bottom:0}
@@ -353,4 +353,4 @@
   .start-cta{display:block;margin:18px 0 4px;padding:14px 18px;border:1px solid color-mix(in srgb,var(--accent) 55%,var(--line));border-radius:var(--r-card);
     background:color-mix(in srgb,var(--accent) 8%,var(--surface));font:600 17px var(--disp);text-decoration:none}
   .start-cta span{display:block;font:400 14.5px var(--sans);color:var(--muted);margin-top:2px}
-  .sk-last{min-height:75vh}  /* the last section of the start page is short: the top bar still has to reach its title */
+  .details-start{border-top:2px solid var(--line);padding-top:clamp(28px,4vw,48px)}  /* sets the details for the curious apart from the start part */

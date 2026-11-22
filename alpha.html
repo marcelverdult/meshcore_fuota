@@ -45,7 +45,7 @@
   <nav class="pages" aria-label="Seiten / pages">
     <ul>
       <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
-      <li><a href="start.html"><span lang="de">Alpha-Test starten</span><span lang="en">Start the alpha test</span></a></li>
+      <li><a href="alpha.html" aria-current="page"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
       <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
       <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
       <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
@@ -54,50 +54,354 @@
       <li><a href="flash.html"><span lang="de">Flash</span><span lang="en">Flash</span></a></li>
       <li><a href="tests.html"><span lang="de">Messungen</span><span lang="en">Measurements</span></a></li>
       <li><a href="fragen.html"><span lang="de">Fragen</span><span lang="en">Questions</span></a></li>
-      <li><a href="alpha.html" aria-current="page"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
     </ul>
   </nav>
   <main>
   <header class="hero">
     <div lang="de">
-      <h1>Alpha-Test: Der erste Funk-Update-Test</h1>
-      <p class="lede">Du installierst 1.17.1-fuota1 auf Testrepeatern. Dieser Stand holt Updates per Funk und wendet sie an.
-        Er bietet selbst keine an und leitet keine weiter. Er ist die Ausgangsbasis, damit ein späteres 1.18 von Repeater zu
-        Repeater laufen kann. Installiere ihn nur auf Knoten, die du gut erreichst.</p>
-      <p><strong>Du willst testen?</strong> Die Kurzfassung steht auf der <a href="start.html">Startseite für Tester</a>.</p>
-      <p><strong>Stand 18. November 2026:</strong> Der zweite Alpha-Test nutzt das Release
-        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>. Wer beim ersten Test dabei war, installiert neu: Die Pakete 1.17.1-b2 und 1.18.0-b3
-        sind zurückgezogen und passen nicht zur neuen Kampagne.
-        Genau diese signierten Release-Dateien sind noch auf keinem Gerät gelaufen. Die Läufe am Testaufbau nutzten das Test-Image.
-        Dieser Release ist selbst der erste Test <span class="m open">offen</span>.</p>
+      <h1>Alpha-Test: Was du tun musst</h1>
+      <p class="lede">Repeater holen sich neue Firmware per Funk, ohne dass jemand aufs Dach muss.
+        Du hilfst beim Test: Du spielst eine Datei auf deinen Repeater, richtest ihn ein und wartest.
+        Du brauchst nur die Abschnitte 1 bis 7 und die Paket-Tabelle weiter unten. Der Rest ist für Neugierige.</p>
+      <p class="lede">Es gibt genau 2 Downloads. Das Empfänger-Paket 1.17 bekommen alle Geräte außer einem.
+        Das Seed-Paket 1.18 bekommt nur dieses eine Gerät je Region.</p>
     </div>
     <div lang="en">
-      <h1>Alpha test: the first over-the-air update test</h1>
-      <p class="lede">You install 1.17.1-fuota1 on test repeaters. This build fetches updates over the air and applies them.
-        It offers none itself and passes none on. It is the starting point so that a later 1.18 can run from repeater to
-        repeater. Use it only on nodes that you can reach easily.</p>
-      <p><strong>Want to test?</strong> The short version is on the <a href="start.html">start page for testers</a>.</p>
-      <p><strong>Status as of 18 November 2026:</strong> The second alpha test uses the release
-        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>. If you took part in the first test, install again. The packages 1.17.1-b2 and 1.18.0-b3
-        have been withdrawn and do not fit the new campaign.
-        These exact signed release files have not yet run on any device. The bench runs used the test image. This release is
-        itself the first test <span class="m open">open</span>.</p>
+      <h1>Alpha test: what you need to do</h1>
+      <p class="lede">Repeaters fetch new firmware over the air, and nobody has to climb a roof.
+        You help with the test: you put one file on your repeater, set it up and wait.
+        You need only sections 1 to 7 and the package table further down. The rest is for the curious.</p>
+      <p class="lede">There are exactly 2 downloads. All devices except one get the receiver package 1.17.
+        Only that one device per region gets the seed package 1.18.</p>
     </div>
   </header>
 
-  <section id="alpha-ablauf">
-    <div lang="de" class="prose"><h2>So läuft der Test</h2></div>
-    <div lang="en" class="prose"><h2>How the test runs</h2></div>
+  <section id="start-gruppe">
+    <div lang="de" class="prose"><h2>1. Allein passiert nichts</h2></div>
+    <div lang="en" class="prose"><h2>1. Alone, nothing happens</h2></div>
+    <div lang="de" class="sk-card sk-warn">
+      <p class="sk-tag">Ein einzelner Repeater bekommt nie ein Update.</p>
+      <p>Ein Update wandert von Repeater zu Repeater. Steht dein Repeater allein, hört er niemanden, der es ihm anbietet. Dann wartet er ohne Ende.</p>
+      <p><strong>In deiner Region laufen immer mindestens 2 Test-Repeater.</strong> Die Region heißt in MeshCore auch Flood-Scope.
+        Alle Test-Repeater stellen dieselbe Region ein (Schritt 5) und stehen in Funkreichweite zueinander.</p>
+      <p>Genau einer davon ist der Seed. Der Seed hat das Update schon und bietet es den anderen an.
+        Die anderen sind Empfänger: Sie holen sich das Update vom Seed.</p>
+      <p><strong>Du hast mehrere Geräte?</strong> Auch mehrere Geräte von dir zählen. Ein Gerät wird Seed, die anderen werden Empfänger. Dann geht es allein.</p>
+      <p><strong>Du hast nur ein Gerät?</strong> Such dir Mit-Tester aus deiner Region, am besten im
+        <a href="https://t.me/meshcorede/37922">Telegram-Thread</a> (alternativ im <a href="https://discord.gg/Yaq3HEMfhk">Discord</a>).
+        Sprich mit ihnen ab, wer den Seed stellt. Eine Freigabe von uns brauchst du dafür nicht.</p>
+    </div>
+    <div lang="en" class="sk-card sk-warn">
+      <p class="sk-tag">A single repeater never gets an update.</p>
+      <p>An update travels from repeater to repeater. If your repeater stands alone, it hears nobody who offers it. Then it waits forever.</p>
+      <p><strong>At least 2 test repeaters always run in your region.</strong> A region is also called a flood scope in MeshCore.
+        All test repeaters set the same region (step 5) and stand within radio range of each other.</p>
+      <p>Exactly one of them is the seed. The seed already has the update and offers it to the others.
+        The others are receivers: they fetch the update from the seed.</p>
+      <p><strong>Do you have several devices?</strong> Several devices of yours count too. One device becomes the seed, the others become receivers. Then you can do it alone.</p>
+      <p><strong>Do you have only one device?</strong> Look for fellow testers in your region, best in the
+        <a href="https://t.me/meshcorede/37922">Telegram thread</a> (or in <a href="https://discord.gg/Yaq3HEMfhk">Discord</a>).
+        Agree with them who provides the seed. You need no approval from us for that.</p>
+    </div>
+  </section>
+
+  <section id="start-dateien">
+    <div lang="de" class="prose"><h2>2. Welche Datei ist für dich?</h2></div>
+    <div lang="en" class="prose"><h2>2. Which file is yours?</h2></div>
+    <div lang="de" class="sk-two">
+      <div class="sk-card sk-ok">
+        <p class="sk-tag">Empfänger-Paket 1.17: für alle</p>
+        <p>Für alle Geräte außer dem Seed. Dein Repeater <strong>holt</strong> sich damit das Update. Das Paket heißt auch Basis-Paket.</p>
+        <p>Der Dateiname enthält <code>-base-</code>:<br><code>meshcore-fuota-1.17.1-fuota1-base-&lt;Board&gt;-&lt;SoftDevice&gt;.uf2</code></p>
+        <p>Du findest es im Release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>.</p>
+      </div>
+      <div class="sk-card sk-no">
+        <p class="sk-tag">Seed-Paket 1.18: nur für einen</p>
+        <p>Nur für das eine Gerät je Region, das ihr als Seed abgesprochen habt.</p>
+        <p>Der Dateiname enthält <code>-seed-</code>:<br><code>meshcore-fuota-1.18.0-b5-seed-&lt;Board&gt;-&lt;SoftDevice&gt;.uf2</code></p>
+        <p>Du findest es im Vorab-Release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>.</p>
+      </div>
+    </div>
+    <div lang="en" class="sk-two">
+      <div class="sk-card sk-ok">
+        <p class="sk-tag">Receiver package 1.17: for everyone</p>
+        <p>For all devices except the seed. Your repeater <strong>fetches</strong> the update with it. The package is also called the base package.</p>
+        <p>The file name contains <code>-base-</code>:<br><code>meshcore-fuota-1.17.1-fuota1-base-&lt;board&gt;-&lt;SoftDevice&gt;.uf2</code></p>
+        <p>You find it in the release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>.</p>
+      </div>
+      <div class="sk-card sk-no">
+        <p class="sk-tag">Seed package 1.18: for one only</p>
+        <p>Only for the one device per region that you agreed on as the seed.</p>
+        <p>The file name contains <code>-seed-</code>:<br><code>meshcore-fuota-1.18.0-b5-seed-&lt;board&gt;-&lt;SoftDevice&gt;.uf2</code></p>
+        <p>You find it in the pre-release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>.</p>
+      </div>
+    </div>
     <div lang="de" class="prose">
-      <ol>
-        <li>Such dir ein paar andere Tester und bildet eine Gruppe. Ihr teilt mehrere Testrepeater unter euch auf.
-          Alle Knoten der Gruppe liegen in Funkreichweite zueinander. Genau ein Gerät der Gruppe ist der Seed (Abschnitt Pakete).</li>
-        <li>Alle außer dem Seed installieren das Empfänger-Paket (Basispaket) 1.17.1-fuota1 per USB (Tabelle unten) und setzen die Region ihres Netzes (Abschnitt Region setzen).</li>
-        <li>Der Knoten holt Updates per Funk, prüft die Signatur, macht einen Probestart und bestätigt. Du tust nichts. Er bietet selbst keine Updates an und leitet keine weiter. Einen Termin für ein späteres 1.18 nennen wir hier nicht.</li>
-        <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
+      <p>Das Seed-Paket trägt die Firmware 1.18.0 und das Update von 1.17.1 auf 1.18.0. Der Seed bietet es seinen Nachbarn an.
+        Die Empfänger laufen mit 1.17.1-fuota1 und holen es von ihm.</p>
+      <p>Wähle bei beiden das Board und das SoftDevice deines Geräts. Das SoftDevice ist der Teil am Ende des Dateinamens, zum Beispiel <code>s140-6.1.1</code>.
+        Die Namen aller Boards stehen in der <a href="#alpha-pakete">Tabelle in den Details unten</a>.</p>
+      <p>Spielen alle ihr eigenes Seed-Paket auf, weiß niemand mehr, woher das Update kommt. Dann können wir den Test nicht auswerten.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>The seed package carries the firmware 1.18.0 and the update from 1.17.1 to 1.18.0. The seed offers it to its neighbours.
+        The receivers run 1.17.1-fuota1 and fetch it from the seed.</p>
+      <p>For both, choose the board and the SoftDevice of your device. The SoftDevice is the part at the end of the file name, for example <code>s140-6.1.1</code>.
+        The names of all boards are in the <a href="#alpha-pakete">table in the details below</a>.</p>
+      <p>If everyone installs their own seed package, nobody knows any more where the update came from. Then we cannot evaluate the test.</p>
+    </div>
+  </section>
+
+  <section id="start-alt">
+    <div lang="de" class="prose"><h2>3. Die alte Version muss weg</h2></div>
+    <div lang="en" class="prose"><h2>3. The old version has to go</h2></div>
+    <div lang="de" class="sk-card sk-warn">
+      <p class="sk-tag">Warst du beim ersten Test dabei?</p>
+      <p>Dann läuft auf deinen Repeatern vielleicht noch die alte Test-Version (<code>1.17.1-b2</code> oder <code>1.18.0-b3</code>). Sie passt nicht mehr.
+        Spiel auf <strong>jeden</strong> Repeater das neue Paket, auch auf den zweiten und dritten.
+        Die alten Pakete sind zurückgezogen. Lösche sie aus deinem Download-Ordner, damit du sie nicht verwechselst.</p>
+      <p><strong>So prüfst du es:</strong> Tippe in der USB-Konsole <code>ver</code>. Ein Empfänger antwortet
+        <code>v1.17.1-fuota1 (Build: 14 Aug 2026)</code>. Der Seed zeigt <code>v1.18.0-fuota5</code>.
+        Steht da etwas anderes, spiel das Paket neu auf.</p>
+      <p>Diese Antworten stehen im Code <span class="m code">im Code geprüft</span>. Das Release lief noch auf keinem Gerät.
+        Weicht deine Antwort ab, schreib es uns.</p>
+    </div>
+    <div lang="en" class="sk-card sk-warn">
+      <p class="sk-tag">Did you take part in the first test?</p>
+      <p>Then your repeaters may still run the old test version (<code>1.17.1-b2</code> or <code>1.18.0-b3</code>). It no longer fits.
+        Put the new package on <strong>every</strong> repeater, also the second and the third.
+        The old packages are withdrawn. Delete them from your download folder so that you do not mix them up.</p>
+      <p><strong>How to check:</strong> type <code>ver</code> in the USB console. A receiver answers
+        <code>v1.17.1-fuota1 (Build: 14 Aug 2026)</code>. The seed shows <code>v1.18.0-fuota5</code>.
+        If it says anything else, install the package again.</p>
+      <p>These answers are in the code <span class="m code">checked in the code</span>. The release has not run on any device yet.
+        If your answer differs, tell us.</p>
+    </div>
+  </section>
+
+  <section id="start-schritte">
+    <div lang="de" class="prose"><h2>4. Die Schritte</h2></div>
+    <div lang="en" class="prose"><h2>4. The steps</h2></div>
+    <div lang="de" class="prose">
+      <ol class="sk-steps">
+        <li><strong>Seed festlegen.</strong> Mindestens 2 Test-Repeater in deiner Region, genau einer davon Seed.</li>
+        <li><strong>Board finden.</strong> Such in der <a href="#alpha-pakete">Tabelle weiter unten</a> die Zeile mit deinem Gerät, zum Beispiel RAK4631.</li>
+        <li><strong>Datei laden.</strong> Empfänger nehmen die Datei mit <code>-base-</code> im Namen, der Seed die mit <code>-seed-</code>.</li>
+        <li><strong>Aufspielen.</strong> USB anstecken, 2-mal schnell Reset drücken und die Datei auf das neue Laufwerk ziehen. Tu das nur an Knoten, die du gut erreichst.</li>
+        <li><strong>Einrichten.</strong> Öffne die USB-Konsole, ein Terminal-Programm am USB-Anschluss deines Repeaters. Tippe diese Befehle und ersetze die Teile in spitzen Klammern:
+          <ul>
+            <li><code>password &lt;dein Passwort&gt;</code> (höchstens 15 Zeichen, nicht <code>password</code>)</li>
+            <li><code>set name FUOTA &lt;Spitzname&gt; 1.17.1-fuota1</code> (beim Seed: <code>1.18.0-fuota5</code>)</li>
+            <li><code>region default hansemesh</code> (hansemesh ist ein Beispiel: Nimm den Namen der Region deines Netzes, auf allen Geräten gleich)</li>
+            <li><code>set lat &lt;Breite&gt;</code> und <code>set lon &lt;Länge&gt;</code> (grob reicht)</li>
+            <li><code>set advert.interval 240</code></li>
+          </ul></li>
+        <li><strong>Prüfen.</strong> <code>ver</code> zeigt die Version aus Abschnitt 3. Ein Empfänger, dem noch niemand ein Update angeboten hat, meldet mit <code>fuota info</code> den Satz <code>no update</code>. Beim Seed steht dort <code>passing on update 950257b4</code>.</li>
+        <li><strong>Warten.</strong> Tu nichts weiter. Das Holen dauert Stunden bis Tage (Abschnitt 5). Danach wartet der Repeater ab Werk noch 7 Tage, bevor er das Update anwendet.</li>
       </ol>
-      <p>Richte jeden Testrepeater ein wie jeden anderen Repeater. Tippe die Befehle in der USB-Konsole.</p>
-      <p><strong>Wichtig für einen koordinierten Test:</strong> Gib jedem Repeater einen sprechenden Namen nach dem Muster <code>FUOTA &lt;Spitzname&gt; 1.17.1-fuota1</code>. Setze außerdem eine grobe GPS-Position und ein Admin-Passwort. So zeigen Analyzer und Karte, wer welchen Repeater betreibt und welche Version er trägt. Die Gruppe kann sich bei Fragen auch gezielt auf einen Repeater beziehen.</p>
+    </div>
+    <div lang="en" class="prose">
+      <ol class="sk-steps">
+        <li><strong>Pick the seed.</strong> At least 2 test repeaters in your region, exactly one of them the seed.</li>
+        <li><strong>Find your board.</strong> Look up the row with your device in the <a href="#alpha-pakete">table further down</a>, for example RAK4631.</li>
+        <li><strong>Download the file.</strong> Receivers take the file with <code>-base-</code> in its name, the seed the one with <code>-seed-</code>.</li>
+        <li><strong>Install it.</strong> Plug in USB, press Reset twice quickly and drag the file onto the new drive. Do this only on nodes that you can reach easily.</li>
+        <li><strong>Set up.</strong> Open the USB console, a terminal program on the USB port of your repeater. Type these commands and replace the parts in angle brackets:
+          <ul>
+            <li><code>password &lt;your password&gt;</code> (15 characters at most, not <code>password</code>)</li>
+            <li><code>set name FUOTA &lt;nickname&gt; 1.17.1-fuota1</code> (on the seed: <code>1.18.0-fuota5</code>)</li>
+            <li><code>region default hansemesh</code> (hansemesh is an example: use the name of your network's region, the same on all devices)</li>
+            <li><code>set lat &lt;latitude&gt;</code> and <code>set lon &lt;longitude&gt;</code> (rough is enough)</li>
+            <li><code>set advert.interval 240</code></li>
+          </ul></li>
+        <li><strong>Check.</strong> <code>ver</code> shows the version from section 3. A receiver that nobody has offered an update yet answers <code>fuota info</code> with <code>no update</code>. On the seed you see <code>passing on update 950257b4</code> there.</li>
+        <li><strong>Wait.</strong> Do nothing else. Fetching takes hours to days (section 5). After that the repeater waits 7 more days by default before it applies the update.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="start-dauer">
+    <div lang="de" class="prose"><h2>5. Warum es dauert, und warum manchmal gar nichts kommt</h2></div>
+    <div lang="en" class="prose"><h2>5. Why it takes long, and why sometimes nothing comes</h2></div>
+    <div lang="de" class="sk-card">
+      <p>Der Seed sagt seinen direkten Nachbarn: „Ich habe ein Update.“ Das heißt Angebot. Direkte Nachbarn sind Repeater in Funkreichweite.
+        Der Seed beginnt mit Abständen von 10 Sekunden und verdoppelt sie, bis zu 2 Tagen.</p>
+      <p>Weiter entfernte Repeater erreicht er nur mit einer Flut. Das ist eine Nachricht an alle Repeater der Region.
+        Der Seed schickt sie in der ersten Woche höchstens einmal am Tag, danach höchstens einmal je Woche <span class="m code">im Code geprüft</span>.
+        Das ist Absicht: So bleibt das Mesh frei für normale Nachrichten.</p>
+      <p>Wer das Angebot nicht hört, fragt nicht. Dein Repeater meldet sich erst, wenn er ein Angebot gehört hat.
+        Geht das Angebot verloren, wartet er auf das nächste.</p>
+    </div>
+    <div lang="en" class="sk-card">
+      <p>The seed tells its direct neighbours: “I have an update.” That is called an offer. Direct neighbours are repeaters within radio range.
+        The seed starts with gaps of 10 seconds and doubles them, up to 2 days.</p>
+      <p>It reaches repeaters farther away only with a flood. That is a message to all repeaters of the region.
+        The seed sends it at most once a day in the first week, and at most once a week after that <span class="m code">checked in the code</span>.
+        That is on purpose: it keeps the mesh free for normal messages.</p>
+      <p>Whoever does not hear the offer does not ask. Your repeater speaks up only after it has heard an offer.
+        If the offer is lost, it waits for the next one.</p>
+    </div>
+    <div lang="de" class="prose">
+      <p>Ein Angebot kann aus diesen Gründen verloren gehen:</p>
+      <ul>
+        <li>Viel Verkehr im Mesh: Zwei Pakete gleichzeitig stören sich.</li>
+        <li>Falsche oder keine Region: Das Angebot kommt in deiner Region nie an.</li>
+        <li>Zu weit weg oder schlechter Empfang.</li>
+      </ul>
+    </div>
+    <div lang="en" class="prose">
+      <p>An offer can get lost for these reasons:</p>
+      <ul>
+        <li>Much traffic in the mesh: two packets at the same time disturb each other.</li>
+        <li>Wrong or no region: the offer never arrives in your region.</li>
+        <li>Too far away or poor reception.</li>
+      </ul>
+    </div>
+    <div lang="de" class="sk-card">
+      <p>Hat dein Repeater das Angebot gehört, fragt er zurück. Die Frage geht auf dem Weg zurück, den das Angebot genommen hat.
+        Bleibt sie 2-mal ohne Antwort, schickt er sie einmal als Flut, also an alle. Das klappt, dauert aber:
+        Ein Repeater schickt höchstens eine solche Flut-Anfrage je Stunde <span class="m code">im Code geprüft</span>.</p>
+      <p>Es sind nur wenige Nachrichten. Geht eine davon verloren, verschiebt sich alles bis zum nächsten Versuch.
+        Darum kann es Tage dauern. Das ist im Test normal.</p>
+      <p>Ein Hop ist ein Sprung von einem Repeater zum nächsten. Im Test gibt es nur wenige FUOTA-Repeater.
+        Darum können zwischen Seed und dir mehrere normale Repeater liegen. Jeder Hop kann ein Paket verlieren.
+        Je mehr Hops, desto größer das Risiko.</p>
+      <p>Später wird es schneller. Das Empfänger-Paket 1.17.1-fuota1 gibt selbst nichts weiter. Es holt das Update nur.
+        Erst nach dem Update auf 1.18 bietet jeder Repeater es seinen Nachbarn an. Haben viele Repeater FUOTA, muss nicht mehr alles vom Seed kommen.
+        Hört ein Repeater mehrere Anbieter, merkt er sich bis zu 4 und wechselt, wenn einer nicht antwortet.</p>
+    </div>
+    <div lang="en" class="sk-card">
+      <p>If your repeater heard the offer, it asks back. The question goes back along the way the offer took.
+        If it stays unanswered twice, the repeater sends the question once as a flood, so to everybody. That works, but it takes time:
+        a repeater sends such a flood request at most once an hour <span class="m code">checked in the code</span>.</p>
+      <p>It is only a few messages. If one of them is lost, everything shifts to the next try.
+        That is why it can take days. In the test that is normal.</p>
+      <p>A hop is a jump from one repeater to the next. In the test there are only a few FUOTA repeaters.
+        So several normal repeaters can lie between the seed and you. Each hop can lose a packet.
+        The more hops, the greater the risk.</p>
+      <p>Later it gets faster. The receiver package 1.17.1-fuota1 passes nothing on itself. It only fetches the update.
+        Only after the update to 1.18 does every repeater offer it to its neighbours. If many repeaters run FUOTA, not everything has to come from the seed.
+        If a repeater hears several providers, it remembers up to 4 and switches when one does not answer.</p>
+    </div>
+  </section>
+
+  <section id="start-analyzer">
+    <div lang="de" class="prose"><h2>6. Der Analyzer hört nur zu</h2></div>
+    <div lang="en" class="prose"><h2>6. The analyzer only listens</h2></div>
+    <div lang="de" class="prose">
+      <p>Der <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a> ist eine Webseite, die das Mesh zeigt.
+        Stell dir vor, du stehst vor einem Haus und hörst durchs Fenster, wie drinnen jemand redet. Du verstehst nur Bruchstücke.
+        So ähnlich arbeitet der Analyzer. Er fragt deinen Repeater nicht.
+        Er kennt nur die Funkpakete, die ein Observer in der Nähe mitbekommt. Ein Observer ist ein Knoten, der gehörte Pakete ins Internet weiterreicht.</p>
+      <p>Im Tab Rollout stehen zwei Quellen nebeneinander <span class="m code">im Code geprüft</span>. Die eine sind Statusmeldungen, die ein Repeater selbst sendet.
+        Das tut er nur mit Standard-Region (der Region, in der er flutet) und höchstens 8-mal in 24 Stunden.
+        Die andere sind Angebote, die ein Observer gehört hat. Ein gehörtes Angebot nennt, wie viele Seiten (Teile des Updates) der Absender hat.
+        Dieser Stand kann veraltet sein.</p>
+      <p>Fehlt ein Wert, zeigt der Analyzer einen Strich. Alle Zahlen sind Mindestwerte.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>The <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a> is a web page that shows the mesh.
+        Imagine you stand in front of a house and hear someone talk inside through the window. You catch only fragments.
+        The analyzer works a bit like that. It does not ask your repeater.
+        It knows only the radio packets that an observer nearby catches. An observer is a node that passes the packets it hears on to the internet.</p>
+      <p>The Rollout tab puts two sources side by side <span class="m code">checked in the code</span>. One is status messages that a repeater sends itself.
+        It does so only with a default region (the region in which it floods) and at most 8 times in 24 hours.
+        The other is offers that an observer has heard. A heard offer says how many pages (parts of the update) its sender holds.
+        That state may already be out of date.</p>
+      <p>If a value is missing, the analyzer shows a dash. All numbers are lower bounds.</p>
+    </div>
+    <div lang="de" class="tscroll">
+      <table>
+        <thead><tr><th>Der Analyzer zeigt</th><th>Das heißt</th></tr></thead>
+        <tbody>
+          <tr><td>nichts von deinem Repeater</td><td>Das heißt nicht, dass er nichts tut. Vielleicht hört ihn nur kein Observer.</td></tr>
+          <tr><td>zum Beispiel 40 %</td><td>Das war der Stand beim letzten gehörten Angebot. Er kann veraltet sein.</td></tr>
+          <tr><td><strong>Maßgeblich ist dein Gerät</strong></td><td>Frag den Repeater selbst. Tippe <code>fuota info</code>, per USB oder als angemeldeter Admin übers Mesh (mit dem Passwort aus Schritt 5). Per USB zeigt <code>fuota status</code> zusätzlich eine technische Zeile.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <thead><tr><th>The analyzer shows</th><th>It means</th></tr></thead>
+        <tbody>
+          <tr><td>nothing of your repeater</td><td>That does not mean it does nothing. Maybe no observer hears it.</td></tr>
+          <tr><td>for example 40 %</td><td>That was the state at the last heard offer. It may be out of date.</td></tr>
+          <tr><td><strong>Your device is what counts</strong></td><td>Ask the repeater itself. Type <code>fuota info</code>, over USB or as a logged-in admin over the mesh (with the password from step 5). Over USB, <code>fuota status</code> also shows a technical line.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="start-fehler">
+    <div lang="de" class="prose"><h2>7. Die häufigsten Fehler</h2></div>
+    <div lang="en" class="prose"><h2>7. The most common mistakes</h2></div>
+    <div lang="de" class="tscroll">
+      <table>
+        <thead><tr><th>Fehler</th><th>Das hilft</th></tr></thead>
+        <tbody>
+          <tr><td>Nur ein Test-Repeater, kein Seed in der Region.</td><td>Ein zweites Gerät nehmen oder Mit-Tester suchen.</td></tr>
+          <tr><td>Seed-Paket auf einem Gerät, das nicht der abgesprochene Seed ist.</td><td>Das Empfänger-Paket darüberspielen und kurz Bescheid sagen.</td></tr>
+          <tr><td>Alte Version auf einem Gerät vergessen.</td><td>Auf jedem Gerät <code>ver</code> prüfen.</td></tr>
+          <tr><td>Dem Analyzer mehr glauben als dem Gerät.</td><td>Den Repeater fragen: <code>fuota info</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div lang="en" class="tscroll">
+      <table>
+        <thead><tr><th>Mistake</th><th>What helps</th></tr></thead>
+        <tbody>
+          <tr><td>Only one test repeater, no seed in the region.</td><td>Take a second device or find fellow testers.</td></tr>
+          <tr><td>Seed package on a device that is not the agreed seed.</td><td>Install the receiver package over it and tell us briefly.</td></tr>
+          <tr><td>Old version forgotten on one device.</td><td>Check <code>ver</code> on every device.</td></tr>
+          <tr><td>Trusting the analyzer more than the device.</td><td>Ask the repeater: <code>fuota info</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div lang="de" class="prose">
+      <p>Etwas komisch? Schreib in den <a href="https://t.me/meshcorede/37922">Telegram-Thread</a> (oder in den <a href="https://discord.gg/Yaq3HEMfhk">Discord</a>) und kopiere die Ausgabe als Text, nicht als Screenshot.
+        Wie FUOTA genau funktioniert, steht auf der Seite <a href="ablauf.html">Ablauf</a>. Befehle mit Antworten, die Paket-Tabelle und der Weg ohne USB stehen unten bei den <a href="#alpha-details">Details für Neugierige</a>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>Something odd? Write in the <a href="https://t.me/meshcorede/37922">Telegram thread</a> (or in <a href="https://discord.gg/Yaq3HEMfhk">Discord</a>) and copy the output as text, not as a screenshot.
+        How FUOTA works in detail is on the <a href="ablauf.html">How it runs</a> page. Commands with answers, the package table and the way without USB are below, under <a href="#alpha-details">Details for the curious</a>.</p>
+    </div>
+  </section>
+
+  <section id="alpha-details" class="details-start">
+    <div lang="de" class="prose"><h2>Details für Neugierige</h2></div>
+    <div lang="en" class="prose"><h2>Details for the curious</h2></div>
+    <div lang="de" class="prose">
+      <p>Hier stehen die Befehle mit ihren Antworten, die Region, die Wartezeit, die Paket-Tabelle mit Prüfsummen und der
+        Weg ohne USB. Dazu kommt, was du beobachten und melden kannst. Die Tabelle brauchst du in Schritt 2,
+        den Rest nur, wenn du es genau wissen willst.</p>
+      <p>Das Empfänger-Paket 1.17.1-fuota1 holt Updates per Funk, prüft die Signatur, macht einen Probestart (Startversuch) und bestätigt die neue Version.
+        Es bietet selbst keine Updates an und leitet keine weiter. Es ist die Ausgangsbasis, damit ein
+        späteres 1.18 von Repeater zu Repeater laufen kann. Einen Termin dafür nennen wir hier nicht.</p>
+      <p><strong>Stand 18. November 2026:</strong> Der zweite Alpha-Test nutzt das Release
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>.
+        Genau diese signierten Release-Dateien sind noch auf keinem Gerät gelaufen. Die Läufe am Testaufbau nutzten das Test-Image.
+        Dieser Release ist selbst der erste Test <span class="m open">offen</span>.</p>
+    </div>
+    <div lang="en" class="prose">
+      <p>Here are the commands with their answers, the region, the waiting time, the package table with checksums and the
+        way without USB. On top of that comes what you can watch and report. You need the table in step 2,
+        the rest only if you want to know exactly.</p>
+      <p>The receiver package 1.17.1-fuota1 fetches updates over the air, checks the signature, does a test boot and confirms the new version.
+        It offers no updates itself and passes none on. It is the starting point so that a later 1.18
+        can run from repeater to repeater. We name no date for that here.</p>
+      <p><strong>Status as of 18 November 2026:</strong> The second alpha test uses the release
+        <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">v1.17.1-fuota1</a>.
+        These exact signed release files have not yet run on any device. The bench runs used the test image. This release is
+        itself the first test <span class="m open">open</span>.</p>
+    </div>
+  </section>
+
+  <section id="alpha-ablauf">
+    <div lang="de" class="prose"><h2>Befehle im Detail</h2></div>
+    <div lang="en" class="prose"><h2>Commands in detail</h2></div>
+    <div lang="de" class="prose">
+      <p>Hier stehen die Einstellungen aus Schritt 5 mit den Antworten des Knotens, dazu <code>set radio</code> und <code>get repeat</code>.</p>
+      <p><strong>Warum Name und Position wichtig sind:</strong> So zeigen Analyzer und Karte, wer welchen Repeater betreibt und welche Version er trägt. Mit-Tester können sich bei Fragen gezielt auf einen Repeater beziehen.</p>
       <ul>
         <li>Admin-Passwort: <code>password &lt;Passwort&gt;</code>, höchstens 15 Zeichen. Setze eines. Die Pakete sind
           Release-Images und haben ab Werk keines. Für die USB-Befehle brauchst du es nicht, es gilt für den
@@ -128,18 +432,11 @@
         <li>Repeat an lassen: <code>get repeat</code> zeigt <code>&gt; on</code>, ab Werk ist es an. Mit
           <code>set repeat on</code> schaltest du es wieder ein, die Antwort ist <code>OK - repeat is now ON</code>.</li>
       </ul>
-      <p>Mehrere Gruppen können unabhängig voneinander testen.</p>
+      <p>Mehrere Gruppen von Mit-Testern können unabhängig voneinander testen.</p>
     </div>
     <div lang="en" class="prose">
-      <ol>
-        <li>Find a few other testers and form a group. You split several test repeaters among yourselves.
-          All nodes of the group are within radio range of each other. Exactly one device of the group is the seed (section Packages).</li>
-        <li>Everyone except the seed installs the receiver package (base package) 1.17.1-fuota1 over USB (table below) and sets the region of their network (section Setting the region).</li>
-        <li>The node fetches updates over the air, checks the signature, does a test boot and confirms. You do nothing. It offers no updates itself and passes none on. We name no date for a later 1.18 here.</li>
-        <li>You watch the state and report what happened.</li>
-      </ol>
-      <p>Set up every test repeater like any other repeater. Type the commands in the USB console.</p>
-      <p><strong>Important for a coordinated test:</strong> give every repeater a meaningful name like <code>FUOTA &lt;nickname&gt; 1.17.1-fuota1</code>. Also set a rough GPS position and an admin password. Then the analyzer and the map show who runs which repeater and which version it carries. The group can also point to one repeater when questions come up.</p>
+      <p>Here are the settings from step 5 with the node's answers, plus <code>set radio</code> and <code>get repeat</code>.</p>
+      <p><strong>Why name and position matter:</strong> The analyzer and the map then show who runs which repeater and which version it carries. Fellow testers can point to one repeater when questions come up.</p>
       <ul>
         <li>Admin password: <code>password &lt;password&gt;</code>, 15 characters at most. Set one. The packages are
           release images and have none from the factory. You do not need it for the USB commands, it is for admin access
@@ -170,7 +467,7 @@
         <li>Keep repeat on: <code>get repeat</code> shows <code>&gt; on</code>, it is on from the factory. With
           <code>set repeat on</code> you switch it back on, the answer is <code>OK - repeat is now ON</code>.</li>
       </ul>
-      <p>Several groups can test independently of each other.</p>
+      <p>Several groups of fellow testers can test independently of each other.</p>
     </div>
   </section>
 
@@ -214,12 +511,10 @@
         Per USB gibt <code>fuota status</code> eine technische Zeile, <code>fuota info</code> die Kurzantwort
         <span class="m code">im Code geprüft</span>. Das ist am Gerät noch nicht gemessen <span class="m open">offen</span>.</p>
       <p>Von außen siehst du die Kampagne im
-        <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a>. Sie erscheint dort erst, wenn ein
-        Observer (ein Knoten, der mithört und meldet) Angebote oder Daten hört. Der Stand 1.17.1-fuota1 bietet selbst keine Kampagne an. Steht dort keine Kampagne, gilt die Anzeige am
+        <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a> (Abschnitt 6). Er zeigt die Kampagne erst, wenn ein Observer Angebote oder Daten hört. Der Stand 1.17.1-fuota1 bietet selbst keine Kampagne an. Steht dort keine Kampagne, gilt die Anzeige am
         Gerät.</p>
       <p>Der Analyzer zeigt die Alpha-Kampagne <span class="m field">im Feld beobachtet</span>. Du findest sie auf der Seite
-        FUOTA-Kampagnen im Tab Aktivität. Der Tab Rollout führt zwei Quellen zusammen: Knoten, deren Angebot ein Observer gehört hat, und Repeater, die Statusmeldungen senden
-        <span class="m code">im Code geprüft</span>. Statusmeldungen senden nur Knoten mit Standard-Region (Abschnitt Region setzen). Ein Seitenstand stammt aus dem letzten gehörten Angebot und kann veraltet sein. Ohne gehörten Wert steht ein Strich.</p>
+        FUOTA-Kampagnen im Tab Aktivität. Was der Tab Rollout zusammenführt, steht in Abschnitt 6.</p>
       <p>Der Weg zwischen Anbieter und Empfänger darf über normale MeshCore-Repeater (Stock, also unverändert) führen. Die Angebote laufen als
         gewöhnliche Gruppen-Daten-Flut, die Stock-Repeater nach Region weiterleiten <span class="m code">im Code geprüft</span>.
         Am Testaufbau lief ein P1 mit unveränderter Stock-Firmware als Relais <span class="m meas">gemessen</span>.</p>
@@ -229,11 +524,11 @@
         <span class="m field">im Feld beobachtet</span>. Ein ganzes Update kam auf diesem Weg noch nicht an.
         Anfragen gingen auf dem Rückweg verloren. Von 73 gehörten Pfad-Anfragen kamen 35 beim letzten Repeater vor dem
         Anbieter an <span class="m field">im Feld beobachtet</span>.</p>
-      <p>Deshalb geht die Anfrage zuerst auf dem Rückweg des Angebots zum Anbieter. Bleibt sie 2-mal ohne Antwort,
-        schickt der Empfänger sie einmal als Flut. Der Anbieter meldet ihm den Weg zurück, den die Flut genommen hat.
+      <p>Deshalb fragt der Empfänger zuerst auf dem Rückweg des Angebots. Bleibt die Anfrage 2-mal ohne Antwort,
+        schickt er sie einmal als Flut (Abschnitt 5). Der Anbieter meldet ihm den Weg zurück, den die Flut genommen hat.
         Danach fragt der Empfänger auf diesem Weg. Das steht im Code der 1.17.1-Linie
         <span class="m code">im Code geprüft</span>. Das Release-Image enthält die Zähler dazu, geprüft an der UF2-Datei
-        <span class="m meas">gemessen</span>. Eine solche Flut-Anfrage schickt ein Knoten höchstens einmal pro Stunde. Ob sie im Feld ankommt, ist
+        <span class="m meas">gemessen</span>. Ob die Flut-Anfrage im Feld ankommt, ist
         <span class="m open">offen</span>. Melde weiter, ob Stock-Repeater dazwischen lagen.</p>
       <p>Zum Probestart: Ein frisch aktualisierter Knoten bestätigt die neue Version erst, wenn er ein Funkpaket hört und
         selbst eins sendet. Dafür hat er je nach Knoten zwischen 15 Minuten und 6 Stunden Zeit. Hört er bis dahin nichts,
@@ -249,12 +544,10 @@
         <span class="m code">checked in the code</span>. This is not yet measured on a device
         <span class="m open">open</span>.</p>
       <p>From outside you can see the campaign in the
-        <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. It appears there only once an
-        observer (a node that listens and reports) hears offers or data. The build 1.17.1-fuota1 offers no campaign itself. If no campaign shows, trust the display on the
+        <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a> (section 6). It shows the campaign only once an observer hears offers or data. The build 1.17.1-fuota1 offers no campaign itself. If no campaign shows, trust the display on the
         device.</p>
       <p>The analyzer shows the alpha campaign <span class="m field">observed in the field</span>. You find it on the FUOTA campaigns
-        page, in the Activity tab. The Rollout tab joins two sources: nodes whose offer an observer heard, and repeaters that send status messages
-        <span class="m code">checked in the code</span>. Only nodes with a default region send status messages (section Setting the region). A page count comes from the last heard offer and may be out of date. Without a heard value there is a dash.</p>
+        page, in the Activity tab. What the Rollout tab joins is explained in section 6.</p>
       <p>The path between provider and receiver may run through normal MeshCore repeaters (stock, that is unchanged). The offers travel as
         ordinary group data floods, which stock repeaters forward by region <span class="m code">checked in the code</span>.
         On the bench a P1 with unchanged stock firmware ran as a relay <span class="m meas">measured</span>.</p>
@@ -264,11 +557,11 @@
         <span class="m field">observed in the field</span>. No complete update has arrived this way yet. Requests
         were lost on the way back. Of 73 heard path requests, 35 reached the last repeater before the provider
         <span class="m field">observed in the field</span>.</p>
-      <p>So the request first goes back to the provider along the path the offer took. If it stays unanswered twice,
-        the receiver sends it once as a flood. The provider reports back the path the flood took. After that the
+      <p>So the receiver first asks along the way the offer took back. If the request stays unanswered twice,
+        it sends it once as a flood (section 5). The provider reports back the path the flood took. After that the
         receiver asks along this path. This is in the code of the 1.17.1 line
         <span class="m code">checked in the code</span>. The release image holds the counters for it, checked on the UF2 file
-        <span class="m meas">measured</span>. A node sends such a flood request at most once an hour. Whether it arrives in the field is
+        <span class="m meas">measured</span>. Whether the flood request arrives in the field is
         <span class="m open">open</span>. Keep reporting whether stock repeaters lay in between.</p>
       <p>On the test boot. A freshly updated node confirms the new version only after it hears a radio packet and sends
         one. Depending on the node, it has between 15 minutes and 6 hours for that. If it hears nothing by then,
@@ -302,7 +595,7 @@
     <div lang="de" class="prose"><h2>Was du meldest</h2></div>
     <div lang="en" class="prose"><h2>What you report</h2></div>
     <div lang="de" class="prose">
-      <p>Am liebsten im Telegram-<a href="https://t.me/meshcorede/37922">Thread</a>. Dort sprechen wir auch ab, wer Seed ist.
+      <p>Am liebsten im Telegram-<a href="https://t.me/meshcorede/37922">Thread</a>.
         Ein GitHub Issue mit der Vorlage „Alpha-Bericht“
         (<a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>) und
         <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die
@@ -322,7 +615,7 @@
         geht jederzeit mit <code>fuota uf2</code>. Sag vorher kurz Bescheid.</p>
     </div>
     <div lang="en" class="prose">
-      <p>Preferably in the Telegram <a href="https://t.me/meshcorede/37922">thread</a>. We also agree there who is the seed.
+      <p>Preferably in the Telegram <a href="https://t.me/meshcorede/37922">thread</a>.
         A GitHub issue with the template “Alpha-Bericht”
         (<a href="https://github.com/marcelverdult/meshcore_fuota/issues">github.com/marcelverdult/meshcore_fuota</a>) and
         <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the
@@ -350,14 +643,14 @@
       <p>Nimm die Datei mit deinem Board im Namen und vergleiche die Prüfsumme mit <code>SHA256SUMS</code> aus dem
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">Release v1.17.1-fuota1</a>.
         Das SoftDevice im Dateinamen muss zur Zeile <code>SoftDevice:</code> in <code>INFO_UF2.TXT</code> deines Geräts passen.
-        Zum Installieren per USB drückst du 2-mal Reset und ziehst die Datei auf das Laufwerk. Ohne USB-Zugang geht es per Bluetooth
+        Ohne USB-Zugang geht es per Bluetooth
         (Abschnitt „Ohne USB“ unten).</p>
       <p>Das Release hat 18 Empfänger-Pakete (Basispakete), eins je Board. Am Testaufbau lief die Kette mit FakeTec und P1. Alle übrigen Boards
         sind gebaut, aber nicht am Testaufbau getestet <span class="m open">offen</span>.</p>
       <p>Die Pakete des ersten Tests hatten keinen Display-Treiber. Ein vorhandenes Display, zum Beispiel am Heltec T114,
         zeigte nichts an. Das war so vorgesehen <span class="m code">im Code geprüft</span>. Für 1.17.1-fuota1 ist das
         nicht neu geprüft <span class="m open">offen</span>.</p>
-      <p>Dieses Release enthält kein Seed-Paket. Es liegt im Vorab-Release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>, die Dateien tragen <code>-seed-</code> im Namen. Je Region wird genau ein Gerät Seed. Der Stand 1.17.1-fuota1 bietet selbst keine Updates an. Die Prüfsummen der UF2
+      <p>Dieses Release enthält kein Seed-Paket. Es liegt im Vorab-Release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a> (Abschnitt 2). Die Prüfsummen der UF2
         stehen in <code>SHA256SUMS</code> des Releases und in der Tabelle unten. Die der ZIP-Dateien stehen in
         <code>SHA256SUMS-ota</code>.</p>
     </div>
@@ -365,14 +658,14 @@
       <p>Take the file with your board in its name and compare its checksum with <code>SHA256SUMS</code> from the
         <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">release v1.17.1-fuota1</a>.
         The SoftDevice in the file name must match the <code>SoftDevice:</code> line in <code>INFO_UF2.TXT</code> of your device.
-        To install over USB, press reset twice and drag the file onto the drive. Without USB access it works over Bluetooth
+        Without USB access it works over Bluetooth
         (section “Without USB” below).</p>
       <p>The release has 18 receiver packages (base packages), one per board. On the bench the chain ran with a FakeTec and a P1. All other
         boards are built but not tested on the bench <span class="m open">open</span>.</p>
       <p>The packages of the first test had no display driver. A display that is present, for example on the Heltec
         T114, showed nothing. That was intended <span class="m code">checked in the code</span>. For 1.17.1-fuota1 this
         is not newly checked <span class="m open">open</span>.</p>
-      <p>This release holds no seed package. It is in the pre-release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>, and its files carry <code>-seed-</code> in the name. Exactly one device per region becomes the seed. The build 1.17.1-fuota1 does not offer updates itself. The checksums of the UF2 files are in
+      <p>This release holds no seed package. It is in the pre-release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a> (section 2). The checksums of the UF2 files are in
         <code>SHA256SUMS</code> of the release and in the table below. Those of the ZIP files are in
         <code>SHA256SUMS-ota</code>.</p>
     </div>
@@ -508,6 +801,7 @@
     </div>
   </section>
   </main>
+  <p class="next"><a href="ablauf.html"><span lang="de">Weiter: Ablauf</span><span lang="en">Next: How it runs</span> →</a></p>
   <footer>
     <span lang="de">Alpha-Test auf Basis MeshCore 1.17.1, nichts davon upstream eingereicht. Der Test läuft im öffentlichen Mesh mit Testrepeatern, die du dafür entbehren kannst. Der zweite Alpha-Test nutzt das Release v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht.</span>
     <span lang="en">Alpha test based on MeshCore 1.17.1, nothing of it submitted upstream. The test runs in the public mesh with test repeaters that you can spare. The second alpha test uses the release v1.17.1-fuota1. There is no general release.</span>
