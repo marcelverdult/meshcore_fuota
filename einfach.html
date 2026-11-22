@@ -447,12 +447,12 @@ footer p{margin:6px 0}
 <section id="test">
   <h2>Dein Test in 6 Schritten</h2>
   <p class="sub">Du brauchst einen Repeater mit nRF52-Chip und Zeit. Zum ersten Aufspielen hast du die Wahl: USB-Kabel oder Bluetooth.</p>
-  <div class="callout"><b>So läuft der zweite Alpha-Test:</b> Die meisten installieren das Basis-Paket. Das Seed-Paket, mit dem das Update startet, bekommt genau ein Gerät je Gruppe. Wer den Seed stellt, sprecht ihr untereinander ab. In deiner Region laufen immer mindestens 2 Test-Repeater, sonst passiert nichts. Alle Schritte stehen auf der <a href="start.html">Startseite für Tester</a>.</div>
+  <div class="callout"><b>So läuft der zweite Alpha-Test:</b> Es gibt genau 2 Downloads. Das Empfänger-Paket 1.17 (Basis) bekommen alle Geräte außer einem. Nur dieses eine Gerät je Region bekommt das Seed-Paket 1.18. Es startet das Update. Mit den anderen Testern sprichst du ab, wer den Seed stellt. In deiner Region laufen immer mindestens 2 Test-Repeater, sonst passiert nichts. Alle Schritte stehen auf der <a href="start.html">Startseite für Tester</a>.</div>
   <ol class="todo">
     <li><h3>Repeater aussuchen</h3>
       <p>Nimm Repeater, an die du gut rankommst und die du entbehren kannst. Es müssen mindestens 2 Test-Repeater in deiner Region laufen, einer davon ist der Seed. Hast du nur einen, such dir Mit-Tester. Welche Geräte (Boards) gehen, steht in der Tabelle auf der <a href="alpha.html">Alpha-Seite</a>.</p></li>
-    <li><h3>Basis-Paket aufspielen</h3>
-      <p>Die Basis-Pakete liegen im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">Release v1.17.1-fuota1</a>, der Seed im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">Vorab-Release v1.18.0-fuota5</a>. Du hast die Wahl:</p>
+    <li><h3>Empfänger-Paket aufspielen</h3>
+      <p>Die Empfänger-Pakete liegen im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">Release v1.17.1-fuota1</a>. Das Seed-Paket liegt im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">Vorab-Release v1.18.0-fuota5</a>. Die Dateinamen tragen <code>-base-</code> und <code>-seed-</code>. Du hast die Wahl:</p>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>Per USB-Kabel</h4>
           <p>Lade die Datei mit deinem Board im Namen. Vergleiche ihre Prüfsumme mit <code>SHA256SUMS</code> aus dem Release. Die Prüfsumme zeigt, dass die Datei beim Laden nicht beschädigt wurde. Schließe das Board per USB an, drück zweimal Reset und zieh die Datei auf das Laufwerk, das dann erscheint.</p>
@@ -488,7 +488,7 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
     <li><h3>Zuschauen</h3>
       <p>Mehr musst du nicht tun. Den Stand zeigt <code>fuota info</code>, in der USB-Konsole oder per Fernzugriff übers Mesh, wenn du als Admin angemeldet bist. <code>fuota status</code> zeigt per USB alle Einzelheiten, übers Mesh nur dieselbe Kurzantwort wie <code>fuota info</code>. Von außen siehst du das Update im <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a> auf der Seite FUOTA-Kampagnen, im Tab Aktivität. Eine Kampagne ist ein Update, das gerade durchs Mesh wandert.</p></li>
     <li><h3>Melden, was passiert ist</h3>
-      <p>Am liebsten im <a href="https://t.me/meshcorede/37922">Telegram-Thread</a>. Dort sprecht ihr auch ab, wer Seed ist. Ein <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub-Issue</a> mit der Vorlage „Alpha-Bericht“ (dafür brauchst du ein GitHub-Konto) und <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die Alpha-Meldungen direkt <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in diesem Kanal</a>. Kopiere Ausgaben als Text, nicht als Screenshot.</p>
+      <p>Am liebsten im <a href="https://t.me/meshcorede/37922">Telegram-Thread</a>. Dort sprichst du auch ab, wer Seed ist. Ein <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub-Issue</a> mit der Vorlage „Alpha-Bericht“ (dafür brauchst du ein GitHub-Konto) und <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die Alpha-Meldungen direkt <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in diesem Kanal</a>. Kopiere Ausgaben als Text, nicht als Screenshot.</p>
       <ul>
         <li>Board und Version vorher und nachher (<code>ver</code>, <code>fuota info</code>)</li>
         <li>wann das Update fertig war und wann die neue Firmware bestätigt war</li>
@@ -647,12 +647,12 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
 <section id="your-test">
   <h2>Your test in 6 steps</h2>
   <p class="sub">You need a repeater with an nRF52 chip and time. For the first install you can choose: USB cable or Bluetooth.</p>
-  <div class="callout"><b>How the second alpha test runs:</b> Most people install the base package. The seed package, which starts the update, goes to exactly one device per group. You agree among yourselves who provides the seed. At least 2 test repeaters always run in your region, otherwise nothing happens. All steps are on the <a href="start.html">start page for testers</a>.</div>
+  <div class="callout"><b>How the second alpha test runs:</b> There are exactly 2 downloads. All devices except one get the receiver package 1.17 (base). Only that one device per region gets the seed package 1.18. It starts the update. You agree with the other testers who provides the seed. At least 2 test repeaters always run in your region, otherwise nothing happens. All steps are on the <a href="start.html">start page for testers</a>.</div>
   <ol class="todo">
     <li><h3>Pick a repeater</h3>
       <p>Take repeaters you can reach easily and can spare. At least 2 test repeaters must run in your region, one of them is the seed. If you have only one, look for fellow testers. Which devices (boards) work is listed in the table on the <a href="alpha.html">alpha page</a>.</p></li>
-    <li><h3>Install the base package</h3>
-      <p>The base packages are in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">release v1.17.1-fuota1</a>, the seed is in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">pre-release v1.18.0-fuota5</a>. You can choose:</p>
+    <li><h3>Install the receiver package</h3>
+      <p>The receiver packages are in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">release v1.17.1-fuota1</a>. The seed package is in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">pre-release v1.18.0-fuota5</a>. The file names carry <code>-base-</code> and <code>-seed-</code>. You can choose:</p>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>By USB cable</h4>
           <p>Download the file with your board in its name. Compare its checksum with <code>SHA256SUMS</code> from the release. The checksum shows that the file was not damaged while downloading. Connect the board by USB and press reset twice. Drag the file onto the drive that appears.</p>

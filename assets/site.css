@@ -336,11 +336,12 @@
   .sk-card p:last-child{margin-bottom:0}
   .sk-tag{font:600 17px var(--disp);color:var(--fg)}
   .sk-ok{border-color:color-mix(in srgb,var(--ok) 45%,var(--line));background:color-mix(in srgb,var(--ok) 7%,var(--surface))}
-  .sk-ok .sk-tag{color:var(--ok)}
+  .sk-ok .sk-tag{color:color-mix(in srgb,var(--ok) 82%,var(--fg))}
   .sk-no{border-color:color-mix(in srgb,var(--crit) 45%,var(--line));background:color-mix(in srgb,var(--crit) 7%,var(--surface))}
-  .sk-no .sk-tag{color:var(--crit)}
+  .sk-no .sk-tag{color:color-mix(in srgb,var(--crit) 82%,var(--fg))}
   .sk-warn{border-color:color-mix(in srgb,var(--warn) 50%,var(--line));background:color-mix(in srgb,var(--warn) 8%,var(--surface))}
-  .sk-warn .sk-tag{color:var(--warn)}
+  .sk-warn .sk-tag{color:color-mix(in srgb,var(--warn) 78%,var(--fg))}
+  .sk-card a{color:color-mix(in srgb,var(--accent) 78%,var(--fg))}
   .sk-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .sk-two .sk-card{margin:12px 0}
   @media (max-width:640px){.sk-two{grid-template-columns:1fr}}

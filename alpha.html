@@ -92,7 +92,7 @@
       <ol>
         <li>Such dir ein paar andere Tester und bildet eine Gruppe. Ihr teilt mehrere Testrepeater unter euch auf.
           Alle Knoten der Gruppe liegen in Funkreichweite zueinander. Genau ein Gerät der Gruppe ist der Seed (Abschnitt Pakete).</li>
-        <li>Alle außer dem Seed installieren das Basispaket 1.17.1-fuota1 per USB (Tabelle unten) und setzen die Region ihres Netzes (Abschnitt Region setzen).</li>
+        <li>Alle außer dem Seed installieren das Empfänger-Paket (Basispaket) 1.17.1-fuota1 per USB (Tabelle unten) und setzen die Region ihres Netzes (Abschnitt Region setzen).</li>
         <li>Der Knoten holt Updates per Funk, prüft die Signatur, macht einen Probestart und bestätigt. Du tust nichts. Er bietet selbst keine Updates an und leitet keine weiter. Einen Termin für ein späteres 1.18 nennen wir hier nicht.</li>
         <li>Du beobachtest den Stand und meldest, was passiert ist.</li>
       </ol>
@@ -134,7 +134,7 @@
       <ol>
         <li>Find a few other testers and form a group. You split several test repeaters among yourselves.
           All nodes of the group are within radio range of each other. Exactly one device of the group is the seed (section Packages).</li>
-        <li>Everyone except the seed installs the base package 1.17.1-fuota1 over USB (table below) and sets the region of their network (section Setting the region).</li>
+        <li>Everyone except the seed installs the receiver package (base package) 1.17.1-fuota1 over USB (table below) and sets the region of their network (section Setting the region).</li>
         <li>The node fetches updates over the air, checks the signature, does a test boot and confirms. You do nothing. It offers no updates itself and passes none on. We name no date for a later 1.18 here.</li>
         <li>You watch the state and report what happened.</li>
       </ol>
@@ -352,12 +352,12 @@
         Das SoftDevice im Dateinamen muss zur Zeile <code>SoftDevice:</code> in <code>INFO_UF2.TXT</code> deines Geräts passen.
         Zum Installieren per USB drückst du 2-mal Reset und ziehst die Datei auf das Laufwerk. Ohne USB-Zugang geht es per Bluetooth
         (Abschnitt „Ohne USB“ unten).</p>
-      <p>Das Release hat 18 Basispakete, eins je Board. Am Testaufbau lief die Kette mit FakeTec und P1. Alle übrigen Boards
+      <p>Das Release hat 18 Empfänger-Pakete (Basispakete), eins je Board. Am Testaufbau lief die Kette mit FakeTec und P1. Alle übrigen Boards
         sind gebaut, aber nicht am Testaufbau getestet <span class="m open">offen</span>.</p>
       <p>Die Pakete des ersten Tests hatten keinen Display-Treiber. Ein vorhandenes Display, zum Beispiel am Heltec T114,
         zeigte nichts an. Das war so vorgesehen <span class="m code">im Code geprüft</span>. Für 1.17.1-fuota1 ist das
         nicht neu geprüft <span class="m open">offen</span>.</p>
-      <p>Dieses Release enthält kein Seed-Paket. Es liegt im Vorab-Release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>, die Dateien tragen <code>-seed-</code> im Namen. Je Gruppe wird genau ein Gerät Seed. Der Stand 1.17.1-fuota1 bietet selbst keine Updates an. Die Prüfsummen der UF2
+      <p>Dieses Release enthält kein Seed-Paket. Es liegt im Vorab-Release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>, die Dateien tragen <code>-seed-</code> im Namen. Je Region wird genau ein Gerät Seed. Der Stand 1.17.1-fuota1 bietet selbst keine Updates an. Die Prüfsummen der UF2
         stehen in <code>SHA256SUMS</code> des Releases und in der Tabelle unten. Die der ZIP-Dateien stehen in
         <code>SHA256SUMS-ota</code>.</p>
     </div>
@@ -367,18 +367,18 @@
         The SoftDevice in the file name must match the <code>SoftDevice:</code> line in <code>INFO_UF2.TXT</code> of your device.
         To install over USB, press reset twice and drag the file onto the drive. Without USB access it works over Bluetooth
         (section “Without USB” below).</p>
-      <p>The release has 18 base packages, one per board. On the bench the chain ran with a FakeTec and a P1. All other
+      <p>The release has 18 receiver packages (base packages), one per board. On the bench the chain ran with a FakeTec and a P1. All other
         boards are built but not tested on the bench <span class="m open">open</span>.</p>
       <p>The packages of the first test had no display driver. A display that is present, for example on the Heltec
         T114, showed nothing. That was intended <span class="m code">checked in the code</span>. For 1.17.1-fuota1 this
         is not newly checked <span class="m open">open</span>.</p>
-      <p>This release holds no seed package. It is in the pre-release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>, and its files carry <code>-seed-</code> in the name. Exactly one device per group becomes the seed. The build 1.17.1-fuota1 does not offer updates itself. The checksums of the UF2 files are in
+      <p>This release holds no seed package. It is in the pre-release <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">v1.18.0-fuota5</a>, and its files carry <code>-seed-</code> in the name. Exactly one device per region becomes the seed. The build 1.17.1-fuota1 does not offer updates itself. The checksums of the UF2 files are in
         <code>SHA256SUMS</code> of the release and in the table below. Those of the ZIP files are in
         <code>SHA256SUMS-ota</code>.</p>
     </div>
     <div lang="de" class="tscroll">
       <table>
-        <tr><th>Board</th><th>Basispaket 1.17.1-fuota1 für alle Geräte</th><th>sha256</th></tr>
+        <tr><th>Board</th><th>Empfänger-Paket (Basispaket) 1.17.1-fuota1, für alle Geräte außer dem Seed</th><th>sha256</th></tr>
         <tr><td>FakeTec</td><td><a href="https://github.com/marcelverdult/meshcore_fuota/releases/download/v1.17.1-fuota1/meshcore-fuota-1.17.1-fuota1-base-faketec-s140-6.1.1.uf2"><code>meshcore-fuota-1.17.1-fuota1-base-faketec-s140-6.1.1.uf2</code></a></td><td class="n"><code>a78312e46b2e1e1af18e024ef7d26daf25ed79f1a0312e7b407869ceec5a90f2</code></td></tr>
         <tr><td>Seeed SenseCAP Solar P1</td><td><a href="https://github.com/marcelverdult/meshcore_fuota/releases/download/v1.17.1-fuota1/meshcore-fuota-1.17.1-fuota1-base-p1-s140-7.3.0.uf2"><code>meshcore-fuota-1.17.1-fuota1-base-p1-s140-7.3.0.uf2</code></a></td><td class="n"><code>6e8c2969a7eea5b6a71dedec5dd24ce9f3427bbf7e9642d5c0c52e07715986ca</code></td></tr>
         <tr><td>RAK4631</td><td><a href="https://github.com/marcelverdult/meshcore_fuota/releases/download/v1.17.1-fuota1/meshcore-fuota-1.17.1-fuota1-base-rak4631-s140-6.1.1.uf2"><code>meshcore-fuota-1.17.1-fuota1-base-rak4631-s140-6.1.1.uf2</code></a></td><td class="n"><code>4c2106631b7d1b2ebd773bf608d41296ec96d905f0db6dd878e5ffd41882e311</code></td></tr>
@@ -401,7 +401,7 @@
     </div>
     <div lang="en" class="tscroll">
       <table>
-        <tr><th>Board</th><th>Base package 1.17.1-fuota1 for all devices</th><th>sha256</th></tr>
+        <tr><th>Board</th><th>Receiver package (base package) 1.17.1-fuota1, for all devices except the seed</th><th>sha256</th></tr>
         <tr><td>FakeTec</td><td><a href="https://github.com/marcelverdult/meshcore_fuota/releases/download/v1.17.1-fuota1/meshcore-fuota-1.17.1-fuota1-base-faketec-s140-6.1.1.uf2"><code>meshcore-fuota-1.17.1-fuota1-base-faketec-s140-6.1.1.uf2</code></a></td><td class="n"><code>a78312e46b2e1e1af18e024ef7d26daf25ed79f1a0312e7b407869ceec5a90f2</code></td></tr>
         <tr><td>Seeed SenseCAP Solar P1</td><td><a href="https://github.com/marcelverdult/meshcore_fuota/releases/download/v1.17.1-fuota1/meshcore-fuota-1.17.1-fuota1-base-p1-s140-7.3.0.uf2"><code>meshcore-fuota-1.17.1-fuota1-base-p1-s140-7.3.0.uf2</code></a></td><td class="n"><code>6e8c2969a7eea5b6a71dedec5dd24ce9f3427bbf7e9642d5c0c52e07715986ca</code></td></tr>
         <tr><td>RAK4631</td><td><a href="https://github.com/marcelverdult/meshcore_fuota/releases/download/v1.17.1-fuota1/meshcore-fuota-1.17.1-fuota1-base-rak4631-s140-6.1.1.uf2"><code>meshcore-fuota-1.17.1-fuota1-base-rak4631-s140-6.1.1.uf2</code></a></td><td class="n"><code>4c2106631b7d1b2ebd773bf608d41296ec96d905f0db6dd878e5ffd41882e311</code></td></tr>
