@@ -329,3 +329,27 @@
   .anim-fig figcaption{font-size:14px;color:var(--muted);margin-top:8px}
   /* long paths in running text (file:line) break instead of widening the page on a phone */
   main p code,main li code{overflow-wrap:anywhere}
+
+  /* start page (start.html): cards for the do and do-not choices, numbered steps */
+  .sk-card{border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface);padding:16px 18px;margin:12px 0}
+  .sk-card p{margin:0 0 8px;color:var(--fg-2)}
+  .sk-card p:last-child{margin-bottom:0}
+  .sk-tag{font:600 17px var(--disp);color:var(--fg)}
+  .sk-ok{border-color:color-mix(in srgb,var(--ok) 45%,var(--line));background:color-mix(in srgb,var(--ok) 7%,var(--surface))}
+  .sk-ok .sk-tag{color:var(--ok)}
+  .sk-no{border-color:color-mix(in srgb,var(--crit) 45%,var(--line));background:color-mix(in srgb,var(--crit) 7%,var(--surface))}
+  .sk-no .sk-tag{color:var(--crit)}
+  .sk-warn{border-color:color-mix(in srgb,var(--warn) 50%,var(--line));background:color-mix(in srgb,var(--warn) 8%,var(--surface))}
+  .sk-warn .sk-tag{color:var(--warn)}
+  .sk-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .sk-two .sk-card{margin:12px 0}
+  @media (max-width:640px){.sk-two{grid-template-columns:1fr}}
+  .prose ol.sk-steps{list-style:none;padding:0;counter-reset:sk;gap:10px}
+  .prose ol.sk-steps>li{counter-increment:sk;position:relative;padding:12px 14px 12px 52px;border:1px solid var(--line);border-radius:var(--r-ctl);background:var(--surface)}
+  .prose ol.sk-steps>li::before{content:counter(sk);position:absolute;left:12px;top:12px;width:28px;height:28px;border-radius:50%;
+    background:var(--accent);color:var(--bg);display:grid;place-items:center;font:600 14px var(--mono)}
+  .prose ol.sk-steps ul{margin-top:8px}
+  .start-cta{display:block;margin:18px 0 4px;padding:14px 18px;border:1px solid color-mix(in srgb,var(--accent) 55%,var(--line));border-radius:var(--r-card);
+    background:color-mix(in srgb,var(--accent) 8%,var(--surface));font:600 17px var(--disp);text-decoration:none}
+  .start-cta span{display:block;font:400 14.5px var(--sans);color:var(--muted);margin-top:2px}
+  .sk-last{min-height:75vh}  /* the last section of the start page is short: the top bar still has to reach its title */

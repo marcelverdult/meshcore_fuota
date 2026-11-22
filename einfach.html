@@ -322,6 +322,7 @@ footer p{margin:6px 0}
 
 <div class="hero">
   <span class="pill">Zweiter Alpha-Test im Großraum Hamburg</span>
+  <p><a href="start.html"><b>Du willst testen? Hier starten.</b></a></p>
   <h1>Ein Repeater bekommt das Update von Hand. <em>Alle anderen holen es per Funk.</em></h1>
   <p class="lede">Repeater sind Funkstationen im MeshCore-Netz. Viele stehen auf Dächern und Masten. Für ein Update musste bisher jemand hinfahren und ein Kabel anstecken. FUOTA heißt Firmware Update Over The Air: Die Repeater geben neue Firmware per Funk weiter. Firmware ist das Programm im Gerät. Alpha heißt: frühe Testfassung. FUOTA ist ein Test und noch nicht Teil von MeshCore.</p>
   <div class="facts">
@@ -446,12 +447,12 @@ footer p{margin:6px 0}
 <section id="test">
   <h2>Dein Test in 6 Schritten</h2>
   <p class="sub">Du brauchst einen Repeater mit nRF52-Chip und Zeit. Zum ersten Aufspielen hast du die Wahl: USB-Kabel oder Bluetooth.</p>
-  <div class="callout"><b>So läuft der zweite Alpha-Test:</b> Du installierst nur das Empfänger-Paket. Das Seed-Paket, mit dem das Update startet, bekommen 1 bis 2 ausgewählte Personen. So lässt sich der Test steuern und auswerten. Installiere das Seed-Paket nicht selbst.</div>
+  <div class="callout"><b>So läuft der zweite Alpha-Test:</b> Die meisten installieren das Basis-Paket. Das Seed-Paket, mit dem das Update startet, bekommt genau ein Gerät je Gruppe. Wer den Seed stellt, sprecht ihr untereinander ab. In deiner Region laufen immer mindestens 2 Test-Repeater, sonst passiert nichts. Alle Schritte stehen auf der <a href="start.html">Startseite für Tester</a>.</div>
   <ol class="todo">
     <li><h3>Repeater aussuchen</h3>
-      <p>Nimm einen Repeater, an den du gut rankommst und den du entbehren kannst. Er sollte andere Repeater hören. Welche Geräte (Boards) gehen, steht in der Tabelle auf der <a href="alpha.html">Alpha-Seite</a>.</p></li>
-    <li><h3>Empfänger-Paket aufspielen <span class="soon">noch nicht fertig</span></h3>
-      <p>Die Pakete für den zweiten Test sind noch nicht gebaut. Ein Datum gibt es noch nicht. Hier steht der Link zum Release, sobald sie fertig sind. Dann hast du die Wahl:</p>
+      <p>Nimm Repeater, an die du gut rankommst und die du entbehren kannst. Es müssen mindestens 2 Test-Repeater in deiner Region laufen, einer davon ist der Seed. Hast du nur einen, such dir Mit-Tester. Welche Geräte (Boards) gehen, steht in der Tabelle auf der <a href="alpha.html">Alpha-Seite</a>.</p></li>
+    <li><h3>Basis-Paket aufspielen</h3>
+      <p>Die Basis-Pakete liegen im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">Release v1.17.1-fuota1</a>, der Seed im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">Vorab-Release v1.18.0-fuota5</a>. Du hast die Wahl:</p>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>Per USB-Kabel</h4>
           <p>Lade die Datei mit deinem Board im Namen. Vergleiche ihre Prüfsumme mit <code>SHA256SUMS</code> aus dem Release. Die Prüfsumme zeigt, dass die Datei beim Laden nicht beschädigt wurde. Schließe das Board per USB an, drück zweimal Reset und zieh die Datei auf das Laufwerk, das dann erscheint.</p>
@@ -487,7 +488,7 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
     <li><h3>Zuschauen</h3>
       <p>Mehr musst du nicht tun. Den Stand zeigt <code>fuota info</code>, in der USB-Konsole oder per Fernzugriff übers Mesh, wenn du als Admin angemeldet bist. <code>fuota status</code> zeigt per USB alle Einzelheiten, übers Mesh nur dieselbe Kurzantwort wie <code>fuota info</code>. Von außen siehst du das Update im <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a> auf der Seite FUOTA-Kampagnen, im Tab Aktivität. Eine Kampagne ist ein Update, das gerade durchs Mesh wandert.</p></li>
     <li><h3>Melden, was passiert ist</h3>
-      <p>Am liebsten als <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub-Issue</a> mit der Vorlage „Alpha-Bericht“. Dafür brauchst du ein GitHub-Konto. <a href="https://t.me/meshcorede/37922">Telegram</a> und <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die Alpha-Meldungen direkt <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in diesem Kanal</a>. Kopiere Ausgaben als Text, nicht als Screenshot.</p>
+      <p>Am liebsten im <a href="https://t.me/meshcorede/37922">Telegram-Thread</a>. Dort sprecht ihr auch ab, wer Seed ist. Ein <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub-Issue</a> mit der Vorlage „Alpha-Bericht“ (dafür brauchst du ein GitHub-Konto) und <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die Alpha-Meldungen direkt <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in diesem Kanal</a>. Kopiere Ausgaben als Text, nicht als Screenshot.</p>
       <ul>
         <li>Board und Version vorher und nachher (<code>ver</code>, <code>fuota info</code>)</li>
         <li>wann das Update fertig war und wann die neue Firmware bestätigt war</li>
@@ -521,6 +522,7 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
 
 <div class="hero">
   <span class="pill">Second alpha test in the Hamburg area</span>
+  <p><a href="start.html"><b>Want to test? Start here.</b></a></p>
   <h1>One repeater gets the update by hand. <em>All the others fetch it over the air.</em></h1>
   <p class="lede">Repeaters are radio stations in the MeshCore network. Many stand on roofs and masts. Until now, an update meant someone had to go there and plug in a cable. FUOTA stands for Firmware Update Over The Air. Repeaters pass new firmware to each other by radio. Firmware is the program inside the device. Alpha means an early test version. FUOTA is a test and not yet part of MeshCore.</p>
   <div class="facts">
@@ -645,12 +647,12 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
 <section id="your-test">
   <h2>Your test in 6 steps</h2>
   <p class="sub">You need a repeater with an nRF52 chip and time. For the first install you can choose: USB cable or Bluetooth.</p>
-  <div class="callout"><b>How the second alpha test runs:</b> You install only the receiver package. The seed package, which starts the update, goes to 1 or 2 selected people. That way the test can be steered and evaluated. Do not install the seed package yourself.</div>
+  <div class="callout"><b>How the second alpha test runs:</b> Most people install the base package. The seed package, which starts the update, goes to exactly one device per group. You agree among yourselves who provides the seed. At least 2 test repeaters always run in your region, otherwise nothing happens. All steps are on the <a href="start.html">start page for testers</a>.</div>
   <ol class="todo">
     <li><h3>Pick a repeater</h3>
-      <p>Take a repeater you can reach easily and can spare. It should hear other repeaters. Which devices (boards) work is listed in the table on the <a href="alpha.html">alpha page</a>.</p></li>
-    <li><h3>Install the receiver package <span class="soon">not ready yet</span></h3>
-      <p>The packages for the second test are not built yet. There is no date yet. The link to the release will appear here once they are ready. Then you can choose:</p>
+      <p>Take repeaters you can reach easily and can spare. At least 2 test repeaters must run in your region, one of them is the seed. If you have only one, look for fellow testers. Which devices (boards) work is listed in the table on the <a href="alpha.html">alpha page</a>.</p></li>
+    <li><h3>Install the base package</h3>
+      <p>The base packages are in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">release v1.17.1-fuota1</a>, the seed is in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">pre-release v1.18.0-fuota5</a>. You can choose:</p>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>By USB cable</h4>
           <p>Download the file with your board in its name. Compare its checksum with <code>SHA256SUMS</code> from the release. The checksum shows that the file was not damaged while downloading. Connect the board by USB and press reset twice. Drag the file onto the drive that appears.</p>
@@ -686,7 +688,7 @@ set lon <span class="c">&lt;longitude&gt;</span></div>
     <li><h3>Watch</h3>
       <p>That is all you need to do. <code>fuota info</code> shows the state in the USB console. Over the mesh it works by remote access when you are logged in as admin. <code>fuota status</code> shows all details over USB. Over the mesh it gives only the same short answer as <code>fuota info</code>. From the outside you can see the update in the <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. Look in the Activity tab on the FUOTA campaigns page. A campaign is an update that is currently travelling through the mesh.</p></li>
     <li><h3>Report what happened</h3>
-      <p>Preferably as a <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub issue</a> with the template “Alpha-Bericht” (a German template name). You need a GitHub account for that. <a href="https://t.me/meshcorede/37922">Telegram</a> and <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the alpha reports <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in this channel</a>. Copy output as text, not as screenshots.</p>
+      <p>Preferably in the <a href="https://t.me/meshcorede/37922">Telegram thread</a>. You also agree there who is the seed. A <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub issue</a> with the template “Alpha-Bericht” (a German template name, you need a GitHub account for it) and <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the alpha reports <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in this channel</a>. Copy output as text, not as screenshots.</p>
       <ul>
         <li>board and version before and after (<code>ver</code>, <code>fuota info</code>)</li>
         <li>when the update was complete and when the new firmware was confirmed</li>

@@ -20,7 +20,7 @@
 (function () {
   // before the first paint: forward old section links of the single page, then pick the language
   // (#de / #en, saved choice, else the browser language) so the other language never flashes
-  var moved = window.fuotaMoved = {"kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-linien": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "status": "funk.html", "analyzer": "funk.html", "weiter": "funk.html", "filter": "funk.html", "powersaving": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html", "alpha-ablauf": "alpha.html", "alpha-region": "alpha.html", "alpha-beobachten": "alpha.html", "alpha-sieben-tage": "alpha.html", "alpha-melden": "alpha.html", "alpha-pakete": "alpha.html", "alpha-ota": "alpha.html"}, h = location.hash.slice(1);
+  var moved = window.fuotaMoved = {"start-gruppe": "start.html", "start-dateien": "start.html", "start-alt": "start.html", "start-schritte": "start.html", "start-dauer": "start.html", "start-analyzer": "start.html", "start-fehler": "start.html", "kurz": "ablauf.html", "ablauf": "ablauf.html", "rollen": "ablauf.html", "betreiber": "ablauf.html", "release-linien": "ablauf.html", "release-build": "ablauf.html", "aufwand": "kosten.html", "hh": "kosten.html", "kosten": "kosten.html", "nebenslot": "nebenslot.html", "nebenslot-ablauf": "nebenslot.html", "nebenslot-zahlen": "nebenslot.html", "nebenslot-band": "nebenslot.html", "nebenslot-mesh": "nebenslot.html", "nebenslot-grenzen": "nebenslot.html", "nebenslot-angriffe": "nebenslot.html", "nebenslot-offen": "nebenslot.html", "warum": "sicherheit.html", "angriff": "sicherheit.html", "funk": "funk.html", "status": "funk.html", "analyzer": "funk.html", "weiter": "funk.html", "filter": "funk.html", "powersaving": "funk.html", "zeiten": "funk.html", "speicher": "flash.html", "tests": "tests.html", "faq": "fragen.html", "luecken": "fragen.html", "pruef": "fragen.html", "alpha-ablauf": "alpha.html", "alpha-region": "alpha.html", "alpha-beobachten": "alpha.html", "alpha-sieben-tage": "alpha.html", "alpha-melden": "alpha.html", "alpha-pakete": "alpha.html", "alpha-ota": "alpha.html"}, h = location.hash.slice(1);
   if (moved[h]) { location.replace(moved[h] + "#" + h); return; }
   var l = (h === "de" || h === "en") ? h : null;
   if (!l) { try { l = localStorage.getItem("fuota-lang"); } catch (e) {} }
@@ -45,6 +45,7 @@
   <nav class="pages" aria-label="Seiten / pages">
     <ul>
       <li><a href="index.html" aria-current="page"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
+      <li><a href="start.html"><span lang="de">Alpha-Test starten</span><span lang="en">Start the alpha test</span></a></li>
       <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
       <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
       <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
@@ -64,6 +65,7 @@
         einer Kletterei, die damals eine gute Idee schien. Ein Update heißt heute: hinfahren. FUOTA steht für Firmware Update Over the Air. Damit geben sich die
         Repeater neue Firmware selbst über LoRa weiter. Ein kleines Release braucht 63 Datenpakete an einen Nachbarn
         <span class="m calc">berechnet</span>, und Update-Daten fluten nie.</p>
+      <a class="start-cta" href="start.html">Du willst testen? Hier starten<span>Was du tun musst, Schritt für Schritt</span></a>
       <p class="lede"><a href="einfach.html">FUOTA einfach erklärt</a></p>
     </div>
     <div lang="en">
@@ -71,6 +73,7 @@
       <p class="sub">Many repeaters sit on roofs, masts and mountains. You reach them by ladder, hike or a climb that
         seemed fine at the time. Today an update means going there. FUOTA stands for Firmware Update Over the Air. With it the repeaters pass new firmware to each
         other over LoRa. A small release takes 63 data packets to one neighbour <span class="m calc">calculated</span>. Update data never floods.</p>
+      <a class="start-cta" href="start.html">Want to test? Start here<span>What you need to do, step by step</span></a>
       <p class="lede"><a href="einfach.html">FUOTA explained simply</a></p>
     </div>
     <div class="hero-anim"></div>
@@ -166,6 +169,7 @@
       <h2 class="intro-h tiles-h">The pages in detail</h2>
     </div>
     <nav class="tiles" aria-label="Seiten / pages">
+      <a class="tile" href="start.html"><b><span lang="de">Alpha-Test starten</span><span lang="en">Start the alpha test</span></b><span lang="de">Was du tun musst, Schritt für Schritt</span><span lang="en">What you need to do, step by step</span></a>
       <a class="tile" href="ablauf.html"><b><span lang="de">Ablauf</span><span lang="en">How it runs</span></b><span lang="de">Ablauf, Rollen, Seed werden</span><span lang="en">Steps, roles, becoming the seed</span></a>
       <a class="tile" href="kosten.html"><b><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></b><span lang="de">Airtime, Hamburg, Patches</span><span lang="en">Airtime, Hamburg, patches</span></a>
       <a class="tile" href="nebenslot.html"><b><span lang="de">Nebenslot</span><span lang="en">Side slot</span></b><span lang="de">Bursts auf einem freien Slot</span><span lang="en">Bursts on a free slot</span></a>
@@ -178,7 +182,7 @@
     </nav>
   </header>
   </main>
-  <p class="next"><a href="ablauf.html"><span lang="de">Weiter: Ablauf</span><span lang="en">Next: How it runs</span> →</a></p>
+  <p class="next"><a href="start.html"><span lang="de">Weiter: Alpha-Test starten</span><span lang="en">Next: Start the alpha test</span> →</a></p>
   <footer>
     <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
     <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
