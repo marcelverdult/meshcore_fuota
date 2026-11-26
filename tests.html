@@ -45,7 +45,7 @@
   <nav class="pages" aria-label="Seiten / pages">
     <ul>
       <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
-      <li><a href="alpha.html"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
+      <li><a href="installieren.html"><span lang="de">Installieren</span><span lang="en">Install</span></a></li>
       <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
       <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
       <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
@@ -60,13 +60,13 @@
 <header class="hero">
     <div lang="de">
       <h1>Am Testaufbau gemessen, im Feld beobachtet</h1>
-      <p class="lede">Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026). Als Beleg zählt der Abgleich mit
+      <p class="lede">Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung vom 12. November 2026 nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026). Als Beleg zählt der Abgleich mit
         den gebauten Dateien: laufendes Image und SHA-256 beider Slots. Was noch nicht getestet ist, steht unter
         <a href="fragen.html#luecken">Fragen</a> als offen.</p>
     </div>
     <div lang="en">
       <h1>Measured on the bench, observed in the field</h1>
-      <p class="lede">The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026). As evidence, we compare the
+      <p class="lede">The radio tests on the bench run at SF7 and 1 dBm. The alpha check of 12 November 2026 on the bench used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026). As evidence, we compare the
         running image and both slots' SHA-256 with the built files. What is not tested yet appears under
         <a href="fragen.html#luecken">Questions</a> as open.</p>
     </div>
@@ -277,10 +277,14 @@
           <li>Von „pulling“ bis „confirmed“ vergingen rund 18 min. Das waren 14 min Funk und 2 min Wartezeit, dazu Umbau und Probestart <span class="m meas">gemessen</span>. Es waren Test-Images bei SF7 und 1 dBm, nicht das Release-Timing.</li>
           <li>Der Knoten mit 1.18.0-b3 bestätigte beim ersten und zweiten Flash nicht und fiel zurück. Beim dritten Flash bestätigte er, nachdem ein Nachbar alle 12 s ein Advert sendete <span class="m meas">gemessen</span>. Dass in der stillen Umgebung kein Paket ankam, ist nicht geprüft <span class="m open">offen</span>.</li>
         </ul></td></tr>
-        <tr><td>Feld: Alpha-Test mit Testern</td><td><ul>
-          <li>Die Kampagne <code>dc7b7cb0</code> (Build 3) läuft seit dem 12. November 2026 mit zwei Tester-Knoten <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</li>
+        <tr><td>Feld: Alpha 1 mit Testern</td><td><ul>
+          <li>Die Kampagne <code>dc7b7cb0</code> (Build 3) lief ab dem 12. November 2026 mit zwei Tester-Knoten <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</li>
           <li>Der Analyzer hört sie nur direkt (Zero-Hop) über einen Beobachter <span class="m field">im Feld beobachtet</span>.</li>
           <li>Der Lauf ist nicht vollständig <span class="m open">offen</span>.</li>
+        </ul></td></tr>
+        <tr><td>Feld: Alpha 2 mit Testern (ab 18. November 2026)</td><td><ul>
+          <li>36 Repeater meldeten die Kampagne <code>950257b4</code>. 31 davon bestätigten danach den Build 5 <span class="m field">im Feld beobachtet</span> (Analyzer, Stand 23. November 2026).</li>
+          <li>Die meisten Repeater wendeten das Update sofort an, nicht nach 7 Tagen <span class="m field">im Feld beobachtet</span>.</li>
         </ul></td></tr>
       </table>
     </div>
@@ -452,10 +456,14 @@
           <li>From “pulling” to “confirmed” took about 18 min. That was 14 min of radio and 2 min of waiting time, plus the swap and the test boot <span class="m meas">measured</span>. These were test images at SF7 and 1 dBm, not the release timing.</li>
           <li>The node with 1.18.0-b3 did not confirm at the first two flashes and fell back. The third flash confirmed once a neighbour sent an advert every 12 s <span class="m meas">measured</span>. That no packet arrived in the quiet surroundings is not checked <span class="m open">open</span>.</li>
         </ul></td></tr>
-        <tr><td>Field: alpha test with testers</td><td><ul>
+        <tr><td>Field: alpha 1 with testers</td><td><ul>
           <li>The campaign <code>dc7b7cb0</code> (build 3) has run since 12 November 2026 with two tester nodes <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</li>
           <li>The analyzer hears it only directly (zero-hop) through one observer <span class="m field">observed in the field</span>.</li>
           <li>The run is not complete <span class="m open">open</span>.</li>
+        </ul></td></tr>
+        <tr><td>Field: alpha 2 with testers (from 18 November 2026)</td><td><ul>
+          <li>36 repeaters reported the campaign <code>950257b4</code>. 31 of them then confirmed build 5 <span class="m field">observed in the field</span> (analyzer, as of 23 November 2026).</li>
+          <li>Most repeaters applied the update at once, not after 7 days <span class="m field">observed in the field</span>.</li>
         </ul></td></tr>
       </table>
     </div>
@@ -463,8 +471,8 @@
   </main>
   <p class="next"><a href="fragen.html"><span lang="de">Weiter: Fragen</span><span lang="en">Next: Questions</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht.</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release.</span>
+    <span lang="de">Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Alpha 1 begann am 11. November 2026, wir haben seine Pakete am 16. November 2026 zurückgezogen. Alpha 2 mit v1.17.1-fuota1 begann am 18. November 2026. Seit dem 25. November 2026 ist v1.18.0-fuota5 das erste Release.</span>
+    <span lang="en">Based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. Alpha 1 began on 11 November 2026, and we withdrew its packages on 16 November 2026. Alpha 2 with v1.17.1-fuota1 began on 18 November 2026. Since 25 November 2026, v1.18.0-fuota5 has been the first release.</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

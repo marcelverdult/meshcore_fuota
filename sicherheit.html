@@ -45,7 +45,7 @@
   <nav class="pages" aria-label="Seiten / pages">
     <ul>
       <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
-      <li><a href="alpha.html"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
+      <li><a href="installieren.html"><span lang="de">Installieren</span><span lang="en">Install</span></a></li>
       <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
       <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
       <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
@@ -62,13 +62,13 @@
       <h1>Nur signierte Firmware, und bei Startproblemen die alte</h1>
       <p class="lede">Dein Repeater installiert nur, was der Release-Schlüssel signiert hat. Startet die neue Firmware
         nicht, läuft nach 3 Probestarts (Startversuchen) ohne Bestätigung wieder die alte <span class="m meas">gemessen</span>. Im Proof of Concept
-        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</p>
+        liefen die Tests mit dem Test-Schlüssel. Der Release-Schlüssel wurde am 8. November 2026 erzeugt. Alpha 1 begann am 11. November 2026, wir haben seine Pakete am 16. November 2026 zurückgezogen. Alpha 2 mit v1.17.1-fuota1 begann am 18. November 2026. Seit dem 25. November 2026 ist v1.18.0-fuota5 das erste Release.</p>
     </div>
     <div lang="en">
       <h1>Only signed firmware, and the old one after a failed start</h1>
       <p class="lede">Your repeater installs only what the release key has signed. When the new firmware fails
         to start, the old one runs again after 3 test boots without confirmation <span class="m meas">measured</span>. In the proof of concept the
-        tests ran with the test key. The release key was generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release <span class="m open">open</span>.</p>
+        tests ran with the test key. The release key was generated on 8 November 2026. Alpha 1 began on 11 November 2026, and we withdrew its packages on 16 November 2026. Alpha 2 with v1.17.1-fuota1 began on 18 November 2026. Since 25 November 2026, v1.18.0-fuota5 has been the first release.</p>
     </div>
   </header>
 
@@ -239,7 +239,7 @@
           und ein Wurzelwechsel durch die Ersatz-Wurzel sind gebaut <span class="m code">im Code geprüft</span>. Alles lief nur am Rechner. Am Testaufbau ist es noch nicht gemessen
           <span class="m open">offen</span>. Ein Dieb der Wurzel kann Schlüssel mit neuen Nummern ausstellen, bis die Ersatz-Wurzel gewechselt hat.</li>
             <li>Dauerfunk
-          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht <span class="m open">offen</span>.</li>
+          (ständiger Funkverkehr) kann den Widerruf verzögern. Gehen beide Wurzeln verloren, erreichst du Knoten nur noch per USB. Das folgt aus der Schlüsselkette im Code, ein eigener Test fehlt. Auch ein signierter Build kann schlecht sein. Eine echte Wurzel und ein echter Release-Schlüssel wurden am 8. November 2026 erzeugt (Fingerabdruck der Hauptwurzel fb9fe83d1f675980, der Ersatzwurzel 64a946dcb1c4a1bf, Signierschlüssel 1 gültig bis Build 20) <span class="m code">im Code geprüft</span>. Alpha 1 begann am 11. November 2026, wir haben seine Pakete am 16. November 2026 zurückgezogen. Alpha 2 mit v1.17.1-fuota1 begann am 18. November 2026. Seit dem 25. November 2026 ist v1.18.0-fuota5 das erste Release.</li>
           </ul></li>
         <li><b>Die Build-Umgebung.</b> Vor dem Signieren bauen wir zweimal unabhängig und vergleichen das Ergebnis.
           <ul>
@@ -400,7 +400,7 @@
           built <span class="m code">checked in the code</span>. All of it ran only on a computer. It is not measured on the bench yet <span class="m open">open</span>.</li>
             <li>A thief of the root can issue keys with new
           numbers until the backup root has switched. Constant radio traffic can delay the revocation. If both roots are lost, you reach nodes only over USB. This follows from the key chain in the code; there is no test of its own.</li>
-            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026. The fingerprint of the main root is fb9fe83d1f675980, that of the backup root 64a946dcb1c4a1bf. Signing key 1 is valid up to build 20 <span class="m code">checked in the code</span>. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release <span class="m open">open</span>.</li>
+            <li>A signed build can also be bad. A real root and a real release key were generated on 8 November 2026. The fingerprint of the main root is fb9fe83d1f675980, that of the backup root 64a946dcb1c4a1bf. Signing key 1 is valid up to build 20 <span class="m code">checked in the code</span>. Alpha 1 began on 11 November 2026, and we withdrew its packages on 16 November 2026. Alpha 2 with v1.17.1-fuota1 began on 18 November 2026. Since 25 November 2026, v1.18.0-fuota5 has been the first release.</li>
           </ul></li>
         <li><b>The build environment.</b> Before signing, we build twice independently and compare the result.
           <ul>
@@ -599,8 +599,8 @@
   </main>
   <p class="next"><a href="funk.html"><span lang="de">Weiter: Funk</span><span lang="en">Next: On air</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Alpha 1 begann am 11. November 2026, wir haben seine Pakete am 16. November 2026 zurückgezogen. Alpha 2 mit v1.17.1-fuota1 begann am 18. November 2026. Seit dem 25. November 2026 ist v1.18.0-fuota5 das erste Release. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung vom 12. November 2026 nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. Alpha 1 began on 11 November 2026, and we withdrew its packages on 16 November 2026. Alpha 2 with v1.17.1-fuota1 began on 18 November 2026. Since 25 November 2026, v1.18.0-fuota5 has been the first release. The radio tests on the bench run at SF7 and 1 dBm. The alpha check of 12 November 2026 on the bench used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

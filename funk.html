@@ -45,7 +45,7 @@
   <nav class="pages" aria-label="Seiten / pages">
     <ul>
       <li><a href="index.html"><span lang="de">Überblick</span><span lang="en">Overview</span></a></li>
-      <li><a href="alpha.html"><span lang="de">Alpha-Test</span><span lang="en">Alpha test</span></a></li>
+      <li><a href="installieren.html"><span lang="de">Installieren</span><span lang="en">Install</span></a></li>
       <li><a href="ablauf.html"><span lang="de">Ablauf</span><span lang="en">How it runs</span></a></li>
       <li><a href="kosten.html"><span lang="de">Last im Mesh</span><span lang="en">Load on the mesh</span></a></li>
       <li><a href="nebenslot.html"><span lang="de">Nebenslot</span><span lang="en">Side slot</span></a></li>
@@ -444,7 +444,7 @@
         was Beobachter im echten Netz von FUOTA hören: Kampagnen mit ihrer Kennung, beteiligte Knoten, Pakete je Art
         (Angebot, Anfrage, Daten), Bytes und Airtime, dazu jeder Beobachter mit seinem Signalabstand.</p>
       <p>Viel kann dort nicht stehen. FUOTA sendet Zero-Hop, also hört ein Beobachter nur, was in seiner eigenen
-        Reichweite liegt; alles hinter einem Repeater bleibt unsichtbar. Und senden tun nur Knoten mit FUOTA-Firmware, das sind die Testfirmware und die Alpha-Pakete.</p>
+        Reichweite liegt; alles hinter einem Repeater bleibt unsichtbar. Und senden tun nur Knoten mit FUOTA-Firmware, das sind die Testfirmware und die FUOTA-Pakete.</p>
       <p>Am 10. November 2026 stand dort im Zeitraum 30 Tage (die längste Auswahl im Bericht) eine einzige Kampagne:
         <code>4c0180ac</code>, gehört am 7. November 2026 um 23:02 UTC von einem Beobachter mit dem Flughafenkürzel VNO
         (Vilnius), ein Datenpaket mit 142 B und 1,4 s Airtime, ein beteiligter Knoten mit der Kennung <code>8f</code>,
@@ -456,7 +456,7 @@
         andere Kennungen.</p>
       <p>Ob es überhaupt ein FUOTA-Paket war, wissen wir nicht <span class="m open">offen</span>. Der Decoder des Analyzers prüfte Datenpakete damals nur locker. Er rechnete mit dem Paketlayout vom 18. Oktober 2026. Laut Status ist er seit dem
         10. November 2026 umgebaut. Ob er dasselbe Paket heute als FUOTA-Paket anzeigt, ist nicht geprüft <span class="m open">offen</span>.</p>
-      <p>Im Alpha-Feld läuft seit dem 12. November 2026 die Kampagne <code>dc7b7cb0</code> (Build 3). Sie hat zwei Tester-Knoten <span class="m field">im Feld beobachtet</span>. Der Analyzer hört sie nur direkt (Zero-Hop) über einen Beobachter <span class="m field">im Feld beobachtet</span>. Sie steht im Tab Aktivität. Der Tab Rollout zeigt nur Repeater mit Statusmeldung, also mit Standard-Region <span class="m field">im Feld beobachtet</span>. Ohne Standard-Region kommt keine Statusmeldung. Die Tester senden ihre Angebote dann nur Zero-Hop <span class="m field">im Feld beobachtet</span>. Der Lauf ist nicht vollständig <span class="m open">offen</span>.</p>
+      <p>Im Feld lief ab dem 12. November 2026 (Alpha 1) die Kampagne <code>dc7b7cb0</code> (Build 3). Sie hatte zwei Tester-Knoten <span class="m field">im Feld beobachtet</span>. Der Analyzer hört sie nur direkt (Zero-Hop) über einen Beobachter <span class="m field">im Feld beobachtet</span>. Sie steht im Tab Aktivität. Der Tab Rollout zeigt nur Repeater mit Statusmeldung, also mit Standard-Region <span class="m field">im Feld beobachtet</span>. Ohne Standard-Region kommt keine Statusmeldung. Die Tester senden ihre Angebote dann nur Zero-Hop <span class="m field">im Feld beobachtet</span>. Der Lauf ist nicht vollständig <span class="m open">offen</span>.</p>
     </div>
     <div lang="en" class="prose">
       <h2>What of this is visible in the real network</h2>
@@ -464,7 +464,7 @@
         what observers in the real network hear of FUOTA: campaigns with their id, participating nodes, packets by type
         (offer, request, data), bytes and airtime, plus every observer with its signal margin.</p>
       <p>There cannot be much in it. FUOTA sends zero hop, so an observer hears only what is in its own range, and
-        anything behind a repeater stays invisible. Only nodes with FUOTA firmware send at all: the test firmware and the alpha packages.</p>
+        anything behind a repeater stays invisible. Only nodes with FUOTA firmware send at all: the test firmware and the FUOTA packages.</p>
       <p>On 10 November 2026 the report held a single campaign for the 30-day window (the longest choice in the report):
         <code>4c0180ac</code>, heard on 7 November 2026 at 23:02 UTC by an observer with the airport code VNO
         (Vilnius), one data packet of 142 B and 1.4 s of airtime, one participating node with the id <code>8f</code>,
@@ -475,7 +475,7 @@
         come from our bench: that one runs in Hamburg at 1 dBm over about 50 cm, and our nodes carry different ids.</p>
       <p>Whether it was a FUOTA packet at all, we do not know <span class="m open">open</span>. Back then the decoder of the analyzer checked data packets only loosely. It assumed the packet layout of 18 October 2026. According to the status it was rebuilt
         on 10 November 2026. Whether it shows the same packet as a FUOTA packet today has not been checked <span class="m open">open</span>.</p>
-      <p>Since 12 November 2026 the alpha campaign <code>dc7b7cb0</code> (build 3) has been running in the field. It has two tester nodes <span class="m field">observed in the field</span>. The analyzer hears it only directly (zero hop) through one observer <span class="m field">observed in the field</span>. It is in the Activity tab. The Rollout tab shows only repeaters with a status message, so with a default region <span class="m field">observed in the field</span>. Without a default region there is no status message. The testers then send their offers zero hop only <span class="m field">observed in the field</span>. The run is not complete <span class="m open">open</span>.</p>
+      <p>From 12 November 2026 (alpha 1) the campaign <code>dc7b7cb0</code> (build 3) ran in the field. It had two tester nodes <span class="m field">observed in the field</span>. The analyzer hears it only directly (zero hop) through one observer <span class="m field">observed in the field</span>. It is in the Activity tab. The Rollout tab shows only repeaters with a status message, so with a default region <span class="m field">observed in the field</span>. Without a default region there is no status message. The testers then send their offers zero hop only <span class="m field">observed in the field</span>. The run is not complete <span class="m open">open</span>.</p>
     </div>
   </section>
 
@@ -1044,8 +1044,8 @@
   </main>
   <p class="next"><a href="flash.html"><span lang="de">Weiter: Flash</span><span lang="en">Next: Flash</span> →</a></p>
   <footer>
-    <span lang="de">Proof of Concept auf Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Ein erster Alpha-Test begann am 11. November 2026. Wir haben seine Pakete 1.17.1-b2 und 1.18.0-b3 am 16. November zurückgezogen. Seit dem 18. November läuft ein zweiter Test mit v1.17.1-fuota1. Eine allgemeine Freigabe gibt es nicht. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
-    <span lang="en">Proof of concept based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. The first alpha test began on 11 November 2026. We withdrew its packages 1.17.1-b2 and 1.18.0-b3 on 16 November. A second test with v1.17.1-fuota1 has been running since 18 November. There is no general release. The radio tests on the bench run at SF7 and 1 dBm. The bench alpha check used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
+    <span lang="de">Basis MeshCore 1.18.0, nichts davon upstream eingereicht, die Veröffentlichung des Quellcodes ist noch offen. Die hier beschriebenen Tests liefen mit dem Test-Schlüssel, der Nachweislauf vom 9. November 2026 mit dem Release-Schlüssel vom 8. November 2026. Alpha 1 begann am 11. November 2026, wir haben seine Pakete am 16. November 2026 zurückgezogen. Alpha 2 mit v1.17.1-fuota1 begann am 18. November 2026. Seit dem 25. November 2026 ist v1.18.0-fuota5 das erste Release. Die Funktests am Testaufbau laufen bei SF7 und 1 dBm. Die Alpha-Prüfung vom 12. November 2026 nutzte am Testaufbau die Funkwerte des HanseMesh (SF8, 62,5 kHz, 1 dBm). Der Feldtest läuft im echten Mesh. Bisher läuft er nur direkt zwischen Nachbarn <span class="m field">im Feld beobachtet</span> (Analyzer, 13. November 2026).</span>
+    <span lang="en">Based on MeshCore 1.18.0, nothing of it submitted upstream, publication of the source code is still open. The tests described here ran with the test key, the proof run of 9 November 2026 with the release key generated on 8 November 2026. Alpha 1 began on 11 November 2026, and we withdrew its packages on 16 November 2026. Alpha 2 with v1.17.1-fuota1 began on 18 November 2026. Since 25 November 2026, v1.18.0-fuota5 has been the first release. The radio tests on the bench run at SF7 and 1 dBm. The alpha check of 12 November 2026 on the bench used the HanseMesh radio settings (SF8, 62.5 kHz, 1 dBm). The field test runs in the real mesh. So far it runs only directly between neighbours <span class="m field">observed in the field</span> (analyzer, 13 November 2026).</span>
     <span lang="de">Daten Hamburg: öffentliche Nachbartabellen von map.kiekr.app, Stand 18. Oktober 2026, Werkzeuge <code>fuota/tools/hh_site_data.py</code> und <code>hh_rollout.py</code>.</span>
     <span lang="en">Hamburg data: public neighbour tables from map.kiekr.app, as of 18 October 2026, tools <code>fuota/tools/hh_site_data.py</code> and <code>hh_rollout.py</code>.</span>
     <span lang="de">Text und Abbildungen dieser Seite: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo: Es steht nicht unter CC BY 4.0.</span>

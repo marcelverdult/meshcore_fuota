@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FUOTA einfach erklärt</title>
-<meta name="description" content="MeshCore FUOTA in einfachen Worten: wie Repeater sich Updates selbst über Funk weitergeben, wie lange das dauert, was deinen Repeater schützt und was du für den zweiten Alpha-Test tust.">
+<meta name="description" content="MeshCore FUOTA in einfachen Worten: wie Repeater sich Updates selbst über Funk weitergeben, wie lange das dauert, was deinen Repeater schützt und was du zum Installieren tust.">
 <link rel="icon" type="image/png" sizes="32x32" href="logo/favicon-32.png">
 <link rel="apple-touch-icon" href="logo/apple-touch-icon.png">
 <style>
@@ -321,10 +321,10 @@ footer p{margin:6px 0}
 <main lang="de">
 
 <div class="hero">
-  <span class="pill">Zweiter Alpha-Test im Großraum Hamburg</span>
-  <p><a href="alpha.html"><b>Du willst testen? Hier starten.</b></a></p>
+  <span class="pill">Erstes Release: 1.18.0-fuota5</span>
+  <p><a href="installieren.html"><b>Du willst installieren? Hier starten.</b></a></p>
   <h1>Ein Repeater bekommt das Update von Hand. <em>Alle anderen holen es per Funk.</em></h1>
-  <p class="lede">Repeater sind Funkstationen im MeshCore-Netz. Viele stehen auf Dächern und Masten. Für ein Update musste bisher jemand hinfahren und ein Kabel anstecken. FUOTA heißt Firmware Update Over The Air: Die Repeater geben neue Firmware per Funk weiter. Firmware ist das Programm im Gerät. Alpha heißt: frühe Testfassung. FUOTA ist ein Test und noch nicht Teil von MeshCore.</p>
+  <p class="lede">Repeater sind Funkstationen im MeshCore-Netz. Viele stehen auf Dächern und Masten. Für ein Update musste bisher jemand hinfahren und ein Kabel anstecken. FUOTA heißt Firmware Update Over The Air: Die Repeater geben neue Firmware per Funk weiter. Firmware ist das Programm im Gerät. Seit dem 25. November 2026 gibt es das erste Release. FUOTA ist noch nicht Teil von MeshCore.</p>
   <div class="facts">
     <div class="fact"><b>11 Sekunden</b><span>So viel darf FUOTA für Update-Daten höchstens pro Stunde und Repeater senden. Gerechnet aus der Grenze von 0,3 %, die im Code fest eingebaut ist.</span></div>
     <div class="fact"><b>9 bis 13 Stunden</b><span>So lange brauchte ein Repeater in den Testläufen, bis er das Update komplett hatte (gemessen). Dazu kommen ab Werk 7 Tage Wartezeit vor dem Einspielen.</span></div>
@@ -445,14 +445,14 @@ footer p{margin:6px 0}
 </section>
 
 <section id="test">
-  <h2>Dein Test in 6 Schritten</h2>
+  <h2>Installieren in 6 Schritten</h2>
   <p class="sub">Du brauchst einen Repeater mit nRF52-Chip und Zeit. Zum ersten Aufspielen hast du die Wahl: USB-Kabel oder Bluetooth.</p>
-  <div class="callout"><b>So läuft der zweite Alpha-Test:</b> Es gibt genau 2 Downloads. Das Empfänger-Paket 1.17 (Basis) bekommen alle Geräte außer einem. Nur dieses eine Gerät je Region bekommt das Seed-Paket 1.18. Es startet das Update. Mit den anderen Testern sprichst du ab, wer den Seed stellt. In deiner Region laufen immer mindestens 2 Test-Repeater, sonst passiert nichts. Alle Schritte stehen auf der <a href="alpha.html">Startseite für Tester</a>.</div>
+  <div class="callout"><b>Das brauchst du:</b> Für einen neuen Repeater gibt es genau 1 Paket: das Seed-Paket 1.18. Das Basispaket 1.17.1 ist nur eine Testversion. Mit ihr testest du das Update per Funk von 1.17.1 auf 1.18.0. Alle Schritte stehen auf der <a href="installieren.html">Installationsseite</a>.</div>
   <ol class="todo">
     <li><h3>Repeater aussuchen</h3>
-      <p>Nimm Repeater, an die du gut rankommst und die du entbehren kannst. Es müssen mindestens 2 Test-Repeater in deiner Region laufen, einer davon ist der Seed. Hast du nur einen, such dir Mit-Tester. Welche Geräte (Boards) gehen, steht in der Tabelle auf der <a href="alpha.html">Alpha-Seite</a>.</p></li>
-    <li><h3>Empfänger-Paket aufspielen</h3>
-      <p>Die Empfänger-Pakete liegen im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">Release v1.17.1-fuota1</a>. Das Seed-Paket liegt im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">Vorab-Release v1.18.0-fuota5</a>. Die Dateinamen tragen <code>-base-</code> und <code>-seed-</code>. Du hast die Wahl:</p>
+      <p>Nimm einen Repeater, an den du gut rankommst. Damit künftige Updates dich erreichen, muss ein Nachbar mit FUOTA in Funkreichweite stehen. Welche Geräte (Boards) gehen, steht in der Tabelle auf der <a href="installieren.html">Installationsseite</a>.</p></li>
+    <li><h3>Seed-Paket aufspielen</h3>
+      <p>Das Seed-Paket liegt im <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">Release v1.18.0-fuota5</a>. Der Dateiname trägt <code>-seed-</code>. Die Testversion 1.17.1 hat <code>-base-</code> im Dateinamen. Du brauchst sie nur für den Test des Updates per Funk. Du hast die Wahl:</p>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>Per USB-Kabel</h4>
           <p>Lade die Datei mit deinem Board im Namen. Vergleiche ihre Prüfsumme mit <code>SHA256SUMS</code> aus dem Release. Die Prüfsumme zeigt, dass die Datei beim Laden nicht beschädigt wurde. Schließe das Board per USB an, drück zweimal Reset und zieh die Datei auf das Laufwerk, das dann erscheint.</p>
@@ -460,11 +460,11 @@ footer p{margin:6px 0}
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>Per Bluetooth (OTA)</h4>
           <p>OTA heißt: ohne Kabel, per Funk. Du nimmst die ZIP-Datei statt der UF2-Datei. Sie bringt dieselbe Firmware auf einen Repeater, der schon eingerichtet läuft. Mit dem Befehl <code>start ota</code> schaltet der Repeater auf Bluetooth-Update. Bis das Update fertig ist, arbeitet er nicht als Repeater.</p>
           <p class="st"><b>Bei Tests dauerte die Übertragung 135 bis 281 Sekunden.</b> Hat dein Board den Bootloader (das Startprogramm) OTAFIX 1.x, nimm USB. Ob die ZIP-Dateien im Paket liegen, steht beim Release.
-            <a href="alpha.html#alpha-ota">Mehr dazu</a></p></div>
+            <a href="installieren.html#alpha-ota">Mehr dazu</a></p></div>
       </div></li>
     <li><h3>Einrichten</h3>
       <div class="callout"><b>Per Bluetooth aufgespielt?</b> Dann läuft dein Repeater schon eingerichtet. Funkwerte und Region blieben nach dem Update gleich (gemessen). Du änderst nur noch den Namen: <code>set name FUOTA &lt;Spitzname&gt; &lt;Release&gt;</code>. Schick den Befehl so an den Repeater, wie du es sonst auch tust. Die anderen Befehle in diesem Schritt brauchst du dann nicht.</div>
-      <p>Hat dein Repeater noch keine Einstellungen (zum Beispiel direkt nach dem Aufspielen per USB), richte ihn so ein. Öffne die USB-Konsole. Das ist ein Textfenster, in dem du dem Repeater Befehle schickst. Wie du sie öffnest, steht auf der <a href="alpha.html">Alpha-Seite</a>. Tippe diese Befehle. Ersetze die Teile in spitzen Klammern.</p>
+      <p>Hat dein Repeater noch keine Einstellungen (zum Beispiel direkt nach dem Aufspielen per USB), richte ihn so ein. Öffne die USB-Konsole. Das ist ein Textfenster, in dem du dem Repeater Befehle schickst. Wie du sie öffnest, steht auf der <a href="installieren.html">Installationsseite</a>. Tippe diese Befehle. Ersetze die Teile in spitzen Klammern.</p>
       <div class="cmd"><button class="copy" type="button">Kopieren</button>password <span class="c">&lt;neues Passwort&gt;</span>
 set name FUOTA <span class="c">&lt;Spitzname&gt; &lt;Release&gt;</span>
 region default hansemesh
@@ -474,21 +474,21 @@ set lat <span class="c">&lt;Breite&gt;</span>
 set lon <span class="c">&lt;Länge&gt;</span></div>
       <ul>
         <li>Passwort: Dieses Passwort legst du neu fest. Höchstens 15 Zeichen. <code>password</code> und ein leeres Passwort gehen nicht.</li>
-        <li>Name: <code>FUOTA</code>, dein Spitzname und die Release-Kennung, zum Beispiel <code>FUOTA verdi 1.17b2</code>. So sieht man im Analyzer (einer Webseite, die das Mesh zeigt), wessen Repeater das ist und welche Version er hat. Die Release-Kennung nennen wir mit den Paketen. Höchstens 31 Zeichen, nicht erlaubt sind <code>[ ] \ : , ? *</code>. Nach einem Update ändert sich die Kennung im Namen nicht von selbst.</li>
+        <li>Name: <code>FUOTA</code>, dein Spitzname und die Release-Kennung, zum Beispiel <code>FUOTA verdi 1.18.0-fuota5</code>. So sieht man im Analyzer (einer Webseite, die das Mesh zeigt), wessen Repeater das ist und welche Version er hat. Die Release-Kennung ist 1.18.0-fuota5. Höchstens 31 Zeichen, nicht erlaubt sind <code>[ ] \ : , ? *</code>. Nach einem Update ändert sich die Kennung im Namen nicht von selbst.</li>
         <li>Advert: Alle 4 Stunden ruft dein Repeater „Ich bin hier“, mit Name und Standort, nur an seine direkten Nachbarn. Der Rundruf an alle (geflutet) ist aus.</li>
         <li>Standort: Ein grober Standort reicht.</li>
         <li>Funkwerte: Nimm dieselben wie bei deinen anderen Repeatern: <code>set radio &lt;MHz&gt;,&lt;Bandbreite&gt;,&lt;SF&gt;,&lt;CR&gt;</code>, danach neu starten.</li>
         <li>Region: der Name der Region, in der dein Repeater Nachrichten flutet. Das Beispiel <code>hansemesh</code> gilt für HanseMesh. Nimm den Namen deines Mesh. Ohne Region meldet dein Repeater seinen Stand nicht, und der Analyzer zeigt ihn nicht in der Ausbreitung des Updates.</li>
       </ul>
       </li>
-    <li><h3>Sofort einspielen lassen</h3>
-      <p>Ab Werk wartet ein Repeater 7 Tage, bevor er ein fertiges Update einspielt. Das kürzt du für den Test ab:</p>
+    <li><h3>Updates sofort einspielen lassen (optional)</h3>
+      <p>Ab Werk wartet ein Repeater 7 Tage, bevor er ein fertiges Update einspielt. Das kürzt du ab, wenn du die Testversion 1.17.1 testest:</p>
       <div class="cmd"><button class="copy" type="button">Kopieren</button>fuota auto now</div>
       <p>Danach startet der Repeater von selbst neu und ist kurz nicht erreichbar.</p></li>
     <li><h3>Zuschauen</h3>
       <p>Mehr musst du nicht tun. Den Stand zeigt <code>fuota info</code>, in der USB-Konsole oder per Fernzugriff übers Mesh, wenn du als Admin angemeldet bist. <code>fuota status</code> zeigt per USB alle Einzelheiten, übers Mesh nur dieselbe Kurzantwort wie <code>fuota info</code>. Von außen siehst du das Update im <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">Analyzer</a> auf der Seite FUOTA-Kampagnen, im Tab Aktivität. Eine Kampagne ist ein Update, das gerade durchs Mesh wandert.</p></li>
     <li><h3>Melden, was passiert ist</h3>
-      <p>Am liebsten im <a href="https://t.me/meshcorede/37922">Telegram-Thread</a>. Dort sprichst du auch ab, wer Seed ist. Ein <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub-Issue</a> mit der Vorlage „Alpha-Bericht“ (dafür brauchst du ein GitHub-Konto) und <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die Alpha-Meldungen direkt <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in diesem Kanal</a>. Kopiere Ausgaben als Text, nicht als Screenshot.</p>
+      <p>Am liebsten im <a href="https://t.me/meshcorede/37922">Telegram-Thread</a>. Ein <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub-Issue</a> (dafür brauchst du ein GitHub-Konto) und <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> gehen auch. Wer schon auf dem Server ist, findet die Meldungen direkt <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in diesem Kanal</a>. Kopiere Ausgaben als Text, nicht als Screenshot.</p>
       <ul>
         <li>Board und Version vorher und nachher (<code>ver</code>, <code>fuota info</code>)</li>
         <li>wann das Update fertig war und wann die neue Firmware bestätigt war</li>
@@ -501,10 +501,10 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
   <div class="risk">
     <h2>Was schiefgehen kann</h2>
     <ul>
-      <li><b>Es ist ein Alpha-Test.</b> Fällt etwas aus, spielst du die Firmware per USB-Kabel neu auf den Repeater. Darum nimm einen Repeater, an den du gut rankommst.</li>
+      <li><b>Es ist ein neues Release.</b> Fällt etwas aus, spielst du die Firmware per USB-Kabel neu auf den Repeater. Darum nimm einen Repeater, an den du gut rankommst.</li>
       <li><b>Dein Repeater ist kurz weg.</b> Beim Einspielen startet er ohne dein Zutun neu und ist kurz nicht erreichbar. Fällt er auf die alte Firmware zurück, versucht er es frühestens nach 1 Tag erneut.</li>
       <li><b>Boards mit dem Bootloader OTAFIX 1.x:</b> Nimm USB statt Bluetooth. Halte das USB-Kabel bereit.</li>
-      <li><b>Ein Display bleibt dunkel.</b> Die Alpha-Pakete haben keinen Display-Treiber, zum Beispiel am Heltec T114. Das ist so gewollt.</li>
+      <li><b>Ein Display bleibt dunkel.</b> Die Pakete haben keinen Display-Treiber, zum Beispiel am Heltec T114. Das ist so gewollt.</li>
       <li><b>Ohne Funkkontakt keine Bestätigung.</b> Hört dein Repeater nach dem Update niemanden, kann er die neue Firmware nicht bestätigen. Nach 3 Probestarts läuft wieder die alte. Stell ihn dahin, wo er andere Repeater hört.</li>
       <li><b>Zurück zu MeshCore:</b> Gib in der USB-Konsole <code>fuota uf2</code> ein. Der Repeater startet neu und erscheint am Rechner als USB-Laufwerk. Zieh die normale MeshCore-Datei (UF2) für dein Board darauf. Antwortet der Repeater nicht mehr, drück zweimal kurz Reset, dann erscheint dasselbe Laufwerk. Ohne USB geht es per Bluetooth: Der Befehl <code>start ota</code> startet den Repeater in den Bluetooth-Update-Modus (auch per Fernzugriff als Admin), dann spielst du das normale MeshCore-Paket ein.</li>
     </ul>
@@ -513,7 +513,7 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
 
 <footer>
   <p>Stand 15. November 2026. Die Zahlen stammen aus der <a href="index.html">ausführlichen Doku</a> (Stand 13. November 2026). Im Text steht bei jeder Zahl, ob sie gemessen, gerechnet oder im Code geprüft ist.</p>
-  <p>FUOTA ist ein Versuchsaufbau auf Basis von MeshCore 1.18.0. Nichts davon ist bei MeshCore eingereicht, eine allgemeine Freigabe gibt es nicht.</p>
+  <p>FUOTA baut auf MeshCore 1.18.0 auf. Nichts davon ist bei MeshCore eingereicht. Seit dem 25. November 2026 ist v1.18.0-fuota5 das erste Release.</p>
   <p>Text und Abbildungen: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a> (Namensnennung: „MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota“). Ausgenommen ist das Logo.</p>
 </footer>
 </main>
@@ -521,10 +521,10 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
 <main lang="en">
 
 <div class="hero">
-  <span class="pill">Second alpha test in the Hamburg area</span>
-  <p><a href="alpha.html"><b>Want to test? Start here.</b></a></p>
+  <span class="pill">First release: 1.18.0-fuota5</span>
+  <p><a href="installieren.html"><b>Want to install? Start here.</b></a></p>
   <h1>One repeater gets the update by hand. <em>All the others fetch it over the air.</em></h1>
-  <p class="lede">Repeaters are radio stations in the MeshCore network. Many stand on roofs and masts. Until now, an update meant someone had to go there and plug in a cable. FUOTA stands for Firmware Update Over The Air. Repeaters pass new firmware to each other by radio. Firmware is the program inside the device. Alpha means an early test version. FUOTA is a test and not yet part of MeshCore.</p>
+  <p class="lede">Repeaters are radio stations in the MeshCore network. Many stand on roofs and masts. Until now, an update meant someone had to go there and plug in a cable. FUOTA stands for Firmware Update Over The Air. Repeaters pass new firmware to each other by radio. Firmware is the program inside the device. The first release has been out since 25 November 2026. FUOTA is not yet part of MeshCore.</p>
   <div class="facts">
     <div class="fact"><b>11 seconds</b><span>That is the most FUOTA may transmit for update data per hour and repeater. Calculated from the limit of 0.3 %, which is built into the code.</span></div>
     <div class="fact"><b>9 to 13 hours</b><span>That is how long a repeater took in the test runs to receive the whole update (measured). On top of that, the factory setting waits 7 days before installing.</span></div>
@@ -645,14 +645,14 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
 </section>
 
 <section id="your-test">
-  <h2>Your test in 6 steps</h2>
+  <h2>Install in 6 steps</h2>
   <p class="sub">You need a repeater with an nRF52 chip and time. For the first install you can choose: USB cable or Bluetooth.</p>
-  <div class="callout"><b>How the second alpha test runs:</b> There are exactly 2 downloads. All devices except one get the receiver package 1.17 (base). Only that one device per region gets the seed package 1.18. It starts the update. You agree with the other testers who provides the seed. At least 2 test repeaters always run in your region, otherwise nothing happens. All steps are on the <a href="alpha.html">start page for testers</a>.</div>
+  <div class="callout"><b>What you need:</b> A new repeater needs exactly 1 package: the seed package 1.18. The base package 1.17.1 is only a test version. With it you test the update over the air from 1.17.1 to 1.18.0. All steps are on the <a href="installieren.html">install page</a>.</div>
   <ol class="todo">
     <li><h3>Pick a repeater</h3>
-      <p>Take repeaters you can reach easily and can spare. At least 2 test repeaters must run in your region, one of them is the seed. If you have only one, look for fellow testers. Which devices (boards) work is listed in the table on the <a href="alpha.html">alpha page</a>.</p></li>
-    <li><h3>Install the receiver package</h3>
-      <p>The receiver packages are in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.17.1-fuota1">release v1.17.1-fuota1</a>. The seed package is in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">pre-release v1.18.0-fuota5</a>. The file names carry <code>-base-</code> and <code>-seed-</code>. You can choose:</p>
+      <p>Take a repeater you can reach easily. For future updates to reach you, a neighbour with FUOTA must stand within radio range. Which devices (boards) work is listed in the table on the <a href="installieren.html">install page</a>.</p></li>
+    <li><h3>Install the seed package</h3>
+      <p>The seed package is in the <a href="https://github.com/marcelverdult/meshcore_fuota/releases/tag/v1.18.0-fuota5">release v1.18.0-fuota5</a>. The file name carries <code>-seed-</code>. The test version 1.17.1 has <code>-base-</code> in its file name. You need it only to test the update over the air. You can choose:</p>
       <div class="choice">
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="19" r="2"/><path d="M12 17V5"/><path d="M12 5l-2.5 2.5M12 5l2.5 2.5"/><path d="M12 12l-5-3v3"/><rect x="5" y="12" width="3" height="3"/><path d="M12 14l4-2v-2"/><circle cx="16" cy="9" r="1.5"/></svg>By USB cable</h4>
           <p>Download the file with your board in its name. Compare its checksum with <code>SHA256SUMS</code> from the release. The checksum shows that the file was not damaged while downloading. Connect the board by USB and press reset twice. Drag the file onto the drive that appears.</p>
@@ -660,11 +660,11 @@ set lon <span class="c">&lt;Länge&gt;</span></div>
         <div class="opt"><h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>Over Bluetooth (OTA)</h4>
           <p>OTA means: without a cable, by radio. You use the ZIP file instead of the UF2 file. It carries the same firmware onto a repeater that is already set up and running. With the command <code>start ota</code> the repeater switches to Bluetooth update. Until the update is done, it does not work as a repeater.</p>
           <p class="st"><b>In tests the transfer took 135 to 281 seconds.</b> If your board has the OTAFIX 1.x bootloader (the start-up program), use USB. Whether the ZIP files are in the package is stated with the release.
-            <a href="alpha.html#alpha-ota">More</a></p></div>
+            <a href="installieren.html#alpha-ota">More</a></p></div>
       </div></li>
     <li><h3>Set it up</h3>
       <div class="callout"><b>Installed over Bluetooth?</b> Then your repeater is already set up and running. Radio settings and region stayed the same after the update (measured). You only change the name: <code>set name FUOTA &lt;nickname&gt; &lt;release&gt;</code>. Send the command to the repeater the way you usually do. You do not need the other commands in this step.</div>
-      <p>If your repeater has no settings yet, set it up like this. This is the case right after installing by USB, for example. Open the USB console. That is a text window in which you send commands to the repeater. How to open it is explained on the <a href="alpha.html">alpha page</a>. Type these commands. Replace the parts in angle brackets.</p>
+      <p>If your repeater has no settings yet, set it up like this. This is the case right after installing by USB, for example. Open the USB console. That is a text window in which you send commands to the repeater. How to open it is explained on the <a href="installieren.html">install page</a>. Type these commands. Replace the parts in angle brackets.</p>
       <div class="cmd"><button class="copy" type="button">Copy</button>password <span class="c">&lt;new password&gt;</span>
 set name FUOTA <span class="c">&lt;nickname&gt; &lt;release&gt;</span>
 region default hansemesh
@@ -674,21 +674,21 @@ set lat <span class="c">&lt;latitude&gt;</span>
 set lon <span class="c">&lt;longitude&gt;</span></div>
       <ul>
         <li>Password: you choose a new password here. At most 15 characters. <code>password</code> and an empty password do not work.</li>
-        <li>Name: <code>FUOTA</code>, your nickname and the release tag, for example <code>FUOTA verdi 1.17b2</code>. In the analyzer (a web page that shows the mesh) you then see whose repeater it is and which version it runs. We will name the release tag with the packages. At most 31 characters; <code>[ ] \ : , ? *</code> are not allowed. After an update the tag in the name does not change by itself.</li>
+        <li>Name: <code>FUOTA</code>, your nickname and the release tag, for example <code>FUOTA verdi 1.18.0-fuota5</code>. In the analyzer (a web page that shows the mesh) you then see whose repeater it is and which version it runs. The release tag is 1.18.0-fuota5. At most 31 characters; <code>[ ] \ : , ? *</code> are not allowed. After an update the tag in the name does not change by itself.</li>
         <li>Advert: every 4 hours your repeater calls “I am here”, with name and location. This call goes only to its direct neighbours. The call to everyone (flooded) is off.</li>
         <li>Location: a rough location is enough.</li>
         <li>Radio settings: use the same as on your other repeaters: <code>set radio &lt;MHz&gt;,&lt;bandwidth&gt;,&lt;SF&gt;,&lt;CR&gt;</code>, then restart.</li>
         <li>Region: the name of the region in which your repeater floods messages. The example <code>hansemesh</code> is for HanseMesh. Use the name of your mesh. Without a region your repeater does not report its state. So the analyzer does not show it in the spread of the update.</li>
       </ul>
       </li>
-    <li><h3>Install right away</h3>
-      <p>By default a repeater waits 7 days before it installs a finished update. You shorten that for the test:</p>
+    <li><h3>Install updates right away (optional)</h3>
+      <p>By default a repeater waits 7 days before it installs a finished update. You shorten that if you test the test version 1.17.1:</p>
       <div class="cmd"><button class="copy" type="button">Copy</button>fuota auto now</div>
       <p>After that the repeater restarts on its own and is briefly out of reach.</p></li>
     <li><h3>Watch</h3>
       <p>That is all you need to do. <code>fuota info</code> shows the state in the USB console. Over the mesh it works by remote access when you are logged in as admin. <code>fuota status</code> shows all details over USB. Over the mesh it gives only the same short answer as <code>fuota info</code>. From the outside you can see the update in the <a href="https://meshcore-analyzer.eu/#analytics?tab=fuota">analyzer</a>. Look in the Activity tab on the FUOTA campaigns page. A campaign is an update that is currently travelling through the mesh.</p></li>
     <li><h3>Report what happened</h3>
-      <p>Preferably in the <a href="https://t.me/meshcorede/37922">Telegram thread</a>. You also agree there who is the seed. A <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub issue</a> with the template “Alpha-Bericht” (a German template name, you need a GitHub account for it) and <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the alpha reports <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in this channel</a>. Copy output as text, not as screenshots.</p>
+      <p>Preferably in the <a href="https://t.me/meshcorede/37922">Telegram thread</a>. A <a href="https://github.com/marcelverdult/meshcore_fuota/issues">GitHub issue</a> (you need a GitHub account for it) and <a href="https://discord.gg/Yaq3HEMfhk">Discord</a> work too. If you are already on the server, you find the reports <a href="https://discord.com/channels/1524844387190702172/1571577291341955152">in this channel</a>. Copy output as text, not as screenshots.</p>
       <ul>
         <li>board and version before and after (<code>ver</code>, <code>fuota info</code>)</li>
         <li>when the update was complete and when the new firmware was confirmed</li>
@@ -701,10 +701,10 @@ set lon <span class="c">&lt;longitude&gt;</span></div>
   <div class="risk">
     <h2>What can go wrong</h2>
     <ul>
-      <li><b>It is an alpha test.</b> If something fails, you install the firmware on the repeater again by USB cable. So pick a repeater you can reach easily.</li>
+      <li><b>It is a new release.</b> If something fails, you install the firmware on the repeater again by USB cable. So pick a repeater you can reach easily.</li>
       <li><b>Your repeater is briefly gone.</b> While the update is installed, it restarts on its own. It is briefly out of reach. If it falls back, it tries again after 1 day at the earliest.</li>
       <li><b>Boards with the OTAFIX 1.x bootloader:</b> Use USB instead of Bluetooth. Keep a USB cable ready.</li>
-      <li><b>A display stays dark.</b> The alpha packages have no display driver, for example on the Heltec T114. This is intended.</li>
+      <li><b>A display stays dark.</b> The packages have no display driver, for example on the Heltec T114. This is intended.</li>
       <li><b>No radio contact, no confirmation.</b> If your repeater hears nobody after the update, it cannot confirm the new firmware. After 3 test boots the old one runs again. Place it where it hears other repeaters.</li>
       <li><b>Back to MeshCore:</b> Enter <code>fuota uf2</code> in the USB console. The repeater restarts and shows up on your computer as a USB drive. Drag the regular MeshCore file (UF2) for your board onto it. If the repeater no longer answers, press reset twice in quick succession. Then the same drive appears. Without USB it works over Bluetooth. The command <code>start ota</code> restarts the repeater into the Bluetooth update mode. This also works by remote access as admin. Then you load the regular MeshCore package.</li>
     </ul>
@@ -713,7 +713,7 @@ set lon <span class="c">&lt;longitude&gt;</span></div>
 
 <footer>
   <p>As of 15 November 2026. The figures come from the <a href="index.html">full documentation</a> (as of 13 November 2026). Each figure says whether it was measured, calculated or checked in the code.</p>
-  <p>FUOTA is an experimental setup based on MeshCore 1.18.0. None of it has been submitted to MeshCore, and there is no general release.</p>
+  <p>FUOTA builds on MeshCore 1.18.0. None of it has been submitted to MeshCore. Since 25 November 2026, v1.18.0-fuota5 has been the first release.</p>
   <p>Text and figures: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (attribution: “MeshCore FUOTA, github.com/marcelverdult/meshcore_fuota”). The logo is excluded.</p>
 </footer>
 </main>
@@ -722,7 +722,7 @@ set lon <span class="c">&lt;longitude&gt;</span></div>
 <script>
 (function(){
   var titles={de:'FUOTA einfach erklärt',en:'FUOTA explained simply'};
-  var descs={de:'MeshCore FUOTA in einfachen Worten: wie Repeater sich Updates selbst über Funk weitergeben, wie lange das dauert, was deinen Repeater schützt und was du für den zweiten Alpha-Test tust.',en:'MeshCore FUOTA in plain words: how repeaters pass updates to each other by radio, how long it takes, what protects your repeater and what you do for the second alpha test.'};
+  var descs={de:'MeshCore FUOTA in einfachen Worten: wie Repeater sich Updates selbst über Funk weitergeben, wie lange das dauert, was deinen Repeater schützt und was du zum Installieren tust.',en:'MeshCore FUOTA in plain words: how repeaters pass updates to each other by radio, how long it takes, what protects your repeater and what you do to install it.'};
   var md=document.querySelector('meta[name="description"]');
   function setLang(l){
     var h=document.documentElement; h.setAttribute('data-lang',l); h.lang=l; document.title=titles[l];

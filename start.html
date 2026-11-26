@@ -3,11 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Alpha-Test · MeshCore FUOTA</title>
-<meta http-equiv="refresh" content="0; url=alpha.html">
+<title>Installieren · MeshCore FUOTA</title>
+<meta http-equiv="refresh" content="0; url=installieren.html">
 <meta name="robots" content="noindex">
-<link rel="canonical" href="https://marcelverdult.github.io/meshcore_fuota/alpha.html">
-<script>location.replace("alpha.html" + location.hash);</script>
+<link rel="canonical" href="https://marcelverdult.github.io/meshcore_fuota/installieren.html">
+<script>
+(function () {
+  // old section links of the former tester pages: start-alt is now start-testversion, all other ids are unchanged
+  var h = location.hash.slice(1), m = {"start-alt": "start-testversion"};
+  location.replace("installieren.html" + (h ? "#" + (m[h] || h) : ""));
+})();
+</script>
 <style>
   :root{color-scheme:light dark;--bg:#fff;--fg:#1b1f24;--accent:#0b57a4}
   @media (prefers-color-scheme:dark){:root{--bg:#0f1318;--fg:#e8ecf1;--accent:#7fb4ee}}
@@ -18,8 +24,8 @@
 </head>
 <body>
 <main>
-  <p lang="de">Diese Seite ist umgezogen. Der Alpha-Test steht jetzt auf einer Seite: <a href="alpha.html">alpha.html</a>.</p>
-  <p lang="en">This page has moved. The alpha test now lives on one page: <a href="alpha.html">alpha.html</a>.</p>
+  <p lang="de">Diese Seite ist umgezogen. Die Installation steht jetzt auf einer Seite: <a href="installieren.html">installieren.html</a>.</p>
+  <p lang="en">This page has moved. The install guide now lives on one page: <a href="installieren.html">installieren.html</a>.</p>
 </main>
 </body>
 </html>
